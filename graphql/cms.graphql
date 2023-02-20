@@ -63,6 +63,7 @@ type Page {
   title: String!
   slug: String!
   to: String
+  tag: String
   data: JSON!
   status: Int!
   parent: Page
@@ -80,6 +81,7 @@ input PageInput {
   title: String!
   slug: String!
   to: String
+  tag: String
   data: JSON!
   status: Int!
 }

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug')->unique();
             $table->string('to')->nullable();
+            $table->string('tag', 31)->unique()->nullable();
             $table->json('data');
             $table->smallInteger('status');
             $table->nestedSet();

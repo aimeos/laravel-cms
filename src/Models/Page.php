@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Kalnoy\Nestedset\NodeTrait;
 
 
@@ -45,6 +46,7 @@ class Page extends Model
         'title' => '',
         'slug' => '',
         'to' => null,
+        'tag' => null,
         'data' => '[]',
         'status' => 0,
     ];
@@ -68,6 +70,7 @@ class Page extends Model
         'title',
         'slug',
         'to',
+        'tag',
         'data',
         'status',
     ];
@@ -101,6 +104,19 @@ class Page extends Model
     {
         return $this->hasOne(Content::class)
             ->orderBy('id', 'desc');
+    }
+
+
+    /**
+     * Get the latest revision for the page.
+     *
+     * @param string $tag Unique tag to retrieve page tree
+     * @param string|null $lang ISO language code
+     */
+    public static function nav( string $tag, string $lang = null ): ?Page
+    {
+        $root = DB::table( 'cms_pages' )->where( 'tag', $tag )->where( 'lang', $lang )->first();
+        return $root ? Page::descendantsAndSelf( $root->id )->toTree()->first() : null;
     }
 
 

@@ -32,6 +32,14 @@ class CmsServiceProvider extends ServiceProvider
 
 		$this->publishes( [$basedir . '/config/cms.php' => config_path( 'cms.php' )], 'cms' );
 		$this->publishes( [$basedir . '/graphql/cms.graphql' => base_path( 'graphql/cms.graphql' )], 'cms' );
+
+
+		if( $this->app->runningInConsole() )
+		{
+			$this->commands( [
+				\Aimeos\Cms\Commands\Install::class,
+			] );
+		}
 	}
 
 

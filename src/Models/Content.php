@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @license MIT, http://opensource.org/licenses/MIT
+ */
+
+
 namespace Aimeos\Cms\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -9,6 +14,9 @@ use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Model;
 
 
+/**
+ * Page content model
+ */
 class Content extends Model
 {
     use HasFactory;

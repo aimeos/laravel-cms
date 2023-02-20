@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @license MIT, http://opensource.org/licenses/MIT
+ */
+
+
 namespace Aimeos\Cms\Models;
 
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -11,6 +16,9 @@ use Illuminate\Database\Eloquent\Model;
 use Kalnoy\Nestedset\NodeTrait;
 
 
+/**
+ * Page model
+ */
 class Page extends Model
 {
     use HasFactory;

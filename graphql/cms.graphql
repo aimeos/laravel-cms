@@ -2,25 +2,59 @@ scalar JSON @scalar(class: "MLL\\GraphQLScalars\\JSON")
 
 extend type Query {
   me: User @auth
-  page(id: ID! @eq): Page @find @softDeletes
-  pages: [Page!] @all @softDeletes @eq(key: "parent_id", value: null)
-  contents(page_id: ID! @eq): [Content!]! @paginate @softDeletes
+
+  page(id: ID! @eq): Page
+    @can(ability: "view")
+    @softDeletes
+    @find
+
+  pages: [Page!]
+    @eq(key: "parent_id", value: null)
+    @can(ability: "view")
+    @softDeletes
+    @all
+
+  contents(page_id: ID! @eq): [Content!]!
+    @can(ability: "view")
+    @softDeletes
+    @paginate
 }
 
 extend type Mutation {
   cmsLogin(email: String!, password: String!): User!
   cmsLogout: User @guard
 
-  addPage(input: PageInput!, parent: ID, ref: ID): Page
-  movePage(id: ID!, parent: ID, ref: ID): Page
-  savePage(id: ID!, input: PageInput!): Page
-  dropPage(id: ID!): Page
 
-  addContent(page_id: ID!, data: JSON!): Content @create
-  dropContent(id: ID! @whereKey): Content @delete
-  keepContent(id: ID!): Content @restore
+  addPage(input: PageInput!, parent: ID, ref: ID): Page
+    @can(ability: "add")
+
+  movePage(id: ID!, parent: ID, ref: ID): Page
+    @can(ability: "move")
+
+  savePage(id: ID!, input: PageInput!): Page
+    @can(ability: "save")
+
+  dropPage(id: ID!): Page
+    @can(ability: "drop")
+
+
+  addContent(page_id: ID!, data: JSON!): Content
+    @can(ability: "add")
+    @create
+
+  dropContent(id: ID! @whereKey): Content
+    @can(ability: "drop")
+    @delete
+
+  keepContent(id: ID!): Content
+    @can(ability: "keep")
+    @restore
+
   hideContent(id: ID!): ID
+    @can(ability: "hide")
+
   showContent(id: ID!): ID
+    @can(ability: "show")
 }
 
 type Page {

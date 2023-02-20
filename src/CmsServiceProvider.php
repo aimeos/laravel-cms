@@ -25,9 +25,13 @@ class CmsServiceProvider extends ServiceProvider
 	 */
 	public function boot()
 	{
-		$this->loadViewsFrom( dirname( __DIR__ ) . '/views', 'cms' );
-		$this->loadMigrationsFrom( dirname( __DIR__ ) . '/database/migrations' );
-		$this->publishes( [dirname( __DIR__ ) . '/config/cms.php' => config_path( 'cms.php' )], 'config' );
+		$basedir = dirname( __DIR__ );
+
+		$this->loadViewsFrom( $basedir . '/views', 'cms' );
+		$this->loadMigrationsFrom( $basedir . '/database/migrations' );
+
+		$this->publishes( [$basedir . '/config/cms.php' => config_path( 'cms.php' )], 'cms' );
+		$this->publishes( [$basedir . '/graphql/cms.graphql' => base_path( 'graphql/cms.graphql' )], 'cms' );
 	}
 
 

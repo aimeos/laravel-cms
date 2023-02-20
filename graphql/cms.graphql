@@ -1,0 +1,62 @@
+scalar JSON @scalar(class: "MLL\\GraphQLScalars\\JSON")
+
+type Query {
+  page(id: ID! @eq): Page @find @softDeletes
+  pages: [Page!] @all @softDeletes @eq(key: "parent_id", value: null)
+  contents(page_id: ID! @eq): [Content!]! @paginate @softDeletes
+}
+
+type Mutation {
+  addPage(input: PageInput!, parent: ID, ref: ID): Page
+  movePage(id: ID!, parent: ID, ref: ID): Page
+  savePage(id: ID!, input: PageInput!): Page
+  dropPage(id: ID!): Page
+
+  addContent(page_id: ID!, data: JSON!): Content @create
+  dropContent(id: ID! @whereKey): Content @delete
+  keepContent(id: ID!): Content @restore
+  hideContent(id: ID!): ID
+  showContent(id: ID!): ID
+}
+
+type Page {
+  id: ID!
+  lang: String
+  title: String!
+  slug: String!
+  to: String
+  data: JSON!
+  status: Int!
+  parent: Page
+  children: [Page]!
+  ancestors: [Page]!
+  descendants: [Page]!
+  created_at: String!
+  updated_at: String!
+  deleted_at: String
+  latest: Content @hasOne
+}
+
+input PageInput {
+  lang: String
+  title: String!
+  slug: String!
+  to: String
+  data: JSON!
+  status: Int!
+}
+
+type Content {
+  id: ID!
+  page_id: Int!
+  status: Int!
+  data: JSON!
+  created_at: String!
+  updated_at: String!
+  deleted_at: String
+}
+
+input ContentInput {
+  page_id: Int!
+  data: JSON!
+}

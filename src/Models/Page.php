@@ -77,21 +77,21 @@ class Page extends Model
 
 
     /**
-     * Get the latest revision for the page.
+     * Get the revisions for the page.
      */
-    public function latest(): HasOne
+    public function contents(): HasMany
     {
-        return $this->hasOne(Content::class)
+        return $this->hasMany(Content::class)
             ->orderBy('id', 'desc');
     }
 
 
     /**
-     * Get the revisions for the page.
+     * Get the latest revision for the page.
      */
-    public function revisions(): HasMany
+    public function latest(): HasOne
     {
-        return $this->hasMany(Content::class)
+        return $this->hasOne(Content::class)
             ->orderBy('id', 'desc');
     }
 

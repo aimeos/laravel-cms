@@ -63,32 +63,47 @@ class Install extends Command
      */
     protected function lighthouse() : int
     {
+        $done = 0;
         $filename = 'config/lighthouse.php';
         $content = file_get_contents( base_path( $filename ) );
 
         $string = ", 'Aimeos\\\\Cms\\\\Models'";
 
-        if( ( $models = strpos( $content, $string ) ) === false ) {
+        if( strpos( $content, $string ) === false && ++$done )
+        {
             $content = str_replace( "'App\\\\Models'", "'App\\\\Models'" . $string, $content );
+            $this->line( sprintf( '  Added CMS models directory to [%1$s]' . PHP_EOL, $filename ) );
         }
 
         $string = ", 'Aimeos\\\\Cms\\\\GraphQL\\\\Mutations'";
 
-        if( ( $mutations1 = strpos( $content, $string ) ) === false ) {
+        if( strpos( $content, $string ) === false && ++$done )
+        {
             $content = str_replace( " 'App\\\\GraphQL\\\\Mutations'", " ['App\\\\GraphQL\\\\Mutations'" . $string . "]", $content );
+            $this->line( sprintf( '  Added CMS mutations directory to [%1$s]' . PHP_EOL, $filename ) );
         }
 
-        if( ( $mutations2 = strpos( $content, $string ) ) === false ) {
+        if( strpos( $content, $string ) === false && ++$done )
+        {
             $content = str_replace( "['App\\\\GraphQL\\\\Mutations'", "['App\\\\GraphQL\\\\Mutations'" . $string, $content );
+            $this->line( sprintf( '  Added CMS mutations directory to [%1$s]' . PHP_EOL, $filename ) );
         }
 
-        if( !$models || !$mutations1 || !$mutations2 )
+        $string = "
+            \Illuminate\Cookie\Middleware\EncryptCookies::class,
+            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            \Illuminate\Session\Middleware\StartSession::class,
+        ";
+
+        if( strpos( $content, '\Illuminate\Session\Middleware\StartSession::class' ) === false && ++$done )
         {
-            file_put_contents( base_path( $filename ), $content );
-            $this->line( sprintf( '  File [%1$s] updated' . PHP_EOL, $filename ) );
+            $content = str_replace( "'middleware' => [", "'middleware' => [" . $string, $content );
+            $this->line( sprintf( '  Added EncryptCookies/AddQueuedCookiesToResponse/StartSession middlewares to [%1$s]' . PHP_EOL, $filename ) );
         }
-        else
-        {
+
+        if( $done ) {
+            file_put_contents( base_path( $filename ), $content );
+        } else {
             $this->line( sprintf( '  File [%1$s] already up to date' . PHP_EOL, $filename ) );
         }
 

@@ -1,12 +1,16 @@
 scalar JSON @scalar(class: "MLL\\GraphQLScalars\\JSON")
 
-type Query {
+extend type Query {
+  me: User @auth
   page(id: ID! @eq): Page @find @softDeletes
   pages: [Page!] @all @softDeletes @eq(key: "parent_id", value: null)
   contents(page_id: ID! @eq): [Content!]! @paginate @softDeletes
 }
 
-type Mutation {
+extend type Mutation {
+  cmsLogin(email: String!, password: String!): User!
+  cmsLogout: User @guard
+
   addPage(input: PageInput!, parent: ID, ref: ID): Page
   movePage(id: ID!, parent: ID, ref: ID): Page
   savePage(id: ID!, input: PageInput!): Page

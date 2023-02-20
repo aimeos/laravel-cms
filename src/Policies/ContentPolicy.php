@@ -13,7 +13,7 @@ class ContentPolicy
      */
     public function add( User $user ): bool
     {
-        return true;
+        return $user->cmseditor > 0;
     }
 
 
@@ -22,7 +22,7 @@ class ContentPolicy
      */
     public function drop( User $user ): bool
     {
-        return true;
+        return $user->cmseditor > 0;
     }
 
 
@@ -31,7 +31,7 @@ class ContentPolicy
      */
     public function keep( User $user ): bool
     {
-        return true;
+        return $user->cmseditor > 0;
     }
 
 
@@ -40,7 +40,7 @@ class ContentPolicy
      */
     public function hide( User $user ): bool
     {
-        return true;
+        return $user->cmseditor > 0;
     }
 
 
@@ -49,7 +49,7 @@ class ContentPolicy
      */
     public function show( User $user ): bool
     {
-        return true;
+        return $user->cmseditor > 0;
     }
 
 
@@ -58,6 +58,6 @@ class ContentPolicy
      */
     public function view( User $user ): bool
     {
-        return true;
+        return $user->cmseditor > 0;
     }
 }

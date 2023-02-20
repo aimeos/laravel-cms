@@ -13,7 +13,7 @@ class PagePolicy
      */
     public function add( User $user ): bool
     {
-        return true;
+        return $user->cmseditor > 0;
     }
 
 
@@ -22,7 +22,7 @@ class PagePolicy
      */
     public function drop( User $user ): bool
     {
-        return true;
+        return $user->cmseditor > 0;
     }
 
 
@@ -31,7 +31,7 @@ class PagePolicy
      */
     public function move( User $user ): bool
     {
-        return true;
+        return $user->cmseditor > 0;
     }
 
 
@@ -40,7 +40,7 @@ class PagePolicy
      */
     public function save( User $user ): bool
     {
-        return true;
+        return $user->cmseditor > 0;
     }
 
 
@@ -49,6 +49,6 @@ class PagePolicy
      */
     public function view( User $user ): bool
     {
-        return true;
+        return $user->cmseditor > 0;
     }
 }

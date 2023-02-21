@@ -42,7 +42,7 @@ class Page extends Model
      * @var array
      */
     protected $attributes = [
-        'lang' => null,
+        'lang' => '',
         'title' => '',
         'slug' => '',
         'to' => null,
@@ -111,9 +111,9 @@ class Page extends Model
      * Get the latest revision for the page.
      *
      * @param string $tag Unique tag to retrieve page tree
-     * @param string|null $lang ISO language code
+     * @param string $lang ISO language code
      */
-    public static function nav( string $tag, string $lang = null ): ?Page
+    public static function nav( string $tag, string $lang = '' ): ?Page
     {
         $root = DB::table( 'cms_pages' )->where( 'tag', $tag )->where( 'lang', $lang )->first();
         return $root ? Page::descendantsAndSelf( $root->id )->toTree()->first() : null;

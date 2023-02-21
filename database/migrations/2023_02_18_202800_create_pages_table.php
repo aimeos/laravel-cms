@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('cms_pages', function (Blueprint $table) {
             $table->id();
-            $table->string('lang', 5)->nullable();
+            $table->string('lang', 5);
             $table->string('title');
-            $table->string('slug')->unique();
+            $table->string('slug');
             $table->string('to')->nullable();
             $table->string('tag', 31)->nullable();
             $table->json('data');
@@ -25,6 +25,8 @@ return new class extends Migration
             $table->nestedSet();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->unique( ['slug', 'lang'] );
         });
     }
 

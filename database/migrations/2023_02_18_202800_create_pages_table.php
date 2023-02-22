@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('cms_pages', function (Blueprint $table) {
             $table->id();
             $table->string('lang', 5);
+            $table->string('name', 100);
             $table->string('title');
             $table->string('slug');
             $table->string('to')->nullable();

@@ -44,6 +44,7 @@ class Page extends Model
      */
     protected $attributes = [
         'lang' => '',
+        'name' => '',
         'title' => '',
         'slug' => '',
         'to' => null,
@@ -69,6 +70,7 @@ class Page extends Model
      */
     protected $fillable = [
         'lang',
+        'name',
         'title',
         'slug',
         'to',

@@ -7,11 +7,18 @@
         @endforeach
     </head>
     <body>
+        <small>
+            @foreach($page->ancestors as $item)
+                <a href="{{ route('cms.page', ['slug' => $item->to ?: $item->slug]) }}">
+                    &gt; {{ $item->name }}
+                </a>
+            @endforeach
+        </small>
         <div>
             <ul>
                 @foreach(\Aimeos\Cms\Models\Page::nav('root')->children ?? [] as $item)
                     <li><a href="{{ route('cms.page', ['slug' => $item->to ?: $item->slug]) }}">
-                        {{ $item->title }}
+                        {{ $item->name }}
                     </a></li>
                 @endforeach
             </ul>

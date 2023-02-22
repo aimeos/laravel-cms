@@ -83,6 +83,7 @@ extend type Mutation {
 type Page {
   id: ID!
   lang: String
+  name: String!
   title: String!
   slug: String!
   to: String
@@ -102,6 +103,7 @@ type Page {
 
 input PageInput {
   lang: String
+  name: String!
   title: String!
   slug: String!
   to: String

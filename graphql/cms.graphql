@@ -18,6 +18,11 @@ extend type Query {
     @can(ability: "view")
     @softDeletes
     @paginate
+
+  files: [File!]
+    @can(ability: "view")
+    @softDeletes
+    @all
 }
 
 extend type Mutation {
@@ -55,6 +60,19 @@ extend type Mutation {
 
   showContent(id: ID!): ID
     @can(ability: "show")
+
+
+  saveFile(id: ID!, input: FileInput!): File
+    @can(ability: "save")
+    @upsert
+
+  dropFile(id: ID!): File
+    @can(ability: "drop")
+    @delete
+
+  keepFile(id: ID!): Content
+    @can(ability: "keep")
+    @restore
 }
 
 type Page {
@@ -99,4 +117,20 @@ type Content {
 input ContentInput {
   page_id: Int!
   data: JSON!
+}
+
+type File {
+  id: ID!
+  mime: String!
+  url: String!
+  previews: JSON!
+  created_at: String!
+  updated_at: String!
+  deleted_at: String
+}
+
+input FileInput {
+  mime: String!
+  url: String!
+  previews: JSON!
 }

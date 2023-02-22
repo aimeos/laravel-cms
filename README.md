@@ -24,3 +24,13 @@ To disallow users to edit CMS content, use:
 ```bash
 php artisan cms:editor --disable me@localhost
 ```
+
+## Clean up
+
+To clean up deleted pages, contents and files regularly, add these lines to the `schedule()` method in your `app/Console/Kernel.php` class:
+
+```php
+$schedule->command('model:prune', [
+    '--model' => [\Aimeos\Cms\Models\Page::class, \Aimeos\Cms\Models\Content::class, \Aimeos\Cms\Models\File::class],
+])->daily();
+```

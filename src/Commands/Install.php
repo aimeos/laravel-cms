@@ -48,6 +48,9 @@ class Install extends Command
         $this->comment( '  Adding Laravel CMS route ...' );
         $result += $this->route();
 
+        $this->comment( '  Link public storage folder ...' );
+        $result += $this->call( 'storage:link' );
+
         if( $result ) {
             $this->error( '  Error during Laravel CMS installation!' );
         } else {

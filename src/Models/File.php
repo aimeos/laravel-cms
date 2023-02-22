@@ -1,0 +1,85 @@
+<?php
+
+/**
+ * @license MIT, http://opensource.org/licenses/MIT
+ */
+
+
+namespace Aimeos\Cms\Models;
+
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Prunable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+
+
+/**
+ * File model
+ */
+class File extends Model
+{
+    use HasFactory;
+    use SoftDeletes;
+    use Prunable;
+
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'cms_files';
+
+
+    /**
+     * The model's default values for attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'url' => '',
+        'mime' => '',
+        'previews' => '{}',
+    ];
+
+    /**
+     * The automatic casts for the attributes.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'previews' => 'array',
+    ];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'url',
+        'mime',
+        'previews',
+    ];
+
+
+    /**
+     * Get the prunable model query.
+     */
+    public function prunable(): Builder
+    {
+        return static::where( 'deleted_at', '<=', now()->subMonths( 3 ) );
+    }
+
+
+    /**
+     * Prepare the model for pruning.
+     */
+    protected function pruning(): void
+    {
+        // delete files
+    }
+}

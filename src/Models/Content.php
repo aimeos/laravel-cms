@@ -7,10 +7,12 @@
 
 namespace Aimeos\Cms\Models;
 
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Prunable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 
@@ -49,6 +51,15 @@ class Content extends Model
     protected $casts = [
         'data' => 'array',
     ];
+
+
+    /**
+     * Get the page for the content.
+     */
+    public function page(): BelongsTo
+    {
+        return $this->belongsTo( Page::class );
+    }
 
 
     /**

@@ -84,6 +84,7 @@ type Page {
   tag: String
   data: JSON!
   status: Int!
+  cache: Int!
   parent: Page
   children: [Page]!
   ancestors: [Page]!
@@ -102,6 +103,7 @@ input PageInput {
   tag: String
   data: JSON!
   status: Int!
+  cache: Int!
 }
 
 type Content {

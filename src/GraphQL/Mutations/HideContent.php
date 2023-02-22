@@ -14,10 +14,14 @@ final class HideContent
      */
     public function __invoke( $rootValue, array $args ) : string
     {
+        $content = Content::findOrFail( $args['id'] );
+
         DB::transaction( function() use ( $args ) {
-            DB::table( 'cms_contents' )->where( 'id', $args['id'] )->update( ['status' => 0] );
+            DB::table( 'cms_contents' )->where( 'id', $content->id )->update( ['status' => 0] );
         } );
 
-        return $args['id'];
+        Cache::forget( Page::key( $content->page->slug, $content->page->lang ) );
+
+        return $content->id;
     }
 }

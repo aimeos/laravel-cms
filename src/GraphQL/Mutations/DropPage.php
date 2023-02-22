@@ -14,10 +14,11 @@ final class DropPage
      */
     public function __invoke( $rootValue, array $args ) : Page
     {
-        $node = Page::findOrFail( $args['id'] );
+        $page = Page::findOrFail( $args['id'] );
 
-        DB::transaction( fn() => $node->delete(), 3 );
+        DB::transaction( fn() => $page->delete(), 3 );
+        Cache::forget( Page::key( $page->slug, $page->lang ) );
 
-        return $node;
+        return $page;
     }
 }

@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Prunable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Kalnoy\Nestedset\NodeTrait;
@@ -49,6 +50,7 @@ class Page extends Model
         'tag' => null,
         'data' => '[]',
         'status' => 0,
+        'cache' => null,
     ];
 
     /**
@@ -73,6 +75,7 @@ class Page extends Model
         'tag',
         'data',
         'status',
+        'cache',
     ];
 
 
@@ -81,9 +84,9 @@ class Page extends Model
      */
     public function content(): HasOne
     {
-        return $this->hasOne(Content::class)
-            ->where('status', '>', 0)
-            ->orderBy('id', 'desc');
+        return $this->hasOne( Content::class )
+            ->where( 'status', '>', 0 )
+            ->orderBy( 'id', 'desc' );
     }
 
 
@@ -92,8 +95,8 @@ class Page extends Model
      */
     public function contents(): HasMany
     {
-        return $this->hasMany(Content::class)
-            ->orderBy('id', 'desc');
+        return $this->hasMany( Content::class )
+            ->orderBy( 'id', 'desc' );
     }
 
 
@@ -102,8 +105,21 @@ class Page extends Model
      */
     public function latest(): HasOne
     {
-        return $this->hasOne(Content::class)
-            ->orderBy('id', 'desc');
+        return $this->hasOne( Content::class )
+            ->orderBy( 'id', 'desc' );
+    }
+
+
+    /**
+     * Returns the cache key for the page.
+     *
+     * @param string $slug Unique tag to retrieve page tree
+     * @param string $lang ISO language code
+     * @return string Cache key
+     */
+    public static function key( string $slug, string $lang ): string
+    {
+        return md5( $slug . '/' . $lang );
     }
 
 

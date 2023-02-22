@@ -21,6 +21,8 @@ final class ShowContent
             DB::table( 'cms_contents' )->where( 'id', $args['id'] )->update( ['status' => 1] );
         } );
 
+        Cache::forget( Page::key( $content->page->slug, $content->page->lang ) );
+
         return $content->id;
     }
 }

@@ -14,10 +14,12 @@ final class SavePage
      */
     public function __invoke( $rootValue, array $args ) : Page
     {
-        $node = Page::findOrFail( $args['id'] )->fill( $args['input'] ?? [] );
+        $page = Page::findOrFail( $args['id'] );
+        $key = Page::key( $page->slug, $page->lang );
 
-        DB::transaction( fn() => $node->save(), 3 );
+        DB::transaction( fn() => $page->fill( $args['input'] ?? [] )->save(), 3 );
+        Cache::forget( $key );
 
-        return $node;
+        return $page;
     }
 }

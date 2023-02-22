@@ -27,6 +27,15 @@ class PagePolicy
 
 
     /**
+     * Determine if the given page can be restored by the user.
+     */
+    public function keep( User $user ): bool
+    {
+        return $user->cmseditor > 0;
+    }
+
+
+    /**
      * Determine if the given page can be moved by the user.
      */
     public function move( User $user ): bool

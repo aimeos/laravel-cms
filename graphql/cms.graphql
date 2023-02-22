@@ -41,13 +41,18 @@ extend type Mutation {
 
   dropPage(id: ID!): Page
     @can(ability: "drop")
+    @delete
+
+  keepPage(id: ID!): Page
+    @can(ability: "keep")
+    @restore
 
 
   addContent(page_id: ID!, data: JSON!): Content
     @can(ability: "add")
     @create
 
-  dropContent(id: ID! @whereKey): Content
+  dropContent(id: ID!): Content
     @can(ability: "drop")
     @delete
 

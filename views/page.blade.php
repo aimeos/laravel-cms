@@ -17,6 +17,7 @@
             </ul>
         </div>
         <h1>Slug: {{ $page->slug }}</h1>
+        <p>{{ cmsurl( 'path/to/file.jpg' ) }}</p>
         <div>
             @foreach($page->content->data ?? [] as $item)
                 @include($item['type'] ?? 'cms::text', ['data' => $item])

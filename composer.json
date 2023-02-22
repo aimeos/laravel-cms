@@ -17,6 +17,9 @@
 		"psr-4": {
 			"Aimeos\\Cms\\": "src"
 		},
+		"files": [
+			"src/helpers.php"
+		],
 		"classmap": [
 			"src"
 		]

@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('cms_files', function (Blueprint $table) {
             $table->id();
             $table->string('mime', 100);
+            $table->string('name');
             $table->string('url');
             $table->json('previews');
             $table->timestamps();

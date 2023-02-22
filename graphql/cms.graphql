@@ -1,3 +1,6 @@
+"Can be used as an argument to upload files using https://github.com/jaydenseric/graphql-multipart-request-spec"
+scalar Upload @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Upload")
+
 scalar JSON @scalar(class: "MLL\\GraphQLScalars\\JSON")
 
 extend type Query {
@@ -14,7 +17,7 @@ extend type Query {
     @softDeletes
     @all
 
-  contents(page_id: ID! @eq): [Content!]!
+  contents(page_id: ID! @eq): [Content!]
     @can(ability: "view")
     @softDeletes
     @paginate
@@ -78,6 +81,9 @@ extend type Mutation {
   keepFile(id: ID!): Content
     @can(ability: "keep")
     @restore
+
+  uploadFile(file: Upload!): File
+    @can(ability: "save")
 }
 
 type Page {
@@ -131,6 +137,7 @@ input ContentInput {
 type File {
   id: ID!
   mime: String!
+  name: String!
   url: String!
   previews: JSON!
   created_at: String!
@@ -139,7 +146,5 @@ type File {
 }
 
 input FileInput {
-  mime: String!
-  url: String!
-  previews: JSON!
+  name: String!
 }

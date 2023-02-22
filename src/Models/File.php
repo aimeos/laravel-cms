@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
 
@@ -42,6 +43,7 @@ class File extends Model
     protected $attributes = [
         'url' => '',
         'mime' => '',
+        'name' => '',
         'previews' => '{}',
     ];
 
@@ -60,9 +62,7 @@ class File extends Model
      * @var array
      */
     protected $fillable = [
-        'url',
-        'mime',
-        'previews',
+        'name',
     ];
 
 
@@ -80,6 +80,6 @@ class File extends Model
      */
     protected function pruning(): void
     {
-        // delete files
+        Storage::disk( config( 'cms.disk', 'public' ) )->delete( $this->path );
     }
 }

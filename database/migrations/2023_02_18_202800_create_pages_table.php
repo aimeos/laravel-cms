@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug');
             $table->string('to')->nullable();
-            $table->string('tag', 31)->nullable();
+            $table->string('tag', 30)->nullable();
             $table->json('data');
             $table->smallInteger('status');
             $table->smallInteger('cache')->nullable();
@@ -29,6 +29,7 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->unique( ['slug', 'lang'] );
+            $table->unique( ['tag', 'lang', 'status'] );
         });
     }
 

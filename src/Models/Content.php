@@ -67,6 +67,6 @@ class Content extends Model
      */
     public function prunable(): Builder
     {
-        return static::where( 'deleted_at', '<=', now()->subMonths( 3 ) )->skip( 2 );
+        return static::where( 'deleted_at', '<=', now()->subDays( config( 'cms.prune', 30 ) ) );
     }
 }

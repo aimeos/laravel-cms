@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Routing\Controller;
 use Aimeos\Cms\Models\Page;
 
@@ -24,8 +25,16 @@ class PageController extends Controller
      * @param string $lang ISO language code
      * @return string HTML code
      */
-    public function index( string $slug, string $lang = '' ): string
+    public function index( Request $request, string $slug, string $lang = '' ): string
     {
+        if( ( $cid = $request->input( 'cid' ) ) && Gate::allowIf( fn( $user ) => $user->cmseditor > 0 ) )
+        {
+            $page = Page::where( 'slug', $slug )->where( 'lang', $lang )->firstOrFail();
+            $page->cache = 0; // don't cache sub-parts in preview requests
+
+            return view( config( 'cms.view', 'cms::page' ), ['page' => $page] )->render();
+        }
+
         $cache = Cache::store( config( 'cms.cache', 'file' ) );
         $key = Page::key( $slug, $lang );
 

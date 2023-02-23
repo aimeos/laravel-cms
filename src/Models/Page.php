@@ -86,9 +86,8 @@ class Page extends Model
      */
     public function content(): HasOne
     {
-        return $this->hasOne( Content::class )
-            ->where( 'status', '>', 0 )
-            ->orderBy( 'id', 'desc' );
+        $rel = $this->hasOne( Content::class )->orderBy( 'id', 'desc' );
+        return ( $cid = request()->input( 'cid' ) ) ? $rel->where( 'id', $cid ) : $rel->where( 'status', '>', 0 );
     }
 
 

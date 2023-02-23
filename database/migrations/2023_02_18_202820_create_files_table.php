@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('mime', 100);
             $table->string('name');
-            $table->string('url');
+            $table->string('path');
             $table->json('previews');
             $table->timestamps();
             $table->softDeletes();

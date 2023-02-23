@@ -82,7 +82,7 @@ extend type Mutation {
     @can(ability: "keep")
     @restore
 
-  uploadFile(file: Upload!): File
+  uploadFile(file: Upload!, previews: [Upload!]): File
     @can(ability: "save")
 }
 
@@ -138,7 +138,7 @@ type File {
   id: ID!
   mime: String!
   name: String!
-  url: String!
+  path: String!
   previews: JSON!
   created_at: String!
   updated_at: String!

@@ -41,9 +41,9 @@ class File extends Model
      * @var array
      */
     protected $attributes = [
-        'url' => '',
         'mime' => '',
         'name' => '',
+        'path' => '',
         'previews' => '{}',
     ];
 
@@ -80,6 +80,12 @@ class File extends Model
      */
     protected function pruning(): void
     {
-        Storage::disk( config( 'cms.disk', 'public' ) )->delete( $this->path );
+        $store = Storage::disk( config( 'cms.disk', 'public' ) );
+
+        foreach( $this->previews as $path ) {
+            $store->delete( $path );
+        }
+
+        $store->delete( $this->path );
     }
 }

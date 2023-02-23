@@ -9,17 +9,21 @@
     <body>
         <small>
             @foreach($page->ancestors as $item)
-                <a href="{{ route('cms.page', ['slug' => $item->to ?: $item->slug]) }}">
-                    &gt; {{ $item->name }}
-                </a>
+                @if($item->status === 1 )
+                    <a href="{{ route('cms.page', ['slug' => $item->to ?: $item->slug]) }}">
+                        &gt; {{ $item->name }}
+                    </a>
+                @endif
             @endforeach
         </small>
         <div>
             <ul>
                 @foreach(\Aimeos\Cms\Models\Page::nav('root')->children ?? [] as $item)
-                    <li><a href="{{ route('cms.page', ['slug' => $item->to ?: $item->slug]) }}">
-                        {{ $item->name }}
-                    </a></li>
+                    @if($item->status === 1 )
+                        <li><a href="{{ route('cms.page', ['slug' => $item->to ?: $item->slug]) }}">
+                            {{ $item->name }}
+                        </a></li>
+                    @endif
                 @endforeach
             </ul>
         </div>

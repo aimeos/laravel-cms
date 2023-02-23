@@ -86,8 +86,11 @@ class Page extends Model
      */
     public function content(): HasOne
     {
-        $rel = $this->hasOne( Content::class )->orderBy( 'id', 'desc' );
-        return ( $cid = request()->input( 'cid' ) ) ? $rel->where( 'id', $cid ) : $rel->where( 'status', '>', 0 );
+        $rel = $this->hasOne( Content::class );
+
+        return ( $cid = request()->input( 'cid' ) )
+            ? $rel->where( 'id', $cid )
+            : $rel->where( 'status', '>', 0 )->orderBy( 'id', 'desc' );
     }
 
 
@@ -132,8 +135,13 @@ class Page extends Model
      */
     public static function nav( string $tag, string $lang = '' ): ?Page
     {
-        $root = DB::table( 'cms_pages' )->where( 'tag', $tag )->where( 'lang', $lang )->first();
-        return $root ? Page::descendantsAndSelf( $root->id )->toTree()->first() : null;
+        $root = DB::table( 'cms_pages' )
+            ->where( 'tag', $tag )
+            ->where( 'lang', $lang )
+            ->where( 'status', 1 )
+            ->first();
+
+        return $root ? Page::withDepth()->descendantsAndSelf( $root->id )->toTree()->first() : null;
     }
 
 

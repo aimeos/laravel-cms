@@ -49,6 +49,7 @@ class Content extends Model
         'page_id' => null,
         'data' => '[]',
         'status' => 0,
+        'editor' => '',
     ];
 
     /**

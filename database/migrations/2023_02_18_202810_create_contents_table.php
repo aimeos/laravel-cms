@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('page_id')->constrained('cms_pages')->cascadeOnUpdate()->cascadeOnDelete();
             $table->json('data');
             $table->smallInteger('status');
+            $table->string('editor');
             $table->timestamps();
             $table->softDeletes();
         });

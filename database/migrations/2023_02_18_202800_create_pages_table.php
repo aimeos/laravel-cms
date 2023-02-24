@@ -25,6 +25,7 @@ return new class extends Migration
             $table->smallInteger('status');
             $table->smallInteger('cache')->nullable();
             $table->nestedSet();
+            $table->string('editor');
             $table->timestamps();
             $table->softDeletes();
 

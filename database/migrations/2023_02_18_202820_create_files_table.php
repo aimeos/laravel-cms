@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('path');
             $table->json('previews');
+            $table->string('editor');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -23,6 +23,7 @@ class CmsSeeder extends Seeder
             'slug' => '',
             'tag' => 'root',
             'status' => 1,
+            'editor' => 'seeder',
         ]);
         $home->save();
 
@@ -32,6 +33,7 @@ class CmsSeeder extends Seeder
             'data' => [
                 ['type' => 'cms::title', 'text' => 'Welcome to Laravel CMS'],
             ],
+            'editor' => 'seeder',
         ]);
         $homeContent->save();
 
@@ -40,6 +42,7 @@ class CmsSeeder extends Seeder
             'title' => 'Blog | LaravelCMS',
             'slug' => 'blog',
             'status' => 1,
+            'editor' => 'seeder',
         ]);
         $blog->appendToNode($home)->save();
 
@@ -50,6 +53,7 @@ class CmsSeeder extends Seeder
                 ['type' => 'cms::title', 'text' => 'Blog example'],
                 ['type' => 'cms::blog'],
             ],
+            'editor' => 'seeder',
         ]);
         $blogContent->save();
 
@@ -58,6 +62,7 @@ class CmsSeeder extends Seeder
             'title' => 'Welcome to LaravelCMS | LaravelCMS',
             'slug' => 'welcome-to-laravelcms',
             'status' => 1,
+            'editor' => 'seeder',
         ]);
         $article->appendToNode($blog)->save();
 
@@ -82,6 +87,7 @@ class CmsSeeder extends Seeder
                     ]
                 ],
             ],
+            'editor' => 'seeder',
         ]);
         $articleContent->save();
     }

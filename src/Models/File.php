@@ -65,6 +65,7 @@ class File extends Model
         'name' => '',
         'path' => '',
         'previews' => '{}',
+        'editor' => '',
     ];
 
     /**

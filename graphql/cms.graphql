@@ -101,6 +101,7 @@ type Page {
   children: [Page]!
   ancestors: [Page]!
   descendants: [Page]!
+  editor: String!
   created_at: String!
   updated_at: String!
   deleted_at: String
@@ -124,6 +125,7 @@ type Content {
   page_id: Int!
   status: Int!
   data: JSON!
+  editor: String!
   created_at: String!
   updated_at: String!
   deleted_at: String
@@ -140,6 +142,7 @@ type File {
   name: String!
   path: String!
   previews: JSON!
+  editor: String!
   created_at: String!
   updated_at: String!
   deleted_at: String

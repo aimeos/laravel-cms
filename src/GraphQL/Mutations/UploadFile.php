@@ -2,6 +2,7 @@
 
 namespace Aimeos\Cms\GraphQL\Mutations;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Aimeos\Cms\Models\File;
@@ -36,7 +37,9 @@ final class UploadFile
             'previews' => $previews,
         ] );
 
+        $file->editor = Auth::user()?->email ?? request()->ip();
         $file->save();
+
         return $file;
     }
 }

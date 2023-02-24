@@ -73,6 +73,7 @@ class Page extends Model
         'data' => '[]',
         'status' => 0,
         'cache' => null,
+        'editor' => '',
     ];
 
     /**

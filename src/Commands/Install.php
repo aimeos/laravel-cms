@@ -124,7 +124,7 @@ class Install extends Command
         $filename = 'routes/web.php';
         $content = file_get_contents( base_path( $filename ) );
 
-        $string = "Route::get('{slug}', [\Aimeos\Cms\Http\Controllers\PageController::class, 'index'])->name('cms.page');";
+        $string = "Route::get('{slug}/{lang?}', [\Aimeos\Cms\Http\Controllers\PageController::class, 'index'])->name('cms.page');";
 
         if( strpos( $content, '{slug}' ) === false )
         {

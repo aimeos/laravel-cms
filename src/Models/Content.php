@@ -46,6 +46,7 @@ class Content extends Model
      * @var array
      */
     protected $attributes = [
+        'page_id' => null,
         'data' => '[]',
         'status' => 0,
     ];

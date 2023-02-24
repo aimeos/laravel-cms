@@ -77,7 +77,7 @@ class CmsSeeder extends Seeder
                     ],
                     'intro' => 'LaravelCMS is lightweight, lighting fast, easy to use, fully customizable and scalable from one-pagers to billions of pages',
                     'content' => [
-                        ['type' => 'cms::title', 'level' => 2, 'text' => 'Rethink content management!'],
+                        ['type' => 'cms::heading', 'level' => 2, 'text' => 'Rethink content management!'],
                         ['type' => 'cms::text', 'text' => 'LaravelCMS is exceptional in every way. Headless and API-first!'],
                     ]
                 ],

@@ -1,1 +1,1 @@
-<p>{{ $data['text'] ?? '' }}</p>
+<p class="cms-text">{{ $data['text'] ?? '' }}</p>

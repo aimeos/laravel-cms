@@ -16,8 +16,11 @@ final class HideContent
     {
         $content = Content::findOrFail( $args['id'] );
 
-        DB::transaction( function() use ( $args ) {
-            DB::table( 'cms_contents' )->where( 'id', $content->id )->update( ['status' => 0] );
+        DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( function() use ( $args ) {
+            DB::connection( config( 'cms.db', 'sqlite' ) )
+                ->table( 'cms_contents' )
+                ->where( 'id', $content->id )
+                ->update( ['status' => 0] );
         } );
 
         Cache::forget( Page::key( $content->page->slug, $content->page->lang ) );

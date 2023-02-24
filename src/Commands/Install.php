@@ -30,8 +30,8 @@ class Install extends Command
     {
         $result = 0;
 
-        $this->comment( '  Migrating database ...' );
-        $result += $this->call( 'migrate' );
+        $this->comment( '  Publishing CMS files ...' );
+        $result += $this->call( 'vendor:publish', ['--tag' => 'cms'] );
 
         $this->comment( '  Publishing Lighthouse schema ...' );
         $result += $this->call( 'vendor:publish', ['--tag' => 'lighthouse-schema'] );
@@ -45,17 +45,49 @@ class Install extends Command
         $this->comment( '  Adding Laravel CMS GraphQL schema ...' );
         $result += $this->schema();
 
+        $this->comment( '  Creating database ...' );
+        $result += $this->db();
+
+        $this->comment( '  Migrating database ...' );
+        $result += $this->call( 'migrate' );
+
         $this->comment( '  Adding Laravel CMS route ...' );
         $result += $this->route();
 
         $this->comment( '  Link public storage folder ...' );
-        $result += $this->call( 'storage:link' );
+        $result += $this->call( 'storage:link', ['--force' => null] );
 
         if( $result ) {
             $this->error( '  Error during Laravel CMS installation!' );
         } else {
             $this->info( '  Laravel CMS has been installed successfully' );
         }
+    }
+
+
+    /**
+     * Creates the database if necessary
+     *
+     * @return int 0 on success, 1 on failure
+     */
+    protected function db() : int
+    {
+        $path = env('DB_DATABASE', database_path( 'database.sqlite' ) );
+
+        if( config( 'cms.db', 'sqlite' ) && !file_exists( $path ) )
+        {
+            if( touch( $path ) === true ) {
+                $this->line( sprintf( '  Created database [%1$s]' . PHP_EOL, $path ) );
+            } else {
+                $this->error( sprintf( '  Creating database [%1$s] failed!' . PHP_EOL, $path ) ); exit( 1 );
+            }
+        }
+        else
+        {
+            $this->line( '  Creating database is not necessary' . PHP_EOL );
+        }
+
+        return 0;
     }
 
 

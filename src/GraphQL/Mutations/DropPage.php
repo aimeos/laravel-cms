@@ -16,7 +16,7 @@ final class DropPage
     {
         $page = Page::findOrFail( $args['id'] );
 
-        DB::transaction( fn() => $page->delete(), 3 );
+        DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( fn() => $page->delete(), 3 );
         Cache::forget( Page::key( $page->slug, $page->lang ) );
 
         return $page;

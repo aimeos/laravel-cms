@@ -22,7 +22,7 @@ final class MovePage
             $node->appendToNode( Page::findOrFail( $args['parent'] ) );
         }
 
-        DB::transaction( fn() => $node->save() ? $node->hasMoved() : null, 3 );
+        DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( fn() => $node->save() ? $node->hasMoved() : null, 3 );
 
         return $node;
     }

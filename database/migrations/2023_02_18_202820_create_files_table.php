@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('cms_files', function (Blueprint $table) {
+        Schema::connection(config('cms.db', 'sqlite'))->create('cms_files', function (Blueprint $table) {
             $table->id();
             $table->string('mime', 100);
             $table->string('name');
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cms_files');
+        Schema::connection(config('cms.db', 'sqlite'))->dropIfExists('cms_files');
     }
 };

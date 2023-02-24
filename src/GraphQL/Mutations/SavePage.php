@@ -17,7 +17,7 @@ final class SavePage
         $page = Page::findOrFail( $args['id'] );
         $key = Page::key( $page->slug, $page->lang );
 
-        DB::transaction( fn() => $page->fill( $args['input'] ?? [] )->save(), 3 );
+        DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( fn() => $page->fill( $args['input'] ?? [] )->save(), 3 );
         Cache::forget( $key );
 
         return $page;

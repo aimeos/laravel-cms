@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('cms_contents', function (Blueprint $table) {
+        Schema::connection(config('cms.db', 'sqlite'))->create('cms_contents', function (Blueprint $table) {
             $table->id();
             $table->foreignId('page_id')->constrained('cms_pages')->cascadeOnUpdate()->cascadeOnDelete();
             $table->json('data');
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cms_contents');
+        Schema::connection(config('cms.db', 'sqlite'))->dropIfExists('cms_contents');
     }
 };

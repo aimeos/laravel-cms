@@ -30,11 +30,32 @@ class Page extends Model
 
 
     /**
+     * The connection name for the model.
+     *
+     * @var string
+     */
+    protected $connection = 'sqlite';
+
+    /**
      * The table associated with the model.
      *
      * @var string
      */
     protected $table = 'cms_pages';
+
+
+    /**
+     * Create a new Eloquent model instance.
+     *
+     * @param  array  $attributes
+     * @return void
+     */
+    public function __construct( array $attributes = [] )
+    {
+        $this->connection = config( 'cms.db', 'sqlite' );
+
+        parent::__construct( $attributes );
+    }
 
 
     /**
@@ -135,7 +156,7 @@ class Page extends Model
      */
     public static function nav( string $tag, string $lang = '' ): ?Page
     {
-        $root = DB::table( 'cms_pages' )
+        $root = DB::connection( config( 'cms.db', 'sqlite' ) )->table( 'cms_pages' )
             ->where( 'tag', $tag )
             ->where( 'lang', $lang )
             ->where( 'status', 1 )

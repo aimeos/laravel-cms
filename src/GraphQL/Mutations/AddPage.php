@@ -23,7 +23,7 @@ final class AddPage
             $node->appendToNode( Page::findOrFail( $args['parent'] ) );
         }
 
-        DB::transaction( fn() => $node->save(), 3 );
+        DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( fn() => $node->save(), 3 );
 
         return $node;
     }

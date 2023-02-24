@@ -16,9 +16,16 @@ final class ShowContent
     {
         $content = Content::findOrFail( $args['id'] );
 
-        DB::transaction( function() use ( $args, $content ) {
-            DB::table( 'cms_contents' )->where( 'page_id', $content->page_id )->update( ['status' => 0] );
-            DB::table( 'cms_contents' )->where( 'id', $args['id'] )->update( ['status' => 1] );
+        DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( function() use ( $args, $content ) {
+            DB::connection( config( 'cms.db', 'sqlite' ) )
+                ->table( 'cms_contents' )
+                ->where( 'page_id', $content->page_id )
+                ->update( ['status' => 0] );
+
+            DB::connection( config( 'cms.db', 'sqlite' ) )
+                ->table( 'cms_contents' )
+                ->where( 'id', $args['id'] )
+                ->update( ['status' => 1] );
         } );
 
         Cache::forget( Page::key( $content->page->slug, $content->page->lang ) );

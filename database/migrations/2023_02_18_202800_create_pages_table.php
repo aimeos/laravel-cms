@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('cms_pages', function (Blueprint $table) {
+        Schema::connection(config('cms.db', 'sqlite'))->create('cms_pages', function (Blueprint $table) {
             $table->id();
             $table->string('lang', 5);
             $table->string('name', 100);
@@ -40,6 +40,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cms_pages');
+        Schema::connection(config('cms.db', 'sqlite'))->dropIfExists('cms_pages');
     }
 };

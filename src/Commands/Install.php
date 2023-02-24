@@ -28,7 +28,7 @@ Made with <fg=green>love</> by the LaravelCMS community. Be a part of it!
     /**
      * Command name
      */
-    protected $signature = 'cms:install';
+    protected $signature = 'cms:install  {--seed}';
 
     /**
      * Command description
@@ -63,6 +63,12 @@ Made with <fg=green>love</> by the LaravelCMS community. Be a part of it!
 
         $this->comment( '  Migrating database ...' );
         $result += $this->call( 'migrate' );
+
+        if( $this->option( 'seed' ) )
+        {
+            $this->comment( '  Seed database ...' );
+            $result += $this->call( 'db:seed', ['--class' => 'CmsSeeder'] );
+        }
 
         $this->comment( '  Adding Laravel CMS route ...' );
         $result += $this->route();

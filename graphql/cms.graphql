@@ -44,24 +44,19 @@ extend type Mutation {
 
   dropPage(id: ID!): Page
     @can(ability: "drop")
-    @delete
 
   keepPage(id: ID!): Page
     @can(ability: "keep")
-    @restore
 
 
   addContent(page_id: ID!, data: JSON!): Content
     @can(ability: "add")
-    @create
 
   dropContent(id: ID!): Content
     @can(ability: "drop")
-    @delete
 
   keepContent(id: ID!): Content
     @can(ability: "keep")
-    @restore
 
   hideContent(id: ID!): ID
     @can(ability: "hide")
@@ -72,15 +67,12 @@ extend type Mutation {
 
   saveFile(id: ID!, input: FileInput!): File
     @can(ability: "save")
-    @upsert
 
   dropFile(id: ID!): File
     @can(ability: "drop")
-    @delete
 
   keepFile(id: ID!): Content
     @can(ability: "keep")
-    @restore
 
   uploadFile(file: Upload!, previews: [Upload!]): File
     @can(ability: "save")

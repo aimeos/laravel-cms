@@ -27,12 +27,9 @@ final class UploadFile
             $previews[] = Storage::disk( config( 'cms.disk', 'public' ) )->putFile( 'cms', $preview, 'public' );
         }
 
-        // preserve dot for file extension, e.g. ".jpg"
-        $name = Str::replaceLast( '_', '.', Str::slug( Str::replace( '.', '_', basename( $upload->getClientOriginalName() ) ), '_' ) );
-
         $file = File::forceCreate( [
+            'name' => $args['name'] ?? pathinfo( $upload->getClientOriginalName(), PATHINFO_BASENAME ),
             'mime' => $upload->getClientMimeType(),
-            'name' => $name,
             'path' => $path,
             'previews' => $previews,
         ] );

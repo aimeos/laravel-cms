@@ -74,7 +74,7 @@ extend type Mutation {
   keepFile(id: ID!): Content
     @can(ability: "keep")
 
-  uploadFile(file: Upload!, previews: [Upload!]): File
+  uploadFile(file: Upload!, previews: [Upload!], name: String): File
     @can(ability: "save")
 }
 

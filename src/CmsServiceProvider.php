@@ -32,6 +32,7 @@ class CmsServiceProvider extends ServiceProvider
 
 		$this->publishes( [$basedir . '/config/cms.php' => config_path( 'cms.php' )], 'cms' );
 		$this->publishes( [$basedir . '/graphql/cms.graphql' => base_path( 'graphql/cms.graphql' )], 'cms' );
+		$this->publishes( [$basedir . '/public' => public_path( 'vendor/cms' )], 'public' );
 
 
 		if( $this->app->runningInConsole() )

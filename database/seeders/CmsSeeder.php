@@ -80,7 +80,7 @@ class CmsSeeder extends Seeder
                             1000 => 'https://aimeos.org/tips/wp-content/uploads/2023/01/ai-ecommerce-2.jpg'
                         ],
                     ],
-                    'intro' => 'LaravelCMS is lightweight, lighting fast, easy to use, fully customizable and scalable from one-pagers to billions of pages',
+                    'intro' => 'LaravelCMS is lightweight, lighting fast, easy to use, fully customizable and scalable from one-pagers to millions of pages',
                     'content' => [
                         ['type' => 'cms::heading', 'level' => 2, 'text' => 'Rethink content management!'],
                         ['type' => 'cms::text', 'text' => 'LaravelCMS is exceptional in every way. Headless and API-first!'],

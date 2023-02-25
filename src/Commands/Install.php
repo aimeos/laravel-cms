@@ -175,9 +175,9 @@ Made with <fg=green>love</> by the LaravelCMS community. Be a part of it!
         $filename = 'routes/web.php';
         $content = file_get_contents( base_path( $filename ) );
 
-        $string = "Route::get('{slug}/{lang?}', [\Aimeos\Cms\Http\Controllers\PageController::class, 'index'])->name('cms.page');";
+        $string = "Route::get('{slug?}/{lang?}', [\Aimeos\Cms\Http\Controllers\PageController::class, 'index'])->name('cms.page');";
 
-        if( strpos( $content, '{slug}' ) === false )
+        if( strpos( $content, '{slug' ) === false )
         {
             file_put_contents( base_path( $filename ), $content . "\n\n" . $string );
             $this->line( sprintf( '  File [%1$s] updated' . PHP_EOL, $filename ) );

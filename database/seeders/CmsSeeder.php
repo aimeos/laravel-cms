@@ -84,6 +84,14 @@ class CmsSeeder extends Seeder
                     'content' => [
                         ['type' => 'cms::heading', 'level' => 2, 'text' => 'Rethink content management!'],
                         ['type' => 'cms::text', 'text' => 'LaravelCMS is exceptional in every way. Headless and API-first!'],
+                        ['type' => 'cms::heading', 'level' => 2, 'text' => 'API first!'],
+                        ['type' => 'cms::text', 'text' => 'Use GraphQL for editing the pages, contents and files:'],
+                        ['type' => 'cms::code', 'language' => 'graphql', 'text' => 'mutation {
+  cmsLogin(email: "editor@example.org", password: "secret") {
+    name
+    email
+  }
+}'                      ],
                     ]
                 ],
             ],

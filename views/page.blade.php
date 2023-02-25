@@ -36,18 +36,17 @@
                 <div class="collapse navbar-collapse" id="navbar">
                     <div class="navbar-nav">
                         @foreach(\Aimeos\Cms\Models\Page::nav('root')->children ?? [] as $item)
-                            @if($item->status === 1 )
-                                @if($page === $item)
-                                    <a class="nav-link active" aria-current="page" href="{{ $item->to ?: route('cms.page', ['slug' => $item->slug, 'lang' => $item->lang]) }}">{{ $item->name }}</a>
-                                @else
-                                    <a class="nav-link" href="{{ $item->to ?: route('cms.page', ['slug' => $item->slug, 'lang' => $item->lang]) }}">{{ $item->name }}</a>
-                                @endif
+                            @if($page === $item)
+                                <a class="nav-link active" aria-current="page" href="{{ $item->to ?: route('cms.page', ['slug' => $item->slug, 'lang' => $item->lang]) }}">{{ $item->name }}</a>
+                            @else
+                                <a class="nav-link" href="{{ $item->to ?: route('cms.page', ['slug' => $item->slug, 'lang' => $item->lang]) }}">{{ $item->name }}</a>
                             @endif
                         @endforeach
                     </div>
                 </div>
             </div>
         </nav>
+
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 @foreach($page->ancestors ?? [] as $item)
@@ -64,10 +63,9 @@
                 </li>
             </ol>
         </nav>
+
         <div class="container">
-            @foreach($page->content->data ?? [] as $item)
-                @includeFirst([$item['type'] ?? '', 'cms::invalid'], ['data' => $item])
-            @endforeach
+            @yield('content')
         </div>
     </body>
 </html>

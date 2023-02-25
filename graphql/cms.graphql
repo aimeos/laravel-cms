@@ -15,7 +15,7 @@ extend type Query {
     @eq(key: "parent_id", value: null)
     @can(ability: "view")
     @softDeletes
-    @all
+    @paginate
 
   contents(page_id: ID! @eq): [Content!]
     @can(ability: "view")
@@ -25,7 +25,7 @@ extend type Query {
   files: [File!]
     @can(ability: "view")
     @softDeletes
-    @all
+    @paginate
 }
 
 extend type Mutation {
@@ -88,7 +88,7 @@ type Page {
   tag: String
   data: JSON!
   status: Int!
-  cache: Int!
+  cache: Int
   parent: Page
   children: [Page]!
   ancestors: [Page]!
@@ -109,7 +109,7 @@ input PageInput {
   tag: String
   data: JSON!
   status: Int!
-  cache: Int!
+  cache: Int
 }
 
 type Content {

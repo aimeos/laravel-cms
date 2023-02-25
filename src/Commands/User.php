@@ -7,6 +7,7 @@
 
 namespace Aimeos\Cms\Commands;
 
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Console\Command;
 
 
@@ -15,7 +16,10 @@ class User extends Command
     /**
      * Command name
      */
-    protected $signature = 'cms:user {--disable : Disables an user as CMS editor} {email : E-Mail of the user}';
+    protected $signature = 'cms:user
+        {--disable : Disables the user as CMS editor}
+        {--password= : Secret password of the account (will ask if user will be created)}
+        {email : E-Mail of the user}';
 
     /**
      * Command description
@@ -31,9 +35,16 @@ class User extends Command
         $email = $this->argument( 'email' );
         $value = $this->option( 'disable' ) ? 0 : 1;
 
-		\Illuminate\Foundation\Auth\User::where( 'email', $email )->firstOrFail()
-			->forceFill( ['cmseditor' => $value] )
-            ->save();
+		if( ( $user = \Illuminate\Foundation\Auth\User::where( 'email', $email )->first() ) === null )
+        {
+            $user = (new \Illuminate\Foundation\Auth\User())->forceFill( [
+                'password' => Hash::make( $this->option( 'password' ) ?: $this->secret( 'Password' ) ),
+                'email' => $email,
+                'name' => $email,
+            ] );
+        }
+
+        $user->forceFill( ['cmseditor' => $value] )->save();
 
         if( $value ) {
             $this->info( sprintf( '  Enabled [%1$s] as CMS user', $email ) );

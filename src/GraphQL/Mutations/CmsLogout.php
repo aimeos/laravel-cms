@@ -12,7 +12,7 @@ final class CmsLogout
      * @param  null  $rootValue
      * @param  array<string, mixed>  $args
      */
-    public function __invoke($rootValue, array $args): ?User
+    public function __invoke( $rootValue, array $args ): ?User
     {
         $guard = Auth::guard();
         $user = $guard->user();

@@ -12,12 +12,12 @@ final class CmsLogin
      * @param  null  $rootValue
      * @param  array<string, mixed>  $args
      */
-    public function __invoke($rootValue, array $args): User
+    public function __invoke( $rootValue, array $args ): User
     {
         $guard = Auth::guard();
 
-        if( ! $guard->attempt($args)) {
-            throw new Error('Invalid credentials.');
+        if( !$guard->attempt( $args ) ) {
+            throw new \RuntimeException( 'Invalid credentials' );
         }
 
         return $guard->user();

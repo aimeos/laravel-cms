@@ -100,6 +100,11 @@ class Content extends Model
      */
     public function prunable(): Builder
     {
-        return static::where( 'deleted_at', '<=', now()->subDays( config( 'cms.prune', 30 ) ) );
+        if( is_int( $days = config( 'cms.prune' ) ) ) {
+            return static::where( 'deleted_at', '<=', now()->subDays( $days ) );
+        }
+
+        // pruning is disabled
+        return static::where( 'id', -1 );
     }
 }

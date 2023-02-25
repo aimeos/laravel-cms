@@ -61,6 +61,16 @@ class Content extends Model
         'data' => 'array',
     ];
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'page_id',
+        'data',
+    ];
+
 
     /**
      * Create a new Eloquent model instance.

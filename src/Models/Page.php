@@ -157,13 +157,16 @@ class Page extends Model
      */
     public static function nav( string $tag, string $lang = '' ): ?Page
     {
-        $root = DB::connection( config( 'cms.db', 'sqlite' ) )->table( 'cms_pages' )
-            ->where( 'tag', $tag )
-            ->where( 'lang', $lang )
-            ->where( 'status', 1 )
-            ->first();
-
-        return $root ? Page::withDepth()->descendantsAndSelf( $root->id )->toTree()->first() : null;
+        return Page::crossJoin('cms_pages AS node')
+            ->where( 'node._lft', '>=', DB::raw( 'cms_pages._lft' ) )
+            ->where( 'node._rgt', '<=', DB::raw( 'cms_pages._rgt' ) )
+            ->where( 'cms_pages.tag', $tag )
+            ->where( 'cms_pages.lang', $lang )
+            ->where( 'cms_pages.status', 1 )
+            ->where( 'cms_pages.deleted_at', null )
+            ->where( 'node.deleted_at', null )
+            ->where( 'node.status', 1 )
+            ->get()->toTree()->first();
     }
 
 

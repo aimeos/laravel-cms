@@ -22,7 +22,7 @@ final class HideContent
             DB::connection( config( 'cms.db', 'sqlite' ) )
                 ->table( 'cms_contents' )
                 ->where( 'id', $content->id )
-                ->update( ['status' => 0] );
+                ->update( ['status' => 0, 'updated_at' => date( 'Y-m-d H:i:s' )] );
         } );
 
         Cache::forget( Page::key( $content->page->slug, $content->page->lang ) );

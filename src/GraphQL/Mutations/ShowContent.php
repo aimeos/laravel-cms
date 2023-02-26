@@ -21,13 +21,14 @@ final class ShowContent
         DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( function() use ( $args, $content ) {
             DB::connection( config( 'cms.db', 'sqlite' ) )
                 ->table( 'cms_contents' )
+                ->where( 'status', 1 )
                 ->where( 'page_id', $content->page_id )
-                ->update( ['status' => 0] );
+                ->update( ['status' => 0, 'updated_at' => date( 'Y-m-d H:i:s' )] );
 
             DB::connection( config( 'cms.db', 'sqlite' ) )
                 ->table( 'cms_contents' )
                 ->where( 'id', $args['id'] )
-                ->update( ['status' => 1] );
+                ->update( ['status' => 1, 'updated_at' => date( 'Y-m-d H:i:s' )] );
         } );
 
         Cache::forget( Page::key( $content->page->slug, $content->page->lang ) );

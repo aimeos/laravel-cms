@@ -12,6 +12,7 @@
 		"laravel-json-api/laravel": "^2.6||^3.0",
         "mll-lab/graphql-php-scalars": "^6.0",
 		"nuwave/lighthouse": "dev-master",
+		"league/commonmark": "^2.0",
 		"kalnoy/nestedset": "~6.0"
 	},
 	"autoload": {

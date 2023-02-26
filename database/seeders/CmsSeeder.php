@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
 use Aimeos\Cms\Models\Content;
 use Aimeos\Cms\Models\Page;
@@ -16,6 +16,17 @@ class CmsSeeder extends Seeder
      * @return void
      */
     public function run()
+    {
+        DB::delete( 'DELETE FROM cms_pages' );
+
+        $home = $this->home();
+
+        $this->addBlog( $home )
+            ->addDev( $home );
+    }
+
+
+    protected function home()
     {
         $home = Page::create([
             'name' => 'Home',
@@ -37,17 +48,23 @@ class CmsSeeder extends Seeder
         ]);
         $homeContent->save();
 
-        $blog = Page::create([
+        return $home;
+    }
+
+
+    protected function addBlog( Page $home )
+    {
+        $page = Page::create([
             'name' => 'Blog',
             'title' => 'Blog | LaravelCMS',
             'slug' => 'blog',
             'status' => 1,
             'editor' => 'seeder',
         ]);
-        $blog->appendToNode($home)->save();
+        $page->appendToNode( $home )->save();
 
-        $blogContent = Content::create([
-            'page_id' => $blog->id,
+        $pageContent = Content::create([
+            'page_id' => $page->id,
             'status' => 1,
             'data' => [
                 ['type' => 'cms::title', 'text' => 'Blog example'],
@@ -55,7 +72,7 @@ class CmsSeeder extends Seeder
             ],
             'editor' => 'seeder',
         ]);
-        $blogContent->save();
+        $pageContent->save();
 
         $article = Page::create([
             'name' => 'Welcome to LaravelCMS',
@@ -64,7 +81,7 @@ class CmsSeeder extends Seeder
             'status' => 1,
             'editor' => 'seeder',
         ]);
-        $article->appendToNode($blog)->save();
+        $article->appendToNode($page)->save();
 
         $articleContent = Content::create([
             'page_id' => $article->id,
@@ -98,5 +115,33 @@ class CmsSeeder extends Seeder
             'editor' => 'seeder',
         ]);
         $articleContent->save();
+
+        return $this;
+    }
+
+
+    protected function addDev( Page $home )
+    {
+        $page = Page::create([
+            'name' => 'Dev',
+            'title' => 'For Developer | LaravelCMS',
+            'slug' => 'dev',
+            'status' => 1,
+            'editor' => 'seeder',
+        ]);
+        $page->appendToNode( $home )->save();
+
+        $content = Content::create([
+            'page_id' => $page->id,
+            'status' => 1,
+            'data' => [
+                ['type' => 'cms::markdown', 'text' => '# For Developers
+
+This is content created by GitHub-flavored markdown syntax'
+                ],
+            ],
+            'editor' => 'seeder',
+        ]);
+        $content->save();
     }
 }

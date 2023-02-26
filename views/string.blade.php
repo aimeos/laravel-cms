@@ -1,0 +1,1 @@
+<span class="cms-string">{{ $data['text'] ?? '' }}</span>

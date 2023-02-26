@@ -27,22 +27,33 @@
     <body>
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
-                <a class="navbar-brand" href="{{ route('cms.page', ['slug' => '', 'lang' => $page->ancestors?->last()?->lang]) }}">
+                <a class="navbar-brand" href="{{ route('cms.page', ['slug' => $page->ancestors?->first()?->slug, 'lang' => $page->ancestors?->first()?->lang]) }}">
                     {{ config('app.name') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbar">
-                    <div class="navbar-nav">
-                        @foreach(\Aimeos\Cms\Models\Page::nav('root')->children ?? [] as $item)
-                            @if($page === $item)
-                                <a class="nav-link active" aria-current="page" href="{{ $item->to ?: route('cms.page', ['slug' => $item->slug, 'lang' => $item->lang]) }}">{{ $item->name }}</a>
-                            @else
-                                <a class="nav-link" href="{{ $item->to ?: route('cms.page', ['slug' => $item->slug, 'lang' => $item->lang]) }}">{{ $item->name }}</a>
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    @foreach(\Aimeos\Cms\Models\Page::nav('root')?->children ?? [] as $item)
+
+                        <li class="nav-item">
+                            <a class="nav-link {{ $item->children->count() ? 'dropdown-toggle' : '' }} {{ $page === $item ? 'active' : '' }}" {{ $page === $item ? 'aria-current="page"' : '' }} href="{{ $item->to ?: route('cms.page', ['slug' => $item->slug, 'lang' => $item->lang]) }}" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ $item->name }}</a>
+                            @if($item->children->count())
+
+                                <ul class="dropdown-menu">
+                                @foreach($item->children as $subItem)
+
+                                    <li><a class="dropdown-item" href="{{ $item->to ?: route('cms.page', ['slug' => $subItem->slug, 'lang' => $subItem->lang]) }}">{{ $subItem->name }}</a></li>
+                                @endforeach
+
+                                </ul>
                             @endif
-                        @endforeach
-                    </div>
+
+                        </li>
+                    @endforeach
+
+                    </ul>
                 </div>
             </div>
         </nav>

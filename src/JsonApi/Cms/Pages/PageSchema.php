@@ -26,7 +26,7 @@ class PageSchema extends Schema
      *
      * @var int
      */
-    protected int $maxDepth = 3;
+    protected int $maxDepth = 2;
 
     /**
      * The model the schema corresponds to.
@@ -101,7 +101,7 @@ class PageSchema extends Schema
     public function indexQuery( ?Request $request, Builder $query ): Builder
     {
         if( $request && ( $filter = $request->get( 'filter' ) ) && ( $tag = $filter['tag'] ) ) {
-            return $query->where( 'tag', $tag )->where( 'lang', $filter['lang'] ?? '' );
+            return $query->withDepth()->where( 'tag', $tag )->where( 'lang', $filter['lang'] ?? '' );
         }
 
         return $query->where( 'parent_id', null );

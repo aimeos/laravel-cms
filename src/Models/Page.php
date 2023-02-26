@@ -15,7 +15,9 @@ use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Collection;
 use Kalnoy\Nestedset\NodeTrait;
+use Kalnoy\Nestedset\DescendantsRelation;
 
 
 /**
@@ -127,6 +129,20 @@ class Page extends Model
 
 
     /**
+     * Get query for descendants of the node.
+     *
+     * @return DescendantsRelation
+     */
+    public function descendants()
+    {
+        // restrict max. depth to three levels for performance reasons
+        $builder = $this->newQuery()->withDepth()->having( 'depth', '<=', ( $this->depth ?? 0 ) + 3 );
+
+        return new DescendantsRelation( $builder, $this );
+    }
+
+
+    /**
      * Get the latest revision for the page.
      */
     public function latest(): HasOne
@@ -157,16 +173,24 @@ class Page extends Model
      */
     public static function nav( string $tag, string $lang = '' ): ?Page
     {
-        return Page::crossJoin('cms_pages AS node')
-            ->where( 'node._lft', '>=', DB::raw( 'cms_pages._lft' ) )
-            ->where( 'node._rgt', '<=', DB::raw( 'cms_pages._rgt' ) )
-            ->where( 'cms_pages.tag', $tag )
-            ->where( 'cms_pages.lang', $lang )
-            ->where( 'cms_pages.status', 1 )
-            ->where( 'cms_pages.deleted_at', null )
-            ->where( 'node.deleted_at', null )
-            ->where( 'node.status', 1 )
-            ->get()->toTree()->first();
+        $node = Page::withDepth()
+            ->where( 'tag', $tag )
+            ->where( 'lang', $lang )
+            ->where( 'status', 1 )
+            ->first();
+
+        if( !$node ) {
+            return null;
+        }
+
+        $descendants = $node->descendants()
+            ->withDepth()
+            ->where( 'status', 1 )
+            ->having( 'depth', '<=', $node->depth + 3 )
+            ->get()
+            ->toTree();
+
+        return $node->setRelation( 'children', $descendants );
     }
 
 

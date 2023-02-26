@@ -35,16 +35,27 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbar">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    @foreach(\Aimeos\Cms\Models\Page::nav('root')?->children ?? [] as $item)
+                    @foreach($page->nav() as $item)
 
                         <li class="nav-item">
-                            <a class="nav-link {{ $item->children->count() ? 'dropdown-toggle' : '' }} {{ $page === $item ? 'active' : '' }}" {{ $page === $item ? 'aria-current="page"' : '' }} href="{{ $item->to ?: route('cms.page', ['slug' => $item->slug, 'lang' => $item->lang]) }}" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ $item->name }}</a>
+                            <a class="nav-link {{ $item->children->count() ? 'dropdown-toggle' : '' }} {{ $page->isSelfOrDescendantOf($item) ? 'active' : '' }}"
+                                href="{{ $item->to ?: route('cms.page', ['slug' => $item->slug, 'lang' => $item->lang]) }}"
+                                @if($item->children->count()) role="button" aria-expanded="false" data-bs-toggle="dropdown" @endif
+                                @if($page->is($item)) aria-current="page" @endif>
+                                {{ $item->name }}
+                            </a>
                             @if($item->children->count())
 
                                 <ul class="dropdown-menu">
                                 @foreach($item->children as $subItem)
 
-                                    <li><a class="dropdown-item" href="{{ $item->to ?: route('cms.page', ['slug' => $subItem->slug, 'lang' => $subItem->lang]) }}">{{ $subItem->name }}</a></li>
+                                    <li>
+                                        <a class="dropdown-item {{ $page->isSelfOrDescendantOf($subItem) ? 'active' : '' }}"
+                                            href="{{ $subItem->to ?: route('cms.page', ['slug' => $subItem->slug, 'lang' => $subItem->lang]) }}"
+                                            @if($page->is($subItem)) aria-current="page" @endif>
+                                            {{ $subItem->name }}
+                                        </a>
+                                    </li>
                                 @endforeach
 
                                 </ul>

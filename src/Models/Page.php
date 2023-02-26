@@ -136,7 +136,7 @@ class Page extends Model
     public function descendants()
     {
         // restrict max. depth to three levels for performance reasons
-        $builder = $this->newQuery()->withDepth()->having( 'depth', '<=', ( $this->depth ?? 0 ) + 3 );
+        $builder = $this->newQuery()->withDepth()->where( 'status', 1 )->having( 'depth', '<=', ( $this->depth ?? 0 ) + 3 );
 
         return new DescendantsRelation( $builder, $this );
     }
@@ -166,31 +166,11 @@ class Page extends Model
 
 
     /**
-     * Get the latest revision for the page.
-     *
-     * @param string $tag Unique tag to retrieve page tree
-     * @param string $lang ISO language code
+     * Get the navigation for the page.
      */
-    public static function nav( string $tag, string $lang = '' ): ?Page
+    public function nav(): \Kalnoy\Nestedset\Collection
     {
-        $node = Page::withDepth()
-            ->where( 'tag', $tag )
-            ->where( 'lang', $lang )
-            ->where( 'status', 1 )
-            ->first();
-
-        if( !$node ) {
-            return null;
-        }
-
-        $descendants = $node->descendants()
-            ->withDepth()
-            ->where( 'status', 1 )
-            ->having( 'depth', '<=', $node->depth + 3 )
-            ->get()
-            ->toTree();
-
-        return $node->setRelation( 'children', $descendants );
+        return $this->ancestors->first()?->descendants->toTree() ?: new \Kalnoy\Nestedset\Collection();
     }
 
 

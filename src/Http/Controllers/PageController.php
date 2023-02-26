@@ -29,7 +29,7 @@ class PageController extends Controller
     {
         if( ( $cid = $request->input( 'cid' ) ) && Gate::allowIf( fn( $user ) => $user->cmseditor > 0 ) )
         {
-            $page = Page::where( 'slug', $slug )->where( 'lang', $lang )->firstOrFail();
+            $page = Page::withDepth()->where( 'slug', $slug )->where( 'lang', $lang )->firstOrFail();
             $page->cache = 0; // don't cache sub-parts in preview requests
 
             return view( config( 'cms.view', 'cms::page' ), ['page' => $page] )->render();
@@ -42,7 +42,7 @@ class PageController extends Controller
             return $html;
         }
 
-        $page = Page::where( 'slug', $slug )->where( 'lang', $lang )->where( 'status', '>', 0 )->firstOrFail();
+        $page = Page::withDepth()->where( 'slug', $slug )->where( 'lang', $lang )->where( 'status', '>', 0 )->firstOrFail();
         $html = view( config( 'cms.view', 'cms::page' ), ['page' => $page] )->render();
 
         if( $page->cache !== 0 ) {

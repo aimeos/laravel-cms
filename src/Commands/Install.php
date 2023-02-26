@@ -28,7 +28,7 @@ Made with <fg=green>love</> by the LaravelCMS community. Be a part of it!
     /**
      * Command name
      */
-    protected $signature = 'cms:install  {--seed}';
+    protected $signature = 'cms:install  {--seed : Add example pages to the database}';
 
     /**
      * Command description
@@ -45,6 +45,15 @@ Made with <fg=green>love</> by the LaravelCMS community. Be a part of it!
 
         $this->comment( '  Publishing CMS files ...' );
         $result += $this->call( 'vendor:publish', ['--tag' => 'cms'] );
+
+        $this->comment( '  Publishing JSON:API configuration ...' );
+        $result += $this->call( 'vendor:publish', ['--provider' => 'LaravelJsonApi\Laravel\ServiceProvider'] );
+
+        $this->comment( '  Updating JSON:API configuration ...' );
+        $result += $this->jsonapi();
+
+        $this->comment( '  Adding JSON:API exception handler ...' );
+        $result += $this->exception();
 
         $this->comment( '  Publishing Lighthouse schema ...' );
         $result += $this->call( 'vendor:publish', ['--tag' => 'lighthouse-schema'] );
@@ -70,7 +79,7 @@ Made with <fg=green>love</> by the LaravelCMS community. Be a part of it!
             $result += $this->call( 'db:seed', ['--class' => 'CmsSeeder'] );
         }
 
-        $this->comment( '  Adding Laravel CMS route ...' );
+        $this->comment( '  Adding Laravel CMS routes ...' );
         $result += $this->route();
 
         $this->comment( '  Link public storage folder ...' );
@@ -104,6 +113,73 @@ Made with <fg=green>love</> by the LaravelCMS community. Be a part of it!
         else
         {
             $this->line( '  Creating database is not necessary' . PHP_EOL );
+        }
+
+        return 0;
+    }
+
+
+    /**
+     * Updates application exception handler
+     *
+     * @return int 0 on success, 1 on failure
+     */
+    protected function exception() : int
+    {
+        $done = 0;
+        $filename = 'app/Exceptions/Handler.php';
+        $content = file_get_contents( base_path( $filename ) );
+
+        $search = 'public function register()
+    {';
+
+        $string = '
+        $this->renderable(
+            \LaravelJsonApi\Exceptions\ExceptionParser::make()->renderable()
+        );
+        ';
+
+        if( strpos( $content, '\LaravelJsonApi\Exceptions\ExceptionParser' ) === false && ++$done )
+        {
+            $content = str_replace( $search, $search . $string, $content );
+            $this->line( sprintf( '  Added JSON:API exception handler to [%1$s]' . PHP_EOL, $filename ) );
+        }
+
+        if( $done ) {
+            file_put_contents( base_path( $filename ), $content );
+        } else {
+            $this->line( sprintf( '  File [%1$s] already up to date' . PHP_EOL, $filename ) );
+        }
+
+        return 0;
+    }
+
+
+    /**
+     * Updates JSON:API configuration
+     *
+     * @return int 0 on success, 1 on failure
+     */
+    protected function jsonapi() : int
+    {
+        $done = 0;
+        $filename = 'config/jsonapi.php';
+        $content = file_get_contents( base_path( $filename ) );
+
+        $string = "
+        'cms' => \Aimeos\Cms\JsonApi\V1\Server::class,
+        ";
+
+        if( strpos( $content, '\Aimeos\Cms\JsonApi\V1\Server::class' ) === false && ++$done )
+        {
+            $content = str_replace( "'servers' => [", "'servers' => [" . $string, $content );
+            $this->line( sprintf( '  Added CMS JSON:API server to [%1$s]' . PHP_EOL, $filename ) );
+        }
+
+        if( $done ) {
+            file_put_contents( base_path( $filename ), $content );
+        } else {
+            $this->line( sprintf( '  File [%1$s] already up to date' . PHP_EOL, $filename ) );
         }
 
         return 0;
@@ -180,6 +256,28 @@ Made with <fg=green>love</> by the LaravelCMS community. Be a part of it!
         if( strpos( $content, '{slug' ) === false )
         {
             file_put_contents( base_path( $filename ), $content . "\n\n" . $string );
+            $this->line( sprintf( '  File [%1$s] updated' . PHP_EOL, $filename ) );
+        }
+        else
+        {
+            $this->line( sprintf( '  File [%1$s] already up to date' . PHP_EOL, $filename ) );
+        }
+
+
+        $filename = 'routes/api.php';
+        $content = file_get_contents( base_path( $filename ) );
+
+        $string = '
+\LaravelJsonApi\Laravel\Facades\JsonApiRoute::server("cms")->prefix("cms")->resources(function($server) {
+    $server->resource("pages", \LaravelJsonApi\Laravel\Http\Controllers\JsonApiController::class)->readOnly()
+        ->relationships(function ($relationships) {
+            $relationships->hasOne("content");
+        });
+});';
+
+        if( strpos( $content, '->resource("pages"' ) === false )
+        {
+            file_put_contents( base_path( $filename ), $content . PHP_EOL . $string );
             $this->line( sprintf( '  File [%1$s] updated' . PHP_EOL, $filename ) );
         }
         else

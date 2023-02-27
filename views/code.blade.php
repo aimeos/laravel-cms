@@ -3,7 +3,7 @@
 @endPush
 
 @push('js')
-<script src="{{ asset('vendor/cms/prism.js?v=1') }}"></script>
+<script defer src="{{ asset('vendor/cms/prism.js?v=1') }}"></script>
 @endPush
 
 <pre><code class="language-{{ $data['language'] ?? '' }}">{{ $data['text'] ?? '' }}</code></pre>

@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::connection(config('cms.db', 'sqlite'))->create('cms_pages', function (Blueprint $table) {
             $table->id();
+            $table->string('tenant_id');
             $table->string('lang', 5);
             $table->string('name', 100);
             $table->string('title');
@@ -30,8 +31,8 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->unique( ['slug', 'lang'] );
-            $table->unique( ['tag', 'lang', 'status'] );
+            $table->unique( ['slug', 'lang', 'tenant_id'] );
+            $table->unique( ['tag', 'lang', 'tenant_id', 'status'] );
         });
     }
 

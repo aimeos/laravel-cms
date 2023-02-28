@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::connection(config('cms.db', 'sqlite'))->create('cms_files', function (Blueprint $table) {
             $table->uuid('id');
+            $table->string('tenant_id');
             $table->string('mime', 100);
             $table->string('name');
             $table->string('path');

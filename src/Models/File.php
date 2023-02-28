@@ -7,6 +7,7 @@
 
 namespace Aimeos\Cms\Models;
 
+use Aimeos\Cms\Concerns\Tenancy;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -26,6 +27,7 @@ class File extends Model
     use HasFactory;
     use SoftDeletes;
     use Prunable;
+    use Tenancy;
 
 
     /**
@@ -63,6 +65,7 @@ class File extends Model
      * @var array
      */
     protected $attributes = [
+        'tenant_id' => '',
         'mime' => '',
         'name' => '',
         'path' => '',
@@ -104,11 +107,11 @@ class File extends Model
     public function prunable(): Builder
     {
         if( is_int( $days = config( 'cms.prune' ) ) ) {
-            return static::where( 'deleted_at', '<=', now()->subDays( $days ) );
+            return static::withoutTenancy()->where( 'deleted_at', '<=', now()->subDays( $days ) );
         }
 
         // pruning is disabled
-        return static::where( 'id', '' );
+        return static::withoutTenancy()->where( 'id', '' );
     }
 
 

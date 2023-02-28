@@ -20,11 +20,12 @@ final class UploadFile
             return null;
         }
 
-        $path = Storage::disk( config( 'cms.disk', 'public' ) )->putFile( 'cms', $upload, 'public' );
+        $dir = 'cms/' . \Aimeos\Cms\Tenancy::value();
+        $path = Storage::disk( config( 'cms.disk', 'public' ) )->putFile( $dir, $upload, 'public' );
         $previews = [];
 
         foreach( $args['previews'] ?? [] as $idx => $preview ) {
-            $previews[] = Storage::disk( config( 'cms.disk', 'public' ) )->putFile( 'cms', $preview, 'public' );
+            $previews[] = Storage::disk( config( 'cms.disk', 'public' ) )->putFile( $dir, $preview, 'public' );
         }
 
         $file = File::forceCreate( [

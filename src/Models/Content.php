@@ -7,6 +7,7 @@
 
 namespace Aimeos\Cms\Models;
 
+use Aimeos\Cms\Concerns\Tenancy;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -26,6 +27,7 @@ class Content extends Model
     use HasFactory;
     use SoftDeletes;
     use MassPrunable;
+    use Tenancy;
 
 
     /**
@@ -49,6 +51,7 @@ class Content extends Model
      */
     protected $attributes = [
         'page_id' => null,
+        'tenant_id' => '',
         'data' => '[]',
         'status' => 0,
         'editor' => '',
@@ -112,10 +115,10 @@ class Content extends Model
     public function prunable(): Builder
     {
         if( is_int( $days = config( 'cms.prune' ) ) ) {
-            return static::where( 'deleted_at', '<=', now()->subDays( $days ) );
+            return static::withoutTenancy()->where( 'deleted_at', '<=', now()->subDays( $days ) );
         }
 
         // pruning is disabled
-        return static::where( 'id', '' );
+        return static::withoutTenancy()->where( 'id', '' );
     }
 }

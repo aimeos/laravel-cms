@@ -7,6 +7,7 @@
 
 namespace Aimeos\Cms\Models;
 
+use Aimeos\Cms\Concerns\Tenancy;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -29,6 +30,7 @@ class Page extends Model
     use SoftDeletes;
     use Prunable;
     use NodeTrait;
+    use Tenancy;
 
 
     /**
@@ -66,6 +68,7 @@ class Page extends Model
      * @var array
      */
     protected $attributes = [
+        'tenant_id' => '',
         'lang' => '',
         'name' => '',
         'title' => '',
@@ -137,7 +140,10 @@ class Page extends Model
     public function descendants()
     {
         // restrict max. depth to three levels for performance reasons
-        $builder = $this->newQuery()->withDepth()->where( 'status', 1 )->having( 'depth', '<=', ( $this->depth ?? 0 ) + 3 );
+        $builder = $this->newScopedQuery()
+            ->withDepth()
+            ->where( 'status', 1 )
+            ->having( 'depth', '<=', ( $this->depth ?? 0 ) + 3 );
 
         return new DescendantsRelation( $builder, $this );
     }
@@ -181,10 +187,10 @@ class Page extends Model
     public function prunable(): Builder
     {
         if( is_int( $days = config( 'cms.prune' ) ) ) {
-            return static::where( 'deleted_at', '<=', now()->subDays( $days ) );
+            return static::withoutTenancy()->where( 'deleted_at', '<=', now()->subDays( $days ) );
         }
 
         // pruning is disabled
-        return static::where( 'id', -1 );
+        return static::withoutTenancy()->where( 'id', -1 );
     }
 }

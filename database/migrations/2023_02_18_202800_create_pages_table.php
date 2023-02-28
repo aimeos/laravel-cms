@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('to')->nullable();
             $table->string('tag', 30)->nullable();
             $table->json('data');
+            $table->json('config');
             $table->smallInteger('status');
             $table->smallInteger('cache')->nullable();
             $table->nestedSet();

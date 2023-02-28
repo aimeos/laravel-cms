@@ -73,6 +73,7 @@ class Page extends Model
         'to' => null,
         'tag' => null,
         'data' => '[]',
+        'config' => '{}',
         'status' => 0,
         'cache' => null,
         'editor' => '',

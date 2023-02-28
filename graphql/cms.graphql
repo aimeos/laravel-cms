@@ -22,7 +22,7 @@ extend type Query {
     @softDeletes
     @paginate
 
-  files: [File!]
+  files: [File!] @orderBy(column: "id", direction: DESC)
     @can(ability: "view")
     @softDeletes
     @paginate
@@ -80,6 +80,7 @@ extend type Mutation {
 
 type Page {
   id: ID!
+  parent_id: String!
   lang: String
   slug: String!
   name: String!
@@ -91,9 +92,9 @@ type Page {
   status: Int!
   cache: Int
   parent: Page
-  children: [Page]!
-  ancestors: [Page]!
-  descendants: [Page]!
+  children: [Page!]
+  ancestors: [Page!]
+  descendants: [Page!]
   editor: String!
   created_at: String!
   updated_at: String!

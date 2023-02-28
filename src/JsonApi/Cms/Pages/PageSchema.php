@@ -63,6 +63,7 @@ class PageSchema extends Schema
             Str::make( 'title' )->readOnly(),
             Str::make( 'tag' )->readOnly(),
             Str::make( 'to' )->readOnly(),
+            Str::make( 'data' )->readOnly(),
             Number::make( 'cache' )->readOnly(),
             ArrayList::make( 'data' )->readOnly(),
             DateTime::make( 'createdAt' )->readOnly(),

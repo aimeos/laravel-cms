@@ -8,13 +8,14 @@
 	"prefer-stable": true,
 	"minimum-stability": "dev",
 	"require": {
-		"laravel/framework": "~9.0||~10.0",
+		"laravel/framework": "^9.0||^10.0",
 		"laravel-json-api/laravel": "^2.6||^3.0",
         "mll-lab/graphql-php-scalars": "^6.0",
 		"nuwave/lighthouse": "dev-master",
 		"ezyang/htmlpurifier": "^4.16",
 		"league/commonmark": "^2.0",
-		"kalnoy/nestedset": "~6.0"
+		"kalnoy/nestedset": "^6.0",
+		"symfony/uid": "^6.0"
 	},
 	"autoload": {
 		"psr-4": {

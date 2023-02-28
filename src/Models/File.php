@@ -7,6 +7,7 @@
 
 namespace Aimeos\Cms\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,6 +22,7 @@ use Illuminate\Support\Facades\Storage;
  */
 class File extends Model
 {
+    use HasUuids;
     use HasFactory;
     use SoftDeletes;
     use Prunable;
@@ -88,6 +90,15 @@ class File extends Model
 
 
     /**
+     * Generate a new UUID for the model.
+     */
+    public function newUniqueId(): string
+    {
+        return (string) new \Symfony\Component\Uid\UuidV7();
+    }
+
+
+    /**
      * Get the prunable model query.
      */
     public function prunable(): Builder
@@ -97,7 +108,7 @@ class File extends Model
         }
 
         // pruning is disabled
-        return static::where( 'id', -1 );
+        return static::where( 'id', '' );
     }
 
 

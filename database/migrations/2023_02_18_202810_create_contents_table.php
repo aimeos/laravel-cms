@@ -14,13 +14,15 @@ return new class extends Migration
     public function up()
     {
         Schema::connection(config('cms.db', 'sqlite'))->create('cms_contents', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id');
             $table->foreignId('page_id')->constrained('cms_pages')->cascadeOnUpdate()->cascadeOnDelete();
             $table->json('data');
             $table->smallInteger('status');
             $table->string('editor');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->primary('id');
         });
     }
 

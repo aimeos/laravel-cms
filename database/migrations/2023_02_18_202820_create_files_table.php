@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::connection(config('cms.db', 'sqlite'))->create('cms_files', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id');
             $table->string('mime', 100);
             $table->string('name');
             $table->string('path');
@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('editor');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->primary('id');
         });
     }
 

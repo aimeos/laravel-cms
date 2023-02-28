@@ -16,7 +16,7 @@ final class DropContent
     public function __invoke( $rootValue, array $args ) : Content
     {
         $content = Content::withTrashed()->findOrFail( $args['id'] );
-        $content->editor = Auth::user()?->email ?? request()->ip();
+        $content->editor = Auth::user()?->name ?? request()->ip();
 
         $content->delete();
         return $content;

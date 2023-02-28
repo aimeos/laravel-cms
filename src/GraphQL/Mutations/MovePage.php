@@ -16,7 +16,7 @@ final class MovePage
     public function __invoke( $rootValue, array $args ) : Page
     {
         $page = Page::findOrFail( $args['id'] );
-        $page->editor = Auth::user()?->email ?? request()->ip();
+        $page->editor = Auth::user()?->name ?? request()->ip();
 
         if( isset( $args['ref'] ) ) {
             $page->beforeNode( Page::findOrFail( $args['ref'] ) );

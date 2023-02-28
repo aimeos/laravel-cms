@@ -34,7 +34,7 @@ final class UploadFile
             'previews' => $previews,
         ] );
 
-        $file->editor = Auth::user()?->email ?? request()->ip();
+        $file->editor = Auth::user()?->name ?? request()->ip();
         $file->save();
 
         return $file;

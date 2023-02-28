@@ -16,7 +16,7 @@ final class AddContent
     public function __invoke( $rootValue, array $args ) : Content
     {
         $content = Content::create( $args['input'] ?? [] );
-        $content->editor = Auth::user()?->email ?? request()->ip();
+        $content->editor = Auth::user()?->name ?? request()->ip();
 
         $content->save();
         return $content;

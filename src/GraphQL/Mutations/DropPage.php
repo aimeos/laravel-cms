@@ -17,7 +17,7 @@ final class DropPage
     public function __invoke( $rootValue, array $args ) : Page
     {
         $page = Page::withTrashed()->findOrFail( $args['id'] );
-        $page->editor = Auth::user()?->email ?? request()->ip();
+        $page->editor = Auth::user()?->name ?? request()->ip();
 
         DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( fn() => $page->delete(), 3 );
         Cache::forget( Page::key( $page->slug, $page->lang ) );

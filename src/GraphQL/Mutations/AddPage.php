@@ -16,7 +16,7 @@ final class AddPage
     public function __invoke( $rootValue, array $args ) : Page
     {
         $page = new Page( $args['input'] ?? [] );
-        $page->editor = Auth::user()?->email ?? request()->ip();
+        $page->editor = Auth::user()?->name ?? request()->ip();
 
         if( isset( $args['ref'] ) ) {
             $page->beforeNode( Page::findOrFail( $args['ref'] ) );

@@ -1,6 +1,7 @@
 <blockquote class="cms-quote">
-    <p>@includeFirst([$data['type'] ?? '', 'cms::invalid'], $data['quote'] ?? '')</p>
+@includeFirst([$data['quote']['type'] ?? '', 'cms::invalid'], ['data' => $data['quote'] ?? []])
+
 @if($data['cite'] ?? null)
-    <cite>@includeFirst([$data['type'] ?? '', 'cms::invalid'], $data['cite'])</cite>
+	<cite>@includeFirst([$data['cite']['type'] ?? '', 'cms::invalid'], ['data' => $data['cite'] ?? []])</cite>
 @endif
 </blockquote>

@@ -1,3 +1,3 @@
-<video class="cms-video" controls src="{{ $data['source'] ?? '' }}" poster="{{ $data['poster'] ?? '' }}">
-  {{ __('Download') }}: <a href="{{ $data['source'] ?? '' }}">{{ $data['source'] ?? '' }}</a>
+<video class="cms-video" controls src="{{ cmsurl( $data['source'] ?? '' ) }}" poster="{{ cmsurl( $data['poster'] ?? '' ) }}">
+	{{ __('Download') }}: <a href="{{ cmsurl( $data['source'] ?? '' ) }}">{{ cmsurl( $data['source'] ?? '' ) }}</a>
 </video>

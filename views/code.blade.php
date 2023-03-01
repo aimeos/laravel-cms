@@ -6,4 +6,6 @@
 <script defer src="{{ asset('vendor/cms/prism.js?v=1') }}"></script>
 @endPush
 
-<pre><code class="language-{{ $data['language'] ?? '' }}">{{ $data['text'] ?? '' }}</code></pre>
+<pre><code class="language-{{ $data['language'] ?? '' }}">
+@includeFirst([$data['code']['type'] ?? '', 'cms::invalid'], ['data' => $data['code'] ?? []])
+</code></pre>

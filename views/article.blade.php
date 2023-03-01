@@ -3,13 +3,13 @@
 @endPushOnce
 
 <div class="cms-article">
-    <h1>{{ $data['title'] ?? '' }}</h1>
+	<h1>@includeFirst([$data['title']['type'] ?? '', 'cms::invalid'], ['data' => $data['title'] ?? []])</h1>
 
-    @includeIf('cms::image', ['data' => $data['image'], 'main' => true])
+	@includeFirst([$data['image']['type'] ?? '', 'cms::invalid'], ['data' => $data['image'] ?? [], 'main' => true])
 
-    <p class="lead">{{ $data['intro'] ?? '' }}</p>
+	<div class="lead">@includeFirst([$data['intro']['type'] ?? '', 'cms::invalid'], ['data' => $data['intro'] ?? []])</div>
 
-    @foreach($data['content'] ?? [] as $item)
-        @includeFirst([$item['type'] ?? '', 'cms::invalid'], ['data' => $item])
-    @endforeach
+	@foreach($data['content'] ?? [] as $item)
+		@includeFirst([$item['type'] ?? '', 'cms::invalid'], ['data' => $item])
+	@endforeach
 </div>

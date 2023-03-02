@@ -18,6 +18,7 @@ final class AddContent
         $editor = Auth::user()?->name ?? request()->ip();
 
         $content = Content::create( $args['input'] ?? [] );
+        $content->tenancy_id = \Aimeos\Cms\Tenancy::value();
         $content->editor = $editor;
         $content->save();
 
@@ -28,6 +29,7 @@ final class AddContent
                 'content_id', $content->id,
                 'position', $args['position'] ?? 0,
             ] );
+            $ref->tenancy_id = \Aimeos\Cms\Tenancy::value();
             $ref->editor = $editor;
             $ref->save();
         }

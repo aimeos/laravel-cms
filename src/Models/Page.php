@@ -158,7 +158,7 @@ class Page extends Model
      */
     public static function key( string $slug, string $lang ): string
     {
-        return md5( $slug . '/' . $lang );
+        return md5( \Aimeos\Cms\Tenancy::value() . '/' . $slug . '/' . $lang );
     }
 
 

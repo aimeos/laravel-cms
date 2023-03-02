@@ -23,6 +23,7 @@ final class AddRef
             'position', $args['position'] ?? 0,
         ] );
         $ref->editor = Auth::user()?->name ?? request()->ip();
+        $ref->tenancy_id = \Aimeos\Cms\Tenancy::value();
 
         return $ref;
     }

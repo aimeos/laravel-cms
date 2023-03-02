@@ -28,7 +28,7 @@
 
 <nav class="navbar navbar-expand-lg">
 	<div class="container-fluid">
-		<a class="navbar-brand" href="{{ route('cms.page', ['slug' => $page->ancestors?->first()?->slug, 'lang' => $page->ancestors?->first()?->lang]) }}">
+		<a class="navbar-brand" href="{{ $page->ancestors?->first()?->to ?: route('cms.page', ['slug' => $page->ancestors?->first()?->slug, 'lang' => $page->ancestors?->first()?->lang]) }}">
 			{{ config('app.name') }}
 		</a>
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -101,8 +101,8 @@
 @section('cms-content')
 
 <div class="container">
-	@foreach($page->content->data ?? [] as $item)
-		@includeFirst([$item['type'] ?? '', 'cms::invalid'], ['data' => $item])
+	@foreach($page->content as $content)
+		@includeFirst([$content['data']['type'] ?? '', 'cms::invalid'], ['data' => $content['data'] ?? []])
 	@endforeach
 </div>
 

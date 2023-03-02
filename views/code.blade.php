@@ -7,5 +7,5 @@
 @endPush
 
 <pre><code class="language-{{ $data['language'] ?? '' }}">
-@includeFirst([$data['code']['type'] ?? '', 'cms::invalid'], ['data' => $data['code'] ?? []])
+@includeFirst(['cms::string', 'cms::invalid'], ['data' => $data['text'] ?? []])
 </code></pre>

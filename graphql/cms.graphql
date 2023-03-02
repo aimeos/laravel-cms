@@ -1,16 +1,25 @@
 "Can be used as an argument to upload files using https://github.com/jaydenseric/graphql-multipart-request-spec"
 scalar Upload @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Upload")
 
+"JSON data type for JSON strings with arbitrary data"
 scalar JSON @scalar(class: "MLL\\GraphQLScalars\\JSON")
 
+extend type User {
+    "CMS editor capability"
+    cmseditor: Int!
+}
+
 extend type Query {
+  "Current authenticated user"
   me: User @auth
 
+  "Get page by ID"
   page(id: ID! @eq): Page
     @can(ability: "view")
     @softDeletes
     @find
 
+  "Get all root level pages"
   pages: [Page!]
     @eq(key: "parent_id", value: null)
     @can(ability: "view")
@@ -37,45 +46,60 @@ extend type Query {
 }
 
 extend type Mutation {
+  "Authenticated user"
   cmsLogin(email: String!, password: String!): User!
+
+  "Log out authenticated user"
   cmsLogout: User @guard
 
 
+  "Add a new page below the page referenced by 'parent' and before the page referenced by 'ref' (or append if NULL)"
   addPage(input: PageInput!, parent: ID, ref: ID): Page
     @can(ability: "add")
 
+  "Move the page below the page referenced by 'parent' and before the page referenced by 'ref' (or append if NULL)"
   movePage(id: ID!, parent: ID, ref: ID): Page
     @can(ability: "move")
 
+  "Update the values of an existing page"
   savePage(id: ID!, input: PageInput!): Page
     @can(ability: "save")
 
+  "Delete an existing page"
   dropPage(id: ID!): Page
     @can(ability: "drop")
 
+  "Restore an existing page"
   keepPage(id: ID!): Page
     @can(ability: "keep")
 
 
+  "Add a new page<->content reference"
   addRef(input: RefInput!): Ref
     @can(ability: "add")
 
-  saveRef(id: ID!): Ref
+  "Update an existing page<->content reference"
+  saveRef(id: ID!, input: RefInput!): Ref
     @can(ability: "save")
 
+  "Delete an existing page<->content reference"
   dropRef(id: ID!): Ref
     @can(ability: "drop")
 
 
+  "Add a new content element and optionally assign it to the page at the passed position"
   addContent(input: ContentInput!, page_id: ID, position: Int): Content
     @can(ability: "add")
 
+  "Update an existing content element"
   saveContent(id: ID!, input: ContentInput!): Content
     @can(ability: "save")
 
+  "Delete an existing content element"
   dropContent(id: ID!): Content
     @can(ability: "drop")
 
+  "Restore an existing content element"
   keepContent(id: ID!): Content
     @can(ability: "keep")
 
@@ -88,95 +112,216 @@ extend type Mutation {
   saveFile(id: ID!, input: FileInput!): File
     @can(ability: "save")
 
+  "Delete an existing file"
   dropFile(id: ID!): File
     @can(ability: "drop")
 
+  "Restore an existing file"
   keepFile(id: ID!): Content
     @can(ability: "keep")
 }
 
 type Page {
+  "Unique page ID"
   id: ID!
+
+  "ID of the parent page or NULL if it's a root page"
   parent_id: String!
+
+  "ISO language code, e.g. 'en', 'en_GB' or empty for default language"
   lang: String
+
+  "URL segment of the page, unique in combination with the language"
   slug: String!
+
+  "Short page name for menues"
   name: String!
+
+  "Descriptive page title"
   title: String!
+
+  "If not empty, the URL the browser is redirected to"
   to: String
-  tag: String
+
+  "Tag name to identify a page, e.g. for the starting point of a navigation structure"
+  tag: String!
+
+  "Arbitrary page header elements"
   data: JSON!
+
+  "Arbitrary configuration settings"
   config: JSON!
+
+  "Visibility status of the page, 0=inactive, 1=visible, 2=hidden in navigation"
   status: Int!
+
+  "Cache lifetime in minutes or NULL to allow caching pages until their content changes"
   cache: Int
+
+  "Name of the last user who added, updated or deleted the page"
   editor: String!
+
+  "Date/time value when the page was created"
   created_at: String!
+
+  "Date/time value when the page was last modified"
   updated_at: String!
+
+  "Date/time value when the page was deleted or NULL if it's available"
   deleted_at: String
+
+  "Relation to the parent page or NULL if it's a root page"
   parent: Page
+
+  "Relation to the children of the current page"
   children: [Page!]!
+
+  "Relation to the ancestors of the current page up to the root page"
   ancestors: [Page!]!
+
+  "Relation to all descendant pages (limited to three levels below)"
   descendants: [Page!]!
+
+  "List of content elements assigned to the page"
   contents: [Content!]! @belongsToMany
 }
 
 input PageInput {
+  "ISO language code, e.g. 'en', 'en_GB' or empty for default language"
   lang: String
+
+  "URL segment of the page, unique in combination with the language"
   slug: String!
+
+  "Short page name for menues"
   name: String!
+
+  "Descriptive page title"
   title: String!
+
+  "If not empty, the URL the browser is redirected to"
   to: String
-  tag: String
+
+  "Tag name to identify a page, e.g. for the starting point of a navigation structure"
+  tag: String!
+
+  "Arbitrary page header elements"
   data: JSON!
+
+  "Arbitrary configuration settings"
   config: JSON!
+
+  "Visibility status of the page, 0=inactive, 1=visible, 2=hidden in navigation"
   status: Int!
+
+  "Cache lifetime in minutes or NULL to allow caching pages until their content changes"
   cache: Int
 }
 
 type Content {
+  "Unique content element ID"
   id: ID!
+
+  "ISO language code, e.g. 'en', 'en_GB' or empty for default language"
+  lang: String
+
+  "Arbitrary content element"
   data: JSON!
+
+  "Name of the last user who added, updated or deleted the content element"
   editor: String!
+
+  "Date/time value when the content element was created"
   created_at: String!
+
+  "Date/time value when the content element was last modified"
   updated_at: String!
+
+  "Date/time value when the content element was deleted or NULL if it's available"
   deleted_at: String
+
+  "Relation of all pages the content element belongs to"
   pages: [Page!]! @belongsToMany
 }
 
 input ContentInput {
+  "ISO language code, e.g. 'en', 'en_GB' or empty for default language"
   lang: String
+
+  "Arbitrary content element"
   data: JSON!
 }
 
 type Ref {
+  "Unique ID of the page<->content reference"
   id: ID!
+
+  "Unique ID of the referenced page"
   page_id: Int!
+
+  "Unique ID of the referenced content element"
   content_id: String!
+
+  "Position the content element withing the page"
   position: Int!
+
+  "Visibility status of the content element within the page, 0=inactive, 1=visible"
   status: Int!
+
+  "Name of the last user who added or updated the page<->content reference"
   editor: String!
+
+  "Date/time value when the page<->content was created"
   created_at: String!
+
+  "Date/time value when the page<->content was last modified"
   updated_at: String!
 }
 
 input RefInput {
+  "Unique ID of the referenced page"
   page_id: Int!
+
+  "Unique ID of the referenced content element"
   content_id: String!
+
+  "Position the content element withing the page"
   position: Int!
+
+  "Visibility status of the content element within the page, 0=inactive, 1=visible"
   status: Int!
 }
 
 type File {
+  "Unique ID of the stored file"
   id: ID!
+
+  "Mime type of the stored file"
   mime: String!
+
+  "Descriptive name of the stored file"
   name: String!
+
+  "Relative path to the stored file"
   path: String!
+
+  "Preview images of the stored file if any"
   previews: JSON!
+
+  "Name of the last user who added, updated or deleted the file"
   editor: String!
+
+  "Date/time value when the file was created"
   created_at: String!
+
+  "Date/time value when the file was last modified"
   updated_at: String!
+
+  "Date/time value when the file was deleted or NULL if it's available"
   deleted_at: String
 }
 
 input FileInput {
+  "Descriptive name of the stored file"
   name: String!
 }

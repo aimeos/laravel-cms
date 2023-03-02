@@ -72,8 +72,8 @@ class Page extends Model
         'name' => '',
         'title' => '',
         'slug' => '',
-        'to' => null,
-        'tag' => null,
+        'to' => '',
+        'tag' => '',
         'data' => '[]',
         'config' => '{}',
         'status' => 0,
@@ -137,7 +137,7 @@ class Page extends Model
      *
      * @return DescendantsRelation
      */
-    public function descendants()
+    public function descendants() : DescendantsRelation
     {
         // restrict max. depth to three levels for performance reasons
         $builder = $this->newScopedQuery()

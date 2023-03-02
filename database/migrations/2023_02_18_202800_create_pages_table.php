@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('name', 100);
             $table->string('title');
             $table->string('slug');
-            $table->string('to')->nullable();
-            $table->string('tag', 30)->nullable();
+            $table->string('to');
+            $table->string('tag', 30);
             $table->json('data');
             $table->json('config');
             $table->smallInteger('status');
@@ -32,7 +32,7 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->unique( ['slug', 'lang', 'tenant_id'] );
-            $table->unique( ['tag', 'lang', 'tenant_id', 'status'] );
+            $table->index( ['tag', 'lang', 'tenant_id', 'status'] );
         });
     }
 

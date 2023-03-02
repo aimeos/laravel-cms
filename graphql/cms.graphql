@@ -80,6 +80,11 @@ extend type Mutation {
     @can(ability: "keep")
 
 
+  "Adds a new file upload, optionally with previews and the describing name of the file"
+  addFile(file: Upload!, previews: [Upload!], name: String): File
+    @can(ability: "save")
+
+  "Update an existing file"
   saveFile(id: ID!, input: FileInput!): File
     @can(ability: "save")
 
@@ -88,9 +93,6 @@ extend type Mutation {
 
   keepFile(id: ID!): Content
     @can(ability: "keep")
-
-  uploadFile(file: Upload!, previews: [Upload!], name: String): File
-    @can(ability: "save")
 }
 
 type Page {

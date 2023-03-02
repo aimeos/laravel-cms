@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 use Aimeos\Cms\Models\File;
 
 
-final class UploadFile
+final class AddFile
 {
     /**
      * @param  null  $rootValue

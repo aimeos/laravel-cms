@@ -72,7 +72,6 @@ class Content extends Model
      */
     protected $fillable = [
         'lang',
-        'data',
     ];
 
 

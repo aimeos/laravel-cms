@@ -47,8 +47,6 @@ class Ref extends Model
      * @var array
      */
     protected $attributes = [
-        'page_id' => '',
-        'content_id' => '',
         'tenant_id' => '',
         'position' => 0,
         'status' => 0,

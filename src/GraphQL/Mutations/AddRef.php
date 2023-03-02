@@ -17,11 +17,10 @@ final class AddRef
     {
         $page = Page::findOrFail( $args['page_id'] ?? null );
 
-        $ref = Ref::create( [
-            'page_id', $page->id,
-            'content_id', $args['content_id'] ?? null,
-            'position', $args['position'] ?? 0,
-        ] );
+        $ref = Ref::create();
+        $ref->page_id = $page->id;
+        $ref->content_id = $args['content_id'] ?? null;
+        $ref->position = $args['position'] ?? 0;
         $ref->editor = Auth::user()?->name ?? request()->ip();
         $ref->tenancy_id = \Aimeos\Cms\Tenancy::value();
 

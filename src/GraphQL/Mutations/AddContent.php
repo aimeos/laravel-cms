@@ -19,6 +19,7 @@ final class AddContent
 
         $content = Content::create( $args['input'] ?? [] );
         $content->tenancy_id = \Aimeos\Cms\Tenancy::value();
+        $content->data = $args['input']['data'] ?? [];
         $content->editor = $editor;
         $content->save();
 

@@ -102,7 +102,6 @@ class Page extends Model
         'slug',
         'to',
         'tag',
-        'data',
         'status',
         'cache',
     ];

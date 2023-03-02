@@ -16,9 +16,11 @@ final class SaveContent
     public function __invoke( $rootValue, array $args ) : Content
     {
         $content = Content::findOrFail( $args['id'] );
+        $content->fill( $args['input'] ?? [] );
+        $content->data = $args['input'] ?? new \stdClass();
         $content->editor = Auth::user()?->name ?? request()->ip();
 
-        $content->fill( $args['input'] ?? [] )->save();
+        $content->save();
         return $content;
     }
 }

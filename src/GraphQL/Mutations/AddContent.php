@@ -15,10 +15,23 @@ final class AddContent
      */
     public function __invoke( $rootValue, array $args ) : Content
     {
-        $content = Content::create( $args['input'] ?? [] );
-        $content->editor = Auth::user()?->name ?? request()->ip();
+        $editor = Auth::user()?->name ?? request()->ip();
 
+        $content = Content::create( $args['input'] ?? [] );
+        $content->editor = $editor;
         $content->save();
+
+        if( $args['page_id'] ?? null )
+        {
+            $ref = Ref::create( [
+                'page_id', $args['page_id'],
+                'content_id', $content->id,
+                'position', $args['position'] ?? 0,
+            ] );
+            $ref->editor = $editor;
+            $ref->save();
+        }
+
         return $content;
     }
 }

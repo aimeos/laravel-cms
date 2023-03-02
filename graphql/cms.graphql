@@ -17,11 +17,19 @@ extend type Query {
     @softDeletes
     @paginate
 
-  contents(page_id: ID! @eq): [Content!]
+  "Get content item by ID"
+  content(id: ID! @eq): Content
     @can(ability: "view")
     @softDeletes
     @paginate
 
+  "Get available content items"
+  contents: [Content!]!
+    @can(ability: "view")
+    @softDeletes
+    @paginate
+
+  "Get available files"
   files: [File!] @orderBy(column: "id", direction: DESC)
     @can(ability: "view")
     @softDeletes
@@ -49,20 +57,27 @@ extend type Mutation {
     @can(ability: "keep")
 
 
-  addContent(page_id: ID!, data: JSON!): Content
+  addRef(input: RefInput!): Ref
     @can(ability: "add")
+
+  saveRef(id: ID!): Ref
+    @can(ability: "save")
+
+  dropRef(id: ID!): Ref
+    @can(ability: "drop")
+
+
+  addContent(input: ContentInput!, page_id: ID, position: Int): Content
+    @can(ability: "add")
+
+  saveContent(id: ID!, input: ContentInput!): Content
+    @can(ability: "save")
 
   dropContent(id: ID!): Content
     @can(ability: "drop")
 
   keepContent(id: ID!): Content
     @can(ability: "keep")
-
-  hideContent(id: ID!): ID
-    @can(ability: "hide")
-
-  showContent(id: ID!): ID
-    @can(ability: "show")
 
 
   saveFile(id: ID!, input: FileInput!): File
@@ -91,15 +106,15 @@ type Page {
   config: JSON!
   status: Int!
   cache: Int
-  parent: Page
-  children: [Page!]
-  ancestors: [Page!]
-  descendants: [Page!]
   editor: String!
   created_at: String!
   updated_at: String!
   deleted_at: String
-  latest: Content @hasOne
+  parent: Page
+  children: [Page!]!
+  ancestors: [Page!]!
+  descendants: [Page!]!
+  contents: [Content!]! @belongsToMany
 }
 
 input PageInput {
@@ -117,18 +132,35 @@ input PageInput {
 
 type Content {
   id: ID!
-  page_id: Int!
-  status: Int!
   data: JSON!
   editor: String!
   created_at: String!
   updated_at: String!
   deleted_at: String
+  pages: [Page!]! @belongsToMany
 }
 
 input ContentInput {
-  page_id: Int!
+  lang: String
   data: JSON!
+}
+
+type Ref {
+  id: ID!
+  page_id: Int!
+  content_id: String!
+  position: Int!
+  status: Int!
+  editor: String!
+  created_at: String!
+  updated_at: String!
+}
+
+input RefInput {
+  page_id: Int!
+  content_id: String!
+  position: Int!
+  status: Int!
 }
 
 type File {

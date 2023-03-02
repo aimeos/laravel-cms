@@ -45,7 +45,6 @@ class ContentSchema extends Schema
             ID::make(),
             ArrayList::make( 'data' )->readOnly(),
             DateTime::make( 'createdAt' )->readOnly(),
-            BelongsTo::make('page'),
         ];
     }
 

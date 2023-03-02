@@ -9,7 +9,7 @@ namespace Aimeos\Cms\Models;
 
 use Aimeos\Cms\Concerns\Tenancy;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\MassPrunable;
@@ -19,14 +19,11 @@ use Illuminate\Database\Eloquent\Model;
 
 
 /**
- * Page content model
+ * Page<->content reference model
  */
-class Content extends Model
+class Ref extends Model
 {
     use HasUuids;
-    use HasFactory;
-    use SoftDeletes;
-    use MassPrunable;
     use Tenancy;
 
 
@@ -42,7 +39,7 @@ class Content extends Model
      *
      * @var string
      */
-    protected $table = 'cms_contents';
+    protected $table = 'cms_page_content';
 
     /**
      * The model's default values for attributes.
@@ -50,19 +47,12 @@ class Content extends Model
      * @var array
      */
     protected $attributes = [
+        'page_id' => '',
+        'content_id' => '',
         'tenant_id' => '',
-        'data' => '[]',
+        'position' => 0,
         'status' => 0,
         'editor' => '',
-    ];
-
-    /**
-     * The automatic casts for the attributes.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'data' => 'array',
     ];
 
     /**
@@ -71,7 +61,10 @@ class Content extends Model
      * @var array
      */
     protected $fillable = [
-        'data',
+        'page_id',
+        'content_id',
+        'position',
+        'status',
     ];
 
 
@@ -95,30 +88,5 @@ class Content extends Model
     public function newUniqueId(): string
     {
         return (string) new \Symfony\Component\Uid\UuidV7();
-    }
-
-
-    /**
-     * Get the pages the content is referenced by.
-     */
-    public function pages(): BelongsToMany
-    {
-        return $this->belongsToMany( Page::class, 'cms_page_content' )
-        ->withPivot( 'tenant_id', 'position', 'status', 'editor', 'created_at', 'updated_at' )
-        ->withTimestamps();
-    }
-
-
-    /**
-     * Get the prunable model query.
-     */
-    public function prunable(): Builder
-    {
-        if( is_int( $days = config( 'cms.prune' ) ) ) {
-            return static::withoutTenancy()->where( 'deleted_at', '<=', now()->subDays( $days ) );
-        }
-
-        // pruning is disabled
-        return static::withoutTenancy()->where( 'id', '' );
     }
 }

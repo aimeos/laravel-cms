@@ -13,16 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::connection(config('cms.db', 'sqlite'))->create('cms_contents', function (Blueprint $table) {
+        Schema::connection(config('cms.db', 'sqlite'))->create('cms_page_content', function (Blueprint $table) {
             $table->uuid('id');
+            $table->foreignId('page_id')->constrained('cms_pages')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignUuid('content_id')->constrained('cms_contents')->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('tenant_id');
-            $table->json('data');
+            $table->integer('position');
             $table->smallInteger('status');
             $table->string('editor');
             $table->timestamps();
-            $table->softDeletes();
 
             $table->primary('id');
+            $table->unique(['page_id', 'content_id', 'tenant_id', 'position']);
         });
     }
 
@@ -33,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::connection(config('cms.db', 'sqlite'))->dropIfExists('cms_contents');
+        Schema::connection(config('cms.db', 'sqlite'))->dropIfExists('cms_page_content');
     }
 };

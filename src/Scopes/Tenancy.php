@@ -25,7 +25,7 @@ class Tenancy implements Scope
      */
     public function apply( Builder $builder, Model $model )
     {
-        $builder->where( $model->getTenantColumn(), \Aimeos\Cms\Tenancy::value() );
+        $builder->where( $model->getTable() . '.' . $model->getTenantColumn(), \Aimeos\Cms\Tenancy::value() );
     }
 
 

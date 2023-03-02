@@ -8,6 +8,7 @@ use LaravelJsonApi\Eloquent\Contracts\Paginator;
 use LaravelJsonApi\Eloquent\Pagination\PagePagination;
 use LaravelJsonApi\Eloquent\Filters\Where;
 use LaravelJsonApi\Eloquent\Filters\WhereIdIn;
+use LaravelJsonApi\Eloquent\Fields\Relations\BelongsToMany;
 use LaravelJsonApi\Eloquent\Fields\Relations\HasMany;
 use LaravelJsonApi\Eloquent\Fields\Relations\HasOne;
 use LaravelJsonApi\Eloquent\Fields\ArrayList;
@@ -68,7 +69,7 @@ class PageSchema extends Schema
             ArrayList::make( 'data' )->readOnly(),
             DateTime::make( 'createdAt' )->readOnly(),
             DateTime::make( 'updatedAt' )->readOnly(),
-            HasOne::make( 'content' )->readOnly(),
+            BelongsToMany::make( 'content' )->readOnly(),
             HasOne::make( 'parent' )->type( 'pages' )->readOnly(),
             HasMany::make( 'children' )->type( 'pages' )->readOnly(),
             HasMany::make( 'ancestors' )->type( 'pages' )->readOnly(),

@@ -8,8 +8,7 @@
 namespace Aimeos\Cms\Models;
 
 use Aimeos\Cms\Concerns\Tenancy;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Prunable;
@@ -110,25 +109,26 @@ class Page extends Model
 
 
     /**
-     * Get the content for the page.
+     * Get the active content for the page.
      */
-    public function content(): HasOne
+    public function content(): BelongsToMany
     {
-        $rel = $this->hasOne( Content::class );
-
-        return ( $cid = request()->input( 'cid' ) )
-            ? $rel->where( 'id', $cid )
-            : $rel->where( 'status', '>', 0 )->orderBy( 'id', 'desc' );
+        return $this->belongsToMany( Content::class, 'cms_page_content' )
+            ->withPivot( 'tenant_id', 'position', 'status' )
+            ->wherePivot( 'status', 1 )
+            ->orderByPivot( 'position' );
     }
 
 
     /**
-     * Get the revisions for the page.
+     * Get all content for the page.
      */
-    public function contents(): HasMany
+    public function contents(): BelongsToMany
     {
-        return $this->hasMany( Content::class )
-            ->orderBy( 'id', 'desc' );
+        return $this->belongsToMany( Content::class, 'cms_page_content' )
+            ->withPivot( 'tenant_pid', 'position', 'status', 'editor', 'created_at', 'updated_at' )
+            ->withTimestamps()
+            ->orderByPivot( 'position' );
     }
 
 
@@ -146,16 +146,6 @@ class Page extends Model
             ->having( 'depth', '<=', ( $this->depth ?? 0 ) + 3 );
 
         return new DescendantsRelation( $builder, $this );
-    }
-
-
-    /**
-     * Get the latest revision for the page.
-     */
-    public function latest(): HasOne
-    {
-        return $this->hasOne( Content::class )
-            ->orderBy( 'id', 'desc' );
     }
 
 

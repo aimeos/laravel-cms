@@ -51,8 +51,8 @@ class Content extends Model
      */
     protected $attributes = [
         'tenant_id' => '',
-        'data' => '[]',
-        'status' => 0,
+        'lang' => '',
+        'data' => '{}',
         'editor' => '',
     ];
 
@@ -71,6 +71,7 @@ class Content extends Model
      * @var array
      */
     protected $fillable = [
+        'lang',
         'data',
     ];
 

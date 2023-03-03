@@ -1,5 +1,3 @@
-# Laravel CMS
-
 Easy, flexible and powerful API-first Laravel CMS package:
 
 * Manage structured content like in Contentful

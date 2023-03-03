@@ -1,6 +1,19 @@
 # Laravel CMS
 
-Easy, flexible and powerful API-first Laravel CMS package with JSON:API and GraphQL APIs.
+Easy, flexible and powerful API-first Laravel CMS package:
+
+* Manage structured content like in Contentful
+* Define new content elements in seconds
+* Allows nested content elements
+* Assign content to multiple page trees
+* Extremly fast JSON frontend API
+* Versatile GraphQL admin API
+* Multi-language support
+* Multi-tenancy capable
+* Supports soft-deletes
+* Easy to extend
+* Scales from single page with SQLite to millions of pages with RDBMS
+
 It can be installed into any existing Laravel application.
 
 ## Installation
@@ -8,12 +21,14 @@ It can be installed into any existing Laravel application.
 Run this command within your Laravel application directory:
 
 ```bash
-php artisan cms:install
+php artisan cms:install --seed
 ```
+
+If you don't want to add any demo pages, remove the `--seed` option.
 
 ### Authorization
 
-To allow existing users to edit CMS content, you can use the `cms:editor` command and replace the e-mail address by the users one:
+To allow existing users to edit CMS content or to create a new user if it doesn't exist yet, you can use the `cms:editor` command (replace the e-mail address by the users one):
 
 ```bash
 php artisan cms:editor editor@example.com

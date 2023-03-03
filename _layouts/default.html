@@ -52,16 +52,9 @@
 		</header>
 
 		<div class="container">
-			<nav class="sidebar">
-				<h2><label for="method-search">Methods</label></h2>
-				<input id="method-search" class="search" placeholder="Search" autofocus />
-				<div class="methods"></div>
-			</nav>
 			<main id="content" class="main-content" role="main">
 				{{ content }}
 			</main>
 		</div>
-
-		<script src="{{ '/assets/js/script.js?v=' | append: site.github.build_revision | relative_url }}"></script>
 	</body>
 </html>

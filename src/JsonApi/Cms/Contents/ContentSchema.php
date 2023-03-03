@@ -5,7 +5,7 @@ namespace Aimeos\Cms\JsonApi\V1\Contents;
 use LaravelJsonApi\Eloquent\Contracts\Paginator;
 use LaravelJsonApi\Eloquent\Filters\WhereIdIn;
 use LaravelJsonApi\Eloquent\Fields\Relations\BelongsTo;
-use LaravelJsonApi\Eloquent\Fields\ArrayList;
+use LaravelJsonApi\Eloquent\Fields\ArrayHash;
 use LaravelJsonApi\Eloquent\Fields\DateTime;
 use LaravelJsonApi\Eloquent\Fields\Str;
 use LaravelJsonApi\Eloquent\Fields\ID;
@@ -43,7 +43,8 @@ class ContentSchema extends Schema
     {
         return [
             ID::make(),
-            ArrayList::make( 'data' )->readOnly(),
+            Str::make( 'lang' )->readOnly(),
+            ArrayHash::make( 'data' )->readOnly(),
             DateTime::make( 'createdAt' )->readOnly(),
         ];
     }
@@ -57,7 +58,7 @@ class ContentSchema extends Schema
     public function filters(): array
     {
         return [
-            WhereIdIn::make($this),
+            WhereIdIn::make( $this ),
         ];
     }
 

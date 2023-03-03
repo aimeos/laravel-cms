@@ -11,7 +11,7 @@ use LaravelJsonApi\Eloquent\Filters\WhereIdIn;
 use LaravelJsonApi\Eloquent\Fields\Relations\BelongsToMany;
 use LaravelJsonApi\Eloquent\Fields\Relations\HasMany;
 use LaravelJsonApi\Eloquent\Fields\Relations\HasOne;
-use LaravelJsonApi\Eloquent\Fields\ArrayList;
+use LaravelJsonApi\Eloquent\Fields\ArrayHash;
 use LaravelJsonApi\Eloquent\Fields\DateTime;
 use LaravelJsonApi\Eloquent\Fields\Number;
 use LaravelJsonApi\Eloquent\Fields\Str;
@@ -66,14 +66,14 @@ class PageSchema extends Schema
             Str::make( 'to' )->readOnly(),
             Str::make( 'data' )->readOnly(),
             Number::make( 'cache' )->readOnly(),
-            ArrayList::make( 'data' )->readOnly(),
+            ArrayHash::make( 'data' )->readOnly(),
             DateTime::make( 'createdAt' )->readOnly(),
             DateTime::make( 'updatedAt' )->readOnly(),
-            BelongsToMany::make( 'content' )->readOnly(),
             HasOne::make( 'parent' )->type( 'pages' )->readOnly(),
             HasMany::make( 'children' )->type( 'pages' )->readOnly(),
             HasMany::make( 'ancestors' )->type( 'pages' )->readOnly(),
             HasMany::make( 'descendants' )->type( 'pages' )->readOnly(),
+            BelongsToMany::make( 'content' )->type( 'contents' )->readOnly(),
         ];
     }
 
@@ -86,9 +86,9 @@ class PageSchema extends Schema
     public function filters(): array
     {
         return [
-            Where::make('tag'),
-            Where::make('lang'),
-            WhereIdIn::make($this),
+            Where::make( 'tag' ),
+            Where::make( 'lang' ),
+            WhereIdIn::make( $this ),
         ];
     }
 

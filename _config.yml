@@ -2,3 +2,11 @@ remote_theme: "mmistakes/minimal-mistakes@4.24.0"
 include: ["docs"]
 plugins:
   - jekyll-include-cache
+defaults:
+  docs:
+  - scope:
+      path: "docs"
+      type: pages
+    values:
+      layout: single
+      author_profile: false

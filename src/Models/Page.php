@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 use Kalnoy\Nestedset\NodeTrait;
+use Kalnoy\Nestedset\AncestorsRelation;
 use Kalnoy\Nestedset\DescendantsRelation;
 
 
@@ -108,6 +109,17 @@ class Page extends Model
 
 
     /**
+     * Get query for ancestors of the node.
+     *
+     * @return AncestorsRelation
+     */
+    public function ancestors() : AncestorsRelation
+    {
+        return (new AncestorsRelation( $this->newQuery(), $this ))->defaultOrder();
+    }
+
+
+    /**
      * Get the active content for the page.
      */
     public function content(): BelongsToMany
@@ -144,7 +156,7 @@ class Page extends Model
             ->where( 'status', 1 )
             ->having( 'depth', '<=', ( $this->depth ?? 0 ) + 3 );
 
-        return new DescendantsRelation( $builder, $this );
+        return (new DescendantsRelation( $builder, $this ))->defaultOrder();
     }
 
 

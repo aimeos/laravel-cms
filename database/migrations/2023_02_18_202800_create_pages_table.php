@@ -33,6 +33,10 @@ return new class extends Migration
 
             $table->unique( ['slug', 'lang', 'tenant_id'] );
             $table->index( ['tag', 'lang', 'tenant_id', 'status'] );
+            $table->index( ['_lft', '_rgt', 'tenant_id', 'status'] );
+            $table->index( ['lang', 'tenant_id', 'status'] );
+            $table->index( ['parent_id', 'tenant_id'] );
+            $table->index( ['deleted_at'] );
         });
     }
 

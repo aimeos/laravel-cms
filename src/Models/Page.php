@@ -153,7 +153,14 @@ class Page extends Model
         // restrict max. depth to three levels for performance reasons
         $builder = $this->newScopedQuery()
             ->withDepth()
-            ->where( 'status', 1 )
+            ->whereNotExists( function( \Illuminate\Database\Query\Builder $query ) {
+                $query->select( DB::raw( 1 ) )
+                    ->from( 'cms_pages AS parent' )
+                    ->whereColumn('cms_pages._lft', '>=', 'parent._lft' )
+                    ->whereColumn('cms_pages._rgt', '<=', 'parent._rgt' )
+                    ->where( 'parent.tenant_id', '=', \Aimeos\Cms\Tenancy::value() )
+                    ->where( 'parent.status', '<=', 0 );
+            } )
             ->groupBy(
                 'id', 'tenant_id', 'lang', 'name', 'title',
                 'slug', 'to', 'tag', 'data', 'config', 'status',

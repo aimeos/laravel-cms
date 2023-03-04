@@ -23,7 +23,9 @@ class CmsSeeder extends Seeder
         $home = $this->home();
 
         $this->addBlog( $home )
-            ->addDev( $home );
+            ->addDev( $home )
+            ->addHidden( $home )
+            ->addDisabled( $home );
     }
 
 
@@ -191,6 +193,48 @@ This is content created by GitHub-flavored markdown syntax',
             'editor' => 'seeder',
         ]);
         $ref->save();
+
+        return $this;
+    }
+
+
+    protected function addDisabled( Page $home )
+    {
+        $page = Page::create([
+            'name' => 'Disabled',
+            'title' => 'Disabled page | LaravelCMS',
+            'slug' => 'disabled',
+            'tag' => 'disabled',
+            'status' => 0,
+            'editor' => 'seeder',
+        ]);
+        $page->appendToNode( $home )->save();
+
+        $child = Page::create([
+            'name' => 'Disabled child',
+            'title' => 'Disabled child | LaravelCMS',
+            'slug' => 'disabled-child',
+            'tag' => 'disabled-child',
+            'status' => 1,
+            'editor' => 'seeder',
+        ]);
+        $child->appendToNode( $page )->save();
+
+        return $this;
+    }
+
+
+    protected function addHidden( Page $home )
+    {
+        $page = Page::create([
+            'name' => 'Hidden',
+            'title' => 'Hidden page | LaravelCMS',
+            'slug' => 'hidden',
+            'tag' => 'hidden',
+            'status' => 2,
+            'editor' => 'seeder',
+        ]);
+        $page->appendToNode( $home )->save();
 
         return $this;
     }

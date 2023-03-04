@@ -3,6 +3,7 @@
 namespace Aimeos\Cms\JsonApi\V1;
 
 use LaravelJsonApi\Core\Server\Server as BaseServer;
+use Aimeos\Cms\Scopes\Status;
 
 
 class Server extends BaseServer
@@ -22,7 +23,7 @@ class Server extends BaseServer
      */
     public function serving(): void
     {
-        // no-op
+        \Aimeos\Cms\Models\Page::addGlobalScope( new Status() );
     }
 
 

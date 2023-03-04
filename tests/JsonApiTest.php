@@ -153,14 +153,14 @@ class JsonApiTest extends \Orchestra\Testbench\TestCase
         $page = \Aimeos\Cms\Models\Page::where('tag', 'root')->firstOrFail();
         $expected = [];
 
-        foreach( $page->children as $item ){
+        foreach( $page->children->filter( fn($item) => $item->status > 0 ) as $item ) {
             $expected[] = ['type' => 'pages', 'id' => $item->id];
         }
 
         $response = $this->jsonApi()->expects( 'pages' )->includePaths( 'children' )->get( "cms/pages/{$page->id}" );
         $response->assertFetchedOne( $page )->assertIncluded( $expected );
 
-        $this->assertGreaterThanOrEqual( 2, count( $expected ) );
+        $this->assertGreaterThanOrEqual( 3, count( $expected ) );
     }
 
 
@@ -171,11 +171,11 @@ class JsonApiTest extends \Orchestra\Testbench\TestCase
         $page = \Aimeos\Cms\Models\Page::where('tag', 'root')->firstOrFail();
         $expected = [];
 
-        foreach( $page->children as $item )
+        foreach( $page->children->filter( fn($item) => $item->status > 0 ) as $item )
         {
             $expected[] = ['type' => 'pages', 'id' => $item->id];
 
-            foreach( $item->children as $subItem ) {
+            foreach( $item->children->filter( fn($item) => $item->status > 0 ) as $subItem ) {
                 $expected[] = ['type' => 'pages', 'id' => $subItem->id];
             }
         }
@@ -183,7 +183,7 @@ class JsonApiTest extends \Orchestra\Testbench\TestCase
         $response = $this->jsonApi()->expects( 'pages' )->includePaths( 'children.children' )->get( "cms/pages/{$page->id}" );
         $response->assertFetchedOne( $page )->assertIncluded( $expected );
 
-        $this->assertGreaterThanOrEqual( 3, count( $expected ) );
+        $this->assertGreaterThanOrEqual( 4, count( $expected ) );
     }
 
 
@@ -194,14 +194,14 @@ class JsonApiTest extends \Orchestra\Testbench\TestCase
         $page = \Aimeos\Cms\Models\Page::where('tag', 'root')->firstOrFail();
         $expected = [];
 
-        foreach( $page->descendants as $item ){
+        foreach( $page->descendants->filter( fn($item) => $item->status > 0 ) as $item ){
             $expected[] = ['type' => 'pages', 'id' => $item->id];
         }
 
         $response = $this->jsonApi()->expects( 'pages' )->includePaths( 'descendants' )->get( "cms/pages/{$page->id}" );
         $response->assertFetchedOne( $page )->assertIncluded( $expected );
 
-        $this->assertGreaterThanOrEqual( 3, count( $expected ) );
+        $this->assertEquals( 4, count( $expected ) );
     }
 
 
@@ -213,5 +213,38 @@ class JsonApiTest extends \Orchestra\Testbench\TestCase
 
         $response = $this->jsonApi()->expects( 'pages' )->includePaths( 'parent' )->get( "cms/pages/{$page->id}" );
         $response->assertFetchedOne( $page )->assertIsIncluded( 'pages', $page->parent );
+    }
+
+
+    public function testPageDisabled()
+    {
+        $this->seed( \Database\Seeders\CmsSeeder::class );
+
+        $page = \Aimeos\Cms\Models\Page::where('tag', 'disabled')->firstOrFail();
+
+        $response = $this->jsonApi()->expects( 'pages' )->get( "cms/pages/{$page->id}" );
+        $response->assertNotFound();
+    }
+
+
+    public function testPageDisabledParent()
+    {
+        $this->seed( \Database\Seeders\CmsSeeder::class );
+
+        $page = \Aimeos\Cms\Models\Page::where('tag', 'disabled-child')->firstOrFail();
+
+        $response = $this->jsonApi()->expects( 'pages' )->includePaths( 'parent' )->get( "cms/pages/{$page->id}" );
+        $response->assertFetchedOne( $page )->assertDoesntHaveIncluded();
+    }
+
+
+    public function testPageHidden()
+    {
+        $this->seed( \Database\Seeders\CmsSeeder::class );
+
+        $page = \Aimeos\Cms\Models\Page::where('tag', 'hidden')->firstOrFail();
+
+        $response = $this->jsonApi()->expects( 'pages' )->get( "cms/pages/{$page->id}" );
+        $response->assertFetchedOne( $page );
     }
 }

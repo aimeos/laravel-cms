@@ -64,16 +64,25 @@ class PageSchema extends Schema
             Str::make( 'title' )->readOnly(),
             Str::make( 'tag' )->readOnly(),
             Str::make( 'to' )->readOnly(),
-            Str::make( 'data' )->readOnly(),
             Number::make( 'cache' )->readOnly(),
             ArrayHash::make( 'data' )->readOnly(),
             DateTime::make( 'createdAt' )->readOnly(),
             DateTime::make( 'updatedAt' )->readOnly(),
-            HasOne::make( 'parent' )->type( 'pages' )->readOnly(),
-            HasMany::make( 'children' )->type( 'pages' )->readOnly(),
-            HasMany::make( 'ancestors' )->type( 'pages' )->readOnly(),
-            HasMany::make( 'descendants' )->type( 'pages' )->readOnly(),
-            BelongsToMany::make( 'content' )->type( 'contents' )->readOnly(),
+            HasOne::make( 'parent' )->type( 'pages' )->readOnly()->serializeUsing(
+                static fn($relation) => $relation->withoutLinks()
+            ),
+            HasMany::make( 'children' )->type( 'pages' )->readOnly()->serializeUsing(
+                static fn($relation) => $relation->withoutLinks()
+            ),
+            HasMany::make( 'ancestors' )->type( 'pages' )->readOnly()->serializeUsing(
+                static fn($relation) => $relation->withoutLinks()
+            ),
+            HasMany::make( 'descendants' )->type( 'pages' )->readOnly()->serializeUsing(
+                static fn($relation) => $relation->withoutLinks()
+            ),
+            BelongsToMany::make( 'content' )->type( 'contents' )->readOnly()->serializeUsing(
+                static fn($relation) => $relation->withoutLinks()
+            ),
         ];
     }
 
@@ -86,8 +95,12 @@ class PageSchema extends Schema
     public function filters(): array
     {
         return [
-            Where::make( 'tag' ),
-            Where::make( 'lang' ),
+            Where::make( 'tag' )->deserializeUsing(
+                fn($value) => (string) $value
+            ),
+            Where::make( 'lang' )->deserializeUsing(
+                fn($value) => (string) $value
+            ),
             WhereIdIn::make( $this ),
         ];
     }
@@ -102,11 +115,13 @@ class PageSchema extends Schema
      */
     public function indexQuery( ?Request $request, Builder $query ): Builder
     {
-        if( $request && ( $filter = $request->get( 'filter' ) ) && ( $tag = $filter['tag'] ) ) {
-            return $query->withDepth()->where( 'tag', $tag )->where( 'lang', $filter['lang'] ?? '' );
+        $query = $query->withDepth();
+
+        if( $request && ( $filter = $request->get( 'filter' ) ) ) {
+            return $query;
         }
 
-        return $query->where( 'parent_id', null );
+        return $query->where( 'cms_pages.parent_id', null );
     }
 
 

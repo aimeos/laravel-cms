@@ -75,7 +75,7 @@ class Page extends Model
         'slug' => '',
         'to' => '',
         'tag' => '',
-        'data' => '[]',
+        'data' => '{}',
         'config' => '{}',
         'status' => 0,
         'cache' => null,
@@ -154,6 +154,12 @@ class Page extends Model
         $builder = $this->newScopedQuery()
             ->withDepth()
             ->where( 'status', 1 )
+            ->groupBy(
+                'id', 'tenant_id', 'lang', 'name', 'title',
+                'slug', 'to', 'tag', 'data', 'config', 'status',
+                'cache', '_lft', '_rgt', 'parent_id', 'editor',
+                'created_at', 'updated_at', 'deleted_at'
+            )
             ->having( 'depth', '<=', ( $this->depth ?? 0 ) + 3 );
 
         return (new DescendantsRelation( $builder, $this ))->defaultOrder();

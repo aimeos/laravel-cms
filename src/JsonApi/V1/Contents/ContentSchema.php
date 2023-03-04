@@ -16,6 +16,11 @@ use Aimeos\Cms\Models\Content;
 class ContentSchema extends Schema
 {
     /**
+     * Disables "self" links for content items.
+     */
+    protected bool $selfLink = false;
+
+    /**
      * The model the schema corresponds to.
      *
      * @var string

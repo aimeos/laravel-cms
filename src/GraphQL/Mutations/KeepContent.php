@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Aimeos\Cms\Models\Content;
 
 
-final class DropContent
+final class KeepContent
 {
     /**
      * @param  null  $rootValue

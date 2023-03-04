@@ -125,7 +125,7 @@ class Page extends Model
     public function content(): BelongsToMany
     {
         return $this->belongsToMany( Content::class, 'cms_page_content' )
-            ->withPivot( 'tenant_id', 'position', 'status' )
+            ->withPivot( 'position' )
             ->wherePivot( 'status', 1 )
             ->orderByPivot( 'position' );
     }
@@ -137,7 +137,7 @@ class Page extends Model
     public function contents(): BelongsToMany
     {
         return $this->belongsToMany( Content::class, 'cms_page_content' )
-            ->withPivot( 'tenant_pid', 'position', 'status', 'editor', 'created_at', 'updated_at' )
+            ->withPivot( 'tenant_id', 'position', 'status', 'editor', 'created_at', 'updated_at' )
             ->withTimestamps()
             ->orderByPivot( 'position' );
     }

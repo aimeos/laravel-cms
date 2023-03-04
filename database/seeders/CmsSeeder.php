@@ -66,6 +66,7 @@ class CmsSeeder extends Seeder
             'name' => 'Blog',
             'title' => 'Blog | LaravelCMS',
             'slug' => 'blog',
+            'tag' => 'blog',
             'status' => 1,
             'editor' => 'seeder',
         ]);
@@ -111,6 +112,7 @@ class CmsSeeder extends Seeder
             'name' => 'Welcome to LaravelCMS',
             'title' => 'Welcome to LaravelCMS | LaravelCMS',
             'slug' => 'welcome-to-laravelcms',
+            'tag' => 'article',
             'status' => 1,
             'editor' => 'seeder',
         ]);

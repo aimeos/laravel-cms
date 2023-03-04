@@ -11,7 +11,6 @@ use Aimeos\Cms\Concerns\Tenancy;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
@@ -24,7 +23,6 @@ use Illuminate\Database\Eloquent\Model;
 class Content extends Model
 {
     use HasUuids;
-    use HasFactory;
     use SoftDeletes;
     use MassPrunable;
     use Tenancy;

@@ -9,7 +9,6 @@ namespace Aimeos\Cms\Models;
 
 use Aimeos\Cms\Concerns\Tenancy;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Builder;
@@ -26,7 +25,6 @@ use Kalnoy\Nestedset\DescendantsRelation;
  */
 class Page extends Model
 {
-    use HasFactory;
     use SoftDeletes;
     use Prunable;
     use NodeTrait;

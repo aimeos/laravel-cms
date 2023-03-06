@@ -30,7 +30,7 @@ extend type Query {
   content(id: ID! @eq): Content
     @can(ability: "view")
     @softDeletes
-    @paginate
+    @find
 
   "Get available content items"
   contents: [Content!]!
@@ -223,7 +223,7 @@ type Content {
   id: ID!
 
   "ISO language code, e.g. 'en', 'en_GB' or empty for default language"
-  lang: String
+  lang: String!
 
   "Arbitrary content element"
   data: JSON!
@@ -242,11 +242,14 @@ type Content {
 
   "Relation of all pages the content element belongs to"
   pages: [Page!]! @belongsToMany
+
+  "Meta data of page<->content relation, i.e. position, status, etc."
+  ref: Ref
 }
 
 input ContentInput {
   "ISO language code, e.g. 'en', 'en_GB' or empty for default language"
-  lang: String
+  lang: String!
 
   "Arbitrary content element"
   data: JSON!

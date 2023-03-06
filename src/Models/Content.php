@@ -60,7 +60,7 @@ class Content extends Model
      * @var array
      */
     protected $casts = [
-        'data' => 'array',
+        'data' => 'object',
     ];
 
     /**
@@ -70,6 +70,7 @@ class Content extends Model
      */
     protected $fillable = [
         'lang',
+        'data',
     ];
 
 
@@ -101,9 +102,9 @@ class Content extends Model
      */
     public function pages(): BelongsToMany
     {
-        return $this->belongsToMany( Page::class, 'cms_page_content' )
-        ->withPivot( 'tenant_id', 'position', 'status', 'editor', 'created_at', 'updated_at' )
-        ->withTimestamps();
+        return $this->belongsToMany( Page::class, 'cms_page_content' )->as( 'ref' )
+            ->withPivot( 'id', 'position', 'status', 'editor', 'created_at', 'updated_at' )
+            ->withTimestamps();
     }
 
 

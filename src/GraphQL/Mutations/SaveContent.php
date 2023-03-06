@@ -17,7 +17,6 @@ final class SaveContent
     {
         $content = Content::findOrFail( $args['id'] );
         $content->fill( $args['input'] ?? [] );
-        $content->data = $args['input'] ?? new \stdClass();
         $content->editor = Auth::user()?->name ?? request()->ip();
 
         $content->save();

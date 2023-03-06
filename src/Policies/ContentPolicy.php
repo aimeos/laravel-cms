@@ -36,18 +36,9 @@ class ContentPolicy
 
 
     /**
-     * Determine if the given content can be unpublished by the user.
+     * Determine if the given content can be updated by the user.
      */
-    public function hide( User $user ): bool
-    {
-        return $user->cmseditor > 0;
-    }
-
-
-    /**
-     * Determine if the given content can be published by the user.
-     */
-    public function show( User $user ): bool
+    public function save( User $user ): bool
     {
         return $user->cmseditor > 0;
     }

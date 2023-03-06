@@ -31,8 +31,10 @@ class Tenancy
      */
     public static function value() : string
     {
-        if( self::$value === null && self::$tenantCallback ) {
-            self::$value = self::$tenantCallback();
+        if( self::$value === null && self::$tenantCallback !== null )
+        {
+            $closure = self::$tenantCallback;
+            self::$value = $closure();
         }
 
         return (string) self::$value;

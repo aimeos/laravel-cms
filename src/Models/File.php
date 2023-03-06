@@ -65,6 +65,7 @@ class File extends Model
     protected $attributes = [
         'tenant_id' => '',
         'mime' => '',
+        'tag' => '',
         'name' => '',
         'path' => '',
         'previews' => '{}',
@@ -77,7 +78,7 @@ class File extends Model
      * @var array
      */
     protected $casts = [
-        'previews' => 'array',
+        'previews' => 'object',
     ];
 
     /**
@@ -87,6 +88,7 @@ class File extends Model
      */
     protected $fillable = [
         'name',
+        'tag',
     ];
 
 

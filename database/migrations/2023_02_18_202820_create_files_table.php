@@ -17,6 +17,7 @@ return new class extends Migration
             $table->uuid('id');
             $table->string('tenant_id');
             $table->string('mime', 100);
+            $table->string('tag', 30);
             $table->string('name');
             $table->string('path');
             $table->json('previews');

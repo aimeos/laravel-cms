@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
 use Aimeos\Cms\Models\Content;
+use Aimeos\Cms\Models\File;
 use Aimeos\Cms\Models\Page;
 use Aimeos\Cms\Models\Ref;
 
@@ -23,11 +24,28 @@ class CmsSeeder extends Seeder
         Content::truncate();
 
         $home = $this->home();
+        $file = $this->file();
 
         $this->addBlog( $home )
             ->addDev( $home )
             ->addHidden( $home )
             ->addDisabled( $home );
+    }
+
+
+    protected function file()
+    {
+        $file = File::create([
+            'mime' => 'image/jpeg',
+            'tag' => 'test',
+            'name' => 'Test image',
+            'path' => 'test/path/test-image.jpg',
+            'previews' => '{"1000": "test/path/test-image-1000.jpg", "500": "test/path/test-image-500.jpg"}',
+            'editor' => 'seeder',
+        ]);
+        $file->save();
+
+        return $file;
     }
 
 

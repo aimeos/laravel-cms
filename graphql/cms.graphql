@@ -43,6 +43,12 @@ extend type Query {
     @can(ability: "view")
     @softDeletes
     @paginate
+
+  "Get file item by ID"
+  file(id: ID! @eq): File
+    @can(ability: "view")
+    @softDeletes
+    @find
 }
 
 extend type Mutation {
@@ -105,8 +111,8 @@ extend type Mutation {
 
 
   "Adds a new file upload, optionally with previews and the describing name of the file"
-  addFile(file: Upload!, previews: [Upload!], name: String): File
-    @can(ability: "save")
+  addFile(file: Upload!, previews: [Upload!], input: FileInput): File
+    @can(ability: "add")
 
   "Update an existing file"
   saveFile(id: ID!, input: FileInput!): File
@@ -305,6 +311,9 @@ type File {
   "Mime type of the stored file"
   mime: String!
 
+  "Tag to categorize the file"
+  tag: String!
+
   "Descriptive name of the stored file"
   name: String!
 
@@ -328,6 +337,9 @@ type File {
 }
 
 input FileInput {
+  "Tag to categorize the file"
+  tag: String!
+
   "Descriptive name of the stored file"
   name: String!
 }

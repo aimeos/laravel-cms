@@ -3,7 +3,7 @@
 namespace Aimeos\Cms\GraphQL\Mutations;
 
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
+use Illuminate\Foundation\Auth\User;
 
 
 final class CmsLogin

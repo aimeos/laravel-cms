@@ -77,7 +77,7 @@ class PageSchema extends Schema
             HasMany::make( 'ancestors' )->type( 'pages' )->readOnly()->serializeUsing(
                 static fn($relation) => $relation->withoutLinks()
             ),
-            HasMany::make( 'descendants' )->type( 'pages' )->readOnly()->serializeUsing(
+            HasMany::make( 'subtree' )->type( 'pages' )->readOnly()->serializeUsing(
                 static fn($relation) => $relation->withoutLinks()
             ),
             BelongsToMany::make( 'content' )->type( 'contents' )->readOnly()->serializeUsing(
@@ -115,13 +115,11 @@ class PageSchema extends Schema
      */
     public function indexQuery( ?Request $request, Builder $query ): Builder
     {
-        $query = $query->withDepth();
-
         if( $request && ( $filter = $request->get( 'filter' ) ) ) {
             return $query;
         }
 
-        return $query->where( 'cms_pages.parent_id', null );
+        return $query->where( (new Page())->qualifyColumn( 'parent_id' ), null );
     }
 
 

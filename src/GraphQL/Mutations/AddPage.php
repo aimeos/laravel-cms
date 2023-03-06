@@ -15,9 +15,9 @@ final class AddPage
      */
     public function __invoke( $rootValue, array $args ) : Page
     {
-        $page = new Page( $args['input'] ?? [] );
-        $page->data = $args['input']['data'] ?? [];
-        $page->tenancy_id = \Aimeos\Cms\Tenancy::value();
+        $page = new Page();
+        $page->fill( $args['input'] ?? [] );
+        $page->tenant_id = \Aimeos\Cms\Tenancy::value();
         $page->editor = Auth::user()?->name ?? request()->ip();
 
         if( isset( $args['ref'] ) ) {

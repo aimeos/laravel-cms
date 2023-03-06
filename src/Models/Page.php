@@ -86,7 +86,8 @@ class Page extends Model
      * @var array
      */
     protected $casts = [
-        'data' => 'array',
+        'data' => 'object',
+        'config' => 'object',
     ];
 
     /**
@@ -100,6 +101,8 @@ class Page extends Model
         'title',
         'slug',
         'to',
+        'data',
+        'config',
         'tag',
         'status',
         'cache',
@@ -134,28 +137,28 @@ class Page extends Model
      */
     public function contents(): BelongsToMany
     {
-        return $this->belongsToMany( Content::class, 'cms_page_content' )
-            ->withPivot( 'tenant_id', 'position', 'status', 'editor', 'created_at', 'updated_at' )
+        return $this->belongsToMany( Content::class, 'cms_page_content' )->as( 'ref' )
+            ->withPivot( 'id', 'position', 'status', 'editor', 'created_at', 'updated_at' )
             ->withTimestamps()
             ->orderByPivot( 'position' );
     }
 
 
     /**
-     * Get query for descendants of the node.
+     * Get query for the complete sub-tree up to three levels.
      *
      * @return DescendantsRelation
      */
-    public function descendants() : DescendantsRelation
+    public function subtree() : DescendantsRelation
     {
         // restrict max. depth to three levels for performance reasons
         $builder = $this->newScopedQuery()
             ->withDepth()
             ->whereNotExists( function( \Illuminate\Database\Query\Builder $query ) {
                 $query->select( DB::raw( 1 ) )
-                    ->from( 'cms_pages AS parent' )
-                    ->whereColumn('cms_pages._lft', '>=', 'parent._lft' )
-                    ->whereColumn('cms_pages._rgt', '<=', 'parent._rgt' )
+                    ->from( $this->getTable() . ' AS parent' )
+                    ->whereColumn( $this->qualifyColumn( '_lft' ), '>=', 'parent._lft' )
+                    ->whereColumn( $this->qualifyColumn( '_rgt' ), '<=', 'parent._rgt' )
                     ->where( 'parent.tenant_id', '=', \Aimeos\Cms\Tenancy::value() )
                     ->where( 'parent.status', '<=', 0 );
             } )

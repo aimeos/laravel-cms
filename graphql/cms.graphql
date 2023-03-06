@@ -126,7 +126,7 @@ type Page {
   id: ID!
 
   "ID of the parent page or NULL if it's a root page"
-  parent_id: String!
+  parent_id: String
 
   "ISO language code, e.g. 'en', 'en_GB' or empty for default language"
   lang: String
@@ -180,10 +180,13 @@ type Page {
   ancestors: [Page!]!
 
   "Relation to all descendant pages (limited to three levels below)"
-  descendants: [Page!]!
+  subtree: [Page!]!
 
   "List of content elements assigned to the page"
   contents: [Content!]! @belongsToMany
+
+  "Meta data of page<->content relation, i.e. position, status, etc."
+  ref: Ref
 }
 
 input PageInput {

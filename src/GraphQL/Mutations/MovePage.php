@@ -20,11 +20,16 @@ final class MovePage
 
         if( isset( $args['ref'] ) ) {
             $page->beforeNode( Page::findOrFail( $args['ref'] ) );
-        } elseif( isset( $args['parent'] ) ) {
+        }
+        elseif( isset( $args['parent'] ) ) {
             $page->appendToNode( Page::findOrFail( $args['parent'] ) );
         }
+        else {
+            DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( fn() => $page->saveAsRoot(), 3 );
+            return $page;
+        }
 
-        DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( fn() => $page->save() ? $page->hasMoved() : null, 3 );
+        DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( fn() => $page->save(), 3 );
 
         return $page;
     }

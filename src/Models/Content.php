@@ -89,6 +89,16 @@ class Content extends Model
 
 
     /**
+     * Get all files referenced by the content.
+     */
+    public function files(): BelongsToMany
+    {
+        return $this->belongsToMany( File::class, 'cms_content_file' )
+            ->wherePivot( 'tenant_id', \Aimeos\Cms\Tenancy::value() );
+    }
+
+
+    /**
      * Generate a new UUID for the model.
      */
     public function newUniqueId(): string
@@ -104,6 +114,7 @@ class Content extends Model
     {
         return $this->belongsToMany( Page::class, 'cms_page_content' )->as( 'ref' )
             ->withPivot( 'id', 'position', 'status', 'editor', 'created_at', 'updated_at' )
+            ->wherePivot( 'tenant_id', \Aimeos\Cms\Tenancy::value() )
             ->withTimestamps();
     }
 

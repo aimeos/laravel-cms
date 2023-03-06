@@ -9,8 +9,7 @@ namespace Aimeos\Cms\Models;
 
 use Aimeos\Cms\Concerns\Tenancy;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Model;
@@ -98,6 +97,16 @@ class File extends Model
     public function newUniqueId(): string
     {
         return (string) new \Symfony\Component\Uid\UuidV7();
+    }
+
+
+    /**
+     * Get all content referencing the file.
+     */
+    public function contents(): BelongsToMany
+    {
+        return $this->belongsToMany( Content::class, 'cms_content_file' )
+            ->wherePivot( 'tenant_id', \Aimeos\Cms\Tenancy::value() );
     }
 
 

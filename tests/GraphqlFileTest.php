@@ -54,9 +54,9 @@ class GraphqlFileTest extends TestAbstract
         $file = File::firstOrFail();
 
         $attr = collect($file->getAttributes())->except(['tenant_id'])->all();
-        $expected = ['id' => (string) $file->id] + $attr;
+        $expected = ['id' => (string) $file->id] + $attr + ['contents' => [['lang' => '']]];
 
-        $this->expectsDatabaseQueryCount( 1 );
+        $this->expectsDatabaseQueryCount( 2 );
         $response = $this->actingAs( $this->user )->graphQL( "{
             file(id: \"{$file->id}\") {
                 id
@@ -69,6 +69,9 @@ class GraphqlFileTest extends TestAbstract
                 created_at
                 updated_at
                 deleted_at
+                contents {
+                    lang
+                }
             }
         }" )->assertJson( [
             'data' => [

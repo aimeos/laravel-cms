@@ -6,6 +6,7 @@ use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
 use Nuwave\Lighthouse\Testing\RefreshesSchemaCache;
 use Database\Seeders\CmsSeeder;
 use Aimeos\Cms\Models\Content;
+use Aimeos\Cms\Models\File;
 use Aimeos\Cms\Models\Page;
 
 
@@ -13,10 +14,6 @@ class GraphqlContentTest extends TestAbstract
 {
     use MakesGraphQLRequests;
     use RefreshesSchemaCache;
-
-//\Illuminate\Support\Facades\DB::enableQueryLog();
-//dd(\Illuminate\Support\Facades\DB::getQueryLog());
-//error_log( print_r( \Illuminate\Support\Facades\DB::table('cms_pages')->get()->all(), true ) );
 
 
 	protected function defineEnvironment( $app )
@@ -127,18 +124,23 @@ class GraphqlContentTest extends TestAbstract
     {
         $this->seed( CmsSeeder::class );
 
-        $this->expectsDatabaseQueryCount( 2 );
+        $file = File::firstOrFail();
+
+        $this->expectsDatabaseQueryCount( 5 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 addContent(input: {
                     lang: "en"
                     data: "{\\"key\\":\\"value\\"}"
-                }) {
+                }, files: ["' . $file->id . '"]) {
                     lang
                     data
                     editor
                     pages {
                         id
+                    }
+                    files {
+                        name
                     }
                 }
             }
@@ -150,7 +152,10 @@ class GraphqlContentTest extends TestAbstract
                     'lang' => 'en',
                     'data' => '{"key":"value"}',
                     'editor' => 'Test',
-                    'pages' => null
+                    'pages' => [],
+                    'files' => [
+                        ['name' => 'Test image']
+                    ]
                 ],
             ]
         ] );
@@ -164,7 +169,7 @@ class GraphqlContentTest extends TestAbstract
         $root = Page::where('tag', 'root')->firstOrFail();
         $contents = $root->contents;
 
-        $this->expectsDatabaseQueryCount( 5 );
+        $this->expectsDatabaseQueryCount( 6 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 addContent(input: {
@@ -211,19 +216,23 @@ class GraphqlContentTest extends TestAbstract
     {
         $this->seed( CmsSeeder::class );
 
+        $file = File::firstOrFail();
         $content = Content::firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 3 );
+        $this->expectsDatabaseQueryCount( 6 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 saveContent(id: "' . $content->id . '", input: {
                     lang: "en"
                     data: "{\\"key\\":\\"value\\"}"
-                }) {
+                }, files: ["' . $file->id . '"]) {
                     id
                     lang
                     data
                     editor
+                    files {
+                        name
+                    }
                 }
             }
         ' );
@@ -237,7 +246,10 @@ class GraphqlContentTest extends TestAbstract
                     'lang' => 'en',
                     'data' => '{"key":"value"}',
                     'editor' => 'Test',
-                ],
+                    'files' => [
+                        ['name' => 'Test image']
+                    ]
+               ],
             ]
         ] );
     }

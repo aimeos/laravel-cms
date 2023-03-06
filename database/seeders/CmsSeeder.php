@@ -26,7 +26,7 @@ class CmsSeeder extends Seeder
         $home = $this->home();
         $file = $this->file();
 
-        $this->addBlog( $home )
+        $this->addBlog( $home, [$file] )
             ->addDev( $home )
             ->addHidden( $home )
             ->addDisabled( $home );
@@ -82,7 +82,7 @@ class CmsSeeder extends Seeder
     }
 
 
-    protected function addBlog( Page $home )
+    protected function addBlog( Page $home, array $files )
     {
         $page = Page::create([
             'name' => 'Blog',
@@ -113,6 +113,10 @@ class CmsSeeder extends Seeder
             'data' => ['type' => 'cms::blog'],
             'editor' => 'seeder',
         ]);
+        $content->files()->syncWithPivotValues(
+            collect( $files )->pluck( 'id' ),
+            ['tenant_id' => \Aimeos\Cms\Tenancy::value()]
+        );
         $content->save();
 
         $ref = Ref::create([

@@ -18,8 +18,10 @@ final class SaveContent
         $content = Content::findOrFail( $args['id'] );
         $content->fill( $args['input'] ?? [] );
         $content->editor = Auth::user()?->name ?? request()->ip();
-
         $content->save();
+
+        $content->files()->syncWithPivotValues( $args['files'] ?? [], ['tenant_id' => \Aimeos\Cms\Tenancy::value()] );
+
         return $content;
     }
 }

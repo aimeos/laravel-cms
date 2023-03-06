@@ -93,12 +93,12 @@ extend type Mutation {
     @can(ability: "drop")
 
 
-  "Add a new content element and optionally assign it to the page at the passed position"
-  addContent(input: ContentInput!, page_id: ID, position: Int): Content
+  "Add a new content element with file references and optionally assign it to the page at the passed position"
+  addContent(input: ContentInput!, files: [ID!], page_id: ID, position: Int): Content
     @can(ability: "add")
 
   "Update an existing content element"
-  saveContent(id: ID!, input: ContentInput!): Content
+  saveContent(id: ID!, input: ContentInput!, files: [ID!]): Content
     @can(ability: "save")
 
   "Delete an existing content element"
@@ -249,6 +249,9 @@ type Content {
   "Date/time value when the content element was deleted or NULL if it's available"
   deleted_at: String
 
+  "List of files assigned to the content element"
+  files: [File!]! @belongsToMany
+
   "Relation of all pages the content element belongs to"
   pages: [Page!]! @belongsToMany
 
@@ -342,6 +345,9 @@ type File {
 
   "Date/time value when the file was deleted or NULL if it's available"
   deleted_at: String
+
+  "List of content elements assigned to the page"
+  contents: [Content!]! @belongsToMany
 }
 
 input FileInput {

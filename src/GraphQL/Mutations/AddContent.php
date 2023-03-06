@@ -24,6 +24,10 @@ final class AddContent
         $content->editor = $editor;
         $content->save();
 
+        foreach( $args['files'] ?? [] as $fileId ) {
+            $content->files()->attach( $fileId, ['tenant_id' => \Aimeos\Cms\Tenancy::value()] );
+        }
+
         if( $pageId = $args['page_id'] ?? null )
         {
             $ref = new Ref();
@@ -35,6 +39,6 @@ final class AddContent
             $ref->save();
         }
 
-        return $content;
+        return Content::findOrFail( $content->id );
     }
 }

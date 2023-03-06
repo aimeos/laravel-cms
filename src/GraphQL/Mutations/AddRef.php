@@ -15,14 +15,11 @@ final class AddRef
      */
     public function __invoke( $rootValue, array $args ) : Ref
     {
-        $page = Page::findOrFail( $args['page_id'] ?? null );
-
-        $ref = Ref::create();
-        $ref->page_id = $page->id;
-        $ref->content_id = $args['content_id'] ?? null;
-        $ref->position = $args['position'] ?? 0;
+        $ref = new Ref();
+        $ref->fill( $args['input'] );
         $ref->editor = Auth::user()?->name ?? request()->ip();
-        $ref->tenancy_id = \Aimeos\Cms\Tenancy::value();
+        $ref->tenant_id = \Aimeos\Cms\Tenancy::value();
+        $ref->save();
 
         return $ref;
     }

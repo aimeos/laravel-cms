@@ -85,7 +85,7 @@ extend type Mutation {
     @can(ability: "add")
 
   "Update an existing page<->content reference"
-  saveRef(id: ID!, input: RefInput!): Ref
+  saveRef(id: ID!, input: RefSaveInput!): Ref
     @can(ability: "save")
 
   "Delete an existing page<->content reference"
@@ -269,10 +269,10 @@ type Ref {
   id: ID!
 
   "Unique ID of the referenced page"
-  page_id: Int!
+  page_id: ID!
 
   "Unique ID of the referenced content element"
-  content_id: String!
+  content_id: ID!
 
   "Position the content element withing the page"
   position: Int!
@@ -292,11 +292,19 @@ type Ref {
 
 input RefInput {
   "Unique ID of the referenced page"
-  page_id: Int!
+  page_id: ID!
 
   "Unique ID of the referenced content element"
-  content_id: String!
+  content_id: ID!
 
+  "Position the content element withing the page"
+  position: Int!
+
+  "Visibility status of the content element within the page, 0=inactive, 1=visible"
+  status: Int!
+}
+
+input RefSaveInput {
   "Position the content element withing the page"
   position: Int!
 

@@ -18,7 +18,9 @@ class CmsSeeder extends Seeder
      */
     public function run()
     {
-        DB::delete( 'DELETE FROM cms_pages' );
+        Page::truncate();
+        File::truncate();
+        Content::truncate();
 
         $home = $this->home();
 

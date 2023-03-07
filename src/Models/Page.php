@@ -67,12 +67,12 @@ class Page extends Model
      */
     protected $attributes = [
         'tenant_id' => '',
+        'tag' => '',
         'lang' => '',
-        'name' => '',
-        'title' => '',
         'slug' => '',
         'to' => '',
-        'tag' => '',
+        'name' => '',
+        'title' => '',
         'data' => '{}',
         'config' => '{}',
         'status' => 0,
@@ -96,14 +96,14 @@ class Page extends Model
      * @var array
      */
     protected $fillable = [
+        'tag',
         'lang',
-        'name',
-        'title',
         'slug',
         'to',
+        'name',
+        'title',
         'data',
         'config',
-        'tag',
         'status',
         'cache',
     ];
@@ -126,8 +126,9 @@ class Page extends Model
     public function content(): BelongsToMany
     {
         return $this->belongsToMany( Content::class, 'cms_page_content' )
-            ->withPivot( 'position' )
+            ->wherePivot( 'tenant_id', \Aimeos\Cms\Tenancy::value() )
             ->wherePivot( 'status', 1 )
+            ->withPivot( 'position' )
             ->orderByPivot( 'position' );
     }
 
@@ -139,6 +140,7 @@ class Page extends Model
     {
         return $this->belongsToMany( Content::class, 'cms_page_content' )->as( 'ref' )
             ->withPivot( 'id', 'position', 'status', 'editor', 'created_at', 'updated_at' )
+            ->wherePivot( 'tenant_id', \Aimeos\Cms\Tenancy::value() )
             ->withTimestamps()
             ->orderByPivot( 'position' );
     }

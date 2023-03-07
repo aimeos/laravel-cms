@@ -52,6 +52,10 @@ class PageController extends Controller
             ->where( 'status', '>', 0 )
             ->firstOrFail();
 
+        if( $page->to ) {
+            return str_starts_with( $page->to, 'http' ) ? redirect( $page->to ) : redirect()->away( $page->to );
+        }
+
         $html = view( config( 'cms.view', 'cms::page' ), ['page' => $page] )->render();
 
         if( $page->cache ) {

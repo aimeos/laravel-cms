@@ -64,6 +64,7 @@ class GraphqlPageTest extends TestAbstract
                 slug
                 name
                 title
+                domain
                 to
                 tag
                 data
@@ -106,6 +107,7 @@ class GraphqlPageTest extends TestAbstract
                     slug
                     name
                     title
+                    domain
                     to
                     tag
                     data
@@ -297,6 +299,7 @@ class GraphqlPageTest extends TestAbstract
                     lang: "en"
                     slug: "test"
                     name: "test"
+                    domain: "test.com"
                     title: "Test page"
                     to: "/to/page"
                     tag: "test"
@@ -309,6 +312,7 @@ class GraphqlPageTest extends TestAbstract
                     parent_id
                     lang
                     slug
+                    domain
                     name
                     title
                     to
@@ -351,6 +355,7 @@ class GraphqlPageTest extends TestAbstract
                     lang: "en"
                     slug: "test"
                     name: "test"
+                    domain: "test.com"
                     title: "Test page"
                     to: "/to/page"
                     tag: "test"
@@ -389,6 +394,7 @@ class GraphqlPageTest extends TestAbstract
                     lang: "en"
                     slug: "test"
                     name: "test"
+                    domain: ""
                     title: "Test page"
                     to: "/to/page"
                     tag: "test"
@@ -521,6 +527,7 @@ class GraphqlPageTest extends TestAbstract
                 savePage(id: "' . $root->id . '", input: {
                     lang: "en"
                     slug: "test"
+                    domain: "test.com"
                     name: "test"
                     title: "Test page"
                     to: "/to/page"
@@ -534,6 +541,7 @@ class GraphqlPageTest extends TestAbstract
                     parent_id
                     lang
                     slug
+                    domain
                     name
                     title
                     to
@@ -559,6 +567,7 @@ class GraphqlPageTest extends TestAbstract
                     'parent_id' => null,
                     'lang' => "en",
                     'slug' => "test",
+                    'domain' => 'test.com',
                     'name' => "test",
                     'title' => "Test page",
                     'to' => "/to/page",

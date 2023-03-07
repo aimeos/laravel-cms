@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug');
             $table->string('to');
+            $table->string('domain');
             $table->string('tag', 30);
             $table->json('data');
             $table->json('config');

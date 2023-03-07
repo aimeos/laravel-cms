@@ -140,6 +140,9 @@ type Page {
   "URL segment of the page, unique in combination with the language"
   slug: String!
 
+  "Domain name the root page (!) is responsible for"
+  domain: String!
+
   "Short page name for menues"
   name: String!
 
@@ -201,6 +204,9 @@ input PageInput {
 
   "URL segment of the page, unique in combination with the language"
   slug: String!
+
+  "Domain name the root page (!) is responsible for"
+  domain: String!
 
   "Short page name for menues"
   name: String!

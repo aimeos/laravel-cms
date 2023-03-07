@@ -22,14 +22,15 @@ class PageController extends Controller
      *
      * @param string $slug Page URL segment
      * @param string $lang ISO language code
+     * @param string $domain Requested domain
      * @return string HTML code
      */
-    public function index( Request $request, string $slug, string $lang = '' ): string
+    public function index( Request $request, string $slug, string $lang = '', $domain = '' ): string
     {
         if( ( $cid = $request->input( 'cid' ) ) && Gate::allowIf( fn( $user ) => $user->cmseditor > 0 ) )
         {
-            $page = Page::withDepth()
-                ->where( 'slug', $slug )
+            $page = Page::where( 'slug', $slug )
+                ->where( 'domain', $domain )
                 ->where( 'lang', $lang )
                 ->firstOrFail();
 
@@ -39,14 +40,14 @@ class PageController extends Controller
         }
 
         $cache = Cache::store( config( 'cms.cache', 'file' ) );
-        $key = Page::key( $slug, $lang );
+        $key = Page::key( $slug, $lang, $domain );
 
         if( $html = $cache->get( $key ) ) {
             return $html;
         }
 
-        $page = Page::withDepth()
-            ->where( 'slug', $slug )
+        $page = Page::where( 'slug', $slug )
+            ->where( 'domain', $domain )
             ->where( 'lang', $lang )
             ->where( 'status', '>', 0 )
             ->firstOrFail();

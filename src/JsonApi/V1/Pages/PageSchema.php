@@ -27,7 +27,7 @@ class PageSchema extends Schema
      *
      * @var int
      */
-    protected int $maxDepth = 2;
+    protected int $maxDepth = 1;
 
     /**
      * The model the schema corresponds to.
@@ -49,6 +49,18 @@ class PageSchema extends Schema
 
 
     /**
+     * Schema constructor.
+     *
+     * @param \LaravelJsonApi\Contracts\Server\Server $server
+     */
+    public function __construct( \LaravelJsonApi\Contracts\Server\Server $server )
+    {
+        parent::__construct( $server );
+        $this->maxDepth = config( 'cms.jsonapi_maxdepth', 1 );
+    }
+
+
+    /**
      * Get the resource fields.
      *
      * @return array
@@ -64,6 +76,7 @@ class PageSchema extends Schema
             Str::make( 'title' )->readOnly(),
             Str::make( 'tag' )->readOnly(),
             Str::make( 'to' )->readOnly(),
+            Str::make( 'domain' )->readOnly(),
             Number::make( 'cache' )->readOnly(),
             ArrayHash::make( 'data' )->readOnly(),
             DateTime::make( 'createdAt' )->readOnly(),

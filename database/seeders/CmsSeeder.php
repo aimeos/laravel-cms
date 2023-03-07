@@ -56,6 +56,7 @@ class CmsSeeder extends Seeder
             'title' => 'Home | LaravelCMS',
             'slug' => '',
             'tag' => 'root',
+            'domain' => 'mydomain.tld',
             'status' => 1,
             'editor' => 'seeder',
         ]);

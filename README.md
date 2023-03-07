@@ -7,6 +7,7 @@ Easy, flexible and powerful API-first Laravel CMS package:
 * Extremly fast JSON frontend API
 * Versatile GraphQL admin API
 * Multi-language support
+* Multi-domain routing
 * Multi-tenancy capable
 * Supports soft-deletes
 * Easy to extend
@@ -51,7 +52,19 @@ $schedule->command('model:prune', [
 ])->daily();
 ```
 
-### Multi tenancy
+### Multi-domain
+
+Using multiple page trees with different domains is possible by changing the `cms.page` route in your `./routes/web.php` to:
+
+```php
+Route::group(['domain' => '{domain}'], function() {
+    Route::get('{slug?}/{lang?}', [\Aimeos\Cms\Http\Controllers\PageController::class, 'index'])->name('cms.page');
+});
+```
+
+The domain in one of the root pages must then match the request domain.
+
+### Multi-tenancy
 
 LaravelCMS supports single database multi-tenancy using existing Laravel tenancy packages or code implemented by your own.
 

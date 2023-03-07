@@ -21,7 +21,7 @@ final class DropRef
         $ref->delete();
 
         $page = Page::findOrFail( $ref->page_id );
-        Cache::forget( Page::key( $page->slug, $page->lang ) );
+        Cache::forget( Page::key( $page ) );
 
         return $ref;
     }

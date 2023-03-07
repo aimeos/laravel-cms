@@ -17,7 +17,7 @@ final class SavePage
     public function __invoke( $rootValue, array $args ) : Page
     {
         $page = Page::findOrFail( $args['id'] );
-        $key = Page::key( $page->slug, $page->lang );
+        $key = Page::key( $page );
 
         $page->fill( $args['input'] ?? [] );
         $page->editor = Auth::user()?->name ?? request()->ip();

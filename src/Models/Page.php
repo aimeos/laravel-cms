@@ -177,13 +177,18 @@ class Page extends Model
     /**
      * Returns the cache key for the page.
      *
-     * @param string $slug Unique tag to retrieve page tree
+     * @param Page|string $page Page object or URL slug
      * @param string $lang ISO language code
+     * @param string $domain Domain name
      * @return string Cache key
      */
-    public static function key( string $slug, string $lang ): string
+    public static function key( $page, string $lang = '', string $domain = '' ): string
     {
-        return md5( \Aimeos\Cms\Tenancy::value() . '/' . $slug . '/' . $lang );
+        if( $page instanceof Page ) {
+            return md5( \Aimeos\Cms\Tenancy::value() . '/' . $page->domain . '/' . $page->slug . '/' . $page->lang );
+        }
+
+        return md5( \Aimeos\Cms\Tenancy::value() . '/' . $domain . '/' . $page . '/' . $lang );
     }
 
 

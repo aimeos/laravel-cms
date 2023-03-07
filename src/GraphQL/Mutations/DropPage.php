@@ -20,7 +20,7 @@ final class DropPage
         $page->editor = Auth::user()?->name ?? request()->ip();
 
         DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( fn() => $page->delete(), 3 );
-        Cache::forget( Page::key( $page->slug, $page->lang ) );
+        Cache::forget( Page::key( $page ) );
 
         return $page;
     }

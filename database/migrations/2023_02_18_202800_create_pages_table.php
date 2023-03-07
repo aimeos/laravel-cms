@@ -25,7 +25,7 @@ return new class extends Migration
             $table->json('data');
             $table->json('config');
             $table->smallInteger('status');
-            $table->smallInteger('cache')->nullable();
+            $table->smallInteger('cache');
             $table->nestedSet();
             $table->string('editor');
             $table->timestamps();

@@ -135,7 +135,7 @@ type Page {
   parent_id: String
 
   "ISO language code, e.g. 'en', 'en_GB' or empty for default language"
-  lang: String
+  lang: String!
 
   "URL segment of the page, unique in combination with the language"
   slug: String!
@@ -146,8 +146,8 @@ type Page {
   "Descriptive page title"
   title: String!
 
-  "If not empty, the URL the browser is redirected to"
-  to: String
+  "If not empty, the path or URL the browser is redirected to"
+  to: String!
 
   "Tag name to identify a page, e.g. for the starting point of a navigation structure"
   tag: String!
@@ -161,8 +161,8 @@ type Page {
   "Visibility status of the page, 0=inactive, 1=visible, 2=hidden in navigation"
   status: Int!
 
-  "Cache lifetime in minutes or NULL to allow caching pages until their content changes"
-  cache: Int
+  "Cache lifetime in minutes"
+  cache: Int!
 
   "Name of the last user who added, updated or deleted the page"
   editor: String!
@@ -197,7 +197,7 @@ type Page {
 
 input PageInput {
   "ISO language code, e.g. 'en', 'en_GB' or empty for default language"
-  lang: String
+  lang: String!
 
   "URL segment of the page, unique in combination with the language"
   slug: String!
@@ -208,8 +208,8 @@ input PageInput {
   "Descriptive page title"
   title: String!
 
-  "If not empty, the URL the browser is redirected to"
-  to: String
+  "If not empty, the path or URL the browser is redirected to"
+  to: String!
 
   "Tag name to identify a page, e.g. for the starting point of a navigation structure"
   tag: String!
@@ -223,8 +223,8 @@ input PageInput {
   "Visibility status of the page, 0=inactive, 1=visible, 2=hidden in navigation"
   status: Int!
 
-  "Cache lifetime in minutes or NULL to allow caching pages until their content changes"
-  cache: Int
+  "Cache lifetime in minutes"
+  cache: Int!
 }
 
 type Content {

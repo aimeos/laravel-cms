@@ -33,7 +33,7 @@ class PageController extends Controller
                 ->where( 'lang', $lang )
                 ->firstOrFail();
 
-            $page->cache = -1; // don't cache sub-parts in preview requests
+            $page->cache = 0; // don't cache sub-parts in preview requests
 
             return view( config( 'cms.view', 'cms::page' ), ['page' => $page] )->render();
         }
@@ -53,8 +53,8 @@ class PageController extends Controller
 
         $html = view( config( 'cms.view', 'cms::page' ), ['page' => $page] )->render();
 
-        if( $page->cache !== 0 ) {
-            $cache->put( $key, $html, $page->cache ? now()->addMinutes( (int) $page->cache ) : null );
+        if( $page->cache ) {
+            $cache->put( $key, $html, now()->addMinutes( (int) $page->cache ) );
         }
 
         return $html;

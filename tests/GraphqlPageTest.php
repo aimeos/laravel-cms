@@ -303,7 +303,7 @@ class GraphqlPageTest extends TestAbstract
                     data: "{\"canonical\":\"to\/page\"}"
                     config: "{\"key\":\"test\"}"
                     status: 0
-                    cache: null
+                    cache: 0
                 }) {
                     id
                     parent_id
@@ -348,6 +348,7 @@ class GraphqlPageTest extends TestAbstract
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 addPage(input: {
+                    lang: "en"
                     slug: "test"
                     name: "test"
                     title: "Test page"
@@ -356,6 +357,7 @@ class GraphqlPageTest extends TestAbstract
                     data: "{}"
                     config: "{}"
                     status: 0
+                    cache: 0
                 }, parent: "' . $root->id . '") {
                     id
                     parent_id
@@ -384,6 +386,7 @@ class GraphqlPageTest extends TestAbstract
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 addPage(input: {
+                    lang: "en"
                     slug: "test"
                     name: "test"
                     title: "Test page"
@@ -392,6 +395,7 @@ class GraphqlPageTest extends TestAbstract
                     data: "{}"
                     config: "{}"
                     status: 0
+                    cache: 0
                 }, parent: "' . $root->id . '", ref: "' . $ref->id .'") {
                     id
                     parent_id
@@ -524,7 +528,7 @@ class GraphqlPageTest extends TestAbstract
                     data: "{\"canonical\":\"to\/page\"}"
                     config: "{\"key\":\"test\"}"
                     status: 0
-                    cache: null
+                    cache: 5
                 }) {
                     id
                     parent_id
@@ -562,7 +566,7 @@ class GraphqlPageTest extends TestAbstract
                     'data' => "{\"canonical\":\"to\/page\"}",
                     'config' => "{\"key\":\"test\"}",
                     'status' => 0,
-                    'cache' => null,
+                    'cache' => 5,
                     'editor' => 'Test editor',
                     'created_at' => (string) $root->created_at,
                     'updated_at' => (string) $page->updated_at,

@@ -76,7 +76,7 @@ class Page extends Model
         'data' => '{}',
         'config' => '{}',
         'status' => 0,
-        'cache' => null,
+        'cache' => 5,
         'editor' => '',
     ];
 

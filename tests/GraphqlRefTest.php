@@ -53,7 +53,7 @@ class GraphqlRefTest extends TestAbstract
 
         $root = Page::where('tag', 'root')->firstOrFail();
         $page = Page::where('tag', 'blog')->firstOrFail();
-        $content = $root->content->first();
+        $content = $root->contents->first();
 
         $this->expectsDatabaseQueryCount( 3 );
         $response = $this->actingAs( $this->user )->graphQL( "
@@ -74,7 +74,7 @@ class GraphqlRefTest extends TestAbstract
         " );
 
         $page = Page::where('tag', 'blog')->firstOrFail();
-        $content = $page->content->last();
+        $content = $page->contents->last();
 
         $response->assertJson( [
             'data' => [

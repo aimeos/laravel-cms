@@ -108,6 +108,9 @@ class PageSchema extends Schema
     public function filters(): array
     {
         return [
+            Where::make( 'domain' )->deserializeUsing(
+                fn($value) => (string) $value
+            ),
             Where::make( 'tag' )->deserializeUsing(
                 fn($value) => (string) $value
             ),

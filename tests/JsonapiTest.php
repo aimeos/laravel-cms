@@ -77,7 +77,7 @@ class JsonapiTest extends TestAbstract
         $response = $this->jsonApi()->expects( 'pages' )->get( "cms/pages/{$page->id}" );
 
         $response->assertFetchedOne( $page );
-        // $response->assertJsonPath( 'jsonapi.meta.baseurl', '/storage/' );
+        $response->assertJsonPath( 'jsonapi.meta.baseurl', '/storage/' );
     }
 
 

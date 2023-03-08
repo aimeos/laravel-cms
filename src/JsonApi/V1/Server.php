@@ -2,7 +2,9 @@
 
 namespace Aimeos\Cms\JsonApi\V1;
 
+use Illuminate\Support\Facades\Storage;
 use LaravelJsonApi\Core\Server\Server as BaseServer;
+use LaravelJsonApi\Core\Document\JsonApi;
 use Aimeos\Cms\Scopes\Status;
 
 
@@ -14,6 +16,14 @@ class Server extends BaseServer
      * @var string
      */
     protected string $baseUri = '/api/cms';
+
+
+    public function jsonApi(): JsonApi
+    {
+      return JsonApi::make( '1.0' )->setMeta( [
+        'baseurl' => Storage::url( '' )
+      ] );
+    }
 
 
     /**

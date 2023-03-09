@@ -264,9 +264,6 @@ type Content {
   "Date/time value when the content element was deleted or NULL if it's available"
   deleted_at: String
 
-  "List of files assigned to the content element"
-  files: [File!]! @belongsToMany
-
   "Relation of all pages the content element belongs to"
   pages: [Page!]! @belongsToMany
 
@@ -346,6 +343,9 @@ type Version {
   "Arbitrary versioned data"
   data: JSON!
 
+  "If versioned content is currently published or not"
+  published: Boolean!
+
   "Name of the last user who added, updated or deleted the versioned data"
   editor: String!
 
@@ -384,8 +384,8 @@ type File {
   "Date/time value when the file was deleted or NULL if it's available"
   deleted_at: String
 
-  "List of content elements assigned to the page"
-  contents: [Content!]! @belongsToMany
+  "List of versions using the file"
+  versions: [Version!]! @belongsToMany
 }
 
 input FileInput {

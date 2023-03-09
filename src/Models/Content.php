@@ -90,16 +90,6 @@ class Content extends Model
 
 
     /**
-     * Get all files referenced by the content.
-     */
-    public function files() : BelongsToMany
-    {
-        return $this->belongsToMany( File::class, 'cms_content_file' )
-            ->wherePivot( 'tenant_id', \Aimeos\Cms\Tenancy::value() );
-    }
-
-
-    /**
      * Get the page's latest head/meta data.
      */
     public function latest() : HasOne

@@ -24,9 +24,8 @@ class CmsSeeder extends Seeder
         Content::truncate();
 
         $home = $this->home();
-        $file = $this->file();
 
-        $this->addBlog( $home, [$file] )
+        $this->addBlog( $home )
             ->addDev( $home )
             ->addHidden( $home )
             ->addDisabled( $home );
@@ -35,7 +34,7 @@ class CmsSeeder extends Seeder
 
     protected function file()
     {
-        $file = File::create([
+        return File::create([
             'mime' => 'image/jpeg',
             'tag' => 'test',
             'name' => 'Test image',
@@ -43,9 +42,6 @@ class CmsSeeder extends Seeder
             'previews' => '{"1000": "test/path/test-image-1000.jpg", "500": "test/path/test-image-500.jpg"}',
             'editor' => 'seeder',
         ]);
-        $file->save();
-
-        return $file;
     }
 
 
@@ -89,7 +85,7 @@ class CmsSeeder extends Seeder
     }
 
 
-    protected function addBlog( Page $home, array $files )
+    protected function addBlog( Page $home )
     {
         $page = Page::create([
             'name' => 'Blog',
@@ -129,10 +125,6 @@ class CmsSeeder extends Seeder
             'published' => true,
             'editor' => 'seeder',
         ]);
-        $content->files()->syncWithPivotValues(
-            collect( $files )->pluck( 'id' ),
-            ['tenant_id' => \Aimeos\Cms\Tenancy::value()]
-        );
 
         Ref::create([
             'page_id' => $page->id,
@@ -188,11 +180,12 @@ email
             'data' => $data,
             'editor' => 'seeder',
         ]);
-        $content->versions()->create([
+        $version = $content->versions()->create([
             'data' => $data,
             'published' => true,
             'editor' => 'seeder',
         ]);
+        $version->files()->attach( $this->file() );
 
         Ref::create([
             'page_id' => $page->id,

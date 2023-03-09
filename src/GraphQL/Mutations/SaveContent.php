@@ -27,14 +27,14 @@ final class SaveContent
 
             if( isset( $args['input']['data'] ) )
             {
-                $content->versions()->create( [
+                $version = $content->versions()->create( [
                     'data' => $args['input']['data'],
                     'published' => false,
                     'editor' => $editor
                 ] );
-            }
 
-            $content->files()->syncWithPivotValues( $args['files'] ?? [], ['tenant_id' => \Aimeos\Cms\Tenancy::value()] );
+                $version->files()->sync( $args['files'] ?? [] );
+            }
 
         }, 3 );
 

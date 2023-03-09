@@ -9,6 +9,7 @@ namespace Aimeos\Cms\Models;
 
 use Aimeos\Cms\Concerns\Tenancy;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\Builder;
@@ -86,18 +87,18 @@ class Version extends Model
 
 
     /**
-     * Get the parent versionable model (page or content).
+     * Get all files referenced by the versioned data.
      */
-    public function versionable() : MorphTo
+    public function files() : BelongsToMany
     {
-        return $this->morphTo();
+        return $this->belongsToMany( File::class, 'cms_version_file' );
     }
 
 
     /**
      * Generate a new UUID for the model.
      */
-    public function newUniqueId(): string
+    public function newUniqueId() : string
     {
         return (string) new \Symfony\Component\Uid\UuidV7();
     }
@@ -106,7 +107,7 @@ class Version extends Model
     /**
      * Get the prunable model query.
      */
-    public function prunable(): Builder
+    public function prunable() : Builder
     {
         if( is_int( $days = config( 'cms.prune' ) ) )
         {
@@ -117,5 +118,14 @@ class Version extends Model
 
         // pruning is disabled
         return static::withoutTenancy()->where( 'id', '' );
+    }
+
+
+    /**
+     * Get the parent versionable model (page or content).
+     */
+    public function versionable() : MorphTo
+    {
+        return $this->morphTo();
     }
 }

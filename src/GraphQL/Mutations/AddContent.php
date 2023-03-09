@@ -29,15 +29,13 @@ final class AddContent
 
             if( isset( $args['input']['data'] ) )
             {
-                $content->versions()->create( [
+                $version = $content->versions()->create( [
                     'data' => $args['input']['data'],
                     'published' => false,
                     'editor' => $editor
                 ] );
-            }
 
-            foreach( $args['files'] ?? [] as $fileId ) {
-                $content->files()->attach( $fileId, ['tenant_id' => \Aimeos\Cms\Tenancy::value()] );
+                $version->files()->attach( $args['files'] ?? [] );
             }
 
             if( $pageId = $args['page_id'] ?? null )

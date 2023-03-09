@@ -93,7 +93,7 @@ class File extends Model
     /**
      * Generate a new UUID for the model.
      */
-    public function newUniqueId(): string
+    public function newUniqueId() : string
     {
         return (string) new \Symfony\Component\Uid\UuidV7();
     }
@@ -102,17 +102,16 @@ class File extends Model
     /**
      * Get all content referencing the file.
      */
-    public function contents(): BelongsToMany
+    public function versions() : BelongsToMany
     {
-        return $this->belongsToMany( Content::class, 'cms_content_file' )
-            ->wherePivot( 'tenant_id', \Aimeos\Cms\Tenancy::value() );
+        return $this->belongsToMany( Version::class, 'cms_version_file' );
     }
 
 
     /**
      * Get the prunable model query.
      */
-    public function prunable(): Builder
+    public function prunable() : Builder
     {
         if( is_int( $days = config( 'cms.prune' ) ) ) {
             return static::withoutTenancy()->where( 'deleted_at', '<=', now()->subDays( $days ) );
@@ -126,7 +125,7 @@ class File extends Model
     /**
      * Prepare the model for pruning.
      */
-    protected function pruning(): void
+    protected function pruning() : void
     {
         $store = Storage::disk( config( 'cms.disk', 'public' ) );
 

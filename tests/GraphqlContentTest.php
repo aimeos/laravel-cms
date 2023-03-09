@@ -157,7 +157,7 @@ class GraphqlContentTest extends TestAbstract
 
         $file = File::firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 7 );
+        $this->expectsDatabaseQueryCount( 6 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 addContent(input: {
@@ -169,9 +169,6 @@ class GraphqlContentTest extends TestAbstract
                     editor
                     pages {
                         id
-                    }
-                    files {
-                        name
                     }
                     latest {
                         data
@@ -187,9 +184,6 @@ class GraphqlContentTest extends TestAbstract
                     'data' => '{}',
                     'editor' => 'Test',
                     'pages' => [],
-                    'files' => [
-                        ['name' => 'Test image']
-                    ],
                     'latest' => ['data' => '{"key":"value"}']
                 ],
             ]
@@ -256,9 +250,9 @@ class GraphqlContentTest extends TestAbstract
         $this->seed( CmsSeeder::class );
 
         $file = File::firstOrFail();
-        $content = Content::firstOrFail();
+        $content = Page::where( 'tag', 'blog' )->firstOrFail()->contents->first();
 
-        $this->expectsDatabaseQueryCount( 9 );
+        $this->expectsDatabaseQueryCount( 8 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 saveContent(id: "' . $content->id . '", input: {
@@ -269,9 +263,6 @@ class GraphqlContentTest extends TestAbstract
                     lang
                     data
                     editor
-                    files {
-                        name
-                    }
                     latest {
                         data
                     }
@@ -289,13 +280,10 @@ class GraphqlContentTest extends TestAbstract
                 'saveContent' => [
                     'id' => $content->id,
                     'lang' => 'en',
-                    'data' => '{"type":"cms::heading","text":"Welcome to Laravel CMS"}',
+                    'data' => '{"type":"cms::heading","text":"Blog example"}',
                     'editor' => 'Test',
-                    'files' => [
-                        ['name' => 'Test image']
-                    ],
                     'latest' => ['data' => '{"key":"value"}'],
-                    'published' => ['data' => '{"type":"cms::heading","text":"Welcome to Laravel CMS"}']
+                    'published' => ['data' => '{"type":"cms::heading","text":"Blog example"}']
                ],
             ]
         ] );

@@ -47,6 +47,7 @@ To clean up deleted pages, contents and files regularly, add these lines to the 
 $schedule->command('model:prune', [
     '--model' => [
         \Aimeos\Cms\Models\Page::class,
+        \Aimeos\Cms\Models\Version::class,
         \Aimeos\Cms\Models\Content::class,
         \Aimeos\Cms\Models\File::class],
 ])->daily();

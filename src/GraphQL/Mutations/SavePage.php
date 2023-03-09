@@ -19,10 +19,25 @@ final class SavePage
         $page = Page::findOrFail( $args['id'] );
         $key = Page::key( $page );
 
-        $page->fill( $args['input'] ?? [] );
-        $page->editor = Auth::user()?->name ?? request()->ip();
+        DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( function() use ( $page, $args ) {
 
-        DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( fn() => $page->save(), 3 );
+            $editor = Auth::user()?->name ?? request()->ip();
+
+            $page->fill( $args['input'] ?? [] );
+            $page->editor = $editor;
+            $page->save();
+
+            if( isset( $args['input']['data'] ) )
+            {
+                $page->versions()->create( [
+                    'data' => $args['input']['data'],
+                    'published' => false,
+                    'editor' => $editor
+                ] );
+            }
+
+        }, 3 );
+
         Cache::forget( $key );
 
         return $page;

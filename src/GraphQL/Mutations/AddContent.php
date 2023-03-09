@@ -16,28 +16,42 @@ final class AddContent
      */
     public function __invoke( $rootValue, array $args ) : Content
     {
-        $editor = Auth::user()?->name ?? request()->ip();
-
         $content = new Content();
-        $content->fill( $args['input'] ?? [] );
-        $content->tenant_id = \Aimeos\Cms\Tenancy::value();
-        $content->editor = $editor;
-        $content->save();
 
-        foreach( $args['files'] ?? [] as $fileId ) {
-            $content->files()->attach( $fileId, ['tenant_id' => \Aimeos\Cms\Tenancy::value()] );
-        }
+        DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( function() use ( $content, $args ) {
 
-        if( $pageId = $args['page_id'] ?? null )
-        {
-            $ref = new Ref();
-            $ref->page_id = $pageId;
-            $ref->content_id = $content->id;
-            $ref->position = $args['position'] ?? 0;
-            $ref->tenant_id = \Aimeos\Cms\Tenancy::value();
-            $ref->editor = $editor;
-            $ref->save();
-        }
+            $editor = Auth::user()?->name ?? request()->ip();
+
+            $content->fill( $args['input'] ?? [] );
+            $content->tenant_id = \Aimeos\Cms\Tenancy::value();
+            $content->editor = $editor;
+            $content->save();
+
+            if( isset( $args['input']['data'] ) )
+            {
+                $content->versions()->create( [
+                    'data' => $args['input']['data'],
+                    'published' => false,
+                    'editor' => $editor
+                ] );
+            }
+
+            foreach( $args['files'] ?? [] as $fileId ) {
+                $content->files()->attach( $fileId, ['tenant_id' => \Aimeos\Cms\Tenancy::value()] );
+            }
+
+            if( $pageId = $args['page_id'] ?? null )
+            {
+                $ref = new Ref();
+                $ref->page_id = $pageId;
+                $ref->content_id = $content->id;
+                $ref->position = $args['position'] ?? 0;
+                $ref->tenant_id = \Aimeos\Cms\Tenancy::value();
+                $ref->editor = $editor;
+                $ref->save();
+            }
+
+        }, 3 );
 
         return Content::findOrFail( $content->id );
     }

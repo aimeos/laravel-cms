@@ -16,18 +16,37 @@ final class AddPage
     public function __invoke( $rootValue, array $args ) : Page
     {
         $page = new Page();
-        $page->fill( $args['input'] ?? [] );
-        $page->tenant_id = \Aimeos\Cms\Tenancy::value();
-        $page->editor = Auth::user()?->name ?? request()->ip();
 
-        if( isset( $args['ref'] ) ) {
-            $page->beforeNode( Page::findOrFail( $args['ref'] ) );
-        }
-        elseif( isset( $args['parent'] ) ) {
-            $page->appendToNode( Page::findOrFail( $args['parent'] ) );
-        }
+        DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( function() use ( $page, $args ) {
 
-        DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( fn() => $page->save(), 3 );
+            $editor = Auth::user()?->name ?? request()->ip();
+
+            $page->fill( $args['input'] ?? [] );
+            $page->tenant_id = \Aimeos\Cms\Tenancy::value();
+            $page->editor = $editor;
+
+            if( $page->status > 0 && isset( $args['input']['data'] ) ) {
+                $page->data = $args['input']['data'];
+            }
+
+            if( isset( $args['ref'] ) ) {
+                $page->beforeNode( Page::findOrFail( $args['ref'] ) );
+            }
+            elseif( isset( $args['parent'] ) ) {
+                $page->appendToNode( Page::findOrFail( $args['parent'] ) );
+            }
+
+            $page->save();
+
+            if( isset( $args['input']['data'] ) )
+            {
+                $page->versions()->create( [
+                    'data' => $args['input']['data'],
+                    'published' => $page->status > 0 ? true : false,
+                    'editor' => $editor
+                ] );
+            }
+        }, 3 );
 
         return $page;
     }

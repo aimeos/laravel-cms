@@ -9,6 +9,8 @@ namespace Aimeos\Cms\Models;
 
 use Aimeos\Cms\Concerns\Tenancy;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Builder;
@@ -29,35 +31,6 @@ class Page extends Model
     use Prunable;
     use NodeTrait;
     use Tenancy;
-
-
-    /**
-     * The connection name for the model.
-     *
-     * @var string
-     */
-    protected $connection = 'sqlite';
-
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'cms_pages';
-
-
-    /**
-     * Create a new Eloquent model instance.
-     *
-     * @param  array  $attributes
-     * @return void
-     */
-    public function __construct( array $attributes = [] )
-    {
-        $this->connection = config( 'cms.db', 'sqlite' );
-
-        parent::__construct( $attributes );
-    }
 
 
     /**
@@ -92,6 +65,13 @@ class Page extends Model
     ];
 
     /**
+     * The connection name for the model.
+     *
+     * @var string
+     */
+    protected $connection = 'sqlite';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -104,11 +84,31 @@ class Page extends Model
         'to',
         'name',
         'title',
-        'data',
         'config',
         'status',
         'cache',
     ];
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'cms_pages';
+
+
+    /**
+     * Create a new Eloquent model instance.
+     *
+     * @param  array  $attributes
+     * @return void
+     */
+    public function __construct( array $attributes = [] )
+    {
+        $this->connection = config( 'cms.db', 'sqlite' );
+
+        parent::__construct( $attributes );
+    }
 
 
     /**
@@ -149,6 +149,72 @@ class Page extends Model
 
 
     /**
+     * Returns the cache key for the page.
+     *
+     * @param Page|string $page Page object or URL slug
+     * @param string $lang ISO language code
+     * @param string $domain Domain name
+     * @return string Cache key
+     */
+    public static function key( $page, string $lang = '', string $domain = '' ) : string
+    {
+        if( $page instanceof Page ) {
+            return md5( \Aimeos\Cms\Tenancy::value() . '/' . $page->domain . '/' . $page->slug . '/' . $page->lang );
+        }
+
+        return md5( \Aimeos\Cms\Tenancy::value() . '/' . $domain . '/' . $page . '/' . $lang );
+    }
+
+
+    /**
+     * Get the page's latest head/meta data.
+     */
+    public function latest() : HasOne
+    {
+        return $this->hasOne( Version::class, 'versionable_id' )
+            ->where( 'versionable_type', Page::class )
+            ->orderBy( 'id', 'desc' )
+            ->take( 1 );
+    }
+
+
+    /**
+     * Get the navigation for the page.
+     */
+    public function nav() : \Kalnoy\Nestedset\Collection
+    {
+        return $this->ancestors->first()?->descendants->toTree() ?: new \Kalnoy\Nestedset\Collection();
+    }
+
+
+    /**
+     * Get the prunable model query.
+     */
+    public function prunable() : Builder
+    {
+        if( is_int( $days = config( 'cms.prune' ) ) ) {
+            return static::withoutTenancy()->where( 'deleted_at', '<=', now()->subDays( $days ) );
+        }
+
+        // pruning is disabled
+        return static::withoutTenancy()->where( 'id', -1 );
+    }
+
+
+    /**
+     * Get the page's published head/meta data.
+     */
+    public function published() : HasOne
+    {
+        return $this->hasOne( Version::class, 'versionable_id' )
+            ->where( 'versionable_type', Page::class )
+            ->where( 'published', true )
+            ->orderBy( 'id', 'desc' )
+            ->take( 1 );
+    }
+
+
+    /**
      * Get query for the complete sub-tree up to three levels.
      *
      * @return DescendantsRelation
@@ -179,42 +245,10 @@ class Page extends Model
 
 
     /**
-     * Returns the cache key for the page.
-     *
-     * @param Page|string $page Page object or URL slug
-     * @param string $lang ISO language code
-     * @param string $domain Domain name
-     * @return string Cache key
+     * Get all of the page's versions.
      */
-    public static function key( $page, string $lang = '', string $domain = '' ): string
+    public function versions() : MorphMany
     {
-        if( $page instanceof Page ) {
-            return md5( \Aimeos\Cms\Tenancy::value() . '/' . $page->domain . '/' . $page->slug . '/' . $page->lang );
-        }
-
-        return md5( \Aimeos\Cms\Tenancy::value() . '/' . $domain . '/' . $page . '/' . $lang );
-    }
-
-
-    /**
-     * Get the navigation for the page.
-     */
-    public function nav(): \Kalnoy\Nestedset\Collection
-    {
-        return $this->ancestors->first()?->descendants->toTree() ?: new \Kalnoy\Nestedset\Collection();
-    }
-
-
-    /**
-     * Get the prunable model query.
-     */
-    public function prunable(): Builder
-    {
-        if( is_int( $days = config( 'cms.prune' ) ) ) {
-            return static::withoutTenancy()->where( 'deleted_at', '<=', now()->subDays( $days ) );
-        }
-
-        // pruning is disabled
-        return static::withoutTenancy()->where( 'id', -1 );
+        return $this->morphMany( Version::class, 'versionable' );
     }
 }

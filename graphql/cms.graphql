@@ -196,6 +196,15 @@ type Page {
 
   "Meta data of page<->content relation, i.e. position, status, etc."
   ref: Ref
+
+  "List of versions for the page meta data"
+  versions: [Version!]! @morphMany
+
+  "Latest version of the page meta data"
+  latest: Version @hasOne
+
+  "Published version of the page meta data"
+  published: Version @hasOne
 }
 
 input PageInput {
@@ -263,6 +272,15 @@ type Content {
 
   "Meta data of page<->content relation, i.e. position, status, etc."
   ref: Ref
+
+  "List of versioned data for the content element"
+  versions: [Version!]! @morphMany
+
+  "Latest version of the content data"
+  latest: Version @hasOne
+
+  "Published version of the content data"
+  published: Version @hasOne
 }
 
 input ContentInput {
@@ -319,6 +337,20 @@ input RefSaveInput {
 
   "Visibility status of the content element within the page, 0=inactive, 1=visible"
   status: Int!
+}
+
+type Version {
+  "Unique version ID"
+  id: ID!
+
+  "Arbitrary versioned data"
+  data: JSON!
+
+  "Name of the last user who added, updated or deleted the versioned data"
+  editor: String!
+
+  "Date/time value when the versioned data was created"
+  created_at: String!
 }
 
 type File {

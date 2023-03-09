@@ -120,13 +120,44 @@ class GraphqlContentTest extends TestAbstract
     }
 
 
+    public function testContentVersions()
+    {
+        $this->seed( CmsSeeder::class );
+
+        $content = Content::firstOrFail();
+
+        $this->expectsDatabaseQueryCount( 2 );
+        $response = $this->actingAs( $this->user )->graphQL( '{
+            content(id: "' . $content->id . '") {
+                id
+                versions {
+                    data
+                    editor
+                }
+            }
+        }' )->assertJson( [
+            'data' => [
+                'content' => [
+                    'id' => (string) $content->id,
+                    'versions' => [
+                        [
+                            'data' => '{"type":"cms::heading","text":"Welcome to Laravel CMS"}',
+                            'editor' => 'seeder'
+                        ],
+                    ],
+                ],
+            ]
+        ] );
+    }
+
+
     public function testAddContent()
     {
         $this->seed( CmsSeeder::class );
 
         $file = File::firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 5 );
+        $this->expectsDatabaseQueryCount( 7 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 addContent(input: {
@@ -142,6 +173,9 @@ class GraphqlContentTest extends TestAbstract
                     files {
                         name
                     }
+                    latest {
+                        data
+                    }
                 }
             }
         ' );
@@ -150,12 +184,13 @@ class GraphqlContentTest extends TestAbstract
             'data' => [
                 'addContent' => [
                     'lang' => 'en',
-                    'data' => '{"key":"value"}',
+                    'data' => '{}',
                     'editor' => 'Test',
                     'pages' => [],
                     'files' => [
                         ['name' => 'Test image']
-                    ]
+                    ],
+                    'latest' => ['data' => '{"key":"value"}']
                 ],
             ]
         ] );
@@ -169,7 +204,7 @@ class GraphqlContentTest extends TestAbstract
         $root = Page::where('tag', 'root')->firstOrFail();
         $contents = $root->contents;
 
-        $this->expectsDatabaseQueryCount( 6 );
+        $this->expectsDatabaseQueryCount( 8 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 addContent(input: {
@@ -186,6 +221,9 @@ class GraphqlContentTest extends TestAbstract
                             status
                         }
                     }
+                    latest {
+                        data
+                    }
                 }
             }
         ' );
@@ -194,7 +232,7 @@ class GraphqlContentTest extends TestAbstract
             'data' => [
                 'addContent' => [
                     'lang' => 'en',
-                    'data' => '{"key":"value"}',
+                    'data' => '{}',
                     'editor' => 'Test',
                     'pages' => [
                         [
@@ -205,6 +243,7 @@ class GraphqlContentTest extends TestAbstract
                             ]
                         ]
                     ],
+                    'latest' => ['data' => '{"key":"value"}']
                 ],
             ]
         ] );
@@ -219,7 +258,7 @@ class GraphqlContentTest extends TestAbstract
         $file = File::firstOrFail();
         $content = Content::firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 6 );
+        $this->expectsDatabaseQueryCount( 9 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 saveContent(id: "' . $content->id . '", input: {
@@ -233,6 +272,12 @@ class GraphqlContentTest extends TestAbstract
                     files {
                         name
                     }
+                    latest {
+                        data
+                    }
+                    published {
+                        data
+                    }
                 }
             }
         ' );
@@ -244,11 +289,13 @@ class GraphqlContentTest extends TestAbstract
                 'saveContent' => [
                     'id' => $content->id,
                     'lang' => 'en',
-                    'data' => '{"key":"value"}',
+                    'data' => '{"type":"cms::heading","text":"Welcome to Laravel CMS"}',
                     'editor' => 'Test',
                     'files' => [
                         ['name' => 'Test image']
-                    ]
+                    ],
+                    'latest' => ['data' => '{"key":"value"}'],
+                    'published' => ['data' => '{"type":"cms::heading","text":"Welcome to Laravel CMS"}']
                ],
             ]
         ] );

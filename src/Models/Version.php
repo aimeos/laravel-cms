@@ -9,20 +9,18 @@ namespace Aimeos\Cms\Models;
 
 use Aimeos\Cms\Concerns\Tenancy;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\MassPrunable;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 
 /**
- * Page<->content reference model
+ * Version model
  */
-class Ref extends Model
+class Version extends Model
 {
+    use MassPrunable;
     use HasUuids;
     use Tenancy;
 
@@ -34,9 +32,18 @@ class Ref extends Model
      */
     protected $attributes = [
         'tenant_id' => '',
-        'position' => 0,
-        'status' => 0,
+        'data' => '{}',
+        'published' => false,
         'editor' => '',
+    ];
+
+    /**
+     * The automatic casts for the attributes.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'data' => 'object',
     ];
 
     /**
@@ -52,10 +59,8 @@ class Ref extends Model
      * @var array
      */
     protected $fillable = [
-        'page_id',
-        'content_id',
-        'position',
-        'status',
+        'data',
+        'editor',
     ];
 
     /**
@@ -63,7 +68,7 @@ class Ref extends Model
      *
      * @var string
      */
-    protected $table = 'cms_page_content';
+    protected $table = 'cms_versions';
 
 
     /**
@@ -81,10 +86,36 @@ class Ref extends Model
 
 
     /**
+     * Get the parent versionable model (page or content).
+     */
+    public function versionable() : MorphTo
+    {
+        return $this->morphTo();
+    }
+
+
+    /**
      * Generate a new UUID for the model.
      */
     public function newUniqueId(): string
     {
         return (string) new \Symfony\Component\Uid\UuidV7();
+    }
+
+
+    /**
+     * Get the prunable model query.
+     */
+    public function prunable(): Builder
+    {
+        if( is_int( $days = config( 'cms.prune' ) ) )
+        {
+            return static::withoutTenancy()
+                ->where( 'updated_at', '<=', now()->subDays( $days ) )
+                ->where( 'published', false );
+        }
+
+        // pruning is disabled
+        return static::withoutTenancy()->where( 'id', '' );
     }
 }

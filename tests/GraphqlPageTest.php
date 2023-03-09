@@ -249,6 +249,78 @@ class GraphqlPageTest extends TestAbstract
     }
 
 
+    public function testPageVersions()
+    {
+        $this->seed( CmsSeeder::class );
+
+        $page = Page::where('tag', 'root')->firstOrFail();
+
+        $this->expectsDatabaseQueryCount( 2 );
+        $response = $this->actingAs( $this->user )->graphQL( "{
+            page(id: {$page->id}) {
+                id
+                versions {
+                    data
+                    editor
+                }
+            }
+        }" )->assertJson( [
+            'data' => [
+                'page' => [
+                    'id' => (string) $page->id,
+                    'versions' => [
+                        [
+                            'data' => '{"meta":{"type":"cms::meta","text":"Laravel CMS is outstanding"}}',
+                            'editor' => 'seeder'
+                        ],
+                    ],
+                ],
+            ]
+        ] );
+    }
+
+
+    public function testPageSimple()
+    {
+        $this->seed( CmsSeeder::class );
+
+        $page = Page::where('tag', 'disabled')->firstOrFail();
+
+        $this->expectsDatabaseQueryCount( 6 );
+        $response = $this->actingAs( $this->user )->graphQL( "{
+            page(id: {$page->id}) {
+                id
+                ancestors {
+                    id
+                }
+                children {
+                    id
+                }
+                contents {
+                    id
+                }
+                subtree {
+                    id
+                }
+                versions {
+                    id
+                }
+            }
+        }" )->assertJson( [
+            'data' => [
+                'page' => [
+                    'id' => (string) $page->id,
+                    'ancestors' => [],
+                    'children' => [],
+                    'contents' => [],
+                    'subtree' => [],
+                    'versions' => [],
+                ],
+            ]
+        ] );
+    }
+
+
     public function testPageContents()
     {
         $this->seed( CmsSeeder::class );
@@ -275,7 +347,7 @@ class GraphqlPageTest extends TestAbstract
                     'contents' => [
                         [
                             'lang' => '',
-                            'data' => '[{"type":"cms::heading","text":"Welcome to Laravel CMS"}]',
+                            'data' => '{"type":"cms::heading","text":"Welcome to Laravel CMS"}',
                             'ref' => [
                                 'position' => 0,
                                 'status' => 1,
@@ -292,7 +364,7 @@ class GraphqlPageTest extends TestAbstract
     {
         $this->seed( CmsSeeder::class );
 
-        $this->expectsDatabaseQueryCount( 3 );
+        $this->expectsDatabaseQueryCount( 4 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 addPage(input: {
@@ -333,6 +405,7 @@ class GraphqlPageTest extends TestAbstract
 
         $attr = collect($page->getAttributes())->except(['tenant_id', '_lft', '_rgt'])->all();
         $expected = ['id' => (string) $page->id, 'parent_id' => null] + $attr;
+        $expected['data'] = '{}'; // status is 0, so not yet published
 
         $response->assertJson( [
             'data' => [
@@ -348,7 +421,7 @@ class GraphqlPageTest extends TestAbstract
 
         $root = Page::where('tag', 'root')->firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 6 );
+        $this->expectsDatabaseQueryCount( 7 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 addPage(input: {
@@ -387,7 +460,7 @@ class GraphqlPageTest extends TestAbstract
         $root = Page::where('tag', 'root')->firstOrFail();
         $ref = Page::where('tag', 'blog')->firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 6 );
+        $this->expectsDatabaseQueryCount( 7 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 addPage(input: {
@@ -521,7 +594,7 @@ class GraphqlPageTest extends TestAbstract
 
         $root = Page::where('tag', 'root')->firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 3 );
+        $this->expectsDatabaseQueryCount( 6 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 savePage(id: "' . $root->id . '", input: {
@@ -554,6 +627,12 @@ class GraphqlPageTest extends TestAbstract
                     created_at
                     updated_at
                     deleted_at
+                    latest {
+                        data
+                    }
+                    published {
+                        data
+                    }
                 }
             }
         ' );
@@ -572,13 +651,15 @@ class GraphqlPageTest extends TestAbstract
                     'title' => "Test page",
                     'to' => "/to/page",
                     'tag' => "test",
-                    'data' => "{\"canonical\":\"to\/page\"}",
+                    'data' => "{\"meta\":{\"type\":\"cms::meta\",\"text\":\"Laravel CMS is outstanding\"}}",
                     'config' => "{\"key\":\"test\"}",
                     'status' => 0,
                     'cache' => 5,
                     'editor' => 'Test editor',
                     'created_at' => (string) $root->created_at,
                     'updated_at' => (string) $page->updated_at,
+                    'latest' => ['data' => '{"canonical":"to\\/page"}'],
+                    'published' => ['data' => '{"meta":{"type":"cms::meta","text":"Laravel CMS is outstanding"}}']
                 ],
             ]
         ] );

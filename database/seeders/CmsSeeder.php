@@ -51,33 +51,39 @@ class CmsSeeder extends Seeder
 
     protected function home()
     {
+        $content = Content::create([
+            'data' => ['type' => 'cms::heading', 'text' => 'Welcome to Laravel CMS'],
+            'editor' => 'seeder',
+        ]);
+        $content->versions()->create([
+            'data' => ['type' => 'cms::heading', 'text' => 'Welcome to Laravel CMS'],
+            'published' => true,
+            'editor' => 'seeder',
+        ]);
+
         $page = Page::create([
             'name' => 'Home',
             'title' => 'Home | LaravelCMS',
             'slug' => '',
             'tag' => 'root',
             'domain' => 'mydomain.tld',
+            'data' => ['meta' => ['type' => 'cms::meta', 'text' => 'Laravel CMS is outstanding']],
             'status' => 1,
             'editor' => 'seeder',
         ]);
-        $page->save();
-
-        $content = Content::create([
-            'data' => [
-                ['type' => 'cms::heading', 'text' => 'Welcome to Laravel CMS'],
-            ],
+        $page->versions()->create([
+            'data' => ['meta' => ['type' => 'cms::meta', 'text' => 'Laravel CMS is outstanding']],
+            'published' => true,
             'editor' => 'seeder',
         ]);
-        $content->save();
 
-        $ref = Ref::create([
+        Ref::create([
             'page_id' => $page->id,
             'content_id' => $content->id,
             'position' => 0,
             'status' => 1,
             'editor' => 'seeder',
         ]);
-        $ref->save();
 
         return $page;
     }
@@ -99,35 +105,42 @@ class CmsSeeder extends Seeder
             'data' => ['type' => 'cms::heading', 'text' => 'Blog example'],
             'editor' => 'seeder',
         ]);
-        $content->save();
+        $content->versions()->create([
+            'data' => ['type' => 'cms::heading', 'text' => 'Blog example'],
+            'published' => true,
+            'editor' => 'seeder',
+        ]);
 
-        $ref = Ref::create([
+        Ref::create([
             'page_id' => $page->id,
             'content_id' => $content->id,
             'position' => 0,
             'status' => 1,
             'editor' => 'seeder',
         ]);
-        $ref->save();
+
 
         $content = Content::create([
             'data' => ['type' => 'cms::blog'],
+            'editor' => 'seeder',
+        ]);
+        $content->versions()->create([
+            'data' => ['type' => 'cms::blog'],
+            'published' => true,
             'editor' => 'seeder',
         ]);
         $content->files()->syncWithPivotValues(
             collect( $files )->pluck( 'id' ),
             ['tenant_id' => \Aimeos\Cms\Tenancy::value()]
         );
-        $content->save();
 
-        $ref = Ref::create([
+        Ref::create([
             'page_id' => $page->id,
             'content_id' => $content->id,
             'position' => 1,
             'status' => 1,
             'editor' => 'seeder',
         ]);
-        $ref->save();
 
         return $this->addBlogArticle( $page );
     }
@@ -145,44 +158,49 @@ class CmsSeeder extends Seeder
         ]);
         $page->appendToNode( $blog )->save();
 
-        $content = Content::create([
-            'data' => [
-                'type' => 'cms::article',
-                'title' => 'Welcome to LaravelCMS',
-                'cover' => [
-                    'type' => 'cms::image',
-                    'name' => 'Welcome to LaravelCMS',
-                    'path' => 'https://aimeos.org/tips/wp-content/uploads/2023/01/ai-ecommerce-2.jpg',
-                    'previews' => [
-                        1000 => 'https://aimeos.org/tips/wp-content/uploads/2023/01/ai-ecommerce-2.jpg'
-                    ],
+        $data = [
+            'type' => 'cms::article',
+            'title' => 'Welcome to LaravelCMS',
+            'cover' => [
+                'type' => 'cms::image',
+                'name' => 'Welcome to LaravelCMS',
+                'path' => 'https://aimeos.org/tips/wp-content/uploads/2023/01/ai-ecommerce-2.jpg',
+                'previews' => [
+                    1000 => 'https://aimeos.org/tips/wp-content/uploads/2023/01/ai-ecommerce-2.jpg'
                 ],
-                'intro' => 'LaravelCMS is lightweight, lighting fast, easy to use, fully customizable and scalable from one-pagers to millions of pages',
-                'content' => [
-                    ['type' => 'cms::heading', 'level' => 2, 'text' => 'Rethink content management!'],
-                    ['type' => 'cms::text', 'text' => 'LaravelCMS is exceptional in every way. Headless and API-first!'],
-                    ['type' => 'cms::heading', 'level' => 2, 'text' => 'API first!'],
-                    ['type' => 'cms::text', 'text' => 'Use GraphQL for editing the pages, contents and files:'],
-                    ['type' => 'cms::code', 'language' => 'graphql', 'text' => 'mutation {
-  cmsLogin(email: "editor@example.org", password: "secret") {
-    name
-    email
-  }
-}'                  ],
-                ]
             ],
+            'intro' => 'LaravelCMS is lightweight, lighting fast, easy to use, fully customizable and scalable from one-pagers to millions of pages',
+            'content' => [
+                ['type' => 'cms::heading', 'level' => 2, 'text' => 'Rethink content management!'],
+                ['type' => 'cms::text', 'text' => 'LaravelCMS is exceptional in every way. Headless and API-first!'],
+                ['type' => 'cms::heading', 'level' => 2, 'text' => 'API first!'],
+                ['type' => 'cms::text', 'text' => 'Use GraphQL for editing the pages, contents and files:'],
+                ['type' => 'cms::code', 'language' => 'graphql', 'text' => 'mutation {
+cmsLogin(email: "editor@example.org", password: "secret") {
+name
+email
+}
+}'              ],
+            ]
+        ];
+
+        $content = Content::create([
+            'data' => $data,
             'editor' => 'seeder',
         ]);
-        $content->save();
+        $content->versions()->create([
+            'data' => $data,
+            'published' => true,
+            'editor' => 'seeder',
+        ]);
 
-        $ref = Ref::create([
+        Ref::create([
             'page_id' => $page->id,
             'content_id' => $content->id,
             'position' => 0,
             'status' => 1,
             'editor' => 'seeder',
         ]);
-        $ref->save();
 
         return $this;
     }
@@ -199,25 +217,29 @@ class CmsSeeder extends Seeder
         ]);
         $page->appendToNode( $home )->save();
 
-        $content = Content::create([
-            'data' => [
-                'type' => 'cms::markdown',
-                'text' => '# For Developers
+        $data = [
+            'type' => 'cms::markdown',
+            'text' => '# For Developers
 
 This is content created by GitHub-flavored markdown syntax',
-            ],
+        ];
+        $content = Content::create([
+            'data' => $data,
             'editor' => 'seeder',
         ]);
-        $content->save();
+        $content->versions()->create([
+            'data' => $data,
+            'published' => true,
+            'editor' => 'seeder',
+        ]);
 
-        $ref = Ref::create([
+        Ref::create([
             'page_id' => $page->id,
             'content_id' => $content->id,
             'position' => 0,
             'status' => 1,
             'editor' => 'seeder',
         ]);
-        $ref->save();
 
         return $this;
     }

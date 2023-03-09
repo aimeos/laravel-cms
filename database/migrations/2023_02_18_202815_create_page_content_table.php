@@ -18,13 +18,13 @@ return new class extends Migration
             $table->foreignId('page_id')->constrained('cms_pages')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignUuid('content_id')->constrained('cms_contents')->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('tenant_id');
-            $table->integer('position');
             $table->smallInteger('status');
+            $table->integer('position');
             $table->string('editor');
             $table->timestamps();
 
             $table->primary('id');
-            $table->unique(['page_id', 'content_id', 'tenant_id', 'position']);
+            $table->unique(['page_id', 'content_id', 'status', 'position']);
         });
     }
 

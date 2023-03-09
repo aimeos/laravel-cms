@@ -23,6 +23,8 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->primary('id');
+            $table->index(['lang', 'tenant_id']);
+            $table->index('deleted_at');
         });
     }
 

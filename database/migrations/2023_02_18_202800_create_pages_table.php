@@ -32,12 +32,12 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->unique( ['slug', 'lang', 'tenant_id'] );
-            $table->index( ['tag', 'lang', 'tenant_id', 'status'] );
-            $table->index( ['_lft', '_rgt', 'tenant_id', 'status'] );
-            $table->index( ['lang', 'tenant_id', 'status'] );
-            $table->index( ['parent_id', 'tenant_id'] );
-            $table->index( ['deleted_at'] );
+            $table->unique(['slug', 'domain', 'lang', 'tenant_id']);
+            $table->index(['_lft', '_rgt', 'tenant_id', 'status']);
+            $table->index(['tag', 'lang', 'tenant_id', 'status']);
+            $table->index(['lang', 'tenant_id', 'status']);
+            $table->index(['parent_id', 'tenant_id']);
+            $table->index(['deleted_at']);
         });
     }
 

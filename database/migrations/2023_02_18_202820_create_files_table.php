@@ -26,6 +26,10 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->primary('id');
+            $table->index(['mime', 'tenant_id']);
+            $table->index(['tag', 'tenant_id']);
+            $table->index(['name', 'tenant_id']);
+            $table->index('deleted_at');
         });
     }
 

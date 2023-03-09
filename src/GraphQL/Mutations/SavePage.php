@@ -27,7 +27,7 @@ final class SavePage
             $page->editor = $editor;
             $page->save();
 
-            if( isset( $args['input']['data'] ) )
+            if( isset( $args['input']['data'] ) && $args['input']['data'] !== $page->latest?->data )
             {
                 $page->versions()->create( [
                     'data' => $args['input']['data'],

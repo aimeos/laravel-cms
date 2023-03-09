@@ -25,7 +25,7 @@ final class SaveContent
             $content->editor = $editor;
             $content->save();
 
-            if( isset( $args['input']['data'] ) )
+            if( isset( $args['input']['data'] ) && $args['input']['data'] !== $content->latest?->data )
             {
                 $version = $content->versions()->create( [
                     'data' => $args['input']['data'],

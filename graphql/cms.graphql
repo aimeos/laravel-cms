@@ -20,8 +20,7 @@ extend type Query {
     @find
 
   "Get all root level pages"
-  pages: [Page!]
-    @eq(key: "parent_id", value: null)
+  pages(parent_id: ID @eq): [Page!]
     @can(ability: "view")
     @softDeletes
     @paginate

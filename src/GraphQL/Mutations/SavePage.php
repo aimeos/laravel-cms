@@ -5,6 +5,7 @@ namespace Aimeos\Cms\GraphQL\Mutations;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Aimeos\Cms\Models\Version;
 use Aimeos\Cms\Models\Page;
 
 
@@ -34,6 +35,13 @@ final class SavePage
                     'published' => false,
                     'editor' => $editor
                 ] );
+
+                Version::where( 'versionable_id', $page->id )
+                    ->where( 'versionable_type', Page::class )
+                    ->where( 'published', '!=', true )
+                    ->offset( 10 )
+                    ->limit( 10 )
+                    ->delete();
             }
 
         }, 3 );

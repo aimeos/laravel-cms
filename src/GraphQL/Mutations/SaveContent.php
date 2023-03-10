@@ -4,6 +4,7 @@ namespace Aimeos\Cms\GraphQL\Mutations;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Aimeos\Cms\Models\Version;
 use Aimeos\Cms\Models\Content;
 
 
@@ -34,6 +35,13 @@ final class SaveContent
                 ] );
 
                 $version->files()->sync( $args['files'] ?? [] );
+
+                Version::where( 'versionable_id', $content->id )
+                    ->where( 'versionable_type', Content::class )
+                    ->where( 'published', '!=', true )
+                    ->offset( 10 )
+                    ->limit( 10 )
+                    ->delete();
             }
 
         }, 3 );

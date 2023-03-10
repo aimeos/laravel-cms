@@ -252,7 +252,7 @@ class GraphqlContentTest extends TestAbstract
         $file = File::firstOrFail();
         $content = Page::where( 'tag', 'blog' )->firstOrFail()->contents->first();
 
-        $this->expectsDatabaseQueryCount( 9 );
+        $this->expectsDatabaseQueryCount( 10 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 saveContent(id: "' . $content->id . '", input: {

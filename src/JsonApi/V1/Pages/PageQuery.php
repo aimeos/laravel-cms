@@ -31,8 +31,7 @@ class PageQuery extends ResourceQuery
                 'string',
                 JsonApiRule::includePaths()->forget(
                     'anchestors.content',
-                    'children.content',
-                    'parent.content',
+                    'children.children',
                     'subtree.content',
                 ),
             ],

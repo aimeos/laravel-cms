@@ -132,6 +132,24 @@ class JsonapiTest extends TestAbstract
     }
 
 
+    public function testPageIncludeChildrenChildren()
+    {
+        $this->seed( \Database\Seeders\CmsSeeder::class );
+
+        $page = \Aimeos\Cms\Models\Page::where('tag', 'root')->firstOrFail();
+        $expected = [];
+
+        foreach( $page->children->filter( fn($item) => $item->status > 0 ) as $item ) {
+            $expected[] = ['type' => 'pages', 'id' => $item->id];
+        }
+
+        $this->expectsDatabaseQueryCount( 1 );
+        $response = $this->jsonApi()->expects( 'pages' )->includePaths( 'children.children' )->get( "cms/pages/{$page->id}" );
+
+        $response->assertStatus( 400 );
+    }
+
+
     public function testPageIncludeContent()
     {
         $this->seed( \Database\Seeders\CmsSeeder::class );

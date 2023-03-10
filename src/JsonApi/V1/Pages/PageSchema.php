@@ -23,6 +23,11 @@ use Aimeos\Cms\Models\Page;
 class PageSchema extends Schema
 {
     /**
+     * Default page value if no pagination was sent by the client.
+     */
+    protected ?array $defaultPagination = ['number' => 1];
+
+    /**
      * The maximum depth of include paths.
      *
      * @var int

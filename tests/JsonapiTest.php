@@ -44,7 +44,7 @@ class JsonapiTest extends TestAbstract
 
         $pages = \Aimeos\Cms\Models\Page::where('tag', 'root')->get();
 
-        // $this->expectsDatabaseQueryCount( 1 );
+        $this->expectsDatabaseQueryCount( 2 ); // pages + page count
         $response = $this->jsonApi()->expects( 'pages' )->get( 'cms/pages' );
 
         $response->assertFetchedMany( $pages );
@@ -58,7 +58,7 @@ class JsonapiTest extends TestAbstract
 
         $pages = \Aimeos\Cms\Models\Page::where('tag', 'root')->get();
 
-        // $this->expectsDatabaseQueryCount( 1 );
+        $this->expectsDatabaseQueryCount( 2 ); // pages + page count
         $response = $this->jsonApi()->expects( 'pages' )
             ->filter( ['domain' => 'mydomain.tld', 'tag' => 'root', 'lang' => ''] )
             ->get( "cms/pages" );
@@ -73,7 +73,7 @@ class JsonapiTest extends TestAbstract
 
         $page = \Aimeos\Cms\Models\Page::where('tag', 'root')->firstOrFail();
 
-        // $this->expectsDatabaseQueryCount( 1 );
+        $this->expectsDatabaseQueryCount( 1 );
         $response = $this->jsonApi()->expects( 'pages' )->get( "cms/pages/{$page->id}" );
 
         $response->assertFetchedOne( $page );
@@ -86,11 +86,13 @@ class JsonapiTest extends TestAbstract
         $this->seed( \Database\Seeders\CmsSeeder::class );
 
         $page = \Aimeos\Cms\Models\Page::where('tag', 'blog')->firstOrFail();
+        $contents = $page->content;
 
+        $this->expectsDatabaseQueryCount( 2 ); // page + contents
         $response = $this->jsonApi()->expects( 'contents' )->get( "cms/pages/{$page->id}/content" );
-        $response->assertFetchedManyInOrder( $page->content );
 
-        $this->assertGreaterThanOrEqual( 2, count( $page->content ) );
+        $response->assertFetchedManyInOrder( $contents );
+        $this->assertGreaterThanOrEqual( 2, count( $contents ) );
     }
 
 
@@ -105,7 +107,7 @@ class JsonapiTest extends TestAbstract
             $expected[] = ['type' => 'pages', 'id' => $item->id];
         }
 
-        // $this->expectsDatabaseQueryCount( 2 );
+        $this->expectsDatabaseQueryCount( 2 ); // page + ancestors
         $response = $this->jsonApi()->expects( 'pages' )->includePaths( 'ancestors' )->get( "cms/pages/{$page->id}" );
 
         $response->assertFetchedOne( $page )->assertIncluded( $expected );
@@ -124,7 +126,7 @@ class JsonapiTest extends TestAbstract
             $expected[] = ['type' => 'pages', 'id' => $item->id];
         }
 
-        // $this->expectsDatabaseQueryCount( 2 );
+        $this->expectsDatabaseQueryCount( 2 ); // page + child pages
         $response = $this->jsonApi()->expects( 'pages' )->includePaths( 'children' )->get( "cms/pages/{$page->id}" );
 
         $response->assertFetchedOne( $page )->assertIncluded( $expected );
@@ -161,6 +163,7 @@ class JsonapiTest extends TestAbstract
             $expected[] = ['type' => 'contents', 'id' => $item->id];
         }
 
+        $this->expectsDatabaseQueryCount( 2 ); // page + contents
         $response = $this->jsonApi()->expects( 'pages' )->includePaths( 'content' )->get( "cms/pages/{$page->id}" );
         $response->assertFetchedOne( $page )->assertIncluded( $expected );
 
@@ -179,7 +182,7 @@ class JsonapiTest extends TestAbstract
             $expected[] = ['type' => 'pages', 'id' => $item->id];
         }
 
-        // $this->expectsDatabaseQueryCount( 2 );
+        $this->expectsDatabaseQueryCount( 2 ); // page + page subtree
         $response = $this->jsonApi()->expects( 'pages' )->includePaths( 'subtree' )->get( "cms/pages/{$page->id}" );
 
         $response->assertFetchedOne( $page )->assertIncluded( $expected );
@@ -194,7 +197,7 @@ class JsonapiTest extends TestAbstract
         $page = \Aimeos\Cms\Models\Page::where('tag', 'article')->firstOrFail();
         $expected = $page->parent;
 
-        // $this->expectsDatabaseQueryCount( 2 );
+        $this->expectsDatabaseQueryCount( 2 ); // page + parent page
         $response = $this->jsonApi()->expects( 'pages' )->includePaths( 'parent' )->get( "cms/pages/{$page->id}" );
 
         $response->assertFetchedOne( $page )->assertIsIncluded( 'pages', $expected );
@@ -207,7 +210,7 @@ class JsonapiTest extends TestAbstract
 
         $page = \Aimeos\Cms\Models\Page::where('tag', 'disabled')->firstOrFail();
 
-        // $this->expectsDatabaseQueryCount( 1 );
+        $this->expectsDatabaseQueryCount( 1 );
         $response = $this->jsonApi()->expects( 'pages' )->get( "cms/pages/{$page->id}" );
 
         $response->assertNotFound();
@@ -220,7 +223,7 @@ class JsonapiTest extends TestAbstract
 
         $page = \Aimeos\Cms\Models\Page::where('tag', 'disabled-child')->firstOrFail();
 
-        // $this->expectsDatabaseQueryCount( 2 );
+        $this->expectsDatabaseQueryCount( 2 ); // page + parent
         $response = $this->jsonApi()->expects( 'pages' )->includePaths( 'parent' )->get( "cms/pages/{$page->id}" );
 
         $response->assertFetchedOne( $page )->assertDoesntHaveIncluded();
@@ -233,7 +236,7 @@ class JsonapiTest extends TestAbstract
 
         $page = \Aimeos\Cms\Models\Page::where('tag', 'hidden')->firstOrFail();
 
-        // $this->expectsDatabaseQueryCount( 1 );
+        $this->expectsDatabaseQueryCount( 1 );
         $response = $this->jsonApi()->expects( 'pages' )->get( "cms/pages/{$page->id}" );
 
         $response->assertFetchedOne( $page );

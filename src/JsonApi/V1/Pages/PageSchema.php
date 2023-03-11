@@ -98,7 +98,7 @@ class PageSchema extends Schema
             HasMany::make( 'subtree' )->type( 'pages' )->readOnly()->serializeUsing(
                 static fn($relation) => $relation->withoutLinks()
             ),
-            BelongsToMany::make( 'content' )->type( 'contents' )->readOnly()->serializeUsing(
+            BelongsToMany::make( 'contents' )->readOnly()->serializeUsing(
                 static fn($relation) => $relation->withoutLinks()
             ),
         ];

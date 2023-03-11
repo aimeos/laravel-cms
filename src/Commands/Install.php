@@ -273,7 +273,7 @@ Made with <fg=green>love</> by the LaravelCMS community. Be a part of it!
 \LaravelJsonApi\Laravel\Facades\JsonApiRoute::server("cms")->prefix("cms")->resources(function($server) {
     $server->resource("pages", \LaravelJsonApi\Laravel\Http\Controllers\JsonApiController::class)->readOnly()
         ->relationships(function ($relationships) {
-            $relationships->hasOne("content")->readOnly();
+            $relationships->hasOne("contents")->readOnly();
         });
 });';
 

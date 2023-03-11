@@ -24,7 +24,7 @@ class JsonapiTest extends TestAbstract
         \LaravelJsonApi\Laravel\Facades\JsonApiRoute::server("cms")->prefix("cms")->resources(function($server) {
             $server->resource("pages", \LaravelJsonApi\Laravel\Http\Controllers\JsonApiController::class)->readOnly()
                 ->relationships(function ($relationships) {
-                    $relationships->hasOne('content')->readOnly();
+                    $relationships->hasOne('contents')->readOnly();
                 });
             });
     }
@@ -89,7 +89,7 @@ class JsonapiTest extends TestAbstract
         $contents = $page->content;
 
         $this->expectsDatabaseQueryCount( 2 ); // page + contents
-        $response = $this->jsonApi()->expects( 'contents' )->get( "cms/pages/{$page->id}/content" );
+        $response = $this->jsonApi()->expects( 'contents' )->get( "cms/pages/{$page->id}/contents" );
 
         $response->assertFetchedManyInOrder( $contents );
         $this->assertGreaterThanOrEqual( 2, count( $contents ) );
@@ -164,7 +164,7 @@ class JsonapiTest extends TestAbstract
         }
 
         $this->expectsDatabaseQueryCount( 2 ); // page + contents
-        $response = $this->jsonApi()->expects( 'pages' )->includePaths( 'content' )->get( "cms/pages/{$page->id}" );
+        $response = $this->jsonApi()->expects( 'pages' )->includePaths( 'contents' )->get( "cms/pages/{$page->id}" );
         $response->assertFetchedOne( $page )->assertIncluded( $expected );
 
         $this->assertGreaterThanOrEqual( 1, count( $expected ) );

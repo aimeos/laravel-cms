@@ -1,16 +1,27 @@
 remote_theme: "mmistakes/minimal-mistakes@4.24.0"
-include: ["docs"]
 plugins:
   - jekyll-include-cache
+include: ["docs"]
+name: "Aimeos"
+description: "Simple like Wordpress, powerful as Contentful! The easy, flexible and scalable API-first Laravel CMS package - Open Source"
+title: "Laravel CMS"
+title_separator: "|"
+comments:
+  provider: "disqus"
+  disqus:
+    shortname: "aimeos"
+lunr:
+  search_within_pages: true
 defaults:
   - scope:
       path: ""
       type: pages
     values:
+      classes: wide
       layout: single
       read_time: false
       author_profile: false
       share: false
-      comments: false
+      comments: true
       sidebar:
         nav: "docs"

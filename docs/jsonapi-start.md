@@ -1,8 +1,7 @@
 ---
 title: "Quick-Start Guide"
 permalink: /jsonapi/start/
-excerpt: "How to retrieve the data most often used from LaravelCMS"
-classes: wide
+excerpt: "How to retrieve the data from LaravelCMS using the JSON:API"
 ---
 
 ## Root page

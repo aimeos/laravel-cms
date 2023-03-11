@@ -1,0 +1,5 @@
+docs:
+  - title: "Frontend JSON:API"
+    children:
+      - title: "Quick-Start Guide"
+        url: /jsonapi/start/

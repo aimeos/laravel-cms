@@ -5,8 +5,8 @@ plugins:
 defaults:
   docs:
   - scope:
-      path: "docs"
-      type: pages
+      path: ""
+      type: docs
     values:
-      layout: single
-      author_profile: false
+      sidebar:
+        nav: "docs"

@@ -1,3 +1,11 @@
+---
+title: "Quick-Start Guide"
+permalink: /jsonapi/start/
+excerpt: "How to retrieve the data most often used from LaravelCMS"
+classes: wide
+---
+
+## Root page
 
 Retrieve the root page with content and first level sub-pages to build the navigation:
 
@@ -7,15 +15,19 @@ http://localhost/api/cms/pages?filter[tag]=root&include=children,content
 http://localhost/api/cms/pages?filter[tag]=root&filter[lang]=en&include=children,content
 ```
 
-Retrieve the root page with content and up to three levels of sub-pages to build a mega menu:
+## Root page with mega-menu
+
+Retrieve the root page with content and up to three levels of sub-pages to build a mega-menu:
 
 ```
-http://localhost/api/cms/pages?filter[tag]=root&include=descendants,content
+http://localhost/api/cms/pages?filter[tag]=root&include=subtree,content
 // with locale
-http://localhost/api/cms/pages?filter[tag]=root&filter[lang]=en&include=descendants,content
+http://localhost/api/cms/pages?filter[tag]=root&filter[lang]=en&include=subtree,content
 ```
 
-Retrieve a specific page by ID whose URL you've gotten from one of the previous responses with its ancestor pages for the breadcrumb and its content:
+## Subsequent pages with breadcrumb
+
+Retrieve a specific page whose URL you've gotten from one of the previous responses with its ancestor pages for the breadcrumb and its content (add `?include=ancestors,content` to the page URL):
 
 ```
 http://localhost/api/cms/pages/<ID>?include=ancestors,content

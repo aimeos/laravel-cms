@@ -6,6 +6,7 @@ name: "Aimeos"
 description: "Simple like Wordpress, powerful as Contentful! The easy, flexible and scalable API-first Laravel CMS package - Open Source"
 title: "Laravel CMS"
 title_separator: "|"
+#og_image: /assets/images/site-logo.png
 comments:
   provider: "disqus"
   disqus:

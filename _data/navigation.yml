@@ -1,3 +1,7 @@
+main:
+  - title: "Frontend API"
+    url: /jsonapi/start/
+
 docs:
   - title: "Frontend JSON:API"
     children:

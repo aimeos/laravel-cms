@@ -3,7 +3,6 @@ include: ["docs"]
 plugins:
   - jekyll-include-cache
 defaults:
-  docs:
   - scope:
       path: ""
       type: docs

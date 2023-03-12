@@ -171,6 +171,27 @@ class JsonapiTest extends TestAbstract
     }
 
 
+    public function testPageFilterSubtree()
+    {
+        $this->seed( \Database\Seeders\CmsSeeder::class );
+
+        $pages = \Aimeos\Cms\Models\Page::where('tag', 'root')->get();
+        $expected = [];
+
+        foreach( $pages->first()->subtree as $item ) {
+            $expected[] = ['type' => 'pages', 'id' => $item->id];
+        }
+
+        $this->expectsDatabaseQueryCount( 3 ); // page + count + page subtree
+        $response = $this->jsonApi()->expects( 'pages' )
+            ->filter( ['domain' => 'mydomain.tld', 'tag' => 'root', 'lang' => ''] )
+            ->includePaths( 'subtree' )->get( "cms/pages" );
+
+        $response->assertFetchedMany( $pages )->assertIncluded( $expected );
+        $this->assertEquals( 4, count( $expected ) );
+    }
+
+
     public function testPageIncludeSubtree()
     {
         $this->seed( \Database\Seeders\CmsSeeder::class );

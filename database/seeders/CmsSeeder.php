@@ -20,9 +20,9 @@ class CmsSeeder extends Seeder
      */
     public function run()
     {
+        File::where('tenant_id', 'demo')->delete();
         Version::where('tenant_id', 'demo')->delete();
         Content::where('tenant_id', 'demo')->delete();
-        File::where('tenant_id', 'demo')->delete();
         Page::where('tenant_id', 'demo')->delete();
 
         $home = $this->home();
@@ -42,7 +42,7 @@ class CmsSeeder extends Seeder
             'tag' => 'test',
             'name' => 'Test image',
             'path' => 'test/path/test-image.jpg',
-            'previews' => '{"1000": "test/path/test-image-1000.jpg", "500": "test/path/test-image-500.jpg"}',
+            'previews' => ["1000" => "test/path/test-image-1000.jpg", "500" => "test/path/test-image-500.jpg"],
             'editor' => 'seeder',
         ]);
     }
@@ -178,18 +178,6 @@ class CmsSeeder extends Seeder
                 ],
             ],
             'intro' => 'LaravelCMS is lightweight, lighting fast, easy to use, fully customizable and scalable from one-pagers to millions of pages',
-            'content' => [
-                ['type' => 'cms::heading', 'level' => 2, 'text' => 'Rethink content management!'],
-                ['type' => 'cms::text', 'text' => 'LaravelCMS is exceptional in every way. Headless and API-first!'],
-                ['type' => 'cms::heading', 'level' => 2, 'text' => 'API first!'],
-                ['type' => 'cms::text', 'text' => 'Use GraphQL for editing the pages, contents and files:'],
-                ['type' => 'cms::code', 'language' => 'graphql', 'text' => 'mutation {
-  cmsLogin(email: "editor@example.org", password: "secret") {
-    name
-    email
-  }
-}'              ],
-            ]
         ];
 
         $content = Content::create([
@@ -210,6 +198,126 @@ class CmsSeeder extends Seeder
             'page_id' => $page->id,
             'content_id' => $content->id,
             'position' => 0,
+            'status' => 1,
+            'editor' => 'seeder',
+        ]);
+
+
+        $data = ['type' => 'cms::heading', 'level' => 2, 'text' => 'Rethink content management!'];
+        $content = Content::create([
+            'tenant_id' => 'demo',
+            'data' => $data,
+            'editor' => 'seeder',
+        ]);
+        $version = $content->versions()->create([
+            'tenant_id' => 'demo',
+            'data' => $data,
+            'published' => true,
+            'editor' => 'seeder',
+        ]);
+
+        Ref::create([
+            'tenant_id' => 'demo',
+            'page_id' => $page->id,
+            'content_id' => $content->id,
+            'position' => 1,
+            'status' => 1,
+            'editor' => 'seeder',
+        ]);
+
+
+        $data = ['type' => 'cms::text', 'text' => 'LaravelCMS is exceptional in every way. Headless and API-first!'];
+        $content = Content::create([
+            'tenant_id' => 'demo',
+            'data' => $data,
+            'editor' => 'seeder',
+        ]);
+        $version = $content->versions()->create([
+            'tenant_id' => 'demo',
+            'data' => $data,
+            'published' => true,
+            'editor' => 'seeder',
+        ]);
+
+        Ref::create([
+            'tenant_id' => 'demo',
+            'page_id' => $page->id,
+            'content_id' => $content->id,
+            'position' => 1,
+            'status' => 1,
+            'editor' => 'seeder',
+        ]);
+
+
+        $data = ['type' => 'cms::heading', 'level' => 2, 'text' => 'API first!'];
+        $content = Content::create([
+            'tenant_id' => 'demo',
+            'data' => $data,
+            'editor' => 'seeder',
+        ]);
+        $version = $content->versions()->create([
+            'tenant_id' => 'demo',
+            'data' => $data,
+            'published' => true,
+            'editor' => 'seeder',
+        ]);
+
+        Ref::create([
+            'tenant_id' => 'demo',
+            'page_id' => $page->id,
+            'content_id' => $content->id,
+            'position' => 1,
+            'status' => 1,
+            'editor' => 'seeder',
+        ]);
+
+
+        $data = ['type' => 'cms::text', 'text' => 'Use GraphQL for editing the pages, contents and files:'];
+        $content = Content::create([
+            'tenant_id' => 'demo',
+            'data' => $data,
+            'editor' => 'seeder',
+        ]);
+        $version = $content->versions()->create([
+            'tenant_id' => 'demo',
+            'data' => $data,
+            'published' => true,
+            'editor' => 'seeder',
+        ]);
+
+        Ref::create([
+            'tenant_id' => 'demo',
+            'page_id' => $page->id,
+            'content_id' => $content->id,
+            'position' => 1,
+            'status' => 1,
+            'editor' => 'seeder',
+        ]);
+
+
+        $data = ['type' => 'cms::code', 'language' => 'graphql', 'text' => 'mutation {
+  cmsLogin(email: "editor@example.org", password: "secret") {
+    name
+    email
+  }
+}'      ];
+        $content = Content::create([
+            'tenant_id' => 'demo',
+            'data' => $data,
+            'editor' => 'seeder',
+        ]);
+        $version = $content->versions()->create([
+            'tenant_id' => 'demo',
+            'data' => $data,
+            'published' => true,
+            'editor' => 'seeder',
+        ]);
+
+        Ref::create([
+            'tenant_id' => 'demo',
+            'page_id' => $page->id,
+            'content_id' => $content->id,
+            'position' => 1,
             'status' => 1,
             'editor' => 'seeder',
         ]);

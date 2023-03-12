@@ -9,12 +9,11 @@ docs:
     children:
       - title: "Quick-Start Guide"
         url: /jsonapi/start/
-        children:
-          - title: "Root page with navigation"
-            url: /jsonapi/root-navigation/
-          - title: "Root page with mega-menu"
-            url: /jsonapi/root-megamenu/
-          - title: "Sub-pages with breadcrumb"
-            url: /jsonapi/subpages-breadcrumb/
-          - title: "Content only"
-            url: /jsonapi/content-only/
+      - title: "Root page with navigation"
+        url: /jsonapi/root-navigation/
+      - title: "Root page with mega-menu"
+        url: /jsonapi/root-megamenu/
+      - title: "Sub-pages with breadcrumb"
+        url: /jsonapi/subpages-breadcrumb/
+      - title: "Content only"
+        url: /jsonapi/content-only/

@@ -271,7 +271,7 @@ Made with <fg=green>love</> by the LaravelCMS community. Be a part of it!
 
         $string = '
 \LaravelJsonApi\Laravel\Facades\JsonApiRoute::server("cms")->prefix("cms")->resources(function($server) {
-    $server->resource("pages", \LaravelJsonApi\Laravel\Http\Controllers\JsonApiController::class)->readOnly()
+    $server->resource("pages", \Aimeos\Cms\JsonApi\V1\Controllers\PageController::class)->readOnly()
         ->relationships(function ($relationships) {
             $relationships->hasOne("contents")->readOnly();
         });

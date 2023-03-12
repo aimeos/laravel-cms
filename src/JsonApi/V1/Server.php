@@ -18,14 +18,6 @@ class Server extends BaseServer
     protected string $baseUri = '/api/cms';
 
 
-    public function jsonApi(): JsonApi
-    {
-      return JsonApi::make( '1.0' )->setMeta( [
-        'baseurl' => Storage::url( '' )
-      ] );
-    }
-
-
     /**
      * Bootstrap the server when it is handling an HTTP request.
      *

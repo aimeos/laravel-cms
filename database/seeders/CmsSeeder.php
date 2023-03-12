@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
+use Aimeos\Cms\Models\Version;
 use Aimeos\Cms\Models\Content;
 use Aimeos\Cms\Models\File;
 use Aimeos\Cms\Models\Page;
@@ -19,9 +20,10 @@ class CmsSeeder extends Seeder
      */
     public function run()
     {
-        Page::truncate();
-        File::truncate();
-        Content::truncate();
+        Version::where('tenant_id', 'demo')->delete();
+        Content::where('tenant_id', 'demo')->delete();
+        File::where('tenant_id', 'demo')->delete();
+        Page::where('tenant_id', 'demo')->delete();
 
         $home = $this->home();
 
@@ -35,6 +37,7 @@ class CmsSeeder extends Seeder
     protected function file()
     {
         return File::create([
+            'tenant_id' => 'demo',
             'mime' => 'image/jpeg',
             'tag' => 'test',
             'name' => 'Test image',
@@ -48,16 +51,19 @@ class CmsSeeder extends Seeder
     protected function home()
     {
         $content = Content::create([
+            'tenant_id' => 'demo',
             'data' => ['type' => 'cms::heading', 'text' => 'Welcome to Laravel CMS'],
             'editor' => 'seeder',
         ]);
         $content->versions()->create([
+            'tenant_id' => 'demo',
             'data' => ['type' => 'cms::heading', 'text' => 'Welcome to Laravel CMS'],
             'published' => true,
             'editor' => 'seeder',
         ]);
 
         $page = Page::create([
+            'tenant_id' => 'demo',
             'name' => 'Home',
             'title' => 'Home | LaravelCMS',
             'slug' => '',
@@ -68,12 +74,14 @@ class CmsSeeder extends Seeder
             'editor' => 'seeder',
         ]);
         $page->versions()->create([
+            'tenant_id' => 'demo',
             'data' => ['meta' => ['type' => 'cms::meta', 'text' => 'Laravel CMS is outstanding']],
             'published' => true,
             'editor' => 'seeder',
         ]);
 
         Ref::create([
+            'tenant_id' => 'demo',
             'page_id' => $page->id,
             'content_id' => $content->id,
             'position' => 0,
@@ -88,6 +96,7 @@ class CmsSeeder extends Seeder
     protected function addBlog( Page $home )
     {
         $page = Page::create([
+            'tenant_id' => 'demo',
             'name' => 'Blog',
             'title' => 'Blog | LaravelCMS',
             'slug' => 'blog',
@@ -98,16 +107,19 @@ class CmsSeeder extends Seeder
         $page->appendToNode( $home )->save();
 
         $content = Content::create([
+            'tenant_id' => 'demo',
             'data' => ['type' => 'cms::heading', 'text' => 'Blog example'],
             'editor' => 'seeder',
         ]);
         $content->versions()->create([
+            'tenant_id' => 'demo',
             'data' => ['type' => 'cms::heading', 'text' => 'Blog example'],
             'published' => true,
             'editor' => 'seeder',
         ]);
 
         Ref::create([
+            'tenant_id' => 'demo',
             'page_id' => $page->id,
             'content_id' => $content->id,
             'position' => 0,
@@ -117,16 +129,19 @@ class CmsSeeder extends Seeder
 
 
         $content = Content::create([
+            'tenant_id' => 'demo',
             'data' => ['type' => 'cms::blog'],
             'editor' => 'seeder',
         ]);
         $content->versions()->create([
+            'tenant_id' => 'demo',
             'data' => ['type' => 'cms::blog'],
             'published' => true,
             'editor' => 'seeder',
         ]);
 
         Ref::create([
+            'tenant_id' => 'demo',
             'page_id' => $page->id,
             'content_id' => $content->id,
             'position' => 1,
@@ -141,6 +156,7 @@ class CmsSeeder extends Seeder
     protected function addBlogArticle( Page $blog )
     {
         $page = Page::create([
+            'tenant_id' => 'demo',
             'name' => 'Welcome to LaravelCMS',
             'title' => 'Welcome to LaravelCMS | LaravelCMS',
             'slug' => 'welcome-to-laravelcms',
@@ -168,19 +184,21 @@ class CmsSeeder extends Seeder
                 ['type' => 'cms::heading', 'level' => 2, 'text' => 'API first!'],
                 ['type' => 'cms::text', 'text' => 'Use GraphQL for editing the pages, contents and files:'],
                 ['type' => 'cms::code', 'language' => 'graphql', 'text' => 'mutation {
-cmsLogin(email: "editor@example.org", password: "secret") {
-name
-email
-}
+  cmsLogin(email: "editor@example.org", password: "secret") {
+    name
+    email
+  }
 }'              ],
             ]
         ];
 
         $content = Content::create([
+            'tenant_id' => 'demo',
             'data' => $data,
             'editor' => 'seeder',
         ]);
         $version = $content->versions()->create([
+            'tenant_id' => 'demo',
             'data' => $data,
             'published' => true,
             'editor' => 'seeder',
@@ -188,6 +206,7 @@ email
         $version->files()->attach( $this->file() );
 
         Ref::create([
+            'tenant_id' => 'demo',
             'page_id' => $page->id,
             'content_id' => $content->id,
             'position' => 0,
@@ -202,6 +221,7 @@ email
     protected function addDev( Page $home )
     {
         $page = Page::create([
+            'tenant_id' => 'demo',
             'name' => 'Dev',
             'title' => 'For Developer | LaravelCMS',
             'slug' => 'dev',
@@ -217,16 +237,19 @@ email
 This is content created by GitHub-flavored markdown syntax',
         ];
         $content = Content::create([
+            'tenant_id' => 'demo',
             'data' => $data,
             'editor' => 'seeder',
         ]);
         $content->versions()->create([
+            'tenant_id' => 'demo',
             'data' => $data,
             'published' => true,
             'editor' => 'seeder',
         ]);
 
         Ref::create([
+            'tenant_id' => 'demo',
             'page_id' => $page->id,
             'content_id' => $content->id,
             'position' => 0,
@@ -241,6 +264,7 @@ This is content created by GitHub-flavored markdown syntax',
     protected function addDisabled( Page $home )
     {
         $page = Page::create([
+            'tenant_id' => 'demo',
             'name' => 'Disabled',
             'title' => 'Disabled page | LaravelCMS',
             'slug' => 'disabled',
@@ -251,6 +275,7 @@ This is content created by GitHub-flavored markdown syntax',
         $page->appendToNode( $home )->save();
 
         $child = Page::create([
+            'tenant_id' => 'demo',
             'name' => 'Disabled child',
             'title' => 'Disabled child | LaravelCMS',
             'slug' => 'disabled-child',
@@ -267,6 +292,7 @@ This is content created by GitHub-flavored markdown syntax',
     protected function addHidden( Page $home )
     {
         $page = Page::create([
+            'tenant_id' => 'demo',
             'name' => 'Hidden',
             'title' => 'Hidden page | LaravelCMS',
             'slug' => 'hidden',

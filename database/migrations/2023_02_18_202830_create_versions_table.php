@@ -24,7 +24,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->primary('id');
-            $table->index(['versionable_id', 'versionable_type', 'published', 'tenant_id']);
+            $table->index(['versionable_id', 'versionable_type', 'published', 'tenant_id'], 'idx_versions_id_type_published_tenantid');
             $table->index(['updated_at', 'published']);
         });
     }

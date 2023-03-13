@@ -28,7 +28,7 @@ class PageController extends JsonApiController
     public function read( ?Page $page, PageQuery $query ) : DataResponse
     {
         return DataResponse::make( $page )
-            ->withMeta( ['baseurl' => Storage::url( '' )] )
+            ->withMeta( ['baseurl' => Storage::disk( config( 'cms.disk', 'public' ) )->url( '' )] )
             ->withQueryParameters( $query );
     }
 
@@ -45,7 +45,7 @@ class PageController extends JsonApiController
     public function readRelatedContents( ?Page $page, $data, ResourceQuery $request ) : RelatedResponse
     {
         return RelatedResponse::make( $page, 'contents', $data )
-            ->withMeta( ['baseurl' => Storage::url( '' )] )
+            ->withMeta( ['baseurl' => Storage::disk( config( 'cms.disk', 'public' ) )->url( '' )] )
             ->withQueryParameters( $request );
     }
 
@@ -60,7 +60,7 @@ class PageController extends JsonApiController
     public function searched( $data, PageCollectionQuery $query ) : DataResponse
     {
         return DataResponse::make( $data )
-            ->withMeta( ['baseurl' => Storage::url( '' )] )
+            ->withMeta( ['baseurl' => Storage::disk( config( 'cms.disk', 'public' ) )->url( '' )] )
             ->withQueryParameters( $query );
     }
 }

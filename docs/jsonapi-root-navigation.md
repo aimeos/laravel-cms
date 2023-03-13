@@ -7,13 +7,13 @@ excerpt: "How to retrieve the root page and children from LaravelCMS using the J
 Retrieve the root page with content and first level sub-pages to build the navigation:
 
 ```
-http://localhost/api/cms/pages?filter[tag]=root&include=children,contents
+http://mydomain.tld/api/cms/pages?filter[tag]=root&include=children,contents
 ```
 
 In case the site uses more than one language and sets the `lang` property for each page:
 
 ```
-http://localhost/api/cms/pages?filter[tag]=root&filter[lang]=en&include=children,contents
+http://mydomain.tld/api/cms/pages?filter[tag]=root&filter[lang]=en&include=children,contents
 ```
 
 The result will be a JSON:API response which looks like:
@@ -21,6 +21,7 @@ The result will be a JSON:API response which looks like:
 ```json
 {
     "meta": {
+        "baseurl": "\/storage\/",
         "page": {
             "currentPage": 1,
             "from": 1,
@@ -31,14 +32,11 @@ The result will be a JSON:API response which looks like:
         }
     },
     "jsonapi": {
-        "version": "1.0",
-        "meta": {
-            "baseurl": "\/storage\/"
-        }
+        "version": "1.0"
     },
     "links": {
-        "first": "http:\/\/localhost:8000\/api\/cms\/pages?filter%5Btag%5D=root&include=children%2Ccontents&page%5Bnumber%5D=1&page%5Bsize%5D=15",
-        "last": "http:\/\/localhost:8000\/api\/cms\/pages?filter%5Btag%5D=root&include=children%2Ccontents&page%5Bnumber%5D=1&page%5Bsize%5D=15"
+        "first": "http:\/\/mydomain.tld\/api\/cms\/pages?filter%5Btag%5D=root&include=children%2Ccontents&page%5Bnumber%5D=1&page%5Bsize%5D=15",
+        "last": "http:\/\/mydomain.tld\/api\/cms\/pages?filter%5Btag%5D=root&include=children%2Ccontents&page%5Bnumber%5D=1&page%5Bsize%5D=15"
     },
     "data": [
         {
@@ -60,10 +58,22 @@ The result will be a JSON:API response which looks like:
                         "type": "cms::meta"
                     }
                 },
-                "createdAt": "2023-03-12T07:09:04.000000Z",
-                "updatedAt": "2023-03-12T07:09:04.000000Z"
+                "createdAt": "2023-03-12T16:06:26.000000Z",
+                "updatedAt": "2023-03-12T16:06:26.000000Z"
             },
             "relationships": {
+                "contents": {
+                    "links": {
+                        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/1\/contents",
+                        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/1\/relationships\/contents"
+                    },
+                    "data": [
+                        {
+                            "type": "contents",
+                            "id": "0186d692-be0b-798c-9450-0a676209b7a6"
+                        }
+                    ]
+                },
                 "children": {
                     "data": [
                         {
@@ -79,26 +89,26 @@ The result will be a JSON:API response which looks like:
                             "id": "5"
                         }
                     ]
-                },
-                "contents": {
-                    "links": {
-                        "related": "http:\/\/localhost:8000\/api\/cms\/pages\/1\/contents",
-                        "self": "http:\/\/localhost:8000\/api\/cms\/pages\/1\/relationships\/contents"
-                    },
-                    "data": [
-                        {
-                            "type": "contents",
-                            "id": "0186d4a6-c532-70f7-939d-1f8d774aa72c"
-                        }
-                    ]
                 }
             },
             "links": {
-                "self": "http:\/\/localhost:8000\/api\/cms\/pages\/1"
+                "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/1"
             }
         }
     ],
     "included": [
+        {
+            "type": "contents",
+            "id": "0186d692-be0b-798c-9450-0a676209b7a6",
+            "attributes": {
+                "lang": "",
+                "data": {
+                    "text": "Welcome to Laravel CMS",
+                    "type": "cms::heading"
+                },
+                "createdAt": "2023-03-12T16:06:26.000000Z"
+            }
+        },
         {
             "type": "pages",
             "id": "2",
@@ -113,19 +123,19 @@ The result will be a JSON:API response which looks like:
                 "domain": "",
                 "cache": 5,
                 "data": null,
-                "createdAt": "2023-03-12T07:09:04.000000Z",
-                "updatedAt": "2023-03-12T07:09:04.000000Z"
+                "createdAt": "2023-03-12T16:06:26.000000Z",
+                "updatedAt": "2023-03-12T16:06:26.000000Z"
             },
             "relationships": {
                 "contents": {
                     "links": {
-                        "related": "http:\/\/localhost:8000\/api\/cms\/pages\/2\/contents",
-                        "self": "http:\/\/localhost:8000\/api\/cms\/pages\/2\/relationships\/contents"
+                        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/2\/contents",
+                        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/2\/relationships\/contents"
                     }
                 }
             },
             "links": {
-                "self": "http:\/\/localhost:8000\/api\/cms\/pages\/2"
+                "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/2"
             }
         },
         {
@@ -142,19 +152,19 @@ The result will be a JSON:API response which looks like:
                 "domain": "",
                 "cache": 5,
                 "data": null,
-                "createdAt": "2023-03-12T07:09:05.000000Z",
-                "updatedAt": "2023-03-12T07:09:05.000000Z"
+                "createdAt": "2023-03-12T16:06:26.000000Z",
+                "updatedAt": "2023-03-12T16:06:26.000000Z"
             },
             "relationships": {
                 "contents": {
                     "links": {
-                        "related": "http:\/\/localhost:8000\/api\/cms\/pages\/4\/contents",
-                        "self": "http:\/\/localhost:8000\/api\/cms\/pages\/4\/relationships\/contents"
+                        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/4\/contents",
+                        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/4\/relationships\/contents"
                     }
                 }
             },
             "links": {
-                "self": "http:\/\/localhost:8000\/api\/cms\/pages\/4"
+                "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/4"
             }
         },
         {
@@ -171,31 +181,19 @@ The result will be a JSON:API response which looks like:
                 "domain": "",
                 "cache": 5,
                 "data": null,
-                "createdAt": "2023-03-12T07:09:05.000000Z",
-                "updatedAt": "2023-03-12T07:09:05.000000Z"
+                "createdAt": "2023-03-12T16:06:27.000000Z",
+                "updatedAt": "2023-03-12T16:06:27.000000Z"
             },
             "relationships": {
                 "contents": {
                     "links": {
-                        "related": "http:\/\/localhost:8000\/api\/cms\/pages\/5\/contents",
-                        "self": "http:\/\/localhost:8000\/api\/cms\/pages\/5\/relationships\/contents"
+                        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/5\/contents",
+                        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/5\/relationships\/contents"
                     }
                 }
             },
             "links": {
-                "self": "http:\/\/localhost:8000\/api\/cms\/pages\/5"
-            }
-        },
-        {
-            "type": "contents",
-            "id": "0186d4a6-c532-70f7-939d-1f8d774aa72c",
-            "attributes": {
-                "lang": "",
-                "data": {
-                    "text": "Welcome to Laravel CMS",
-                    "type": "cms::heading"
-                },
-                "createdAt": "2023-03-12T07:09:04.000000Z"
+                "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/5"
             }
         }
     ]

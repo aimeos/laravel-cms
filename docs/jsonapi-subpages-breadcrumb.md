@@ -7,21 +7,21 @@ excerpt: "How to retrieve the sub-pages with content and ancestors from LaravelC
 To retrieve a specific page whose URL you've gotten from one of the previous responses (in the `links/self` attribute of the item) with its ancestor pages for the breadcrumb and its content (add `?include=ancestors,contents` to the page URL):
 
 ```
-http://localhost/api/cms/pages/<ID>?include=ancestors,contents
+http://mydomain.tld/api/cms/pages/2?include=ancestors,contents
 ```
 
 The `included` section contains the list of content elements that should be displayed at the page if `include=contents` is added as parameter to the JSON:API URL the anchestor pages if the `include` parameter also contains `ancestors`, e.g.:
 
 ```json
 {
+    "meta": {
+        "baseurl": "\/storage\/"
+    },
     "jsonapi": {
-        "version": "1.0",
-        "meta": {
-            "baseurl": "\/storage\/"
-        }
+        "version": "1.0"
     },
     "links": {
-        "self": "http:\/\/localhost:8000\/api\/cms\/pages\/2"
+        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/2"
     },
     "data": {
         "type": "pages",
@@ -37,10 +37,26 @@ The `included` section contains the list of content elements that should be disp
             "domain": "",
             "cache": 5,
             "data": null,
-            "createdAt": "2023-03-12T07:09:04.000000Z",
-            "updatedAt": "2023-03-12T07:09:04.000000Z"
+            "createdAt": "2023-03-12T16:06:26.000000Z",
+            "updatedAt": "2023-03-12T16:06:26.000000Z"
         },
         "relationships": {
+            "contents": {
+                "links": {
+                    "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/2\/contents",
+                    "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/2\/relationships\/contents"
+                },
+                "data": [
+                    {
+                        "type": "contents",
+                        "id": "0186d692-be63-7611-a960-926d29954be3"
+                    },
+                    {
+                        "type": "contents",
+                        "id": "0186d692-be82-7bf7-96fe-f35f8d0b77b8"
+                    }
+                ]
+            },
             "ancestors": {
                 "data": [
                     {
@@ -48,29 +64,36 @@ The `included` section contains the list of content elements that should be disp
                         "id": "1"
                     }
                 ]
-            },
-            "contents": {
-                "links": {
-                    "related": "http:\/\/localhost:8000\/api\/cms\/pages\/2\/contents",
-                    "self": "http:\/\/localhost:8000\/api\/cms\/pages\/2\/relationships\/contents"
-                },
-                "data": [
-                    {
-                        "type": "contents",
-                        "id": "0186d4a6-c5ed-7437-a1c0-5932323f4f64"
-                    },
-                    {
-                        "type": "contents",
-                        "id": "0186d4a6-c610-7497-b94b-8eda51ae0b1c"
-                    }
-                ]
             }
         },
         "links": {
-            "self": "http:\/\/localhost:8000\/api\/cms\/pages\/2"
+            "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/2"
         }
     },
     "included": [
+        {
+            "type": "contents",
+            "id": "0186d692-be63-7611-a960-926d29954be3",
+            "attributes": {
+                "lang": "",
+                "data": {
+                    "text": "Blog example",
+                    "type": "cms::heading"
+                },
+                "createdAt": "2023-03-12T16:06:26.000000Z"
+            }
+        },
+        {
+            "type": "contents",
+            "id": "0186d692-be82-7bf7-96fe-f35f8d0b77b8",
+            "attributes": {
+                "lang": "",
+                "data": {
+                    "type": "cms::blog"
+                },
+                "createdAt": "2023-03-12T16:06:26.000000Z"
+            }
+        },
         {
             "type": "pages",
             "id": "1",
@@ -90,42 +113,19 @@ The `included` section contains the list of content elements that should be disp
                         "type": "cms::meta"
                     }
                 },
-                "createdAt": "2023-03-12T07:09:04.000000Z",
-                "updatedAt": "2023-03-12T07:09:04.000000Z"
+                "createdAt": "2023-03-12T16:06:26.000000Z",
+                "updatedAt": "2023-03-12T16:06:26.000000Z"
             },
             "relationships": {
                 "contents": {
                     "links": {
-                        "related": "http:\/\/localhost:8000\/api\/cms\/pages\/1\/contents",
-                        "self": "http:\/\/localhost:8000\/api\/cms\/pages\/1\/relationships\/contents"
+                        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/1\/contents",
+                        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/1\/relationships\/contents"
                     }
                 }
             },
             "links": {
-                "self": "http:\/\/localhost:8000\/api\/cms\/pages\/1"
-            }
-        },
-        {
-            "type": "contents",
-            "id": "0186d4a6-c5ed-7437-a1c0-5932323f4f64",
-            "attributes": {
-                "lang": "",
-                "data": {
-                    "text": "Blog example",
-                    "type": "cms::heading"
-                },
-                "createdAt": "2023-03-12T07:09:04.000000Z"
-            }
-        },
-        {
-            "type": "contents",
-            "id": "0186d4a6-c610-7497-b94b-8eda51ae0b1c",
-            "attributes": {
-                "lang": "",
-                "data": {
-                    "type": "cms::blog"
-                },
-                "createdAt": "2023-03-12T07:09:04.000000Z"
+                "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/1"
             }
         }
     ]

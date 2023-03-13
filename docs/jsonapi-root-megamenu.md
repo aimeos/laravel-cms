@@ -9,13 +9,13 @@ excerpt: "How to retrieve the root page with descendents from LaravelCMS using t
 Retrieve the root page with content and up to three levels of sub-pages to build a mega-menu:
 
 ```
-http://localhost/api/cms/pages?filter[tag]=root&include=subtree,contents
+http://mydomain.tld/api/cms/pages?filter[tag]=root&include=subtree,contents
 ```
 
 For multi-language sites, the `lang` filter parameter must be added:
 
 ```
-http://localhost/api/cms/pages?filter[tag]=root&filter[lang]=en&include=subtree,contents
+http://mydomain.tld/api/cms/pages?filter[tag]=root&filter[lang]=en&include=subtree,contents
 ```
 
 Then, the page tree (up to three levels deep) including the content for the root page will be returned:
@@ -23,6 +23,7 @@ Then, the page tree (up to three levels deep) including the content for the root
 ```json
 {
     "meta": {
+        "baseurl": "\/storage\/",
         "page": {
             "currentPage": 1,
             "from": 1,
@@ -33,14 +34,11 @@ Then, the page tree (up to three levels deep) including the content for the root
         }
     },
     "jsonapi": {
-        "version": "1.0",
-        "meta": {
-            "baseurl": "\/storage\/"
-        }
+        "version": "1.0"
     },
     "links": {
-        "first": "http:\/\/localhost:8000\/api\/cms\/pages?filter%5Btag%5D=root&include=subtree%2Ccontents&page%5Bnumber%5D=1&page%5Bsize%5D=15",
-        "last": "http:\/\/localhost:8000\/api\/cms\/pages?filter%5Btag%5D=root&include=subtree%2Ccontents&page%5Bnumber%5D=1&page%5Bsize%5D=15"
+        "first": "http:\/\/mydomain.tld\/api\/cms\/pages?filter%5Btag%5D=root&include=subtree%2Ccontents&page%5Bnumber%5D=1&page%5Bsize%5D=15",
+        "last": "http:\/\/mydomain.tld\/api\/cms\/pages?filter%5Btag%5D=root&include=subtree%2Ccontents&page%5Bnumber%5D=1&page%5Bsize%5D=15"
     },
     "data": [
         {
@@ -62,10 +60,22 @@ Then, the page tree (up to three levels deep) including the content for the root
                         "type": "cms::meta"
                     }
                 },
-                "createdAt": "2023-03-12T07:09:04.000000Z",
-                "updatedAt": "2023-03-12T07:09:04.000000Z"
+                "createdAt": "2023-03-12T16:06:26.000000Z",
+                "updatedAt": "2023-03-12T16:06:26.000000Z"
             },
             "relationships": {
+                "contents": {
+                    "links": {
+                        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/1\/contents",
+                        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/1\/relationships\/contents"
+                    },
+                    "data": [
+                        {
+                            "type": "contents",
+                            "id": "0186d692-be0b-798c-9450-0a676209b7a6"
+                        }
+                    ]
+                },
                 "subtree": {
                     "data": [
                         {
@@ -85,26 +95,26 @@ Then, the page tree (up to three levels deep) including the content for the root
                             "id": "5"
                         }
                     ]
-                },
-                "contents": {
-                    "links": {
-                        "related": "http:\/\/localhost:8000\/api\/cms\/pages\/1\/contents",
-                        "self": "http:\/\/localhost:8000\/api\/cms\/pages\/1\/relationships\/contents"
-                    },
-                    "data": [
-                        {
-                            "type": "contents",
-                            "id": "0186d4a6-c532-70f7-939d-1f8d774aa72c"
-                        }
-                    ]
                 }
             },
             "links": {
-                "self": "http:\/\/localhost:8000\/api\/cms\/pages\/1"
+                "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/1"
             }
         }
     ],
     "included": [
+        {
+            "type": "contents",
+            "id": "0186d692-be0b-798c-9450-0a676209b7a6",
+            "attributes": {
+                "lang": "",
+                "data": {
+                    "text": "Welcome to Laravel CMS",
+                    "type": "cms::heading"
+                },
+                "createdAt": "2023-03-12T16:06:26.000000Z"
+            }
+        },
         {
             "type": "pages",
             "id": "2",
@@ -119,19 +129,19 @@ Then, the page tree (up to three levels deep) including the content for the root
                 "domain": "",
                 "cache": 5,
                 "data": null,
-                "createdAt": "2023-03-12T07:09:04.000000Z",
-                "updatedAt": "2023-03-12T07:09:04.000000Z"
+                "createdAt": "2023-03-12T16:06:26.000000Z",
+                "updatedAt": "2023-03-12T16:06:26.000000Z"
             },
             "relationships": {
                 "contents": {
                     "links": {
-                        "related": "http:\/\/localhost:8000\/api\/cms\/pages\/2\/contents",
-                        "self": "http:\/\/localhost:8000\/api\/cms\/pages\/2\/relationships\/contents"
+                        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/2\/contents",
+                        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/2\/relationships\/contents"
                     }
                 }
             },
             "links": {
-                "self": "http:\/\/localhost:8000\/api\/cms\/pages\/2"
+                "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/2"
             }
         },
         {
@@ -148,19 +158,19 @@ Then, the page tree (up to three levels deep) including the content for the root
                 "domain": "",
                 "cache": 5,
                 "data": null,
-                "createdAt": "2023-03-12T07:09:04.000000Z",
-                "updatedAt": "2023-03-12T07:09:05.000000Z"
+                "createdAt": "2023-03-12T16:06:26.000000Z",
+                "updatedAt": "2023-03-12T16:06:26.000000Z"
             },
             "relationships": {
                 "contents": {
                     "links": {
-                        "related": "http:\/\/localhost:8000\/api\/cms\/pages\/3\/contents",
-                        "self": "http:\/\/localhost:8000\/api\/cms\/pages\/3\/relationships\/contents"
+                        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/contents",
+                        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/relationships\/contents"
                     }
                 }
             },
             "links": {
-                "self": "http:\/\/localhost:8000\/api\/cms\/pages\/3"
+                "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/3"
             }
         },
         {
@@ -177,19 +187,19 @@ Then, the page tree (up to three levels deep) including the content for the root
                 "domain": "",
                 "cache": 5,
                 "data": null,
-                "createdAt": "2023-03-12T07:09:05.000000Z",
-                "updatedAt": "2023-03-12T07:09:05.000000Z"
+                "createdAt": "2023-03-12T16:06:26.000000Z",
+                "updatedAt": "2023-03-12T16:06:26.000000Z"
             },
             "relationships": {
                 "contents": {
                     "links": {
-                        "related": "http:\/\/localhost:8000\/api\/cms\/pages\/4\/contents",
-                        "self": "http:\/\/localhost:8000\/api\/cms\/pages\/4\/relationships\/contents"
+                        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/4\/contents",
+                        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/4\/relationships\/contents"
                     }
                 }
             },
             "links": {
-                "self": "http:\/\/localhost:8000\/api\/cms\/pages\/4"
+                "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/4"
             }
         },
         {
@@ -206,31 +216,19 @@ Then, the page tree (up to three levels deep) including the content for the root
                 "domain": "",
                 "cache": 5,
                 "data": null,
-                "createdAt": "2023-03-12T07:09:05.000000Z",
-                "updatedAt": "2023-03-12T07:09:05.000000Z"
+                "createdAt": "2023-03-12T16:06:27.000000Z",
+                "updatedAt": "2023-03-12T16:06:27.000000Z"
             },
             "relationships": {
                 "contents": {
                     "links": {
-                        "related": "http:\/\/localhost:8000\/api\/cms\/pages\/5\/contents",
-                        "self": "http:\/\/localhost:8000\/api\/cms\/pages\/5\/relationships\/contents"
+                        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/5\/contents",
+                        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/5\/relationships\/contents"
                     }
                 }
             },
             "links": {
-                "self": "http:\/\/localhost:8000\/api\/cms\/pages\/5"
-            }
-        },
-        {
-            "type": "contents",
-            "id": "0186d4a6-c532-70f7-939d-1f8d774aa72c",
-            "attributes": {
-                "lang": "",
-                "data": {
-                    "text": "Welcome to Laravel CMS",
-                    "type": "cms::heading"
-                },
-                "createdAt": "2023-03-12T07:09:04.000000Z"
+                "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/5"
             }
         }
     ]

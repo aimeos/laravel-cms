@@ -4,19 +4,25 @@ permalink: /jsonapi/content-only/
 excerpt: "How to retrieve the content for already fetched pages from LaravelCMS using the JSON:API"
 ---
 
-If you already got the page from a previous request (e.g. by adding `subtree` to the `include` parameter), then you only need the content for that page to to show the complete page to the user. The page items in the `included` sections contains a URL to retrieve only that data in `relationships/contents/links/related`, e.g. `http:\/\/localhost:8000\/api\/cms\/pages\/3\/contents` with that URL, you can fetch the page content now:
+If you already got the page from a previous request (e.g. by adding `subtree` to the `include` parameter), then you only need the page content to render the complete page for the user. The page items in the `included` sections contains a URL to retrieve only that data in `relationships/contents/links/related`, e.g.:
+
+```
+http://mydomain.tld\api/cms/pages/2/contents
+```
+
+With that URL, you can fetch the page content now:
 
 ```json
 {
+    "meta": {
+        "baseurl": "\/storage\/"
+    },
     "jsonapi": {
-        "version": "1.0",
-        "meta": {
-            "baseurl": "\/storage\/"
-        }
+        "version": "1.0"
     },
     "links": {
-        "related": "http:\/\/localhost:8000\/api\/cms\/pages\/3\/contents",
-        "self": "http:\/\/localhost:8000\/api\/cms\/pages\/3\/relationships\/contents"
+        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/contents",
+        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/relationships\/contents"
     },
     "data": [
         {

@@ -3,6 +3,7 @@
 namespace Aimeos\Cms\JsonApi\V1\Contents;
 
 use LaravelJsonApi\Eloquent\Contracts\Paginator;
+use LaravelJsonApi\Eloquent\Pagination\PagePagination;
 use LaravelJsonApi\Eloquent\Filters\WhereIdIn;
 use LaravelJsonApi\Eloquent\Fields\Relations\BelongsTo;
 use LaravelJsonApi\Eloquent\Fields\ArrayHash;
@@ -15,6 +16,11 @@ use Aimeos\Cms\Models\Content;
 
 class ContentSchema extends Schema
 {
+    /**
+     * Default page value if no pagination was sent by the client.
+     */
+    protected ?array $defaultPagination = ['number' => 1];
+
     /**
      * Disables "self" links for content items.
      */
@@ -73,6 +79,6 @@ class ContentSchema extends Schema
      */
     public function pagination(): ?Paginator
     {
-        return null;
+        return PagePagination::make()->withDefaultPerPage( 50 );
     }
 }

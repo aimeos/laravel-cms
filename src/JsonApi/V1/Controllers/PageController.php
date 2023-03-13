@@ -2,27 +2,62 @@
 
 namespace Aimeos\Cms\JsonApi\V1\Controllers;
 
-use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use LaravelJsonApi\Laravel\Http\Controllers\JsonApiController;
+use LaravelJsonApi\Core\Responses\DataResponse;
+use LaravelJsonApi\Core\Responses\RelatedResponse;
+use LaravelJsonApi\Eloquent\Fields\Relations\Relation;
+use LaravelJsonApi\Laravel\Http\Requests\ResourceQuery;
 use Aimeos\Cms\JsonApi\V1\Pages\PageCollectionQuery;
 use Aimeos\Cms\JsonApi\V1\Pages\PageQuery;
+use Aimeos\Cms\Models\Page;
 
 
 class PageController extends JsonApiController
 {
-    public function read( ?Post $post, PostCollectionQuery $query )
+    /**
+     * Adds global meta data to single resource response.
+     *
+     * @param Page|null $page Page model
+     * @param PageQuery $query Page query
+     * @return DataResponse
+     */
+    public function read( ?Page $page, PageQuery $query ) : DataResponse
     {
-        $data = array_merge( $data, ['meta' => ['baseurl' => Storage::url( '' )]] );
-        return DataResponse::make( $data )->withQueryParameters( $query );
+        return DataResponse::make( $page )
+            ->withMeta( ['baseurl' => Storage::url( '' )] )
+            ->withQueryParameters( $query );
     }
 
 
-    public function searched( $data, PostCollectionQuery $query )
+    /**
+     * Adds global meta data to related resource response.
+     *
+     * @param Page|null $page Page model
+     * @param mixed $data Fetched data
+     * @param ResourceQuery $request Query object
+     * @param Relation Relation type object
+     * @return RelatedResponse
+     */
+    public function readRelatedContents( ?Page $page, $data, ResourceQuery $request ) : RelatedResponse
     {
-        $data = array_merge( $data, ['meta' => ['baseurl' => Storage::url( '' )]] );
-        return DataResponse::make( $data )->withQueryParameters( $query );
-    }
+        return RelatedResponse::make( $page, 'contents', $data )
+            ->withMeta( ['baseurl' => Storage::url( '' )] )
+            ->withQueryParameters( $request );
+}
+
+
+    /**
+     * Adds global meta data to collection resource response.
+     *
+     * @param mixed $data Fetched data
+     * @param PageCollectionQuery $query Page collection query
+     * @return DataResponse
+     */
+    public function searched( $data, PageCollectionQuery $query ) : DataResponse
+    {
+        return DataResponse::make( $data )
+            ->withMeta( ['baseurl' => Storage::url( '' )] )
+            ->withQueryParameters( $query );
+}
 }

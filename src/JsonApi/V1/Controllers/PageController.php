@@ -13,6 +13,9 @@ use Aimeos\Cms\JsonApi\V1\Pages\PageQuery;
 use Aimeos\Cms\Models\Page;
 
 
+/**
+ * Custom controller to add meta data to responses.
+ */
 class PageController extends JsonApiController
 {
     /**
@@ -44,7 +47,7 @@ class PageController extends JsonApiController
         return RelatedResponse::make( $page, 'contents', $data )
             ->withMeta( ['baseurl' => Storage::url( '' )] )
             ->withQueryParameters( $request );
-}
+    }
 
 
     /**
@@ -59,5 +62,5 @@ class PageController extends JsonApiController
         return DataResponse::make( $data )
             ->withMeta( ['baseurl' => Storage::url( '' )] )
             ->withQueryParameters( $query );
-}
+    }
 }

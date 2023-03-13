@@ -21,7 +21,7 @@ The result will be a JSON:API response which looks like:
 ```json
 {
     "meta": {
-        "baseurl": "\/storage\/",
+        "baseurl": "http:\/\/mydomain.tld\/storage\/",
         "page": {
             "currentPage": 1,
             "from": 1,

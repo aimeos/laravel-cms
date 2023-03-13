@@ -7,7 +7,7 @@ excerpt: "How to retrieve the content for already fetched pages from LaravelCMS 
 If you already got the page from a previous request (e.g. by adding `subtree` to the `include` parameter), then you only need the page content to render the complete page for the user. The page items in the `included` sections contains a URL to retrieve only that data in `relationships/contents/links/related`, e.g.:
 
 ```
-http://mydomain.tld\api/cms/pages/2/contents
+http://mydomain.tld/api/cms/pages/3/contents
 ```
 
 With that URL, you can fetch the page content now:
@@ -15,12 +15,22 @@ With that URL, you can fetch the page content now:
 ```json
 {
     "meta": {
-        "baseurl": "\/storage\/"
+        "baseurl": "http:\/\/mydomain.tld\/storage\/",
+        "page": {
+            "currentPage": 1,
+            "from": 1,
+            "lastPage": 1,
+            "perPage": 50,
+            "to": 6,
+            "total": 6
+        }
     },
     "jsonapi": {
         "version": "1.0"
     },
     "links": {
+        "first": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/contents?page%5Bnumber%5D=1&page%5Bsize%5D=50",
+        "last": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/contents?page%5Bnumber%5D=1&page%5Bsize%5D=50",
         "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/contents",
         "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/relationships\/contents"
     },

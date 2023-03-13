@@ -15,7 +15,7 @@ The `included` section contains the list of content elements that should be disp
 ```json
 {
     "meta": {
-        "baseurl": "\/storage\/"
+        "baseurl": "http:\/\/mydomain.tld\/storage\/"
     },
     "jsonapi": {
         "version": "1.0"

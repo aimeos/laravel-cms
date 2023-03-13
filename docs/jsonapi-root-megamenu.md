@@ -23,7 +23,7 @@ Then, the page tree (up to three levels deep) including the content for the root
 ```json
 {
     "meta": {
-        "baseurl": "\/storage\/",
+        "baseurl": "http:\/\/mydomain.tld\/storage\/",
         "page": {
             "currentPage": 1,
             "from": 1,

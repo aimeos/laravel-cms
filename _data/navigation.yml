@@ -7,8 +7,8 @@ main:
 docs:
   - title: "Frontend JSON:API"
     children:
-      - title: "Quick-Start Guide"
-        url: /jsonapi/start/
+      - title: "Introduction"
+        url: /jsonapi/introduction/
       - title: "Root page with navigation"
         url: /jsonapi/root-navigation/
       - title: "Root page with mega-menu"

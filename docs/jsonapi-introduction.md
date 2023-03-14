@@ -4,6 +4,14 @@ permalink: /jsonapi/introduction/
 excerpt: "How to fetch data from LaravelCMS using the JSON:API"
 ---
 
+The LaravelCMS JSON frontend API follows the JSON:API standard documented at [jsonapi.org](https://jsonapi.org) and is available at (replace "mydomain.tld" with your own one):
+
+```
+http://mydomain.tld/api/cms/pages
+```
+
+The `pages` endpoint will return items from the page tree as well as related content elements depending on parameters added.
+
 * [Available properties](#available-properties)
   * [Page properties](#page-properties)
   * [Content properties](#content-properties)
@@ -22,15 +30,6 @@ excerpt: "How to fetch data from LaravelCMS using the JSON:API"
     * [Multiple item](#multiple-items)
     * [Relationships](#relationships)
   * [Included](#included)
-
-
-The LaravelCMS JSON frontend API follows the JSON:API standard documented at [jsonapi.org](https://jsonapi.org) and is available at (replace "mydomain.tld" with your own one):
-
-```
-http://mydomain.tld/api/cms/pages
-```
-
-The `pages` endpoint will return items from the page tree as well as related content elements depending on parameters added.
 
 ## Available properties
 

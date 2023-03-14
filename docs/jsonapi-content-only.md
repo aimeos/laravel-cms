@@ -122,3 +122,5 @@ With that URL, you can fetch the page content now:
     ]
 }
 ```
+
+If the page has more than 50 content elements, use the `next` link in the `links` section to fetch the next 50 content elements!

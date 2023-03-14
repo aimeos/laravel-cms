@@ -12,6 +12,10 @@ http://mydomain.tld/api/cms/pages
 
 The `pages` endpoint will return items from the page tree as well as related content elements depending on parameters added.
 
+## Available properties
+
+### Page properties
+
 The available page properties are:
 
 ```json
@@ -75,6 +79,8 @@ createdAt
 
 updatedAt
 : ISO date/time when the page was last modified
+
+### Content properties
 
 The available content properties are:
 
@@ -161,7 +167,7 @@ number
 : Number of the slice that should be fetched starting from "1" up to the total number of available pages (see the [pagination respone for details](#paged-results))
 
 size
-: Number of items that should be fetched with a minimum value of "1" and a maximum value of "100"
+: Number of items that should be fetched with a minimum value of "1" and a maximum value of "100". The default values are "15" for pages and "50" for contents
 
 To get item 25 to 50 from the `pages` endpoint use:
 
@@ -180,6 +186,8 @@ It does also work with related contents links to load more content elements if t
 ```
 http://mydomain.tld/api/cms/pages/3/contents?page[number]=2&page[size]=5
 ```
+
+In the last case, use the [link](#links) instead of constructing the URL yourself!
 
 ## Limit fields
 
@@ -211,13 +219,14 @@ Then, the attributes of the returned pages in the [data section](#data) will con
 
 The `type` and `id` of each item is always returned outside the `attributes` and can't be skipped!
 
-## Response
+## Responses
 
 In the JSON-encoded response, there are three sections which are important:
 
-- meta
-- data
-- included
+- [meta](#meta)
+- [links](#links)
+- [data](#data)
+- [included](#included)
 
 ### Meta
 
@@ -259,7 +268,30 @@ lastPage
 : Page number of the last page available when using the same `perPage` value. Minimum value is "1", the maximum value is "100"
 
 perPage
-: Maximum number of items returned in one response. The minimum value is "1", the maximum value is "100" and the default values are "15" for pages and "50" for contents
+: Maximum number of items returned in one response which is the passed `page[size]` value. The minimum value is "1", the maximum value is "100" and the default values are "15" for pages and "50" for contents
 
 total
-: Total number of available pages when using the same `perPage` value
+: Total number of available pages when using the same `size` value
+
+## Links
+
+The `links` section in the JSON API response is always included and contains the `self` link which would return the same response again:
+
+```json
+"links": {
+    "self": "http:\/\/localhost:8000\/api\/cms\/pages\/1"
+},
+```
+
+Every time a collection of items is returned (e.g. by the `pages` or `pages/<id>/contents` endpoints), there will be links for the first, last, previous and next results, e.g.:
+
+```json
+"links": {
+    "first": "http:\/\/localhost:8000\/api\/cms\/pages\/3\/contents?page[number]=1&page[size]=2",
+    "last": "http:\/\/localhost:8000\/api\/cms\/pages\/3\/contents?page[number]=3&page[size]=2",
+    "next": "http:\/\/localhost:8000\/api\/cms\/pages\/3\/contents?page[number]=3&page[size]=2",
+    "prev": "http:\/\/localhost:8000\/api\/cms\/pages\/3\/contents?page[number]=1&page[size]=2",
+},
+```
+
+Thus, you can always use the links to fetch data and don't have to construct the links yourself!

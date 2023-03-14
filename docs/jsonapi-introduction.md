@@ -4,6 +4,22 @@ permalink: /jsonapi/introduction/
 excerpt: "How to fetch data from LaravelCMS using the JSON:API"
 ---
 
+- [Available properties](#available-properties)
+-- [Page properties](#page-properties)
+-- [Content properties](#content-properties)
+- [Filter results](#filter-results)
+- [Include resources](#include-resources)
+- [Pagination](#pagination)
+- [Sparse fields](#sparse-fields)
+- [Responses](#responses)
+-- [Meta](#meta)
+--- [Base URL](#base-url)
+--- [Paged results](#paged-results)
+-- [Links](#links)
+-- [Data](#data)
+-- [Included](#included)
+
+
 The LaravelCMS JSON frontend API follows the JSON:API standard documented at [jsonapi.org](https://jsonapi.org) and is available at (replace "mydomain.tld" with your own one):
 
 ```
@@ -189,7 +205,7 @@ http://mydomain.tld/api/cms/pages/3/contents?page[number]=2&page[size]=5
 
 In the last case, use the [link](#links) instead of constructing the URL yourself!
 
-## Limit fields
+## Sparse fields
 
 Most often, you don't need all page or content properties and you can reduce the amount of data returned in the response by using the `fields` parameter. The requested fields can be limited for pages and content elements separately and the property names must be concatenated by comma.
 

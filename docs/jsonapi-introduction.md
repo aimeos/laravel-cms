@@ -5,23 +5,23 @@ excerpt: "How to fetch data from LaravelCMS using the JSON:API"
 ---
 
 * [Available properties](#available-properties)
-** [Page properties](#page-properties)
-** [Content properties](#content-properties)
+  * [Page properties](#page-properties)
+  * [Content properties](#content-properties)
 * [URL parameters](#url-parameters)
-** [Filter results](#filter-results)
-** [Include resources](#include-resources)
-** [Pagination](#pagination)
-** [Sparse fields](#sparse-fields)
+  * [Filter results](#filter-results)
+  * [Include resources](#include-resources)
+  * [Pagination](#pagination)
+  * [Sparse fields](#sparse-fields)
 * [Responses](#responses)
-** [Meta](#meta)
-*** [Base URL](#base-url)
-*** [Paged results](#paged-results)
-** [Links](#links)
-** [Data](#data)
-*** [Single item](#single-item)
-*** [Multiple item](#multiple-items)
-*** [Relationships](#relationships)
-** [Included](#included)
+  * [Meta](#meta)
+    * [Base URL](#base-url)
+    * [Paged results](#paged-results)
+  * [Links](#links)
+  * [Data](#data)
+    * [Single item](#single-item)
+    * [Multiple item](#multiple-items)
+    * [Relationships](#relationships)
+  * [Included](#included)
 
 
 The LaravelCMS JSON frontend API follows the JSON:API standard documented at [jsonapi.org](https://jsonapi.org) and is available at (replace "mydomain.tld" with your own one):
@@ -500,3 +500,50 @@ Each key in the `relationships` part will a reference to a single item (like for
 },
 ```
 
+## Included
+
+The `included` section of each JSON API response is only available if you've added the `include` parameter to the URL, e.g. `/api/cms/pages/1?include=contents`. In that case the `relationships/contents/data` part contains the list of references:
+
+```json
+{
+    "type": "pages",
+    "id": "1",
+    "attributes": {
+        "name": "Home",
+        "title": "Home | LaravelCMS",
+        "tag": "root",
+        "more keys": "..."
+    },
+    "relationships": {
+        "contents": {
+            "data": [
+                {
+                    "type": "contents",
+                    "id": "0186d692-be0b-798c-9450-0a676209b7a6"
+                }
+            ]
+        }
+    }
+}
+```
+
+And the `included` section for that response then contains:
+
+```json
+"included": [
+    {
+        "type": "contents",
+        "id": "0186d692-be0b-798c-9450-0a676209b7a6",
+        "attributes": {
+            "lang": "",
+            "data": {
+                "text": "Welcome to Laravel CMS",
+                "type": "cms::heading"
+            },
+            "created_at": "2023-03-12T16:06:26.000000Z"
+        }
+    }
+]
+```
+
+It consists of a flat list of page or content items identified by their `type` and `id` values. You must now match the type and ID within the `relationships/contents` section with the type and ID within the `included` section.

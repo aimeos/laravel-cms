@@ -1,7 +1,7 @@
 ---
 title: "Root page with navigation"
 permalink: /jsonapi/root-navigation/
-excerpt: "How to retrieve the root page and children from LaravelCMS using the JSON:API to build a page with navigation"
+excerpt: "How to retrieve the root page and children from Laravel CMS using the JSON:API to build a page with navigation"
 ---
 
 Retrieve the root page with content and first level sub-pages to build the navigation:
@@ -47,7 +47,7 @@ The result will be a JSON:API response which looks like:
                 "lang": "",
                 "slug": "",
                 "name": "Home",
-                "title": "Home | LaravelCMS",
+                "title": "Home | Laravel CMS",
                 "tag": "root",
                 "to": "",
                 "domain": "mydomain.tld",
@@ -117,7 +117,7 @@ The result will be a JSON:API response which looks like:
                 "lang": "",
                 "slug": "blog",
                 "name": "Blog",
-                "title": "Blog | LaravelCMS",
+                "title": "Blog | Laravel CMS",
                 "tag": "blog",
                 "to": "",
                 "domain": "",
@@ -146,7 +146,7 @@ The result will be a JSON:API response which looks like:
                 "lang": "",
                 "slug": "dev",
                 "name": "Dev",
-                "title": "For Developer | LaravelCMS",
+                "title": "For Developer | Laravel CMS",
                 "tag": "",
                 "to": "",
                 "domain": "",
@@ -175,7 +175,7 @@ The result will be a JSON:API response which looks like:
                 "lang": "",
                 "slug": "hidden",
                 "name": "Hidden",
-                "title": "Hidden page | LaravelCMS",
+                "title": "Hidden page | Laravel CMS",
                 "tag": "hidden",
                 "to": "",
                 "domain": "",

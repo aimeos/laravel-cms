@@ -1,7 +1,7 @@
 ---
 title: "Root page with mega-menu"
 permalink: /jsonapi/root-megamenu/
-excerpt: "How to retrieve the root page with descendents from LaravelCMS using the JSON:API to build a page with mega-menu"
+excerpt: "How to retrieve the root page with descendents from Laravel CMS using the JSON:API to build a page with mega-menu"
 ---
 
 ## Root page with mega-menu
@@ -49,7 +49,7 @@ Then, the page tree (up to three levels deep) including the content for the root
                 "lang": "",
                 "slug": "",
                 "name": "Home",
-                "title": "Home | LaravelCMS",
+                "title": "Home | Laravel CMS",
                 "tag": "root",
                 "to": "",
                 "domain": "mydomain.tld",
@@ -123,7 +123,7 @@ Then, the page tree (up to three levels deep) including the content for the root
                 "lang": "",
                 "slug": "blog",
                 "name": "Blog",
-                "title": "Blog | LaravelCMS",
+                "title": "Blog | Laravel CMS",
                 "tag": "blog",
                 "to": "",
                 "domain": "",
@@ -151,8 +151,8 @@ Then, the page tree (up to three levels deep) including the content for the root
                 "parent_id": 2,
                 "lang": "",
                 "slug": "welcome-to-laravelcms",
-                "name": "Welcome to LaravelCMS",
-                "title": "Welcome to LaravelCMS | LaravelCMS",
+                "name": "Welcome to Laravel CMS",
+                "title": "Welcome to Laravel CMS | Laravel CMS",
                 "tag": "article",
                 "to": "",
                 "domain": "",
@@ -181,7 +181,7 @@ Then, the page tree (up to three levels deep) including the content for the root
                 "lang": "",
                 "slug": "dev",
                 "name": "Dev",
-                "title": "For Developer | LaravelCMS",
+                "title": "For Developer | Laravel CMS",
                 "tag": "",
                 "to": "",
                 "domain": "",
@@ -210,7 +210,7 @@ Then, the page tree (up to three levels deep) including the content for the root
                 "lang": "",
                 "slug": "hidden",
                 "name": "Hidden",
-                "title": "Hidden page | LaravelCMS",
+                "title": "Hidden page | Laravel CMS",
                 "tag": "hidden",
                 "to": "",
                 "domain": "",

@@ -1,7 +1,7 @@
 ---
 title: "Sub-pages with breadcrumb"
 permalink: /jsonapi/subpages-breadcrumb/
-excerpt: "How to retrieve the sub-pages with content and ancestors from LaravelCMS using the JSON:API to build page with breadcrumb"
+excerpt: "How to retrieve the sub-pages with content and ancestors from Laravel CMS using the JSON:API to build page with breadcrumb"
 ---
 
 To retrieve a specific page whose URL you've gotten from one of the previous responses (in the `links/self` attribute of the item) with its ancestor pages for the breadcrumb and its content (add `?include=ancestors,contents` to the page URL):
@@ -31,7 +31,7 @@ The `included` section contains the list of content elements that should be disp
             "lang": "",
             "slug": "blog",
             "name": "Blog",
-            "title": "Blog | LaravelCMS",
+            "title": "Blog | Laravel CMS",
             "tag": "blog",
             "to": "",
             "domain": "",
@@ -102,7 +102,7 @@ The `included` section contains the list of content elements that should be disp
                 "lang": "",
                 "slug": "",
                 "name": "Home",
-                "title": "Home | LaravelCMS",
+                "title": "Home | Laravel CMS",
                 "tag": "root",
                 "to": "",
                 "domain": "mydomain.tld",

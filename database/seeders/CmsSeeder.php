@@ -65,7 +65,7 @@ class CmsSeeder extends Seeder
         $page = Page::create([
             'tenant_id' => 'demo',
             'name' => 'Home',
-            'title' => 'Home | LaravelCMS',
+            'title' => 'Home | Laravel CMS',
             'slug' => '',
             'tag' => 'root',
             'domain' => 'mydomain.tld',
@@ -98,7 +98,7 @@ class CmsSeeder extends Seeder
         $page = Page::create([
             'tenant_id' => 'demo',
             'name' => 'Blog',
-            'title' => 'Blog | LaravelCMS',
+            'title' => 'Blog | Laravel CMS',
             'slug' => 'blog',
             'tag' => 'blog',
             'status' => 1,
@@ -157,8 +157,8 @@ class CmsSeeder extends Seeder
     {
         $page = Page::create([
             'tenant_id' => 'demo',
-            'name' => 'Welcome to LaravelCMS',
-            'title' => 'Welcome to LaravelCMS | LaravelCMS',
+            'name' => 'Welcome to Laravel CMS',
+            'title' => 'Welcome to Laravel CMS | Laravel CMS',
             'slug' => 'welcome-to-laravelcms',
             'tag' => 'article',
             'status' => 1,
@@ -168,16 +168,16 @@ class CmsSeeder extends Seeder
 
         $data = [
             'type' => 'cms::article',
-            'title' => 'Welcome to LaravelCMS',
+            'title' => 'Welcome to Laravel CMS',
             'cover' => [
                 'type' => 'cms::image',
-                'name' => 'Welcome to LaravelCMS',
+                'name' => 'Welcome to Laravel CMS',
                 'path' => 'https://aimeos.org/tips/wp-content/uploads/2023/01/ai-ecommerce-2.jpg',
                 'previews' => [
                     1000 => 'https://aimeos.org/tips/wp-content/uploads/2023/01/ai-ecommerce-2.jpg'
                 ],
             ],
-            'intro' => 'LaravelCMS is lightweight, lighting fast, easy to use, fully customizable and scalable from one-pagers to millions of pages',
+            'intro' => 'Laravel CMS is lightweight, lighting fast, easy to use, fully customizable and scalable from one-pagers to millions of pages',
         ];
 
         $content = Content::create([
@@ -226,7 +226,7 @@ class CmsSeeder extends Seeder
         ]);
 
 
-        $data = ['type' => 'cms::text', 'text' => 'LaravelCMS is exceptional in every way. Headless and API-first!'];
+        $data = ['type' => 'cms::text', 'text' => 'Laravel CMS is exceptional in every way. Headless and API-first!'];
         $content = Content::create([
             'tenant_id' => 'demo',
             'data' => $data,
@@ -331,7 +331,7 @@ class CmsSeeder extends Seeder
         $page = Page::create([
             'tenant_id' => 'demo',
             'name' => 'Dev',
-            'title' => 'For Developer | LaravelCMS',
+            'title' => 'For Developer | Laravel CMS',
             'slug' => 'dev',
             'status' => 1,
             'editor' => 'seeder',
@@ -374,7 +374,7 @@ This is content created by GitHub-flavored markdown syntax',
         $page = Page::create([
             'tenant_id' => 'demo',
             'name' => 'Disabled',
-            'title' => 'Disabled page | LaravelCMS',
+            'title' => 'Disabled page | Laravel CMS',
             'slug' => 'disabled',
             'tag' => 'disabled',
             'status' => 0,
@@ -385,7 +385,7 @@ This is content created by GitHub-flavored markdown syntax',
         $child = Page::create([
             'tenant_id' => 'demo',
             'name' => 'Disabled child',
-            'title' => 'Disabled child | LaravelCMS',
+            'title' => 'Disabled child | Laravel CMS',
             'slug' => 'disabled-child',
             'tag' => 'disabled-child',
             'status' => 1,
@@ -402,7 +402,7 @@ This is content created by GitHub-flavored markdown syntax',
         $page = Page::create([
             'tenant_id' => 'demo',
             'name' => 'Hidden',
-            'title' => 'Hidden page | LaravelCMS',
+            'title' => 'Hidden page | Laravel CMS',
             'slug' => 'hidden',
             'tag' => 'hidden',
             'status' => 2,

@@ -1,10 +1,10 @@
 ---
 title: "Introduction"
 permalink: /jsonapi/introduction/
-excerpt: "How to fetch data from LaravelCMS using the JSON:API"
+excerpt: "How to fetch data from Laravel CMS using the JSON:API"
 ---
 
-The LaravelCMS JSON frontend API follows the JSON:API standard documented at [jsonapi.org](https://jsonapi.org) and is available at (replace "mydomain.tld" with your own one):
+The Laravel CMS JSON frontend API follows the JSON:API standard documented at [jsonapi.org](https://jsonapi.org) and is available at (replace "mydomain.tld" with your own one):
 
 ```
 http://mydomain.tld/api/cms/pages
@@ -46,7 +46,7 @@ The available page properties are:
         "lang": "",
         "slug": "",
         "name": "Home",
-        "title": "Home | LaravelCMS",
+        "title": "Home | Laravel CMS",
         "tag": "root",
         "to": "",
         "domain": "mydomain.tld",
@@ -261,7 +261,7 @@ The meta section always contains the `baseurl` key which is the base URL to all 
 }
 ```
 
-In Laravel, you can change the base URL in the `./config/filesystems.php` file where you need to change the `url` setting for the `disk` LaravelCMS is using (`public` by default).
+In Laravel, you can change the base URL in the `./config/filesystems.php` file where you need to change the `url` setting for the `disk` Laravel CMS is using (`public` by default).
 
 #### Paged results
 
@@ -334,7 +334,7 @@ Using a request which returns a single page, then the response is like:
         "lang": "",
         "slug": "",
         "name": "Home",
-        "title": "Home | LaravelCMS",
+        "title": "Home | Laravel CMS",
         "tag": "root",
         "to": "",
         "domain": "mydomain.tld",
@@ -378,7 +378,7 @@ For request returning multiple items, the `data` section will be similar to:
             "lang": "",
             "slug": "",
             "name": "Home",
-            "title": "Home | LaravelCMS",
+            "title": "Home | Laravel CMS",
             "tag": "root",
             "to": "",
             "domain": "mydomain.tld",
@@ -509,7 +509,7 @@ The `included` section of each JSON API response is only available if you've add
     "id": "1",
     "attributes": {
         "name": "Home",
-        "title": "Home | LaravelCMS",
+        "title": "Home | Laravel CMS",
         "tag": "root",
         "more keys": "..."
     },

@@ -1,7 +1,7 @@
 ---
 title: "Content only"
 permalink: /jsonapi/content-only/
-excerpt: "How to retrieve the content for already fetched pages from LaravelCMS using the JSON:API"
+excerpt: "How to retrieve the content for already fetched pages from Laravel CMS using the JSON:API"
 ---
 
 If you already got the page from a previous request (e.g. by adding `subtree` to the `include` parameter), then you only need the page content to render the complete page for the user. The page items in the `included` sections contains a URL to retrieve only that data in `relationships/contents/links/related`, e.g.:
@@ -43,15 +43,15 @@ With that URL, you can fetch the page content now:
                 "data": {
                     "type": "cms::article",
                     "cover": {
-                        "name": "Welcome to LaravelCMS",
+                        "name": "Welcome to Laravel CMS",
                         "path": "https:\/\/aimeos.org\/tips\/wp-content\/uploads\/2023\/01\/ai-ecommerce-2.jpg",
                         "type": "cms::image",
                         "previews": {
                             "1000": "https:\/\/aimeos.org\/tips\/wp-content\/uploads\/2023\/01\/ai-ecommerce-2.jpg"
                         }
                     },
-                    "intro": "LaravelCMS is lightweight, lighting fast, easy to use, fully customizable and scalable from one-pagers to millions of pages",
-                    "title": "Welcome to LaravelCMS"
+                    "intro": "Laravel CMS is lightweight, lighting fast, easy to use, fully customizable and scalable from one-pagers to millions of pages",
+                    "title": "Welcome to Laravel CMS"
                 },
                 "createdAt": "2023-03-12T16:06:26.000000Z"
             }
@@ -75,7 +75,7 @@ With that URL, you can fetch the page content now:
             "attributes": {
                 "lang": "",
                 "data": {
-                    "text": "LaravelCMS is exceptional in every way. Headless and API-first!",
+                    "text": "Laravel CMS is exceptional in every way. Headless and API-first!",
                     "type": "cms::text"
                 },
                 "createdAt": "2023-03-12T16:06:26.000000Z"

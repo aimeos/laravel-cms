@@ -13,15 +13,15 @@ use Illuminate\Console\Command;
 class Install extends Command
 {
 	private static $template = '<fg=blue>
-    __                                __________  ________
-   / /   ____ __________ __   _____  / / ____/  |/  / ___/
-  / /   / __ `/ ___/ __ `/ | / / _ \/ / /   / /|_/ /\__ \
- / /___/ /_/ / /  / /_/ /| |/ /  __/ / /___/ /  / /___/ /
-/_____/\__,_/_/   \__,_/ |___/\___/_/\____/_/  /_//____/
+    __                                __   ________  ________
+   / /   ____ __________ __   _____  / /  / ____/  |/  / ___/
+  / /   / __ `/ ___/ __ `/ | / / _ \/ /  / /   / /|_/ /\__ \
+ / /___/ /_/ / /  / /_/ /| |/ /  __/ /  / /___/ /  / /___/ /
+/_____/\__,_/_/   \__,_/ |___/\___/_/   \____/_/  /_//____/
 </>
-Congratulations! You successfully set up <fg=green>LaravelCMS</>!
+Congratulations! You successfully set up <fg=green>Laravel CMS</>!
 <fg=cyan>Give a star and contribute</>: https://github.com/aimeos/laravel-cms
-Made with <fg=green>love</> by the LaravelCMS community. Be a part of it!
+Made with <fg=green>love</> by the Laravel CMS community. Be a part of it!
 ';
 
 

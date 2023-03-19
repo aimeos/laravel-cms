@@ -4,10 +4,10 @@ permalink: /jsonapi/content-only/
 excerpt: "How to retrieve the content for already fetched pages from Laravel CMS using the JSON:API"
 ---
 
-If you already got the page from a previous request (e.g. by adding `subtree` to the `include` parameter), then you only need the page content to render the complete page for the user. The page items in the `included` sections contains a URL to retrieve only that data in `relationships/contents/links/related`, e.g.:
+If you already got the page from a previous request (e.g. by adding `subtree` to the `include` parameter), then you only need the page content to render the complete page for the user. The page items in the `included` sections contains a URL to retrieve only that data in `relationships/content/links/related`, e.g.:
 
 ```
-http://mydomain.tld/api/cms/pages/3/contents
+http://mydomain.tld/api/cms/pages/3/content
 ```
 
 With that URL, you can fetch the page content now:
@@ -29,10 +29,10 @@ With that URL, you can fetch the page content now:
         "version": "1.0"
     },
     "links": {
-        "first": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/contents?page%5Bnumber%5D=1&page%5Bsize%5D=50",
-        "last": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/contents?page%5Bnumber%5D=1&page%5Bsize%5D=50",
-        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/contents",
-        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/relationships\/contents"
+        "first": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/content?page%5Bnumber%5D=1&page%5Bsize%5D=50",
+        "last": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/content?page%5Bnumber%5D=1&page%5Bsize%5D=50",
+        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/content",
+        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/relationships\/content"
     },
     "data": [
         {

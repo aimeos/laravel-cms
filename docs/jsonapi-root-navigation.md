@@ -7,13 +7,13 @@ excerpt: "How to retrieve the root page and children from Laravel CMS using the 
 Retrieve the root page with content and first level sub-pages to build the navigation:
 
 ```
-http://mydomain.tld/api/cms/pages?filter[tag]=root&include=children,contents
+http://mydomain.tld/api/cms/pages?filter[tag]=root&include=children,content
 ```
 
 In case the site uses more than one language and sets the `lang` property for each page:
 
 ```
-http://mydomain.tld/api/cms/pages?filter[tag]=root&filter[lang]=en&include=children,contents
+http://mydomain.tld/api/cms/pages?filter[tag]=root&filter[lang]=en&include=children,content
 ```
 
 The result will be a JSON:API response which looks like:
@@ -35,8 +35,8 @@ The result will be a JSON:API response which looks like:
         "version": "1.0"
     },
     "links": {
-        "first": "http:\/\/mydomain.tld\/api\/cms\/pages?filter%5Btag%5D=root&include=children%2Ccontents&page%5Bnumber%5D=1&page%5Bsize%5D=15",
-        "last": "http:\/\/mydomain.tld\/api\/cms\/pages?filter%5Btag%5D=root&include=children%2Ccontents&page%5Bnumber%5D=1&page%5Bsize%5D=15"
+        "first": "http:\/\/mydomain.tld\/api\/cms\/pages?filter%5Btag%5D=root&include=children%2Ccontent&page%5Bnumber%5D=1&page%5Bsize%5D=15",
+        "last": "http:\/\/mydomain.tld\/api\/cms\/pages?filter%5Btag%5D=root&include=children%2Ccontent&page%5Bnumber%5D=1&page%5Bsize%5D=15"
     },
     "data": [
         {
@@ -62,10 +62,10 @@ The result will be a JSON:API response which looks like:
                 "updatedAt": "2023-03-12T16:06:26.000000Z"
             },
             "relationships": {
-                "contents": {
+                "content": {
                     "links": {
-                        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/1\/contents",
-                        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/1\/relationships\/contents"
+                        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/1\/content",
+                        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/1\/relationships\/content"
                     },
                     "data": [
                         {
@@ -127,10 +127,10 @@ The result will be a JSON:API response which looks like:
                 "updatedAt": "2023-03-12T16:06:26.000000Z"
             },
             "relationships": {
-                "contents": {
+                "content": {
                     "links": {
-                        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/2\/contents",
-                        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/2\/relationships\/contents"
+                        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/2\/content",
+                        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/2\/relationships\/content"
                     }
                 }
             },
@@ -156,10 +156,10 @@ The result will be a JSON:API response which looks like:
                 "updatedAt": "2023-03-12T16:06:26.000000Z"
             },
             "relationships": {
-                "contents": {
+                "content": {
                     "links": {
-                        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/4\/contents",
-                        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/4\/relationships\/contents"
+                        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/4\/content",
+                        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/4\/relationships\/content"
                     }
                 }
             },
@@ -185,10 +185,10 @@ The result will be a JSON:API response which looks like:
                 "updatedAt": "2023-03-12T16:06:27.000000Z"
             },
             "relationships": {
-                "contents": {
+                "content": {
                     "links": {
-                        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/5\/contents",
-                        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/5\/relationships\/contents"
+                        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/5\/content",
+                        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/5\/relationships\/content"
                     }
                 }
             },

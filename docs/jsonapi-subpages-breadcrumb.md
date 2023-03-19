@@ -4,13 +4,13 @@ permalink: /jsonapi/subpages-breadcrumb/
 excerpt: "How to retrieve the sub-pages with content and ancestors from Laravel CMS using the JSON:API to build page with breadcrumb"
 ---
 
-To retrieve a specific page whose URL you've gotten from one of the previous responses (in the `links/self` attribute of the item) with its ancestor pages for the breadcrumb and its content (add `?include=ancestors,contents` to the page URL):
+To retrieve a specific page whose URL you've gotten from one of the previous responses (in the `links/self` attribute of the item) with its ancestor pages for the breadcrumb and its content (add `?include=ancestors,content` to the page URL):
 
 ```
-http://mydomain.tld/api/cms/pages/2?include=ancestors,contents
+http://mydomain.tld/api/cms/pages/2?include=ancestors,content
 ```
 
-The `included` section contains the list of content elements that should be displayed at the page if `include=contents` is added as parameter to the JSON:API URL the anchestor pages if the `include` parameter also contains `ancestors`, e.g.:
+The `included` section contains the list of content elements that should be displayed at the page if `include=content` is added as parameter to the JSON:API URL the anchestor pages if the `include` parameter also contains `ancestors`, e.g.:
 
 ```json
 {
@@ -41,10 +41,10 @@ The `included` section contains the list of content elements that should be disp
             "updatedAt": "2023-03-12T16:06:26.000000Z"
         },
         "relationships": {
-            "contents": {
+            "content": {
                 "links": {
-                    "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/2\/contents",
-                    "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/2\/relationships\/contents"
+                    "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/2\/content",
+                    "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/2\/relationships\/content"
                 },
                 "data": [
                     {
@@ -117,10 +117,10 @@ The `included` section contains the list of content elements that should be disp
                 "updatedAt": "2023-03-12T16:06:26.000000Z"
             },
             "relationships": {
-                "contents": {
+                "content": {
                     "links": {
-                        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/1\/contents",
-                        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/1\/relationships\/contents"
+                        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/1\/content",
+                        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/1\/relationships\/content"
                     }
                 }
             },

@@ -152,7 +152,7 @@ http://mydomain.tld/api/cms/pages?filter[tag]=root&filter[domain]=mydomain.tld&f
 
 When including related resources, you can get all data you need to render the page including the navigation in one request. The available related resources are:
 
-contents
+content
 : List of content elements for the requested page (paginated if more than 50 items)
 
 parent
@@ -170,7 +170,7 @@ subtree
 To get the page tagged with `blog` including its ancestors and content elements use:
 
 ```
-http://mydomain.tld/api/cms/pages?filter[tag]=blog&include=ancestors,contents
+http://mydomain.tld/api/cms/pages?filter[tag]=blog&include=ancestors,content
 ```
 
 There are detailed examples for the most often used requests available:
@@ -199,13 +199,13 @@ http://mydomain.tld/api/cms/pages?page[number]=2&page[size]=25
 This can be combined with `filter` and `include` parameters too:
 
 ```
-http://mydomain.tld/api/cms/pages?filter[lang]=en&include=contents&page[number]=2&page[size]=25
+http://mydomain.tld/api/cms/pages?filter[lang]=en&include=content&page[number]=2&page[size]=25
 ```
 
-It does also work with related contents links to load more content elements if the user scrolls down the page:
+It does also work with related content links to load more content elements if the user scrolls down the page:
 
 ```
-http://mydomain.tld/api/cms/pages/3/contents?page[number]=2&page[size]=5
+http://mydomain.tld/api/cms/pages/3/content?page[number]=2&page[size]=5
 ```
 
 In the last case, use the [link](#links) instead of constructing the URL yourself!
@@ -217,7 +217,7 @@ Most often, you don't need all page or content properties and you can reduce the
 To retrieve the `slug` and `lang` of the root pages only and the `data` property of the content elements, use:
 
 ```
-http://mydomain.tld/api/cms/pages?include=contents&fields[pages]=slug,lang&fields[contents]=data
+http://mydomain.tld/api/cms/pages?include=content&fields[pages]=slug,lang&fields[contents]=data
 ```
 
 Then, the attributes of the returned pages in the [data section](#data) will contain only:
@@ -265,7 +265,7 @@ In Laravel, you can change the base URL in the `./config/filesystems.php` file w
 
 #### Paged results
 
-Responses which returns a collection of pages (`/api/cms/pages`) and contents (e.g. `/api/cms/pages/1/contents`), you will also notice a `page` key in the `meta` section which contains the pagination information:
+Responses which returns a collection of pages (`/api/cms/pages`) and contents (e.g. `/api/cms/pages/1/content`), you will also notice a `page` key in the `meta` section which contains the pagination information:
 
 ```json
 "meta": {
@@ -304,14 +304,14 @@ The `links` section in the JSON API response is always included and contains the
 },
 ```
 
-Every time a collection of items is returned (e.g. by the `pages` or `pages/<id>/contents` endpoints), there will be links for the first, last, previous and next results, e.g.:
+Every time a collection of items is returned (e.g. by the `pages` or `pages/<id>/content` endpoints), there will be links for the first, last, previous and next results, e.g.:
 
 ```json
 "links": {
-    "first": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/contents?page[number]=1&page[size]=2",
-    "last": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/contents?page[number]=3&page[size]=2",
-    "next": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/contents?page[number]=3&page[size]=2",
-    "prev": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/contents?page[number]=1&page[size]=2",
+    "first": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/content?page[number]=1&page[size]=2",
+    "last": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/content?page[number]=3&page[size]=2",
+    "next": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/content?page[number]=3&page[size]=2",
+    "prev": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/content?page[number]=1&page[size]=2",
 },
 ```
 
@@ -319,7 +319,7 @@ Thus, you can always use the links to fetch data and don't have to construct the
 
 ## Data
 
-The `data` section of the JSON:API response contains either a single resource (in case of e.g. `/api/cms/pages/1`) or a collection of resources (for `/api/cms/pages` or `/api/cms/pages/1/contents`).
+The `data` section of the JSON:API response contains either a single resource (in case of e.g. `/api/cms/pages/1`) or a collection of resources (for `/api/cms/pages` or `/api/cms/pages/1/content`).
 
 ### Single item
 
@@ -349,10 +349,10 @@ Using a request which returns a single page, then the response is like:
         "updatedAt": "2023-03-12T16:06:26.000000Z"
     },
     "relationships": {
-        "contents": {
+        "content": {
             "links": {
-                "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/1\/contents",
-                "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/1\/relationships\/contents"
+                "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/1\/content",
+                "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/1\/relationships\/content"
             }
         }
     },
@@ -393,10 +393,10 @@ For request returning multiple items, the `data` section will be similar to:
             "updatedAt": "2023-03-12T16:06:26.000000Z"
         },
         "relationships": {
-            "contents": {
+            "content": {
                 "links": {
-                    "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/1\/contents",
-                    "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/1\/relationships\/contents"
+                    "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/1\/content",
+                    "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/1\/relationships\/content"
                 }
             }
         },
@@ -407,7 +407,7 @@ For request returning multiple items, the `data` section will be similar to:
 ]
 ```
 
-It's the same like for responses returning single resources but the `data` section contains a list of page items. If you call the URL inside `relationships/contents/links/related`, you will get a list of content items:
+It's the same like for responses returning single resources but the `data` section contains a list of page items. If you call the URL inside `relationships/content/links/related`, you will get a list of content items:
 
 ```json
 "data": [
@@ -428,22 +428,22 @@ It's the same like for responses returning single resources but the `data` secti
 
 ### Relationships
 
-By default, the `relationships` section contains a link to retrieve the contents for that page (`/api/cms/pages/1/contents`). If you use the [include parameter](#include-resources) to get related resources in the same request there will be a key for each related resource below `relationships`.
+By default, the `relationships` section contains a link to retrieve the content for that page (`/api/cms/pages/1/content`). If you use the [include parameter](#include-resources) to get related resources in the same request there will be a key for each related resource below `relationships`.
 
-For a request which should include the parent page, ancestor pages, child pages, the page subtree and the contents like:
+For a request which should include the parent page, ancestor pages, child pages, the page subtree and the content like:
 
 ```
-http://mydomain.tld/api/cms/pages/1?include=parent,ancestors,children,subtree,contents
+http://mydomain.tld/api/cms/pages/1?include=parent,ancestors,children,subtree,content
 ```
 
 Then, the `relationships` section will contain:
 
 ```json
 "relationships": {
-    "contents": {
+    "content": {
         "links": {
-            "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/2\/contents",
-            "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/2\/relationships\/contents"
+            "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/2\/content",
+            "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/2\/relationships\/content"
         },
         "data": [
             {
@@ -501,7 +501,7 @@ Each key in the `relationships` part will a reference to a single item (like for
 
 ## Included
 
-The `included` section of each JSON API response is only available if you've added the `include` parameter to the URL, e.g. `/api/cms/pages/1?include=contents`. In that case the `relationships/contents/data` part contains the list of references:
+The `included` section of each JSON API response is only available if you've added the `include` parameter to the URL, e.g. `/api/cms/pages/1?include=content`. In that case the `relationships/content/data` part contains the list of references:
 
 ```json
 {
@@ -514,7 +514,7 @@ The `included` section of each JSON API response is only available if you've add
         "more keys": "..."
     },
     "relationships": {
-        "contents": {
+        "content": {
             "data": [
                 {
                     "type": "contents",
@@ -545,4 +545,4 @@ And the `included` section for that response then contains:
 ]
 ```
 
-It consists of a flat list of page or content items identified by their `type` and `id` values. You must now match the type and ID within the `relationships/contents` section with the type and ID within the `included` section.
+It consists of a flat list of page or content items identified by their `type` and `id` values. You must now match the type and ID within the `relationships/content` section with the type and ID within the `included` section.

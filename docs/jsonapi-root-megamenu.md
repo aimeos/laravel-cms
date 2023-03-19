@@ -9,13 +9,13 @@ excerpt: "How to retrieve the root page with descendents from Laravel CMS using 
 Retrieve the root page with content and up to three levels of sub-pages to build a mega-menu:
 
 ```
-http://mydomain.tld/api/cms/pages?filter[tag]=root&include=subtree,contents
+http://mydomain.tld/api/cms/pages?filter[tag]=root&include=subtree,content
 ```
 
 For multi-language sites, the `lang` filter parameter must be added:
 
 ```
-http://mydomain.tld/api/cms/pages?filter[tag]=root&filter[lang]=en&include=subtree,contents
+http://mydomain.tld/api/cms/pages?filter[tag]=root&filter[lang]=en&include=subtree,content
 ```
 
 Then, the page tree (up to three levels deep) including the content for the root page will be returned:
@@ -37,8 +37,8 @@ Then, the page tree (up to three levels deep) including the content for the root
         "version": "1.0"
     },
     "links": {
-        "first": "http:\/\/mydomain.tld\/api\/cms\/pages?filter%5Btag%5D=root&include=subtree%2Ccontents&page%5Bnumber%5D=1&page%5Bsize%5D=15",
-        "last": "http:\/\/mydomain.tld\/api\/cms\/pages?filter%5Btag%5D=root&include=subtree%2Ccontents&page%5Bnumber%5D=1&page%5Bsize%5D=15"
+        "first": "http:\/\/mydomain.tld\/api\/cms\/pages?filter%5Btag%5D=root&include=subtree%2Ccontent&page%5Bnumber%5D=1&page%5Bsize%5D=15",
+        "last": "http:\/\/mydomain.tld\/api\/cms\/pages?filter%5Btag%5D=root&include=subtree%2Ccontent&page%5Bnumber%5D=1&page%5Bsize%5D=15"
     },
     "data": [
         {
@@ -64,10 +64,10 @@ Then, the page tree (up to three levels deep) including the content for the root
                 "updatedAt": "2023-03-12T16:06:26.000000Z"
             },
             "relationships": {
-                "contents": {
+                "content": {
                     "links": {
-                        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/1\/contents",
-                        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/1\/relationships\/contents"
+                        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/1\/content",
+                        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/1\/relationships\/content"
                     },
                     "data": [
                         {
@@ -133,10 +133,10 @@ Then, the page tree (up to three levels deep) including the content for the root
                 "updatedAt": "2023-03-12T16:06:26.000000Z"
             },
             "relationships": {
-                "contents": {
+                "content": {
                     "links": {
-                        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/2\/contents",
-                        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/2\/relationships\/contents"
+                        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/2\/content",
+                        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/2\/relationships\/content"
                     }
                 }
             },
@@ -162,10 +162,10 @@ Then, the page tree (up to three levels deep) including the content for the root
                 "updatedAt": "2023-03-12T16:06:26.000000Z"
             },
             "relationships": {
-                "contents": {
+                "content": {
                     "links": {
-                        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/contents",
-                        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/relationships\/contents"
+                        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/content",
+                        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/relationships\/content"
                     }
                 }
             },
@@ -191,10 +191,10 @@ Then, the page tree (up to three levels deep) including the content for the root
                 "updatedAt": "2023-03-12T16:06:26.000000Z"
             },
             "relationships": {
-                "contents": {
+                "content": {
                     "links": {
-                        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/4\/contents",
-                        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/4\/relationships\/contents"
+                        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/4\/content",
+                        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/4\/relationships\/content"
                     }
                 }
             },
@@ -220,10 +220,10 @@ Then, the page tree (up to three levels deep) including the content for the root
                 "updatedAt": "2023-03-12T16:06:27.000000Z"
             },
             "relationships": {
-                "contents": {
+                "content": {
                     "links": {
-                        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/5\/contents",
-                        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/5\/relationships\/contents"
+                        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/5\/content",
+                        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/5\/relationships\/content"
                     }
                 }
             },

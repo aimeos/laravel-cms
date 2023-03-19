@@ -86,7 +86,7 @@ class PageSchema extends Schema
             ArrayHash::make( 'data' )->readOnly(),
             DateTime::make( 'createdAt' )->readOnly(),
             DateTime::make( 'updatedAt' )->readOnly(),
-            BelongsToMany::make( 'contents' )->readOnly(),
+            BelongsToMany::make( 'content' )->type( 'pages' )->readOnly(),
             HasOne::make( 'parent' )->type( 'pages' )->readOnly()->serializeUsing(
                 static fn($relation) => $relation->withoutLinks()
             ),

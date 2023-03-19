@@ -88,8 +88,8 @@ class JsonapiTest extends TestAbstract
         $page = \Aimeos\Cms\Models\Page::where('tag', 'blog')->firstOrFail();
         $contents = $page->content;
 
-        $this->expectsDatabaseQueryCount( 2 ); // page + contents
-        $response = $this->jsonApi()->expects( 'contents' )->get( "cms/pages/{$page->id}/contents" );
+        $this->expectsDatabaseQueryCount( 3 ); // page + content + content count
+        $response = $this->jsonApi()->expects( 'contents' )->get( "cms/pages/{$page->id}/content" );
 
         $response->assertFetchedManyInOrder( $contents );
         $this->assertGreaterThanOrEqual( 2, count( $contents ) );
@@ -163,8 +163,8 @@ class JsonapiTest extends TestAbstract
             $expected[] = ['type' => 'contents', 'id' => $item->id];
         }
 
-        $this->expectsDatabaseQueryCount( 2 ); // page + contents
-        $response = $this->jsonApi()->expects( 'pages' )->includePaths( 'contents' )->get( "cms/pages/{$page->id}" );
+        $this->expectsDatabaseQueryCount( 2 ); // page + content
+        $response = $this->jsonApi()->expects( 'pages' )->includePaths( 'content' )->get( "cms/pages/{$page->id}" );
         $response->assertFetchedOne( $page )->assertIncluded( $expected );
 
         $this->assertGreaterThanOrEqual( 1, count( $expected ) );

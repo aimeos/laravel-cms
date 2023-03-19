@@ -138,7 +138,7 @@ class Page extends Model
     /**
      * Get all content for the page.
      */
-    public function contents(): BelongsToMany
+    public function contents() : BelongsToMany
     {
         return $this->belongsToMany( Content::class, 'cms_page_content' )->as( 'ref' )
             ->withPivot( 'id', 'position', 'status', 'editor', 'created_at', 'updated_at' )

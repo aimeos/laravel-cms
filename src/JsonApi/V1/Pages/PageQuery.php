@@ -30,9 +30,9 @@ class PageQuery extends ResourceQuery
                 'nullable',
                 'string',
                 JsonApiRule::includePaths()->forget(
-                    'anchestors.contents',
+                    'anchestors.content',
                     'children.children',
-                    'subtree.contents',
+                    'subtree.content',
                 ),
             ],
             'page' => JsonApiRule::notSupported(),

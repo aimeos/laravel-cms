@@ -21,10 +21,10 @@ class JsonapiTest extends TestAbstract
 
     protected function defineRoutes( $router )
     {
-        \LaravelJsonApi\Laravel\Facades\JsonApiRoute::server("cms")->prefix("cms")->resources(function($server) {
-            $server->resource("pages", \LaravelJsonApi\Laravel\Http\Controllers\JsonApiController::class)->readOnly()
-                ->relationships(function ($relationships) {
-                    $relationships->hasOne('contents')->readOnly();
+        \LaravelJsonApi\Laravel\Facades\JsonApiRoute::server( "cms" )->prefix( "cms" )->resources( function( $server ) {
+            $server->resource( "pages", \Aimeos\Cms\JsonApi\V1\Controllers\PageController::class )->readOnly()
+                ->relationships( function( $relationships ) {
+                    $relationships->hasOne( 'content' )->readOnly();
                 });
             });
     }
@@ -77,7 +77,7 @@ class JsonapiTest extends TestAbstract
         $response = $this->jsonApi()->expects( 'pages' )->get( "cms/pages/{$page->id}" );
 
         $response->assertFetchedOne( $page );
-        $response->assertJsonPath( 'jsonapi.meta.baseurl', '/storage/' );
+        $response->assertJsonPath( 'meta.baseurl', '/storage/' );
     }
 
 
@@ -93,6 +93,7 @@ class JsonapiTest extends TestAbstract
 
         $response->assertFetchedManyInOrder( $contents );
         $this->assertGreaterThanOrEqual( 2, count( $contents ) );
+        $response->assertJsonPath( 'meta.baseurl', '/storage/' );
     }
 
 

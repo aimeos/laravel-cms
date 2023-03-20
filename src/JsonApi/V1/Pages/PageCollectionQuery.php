@@ -46,7 +46,7 @@ class PageCollectionQuery extends ResourceQuery
             ],
             'page.size' => [
                 'integer',
-                'between:1,25',
+                'between:1,100',
             ],
             'sort' => JsonApiRule::notSupported(),
         ];

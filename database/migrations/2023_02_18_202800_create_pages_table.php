@@ -29,13 +29,15 @@ return new class extends Migration
             $table->smallInteger('cache');
             $table->nestedSet();
             $table->string('editor');
+            $table->datetime('start')->nullable();
+            $table->datetime('end')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
             $table->unique(['slug', 'domain', 'lang', 'tenant_id']);
             $table->index(['_lft', '_rgt', 'tenant_id', 'status']);
-            $table->index(['tag', 'lang', 'tenant_id', 'status']);
-            $table->index(['lang', 'tenant_id', 'status']);
+            $table->index(['tag', 'lang', 'tenant_id', 'status', 'start', 'end']);
+            $table->index(['lang', 'tenant_id', 'status', 'start', 'end']);
             $table->index(['parent_id', 'tenant_id']);
             $table->index(['deleted_at']);
         });

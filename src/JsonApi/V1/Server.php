@@ -5,6 +5,7 @@ namespace Aimeos\Cms\JsonApi\V1;
 use Illuminate\Support\Facades\Storage;
 use LaravelJsonApi\Core\Server\Server as BaseServer;
 use LaravelJsonApi\Core\Document\JsonApi;
+use Aimeos\Cms\Scopes\Timeframe;
 use Aimeos\Cms\Scopes\Status;
 
 
@@ -25,6 +26,7 @@ class Server extends BaseServer
      */
     public function serving(): void
     {
+        \Aimeos\Cms\Models\Page::addGlobalScope( new Timeframe() );
         \Aimeos\Cms\Models\Page::addGlobalScope( new Status() );
     }
 

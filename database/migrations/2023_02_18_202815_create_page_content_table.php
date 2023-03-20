@@ -21,10 +21,12 @@ return new class extends Migration
             $table->smallInteger('status');
             $table->integer('position');
             $table->string('editor');
+            $table->datetime('start')->nullable();
+            $table->datetime('end')->nullable();
             $table->timestamps();
 
             $table->primary('id');
-            $table->unique(['page_id', 'content_id', 'status', 'position']);
+            $table->unique(['page_id', 'content_id', 'status', 'start', 'end', 'position'], 'idx_pid_cid_stat_sta_end_pos');
         });
     }
 

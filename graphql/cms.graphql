@@ -166,6 +166,12 @@ type Page {
   "Cache lifetime in minutes"
   cache: Int!
 
+  "Date/time when the page will be shown"
+  start: String
+
+  "Date/time when the page will be hidden"
+  end: String
+
   "Name of the last user who added, updated or deleted the page"
   editor: String!
 
@@ -239,6 +245,12 @@ input PageInput {
 
   "Cache lifetime in minutes"
   cache: Int!
+
+  "Date/time when the page will be shown"
+  start: String
+
+  "Date/time when the page will be hidden"
+  end: String
 }
 
 type Content {
@@ -303,6 +315,12 @@ type Ref {
   "Visibility status of the content element within the page, 0=inactive, 1=visible"
   status: Int!
 
+  "Date/time when the content element will be shown"
+  start: String
+
+  "Date/time when the content element will be hidden"
+  end: String
+
   "Name of the last user who added or updated the page<->content reference"
   editor: String!
 
@@ -325,6 +343,12 @@ input RefInput {
 
   "Visibility status of the content element within the page, 0=inactive, 1=visible"
   status: Int!
+
+  "Date/time when the content element will be shown"
+  start: String
+
+  "Date/time when the content element will be hidden"
+  end: String
 }
 
 input RefSaveInput {
@@ -333,6 +357,12 @@ input RefSaveInput {
 
   "Visibility status of the content element within the page, 0=inactive, 1=visible"
   status: Int!
+
+  "Date/time when the content element will be shown"
+  start: String
+
+  "Date/time when the content element will be hidden"
+  end: String
 }
 
 type Version {

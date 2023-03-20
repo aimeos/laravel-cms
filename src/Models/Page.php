@@ -51,6 +51,8 @@ class Page extends Model
         'config' => '{}',
         'status' => 0,
         'cache' => 5,
+        'start' => null,
+        'end' => null,
         'editor' => '',
     ];
 
@@ -87,6 +89,8 @@ class Page extends Model
         'config',
         'status',
         'cache',
+        'start',
+        'end',
     ];
 
     /**
@@ -125,11 +129,24 @@ class Page extends Model
     /**
      * Get the active content for the page.
      */
-    public function content(): BelongsToMany
+    public function content() : BelongsToMany
     {
+        $ref = new Ref;
+
         return $this->belongsToMany( Content::class, 'cms_page_content' )
-            ->wherePivot( 'tenant_id', \Aimeos\Cms\Tenancy::value() )
-            ->wherePivot( 'status', 1 )
+            ->where( function( Builder $query ) use ( $ref ) {
+                return $query
+                    ->where( function( Builder $query ) use ( $ref ) {
+                        return $query->where( $ref->qualifyColumn( 'start' ), '>=', date( 'Y-m-d H:i:00' ) )
+                            ->orWhere( $ref->qualifyColumn( 'start' ), null );
+                    } )
+                    ->where( function( Builder $query ) use ( $ref ) {
+                        return $query->where( $ref->qualifyColumn( 'end' ), '<=', date( 'Y-m-d H:i:00' ) )
+                            ->orWhere( $ref->qualifyColumn( 'end' ), null );
+                    } )
+                    ->where( $ref->qualifyColumn( 'tenant_id' ), \Aimeos\Cms\Tenancy::value() )
+                    ->where( $ref->qualifyColumn( 'status' ), 1 );
+            } )
             ->withPivot( 'position' )
             ->orderByPivot( 'position' );
     }

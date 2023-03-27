@@ -1,5 +1,14 @@
+---
+title: "Authentication"
+permalink: /graphql/authentication/
+excerpt: "How to authenticate at Laravel CMS using the GraphQL API"
+---
 
-Laravel CMS tries to authenticate against entries of the Laravel `users` table. To be able to use the GraphQL API, they need to be editors (use `php artisan cms:editor editor@example.com` to set the editor role).
+Laravel CMS tries to authenticate against entries of the Laravel `users` table. To be able to use the GraphQL API, they need to be editors (use the `artisan` command to set the editor role):
+
+```bash
+php artisan cms:editor editor@example.com
+```
 
 ## Login
 

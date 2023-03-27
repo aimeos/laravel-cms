@@ -1,6 +1,8 @@
 main:
   - title: "Frontend API"
     url: /jsonapi/start/
+  - title: "Backend API"
+    url: /graphql/start/
   - title: "Github"
     url: https://github.com/aimeos/laravel-cms
 

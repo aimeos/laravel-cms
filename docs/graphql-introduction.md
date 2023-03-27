@@ -65,8 +65,7 @@ For more details, please have a look at the [Laravel CMS GraphQL authentication 
 
 # Retrieve data
 
-!!! note
-    You must authenticate first to use the GraphQL API!
+Note: You must authenticate first to use the GraphQL API!
 
 ## Single query
 
@@ -157,8 +156,7 @@ The result is a batched query with a response like this one:
 
 # Modify data
 
-!!! note
-    You must authenticate first to use the GraphQL API!
+Note: You must authenticate first to use the GraphQL API!
 
 ## Single mutation
 

@@ -1,8 +1,8 @@
 main:
   - title: "Frontend API"
-    url: /jsonapi/start/
+    url: /jsonapi/introduction/
   - title: "Backend API"
-    url: /graphql/start/
+    url: /graphql/introduction/
   - title: "Github"
     url: https://github.com/aimeos/laravel-cms
 
@@ -19,3 +19,10 @@ docs:
         url: /jsonapi/subpages-breadcrumb/
       - title: "Content only"
         url: /jsonapi/content-only/
+
+  - title: "Backend GraphQL API"
+    children:
+      - title: "Introduction"
+        url: /graphql/introduction/
+      - title: "Authentication"
+        url: /graphql/authentication/

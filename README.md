@@ -1,4 +1,6 @@
-Powerful as Contentful, simple as Wordpress!
+![Laravell CMS](laravel-cms.svg)
+
+# Laravel CMS - Powerful as Contentful, simple as Wordpress!
 
 The easy, flexible and scalable API-first Laravel CMS package:
 
@@ -14,7 +16,7 @@ The easy, flexible and scalable API-first Laravel CMS package:
 * Multi-tenancy capable
 * Supports soft-deletes
 * Fully Open Source
-* Scales from single page with SQLite to millions of pages with RDBMS
+* Scales from single page with SQLite to millions of pages with DB clusters
 
 It can be installed into any existing Laravel application.
 

@@ -30,8 +30,8 @@ class CmsServiceProvider extends ServiceProvider
 		$this->loadViewsFrom( $basedir . '/views', 'cms' );
 		$this->loadMigrationsFrom( $basedir . '/database/migrations' );
 
-		$this->publishes( [$basedir . '/config/cms.php' => config_path( 'cms.php' )], 'cms' );
-		$this->publishes( [$basedir . '/graphql/cms.graphql' => base_path( 'graphql/cms.graphql' )], 'cms' );
+		$this->publishes( [$basedir . '/config/cms.php' => config_path( 'cms.php' )], 'config' );
+		$this->publishes( [$basedir . '/graphql/cms.graphql' => base_path( 'graphql/cms.graphql' )], 'schema' );
 		$this->publishes( [$basedir . '/public' => public_path( 'vendor/cms' )], 'public' );
 
 

@@ -36,9 +36,10 @@ const vuetify = createVuetify({
 })
 
 const cache = new InMemoryCache()
+const node = document.querySelector('#app')
 const apolloClient = new ApolloClient({
   cache,
-  uri: 'http://localhost:8000/graphql',
+  uri: node && node.dataset && node.dataset.graphql || '/graphql',
   credentials: 'include'
 })
 const apolloProvider = createApolloProvider({

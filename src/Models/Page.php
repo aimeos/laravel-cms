@@ -166,6 +166,17 @@ class Page extends Model
 
 
     /**
+     * Tests if node has children.
+     *
+     * @return bool TRUE if node has children, FALSE if not
+     */
+    public function getHasAttribute()
+    {
+        return $this->_rgt > $this->_lft + 1;
+    }
+
+
+    /**
      * Returns the cache key for the page.
      *
      * @param Page|string $page Page object or URL slug

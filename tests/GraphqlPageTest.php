@@ -74,6 +74,7 @@ class GraphqlPageTest extends TestAbstract
                 editor
                 start
                 end
+                has
                 created_at
                 updated_at
                 deleted_at

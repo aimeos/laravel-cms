@@ -13,6 +13,7 @@ use LaravelJsonApi\Eloquent\Fields\Relations\HasMany;
 use LaravelJsonApi\Eloquent\Fields\Relations\HasOne;
 use LaravelJsonApi\Eloquent\Fields\ArrayHash;
 use LaravelJsonApi\Eloquent\Fields\DateTime;
+use LaravelJsonApi\Eloquent\Fields\Boolean;
 use LaravelJsonApi\Eloquent\Fields\Number;
 use LaravelJsonApi\Eloquent\Fields\Str;
 use LaravelJsonApi\Eloquent\Fields\ID;
@@ -82,6 +83,7 @@ class PageSchema extends Schema
             Str::make( 'tag' )->readOnly(),
             Str::make( 'to' )->readOnly(),
             Str::make( 'domain' )->readOnly(),
+            Boolean::make( 'has' )->readOnly(),
             Number::make( 'cache' )->readOnly(),
             ArrayHash::make( 'data' )->readOnly(),
             DateTime::make( 'createdAt' )->readOnly(),

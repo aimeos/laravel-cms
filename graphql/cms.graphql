@@ -184,6 +184,9 @@ type Page {
   "Date/time value when the page was deleted or NULL if it's available"
   deleted_at: String
 
+  "If node has children"
+  has: Boolean!
+
   "Relation to the parent page or NULL if it's a root page"
   parent: Page
 

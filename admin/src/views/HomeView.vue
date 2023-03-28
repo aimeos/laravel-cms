@@ -7,11 +7,12 @@
       me: {
         query: gql`query{
           me {
+            cmseditor
             name
           }
         }`,
         update(data) {
-          if(data.me && data.me.name) {
+          if(data.me && data.me.name && data.me.cmseditor) {
             this.me = data.me.name
             router.push('/pages')
           } else {
@@ -44,6 +45,7 @@
         this.$apollo.mutate({
           mutation: gql`mutation ($email: String!, $password: String!) {
             cmsLogin(email: $email, password: $password) {
+              cmseditor
               name
             }
           }`,
@@ -52,9 +54,11 @@
             password: this.creds.password
           }
         }).then((r) => {
-          if(r.data.cmsLogin && r.data.cmsLogin.name) {
+          if(r.data.cmsLogin && r.data.cmsLogin.name && r.data.cmsLogin.cmseditor) {
             this.me = r.data.cmsLogin.name
             router.push('/pages')
+          } else {
+            this.failure = true
           }
         }).catch((error) => {
           console.log('error', error)
@@ -88,7 +92,7 @@
             <v-icon @click="show = !show">{{ show ? `mdi-eye-off` : `mdi-eye` }}</v-icon>
           </template>
         </v-text-field>
-        <v-alert v-show="failure" color="error" icon="mdi-alert-octagon" text="Login failed!"></v-alert>
+        <v-alert v-show="failure" color="error" icon="mdi-alert-octagon" text="Login failed or user is not authorized!"></v-alert>
       </v-card-text>
 
       <v-card-actions>

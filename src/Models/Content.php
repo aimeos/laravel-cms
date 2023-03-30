@@ -49,6 +49,7 @@ class Content extends Model
      */
     protected $casts = [
         'data' => 'object',
+        'lang' => 'string',
     ];
 
     /**

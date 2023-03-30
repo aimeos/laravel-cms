@@ -217,28 +217,25 @@ type Page {
 
 input PageInput {
   "ISO language code, e.g. 'en', 'en_GB' or empty for default language"
-  lang: String!
+  lang: String
 
   "URL segment of the page, unique in combination with the language"
-  slug: String!
+  slug: String
 
-  "Domain name the root page (!) is responsible for"
-  domain: String!
+  "Domain name the page is assigned to"
+  domain: String
 
-  "Short page name for menues"
-  name: String!
+  "Short page name for menus"
+  name: String
 
   "Descriptive page title"
-  title: String!
+  title: String
 
   "If not empty, the path or URL the browser is redirected to"
-  to: String!
+  to: String
 
   "Tag name to identify a page, e.g. for the starting point of a navigation structure"
-  tag: String!
-
-  "Arbitrary page header elements"
-  data: JSON!
+  tag: String
 
   "Arbitrary configuration settings"
   config: JSON!
@@ -296,7 +293,7 @@ type Content {
 
 input ContentInput {
   "ISO language code, e.g. 'en', 'en_GB' or empty for default language"
-  lang: String!
+  lang: String
 
   "Arbitrary content element"
   data: JSON!
@@ -422,8 +419,8 @@ type File {
 
 input FileInput {
   "Tag to categorize the file"
-  tag: String!
+  tag: String
 
   "Descriptive name of the stored file"
-  name: String!
+  name: String
 }

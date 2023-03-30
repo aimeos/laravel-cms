@@ -48,7 +48,9 @@ class File extends Model
      * @var array
      */
     protected $casts = [
+        'name' => 'string',
         'previews' => 'object',
+        'tag' => 'string',
     ];
 
     /**

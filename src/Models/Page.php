@@ -62,6 +62,13 @@ class Page extends Model
      * @var array
      */
     protected $casts = [
+        'tag' => 'string',
+        'lang' => 'string',
+        'slug' => 'string',
+        'domain' => 'string',
+        'to' => 'string',
+        'name' => 'string',
+        'title' => 'string',
         'data' => 'object',
         'config' => 'object',
     ];

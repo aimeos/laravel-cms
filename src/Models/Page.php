@@ -220,7 +220,7 @@ class Page extends Model
      */
     public function nav() : \Kalnoy\Nestedset\Collection
     {
-        return $this->ancestors->first()?->descendants->toTree() ?: new \Kalnoy\Nestedset\Collection();
+        return $this->ancestors->first()?->subtree->toTree() ?: new \Kalnoy\Nestedset\Collection();
     }
 
 

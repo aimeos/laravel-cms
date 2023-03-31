@@ -123,13 +123,15 @@ class Page extends Model
 
 
     /**
-     * Get query for ancestors of the node.
-     *
-     * @return AncestorsRelation
+     * Apply default ordering to all queries
      */
-    public function ancestors() : AncestorsRelation
+    protected static function boot()
     {
-        return (new AncestorsRelation( $this->newQuery(), $this ))->defaultOrder();
+        parent::boot();
+
+        static::addGlobalScope('treeorder', function( Builder $builder ) {
+            $builder->defaultOrder();
+        });
     }
 
 
@@ -275,7 +277,7 @@ class Page extends Model
             )
             ->having( 'depth', '<=', ( $this->depth ?? 0 ) + 3 );
 
-        return (new DescendantsRelation( $builder, $this ))->defaultOrder();
+        return (new DescendantsRelation( $builder, $this ));
     }
 
 

@@ -134,25 +134,25 @@ type Page {
   parent_id: String
 
   "ISO language code, e.g. 'en', 'en_GB' or empty for default language"
-  lang: String!
+  lang: String
 
   "URL segment of the page, unique in combination with the language"
-  slug: String!
+  slug: String
 
   "Domain name the root page (!) is responsible for"
-  domain: String!
+  domain: String
 
   "Short page name for menues"
-  name: String!
+  name: String
 
   "Descriptive page title"
-  title: String!
+  title: String
 
   "If not empty, the path or URL the browser is redirected to"
-  to: String!
+  to: String
 
   "Tag name to identify a page, e.g. for the starting point of a navigation structure"
-  tag: String!
+  tag: String
 
   "Arbitrary page header elements"
   data: JSON!
@@ -258,7 +258,7 @@ type Content {
   id: ID!
 
   "ISO language code, e.g. 'en', 'en_GB' or empty for default language"
-  lang: String!
+  lang: String
 
   "Arbitrary content element"
   data: JSON!
@@ -387,13 +387,13 @@ type File {
   id: ID!
 
   "Mime type of the stored file"
-  mime: String!
+  mime: String
 
   "Tag to categorize the file"
-  tag: String!
+  tag: String
 
   "Descriptive name of the stored file"
-  name: String!
+  name: String
 
   "Relative path to the stored file"
   path: String!

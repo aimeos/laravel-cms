@@ -252,7 +252,9 @@ Made with <fg=green>love</> by the Laravel CMS community. Be a part of it!
         $content = file_get_contents( base_path( $filename ) );
 
         $string = "Route::group([/* uncomment for multi-domain routing: 'domain' => '{domain}'*/], function() {
-    Route::get('{slug?}/{lang?}', [\Aimeos\Cms\Http\Controllers\PageController::class, 'index'])->name('cms.page');
+    Route::get('{slug?}/{lang?}', [\Aimeos\Cms\Http\Controllers\PageController::class, 'index'])
+        ->where(['lang' => '[a-z]{2}(\_[A-Z]{2})?')
+        ->name('cms.page');
 });";
 
         if( strpos( $content, '{slug' ) === false )

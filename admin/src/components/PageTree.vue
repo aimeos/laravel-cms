@@ -90,8 +90,6 @@
       },
 
       change() {
-console.log(dragContext)
-
         const parent = dragContext.targetInfo.parent
         const siblings = dragContext.targetInfo.siblings
         const ref = siblings[dragContext.targetInfo.indexBeforeDrop+1] || null
@@ -108,7 +106,6 @@ console.log(dragContext)
             ref: ref ? ref.data.id : null
           }
         }).then(result => {
-console.log(result)
           if(!result.errors && result.data && result.data.movePage.id) {
             const srcparent = dragContext.startInfo.parent
 

@@ -8,8 +8,4 @@
 	@includeFirst([$data['cover']['type'] ?? '', 'cms::invalid'], ['data' => $data['cover'] ?? [], 'main' => true])
 
 	<div class="lead">@includeIf('cms::text', ['data' => $data['intro'] ?? ''])</div>
-
-	@foreach($data['content'] ?? [] as $item)
-		@includeFirst([$item['type'] ?? '', 'cms::invalid'], ['data' => $item])
-	@endforeach
 </div>

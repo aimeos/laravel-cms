@@ -495,10 +495,13 @@
           <v-menu v-if="Object.keys(languages.available).length">
             <template v-slot:activator="{ props }">
               <v-btn append-icon="mdi-menu-down" variant="outlined" location="bottom right" v-bind="props">
-                {{ languages.available[languages.current] || '' }}
+                {{ languages.available[languages.current] || 'None' }}
               </v-btn>
             </template>
             <v-list>
+              <v-list-item>
+                <v-btn variant="text">None</v-btn>
+              </v-list-item>
               <v-list-item v-for="(name, code) in languages.available" :key="code">
                 <v-btn variant="text">{{ name }}</v-btn>
               </v-list-item>

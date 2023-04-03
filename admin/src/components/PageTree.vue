@@ -3,12 +3,14 @@
   import { Draggable } from '@he-tree/vue'
   import { dragContext } from '@he-tree/vue'
   import { useLanguageStore } from '../stores'
+  import { useAppStore } from '../stores'
   import Navigation from './Navigation.vue'
 
   export default {
     setup() {
       const languages = useLanguageStore()
-      return { languages }
+      const app = useAppStore()
+      return { app, languages }
     },
     apollo: {
       pages: {
@@ -58,7 +60,6 @@
     emits: ['update:nav', 'update:id'],
     data() {
       return {
-        me: null,
         clip: null,
         menu: {},
         pages: []
@@ -438,6 +439,11 @@
             console.log(error)
           })
         })
+      },
+
+      url(node) {
+        const url = this.app.url.replace(/:slug/, node.slug).replace(/:lang/, node.lang)
+        return url.endsWith('/') ? url.substring(0, url.length - 1) : url
       }
     },
   }
@@ -572,7 +578,7 @@
               </div>
               <div class="node-url" @click="$emit('update:id', '1')">
                 <div class="page-domain">{{ node.domain }}</div>
-                <span class="page-slug">/{{ node.slug }}</span>
+                <span class="page-slug">{{ url(node) }}</span>
                 <span v-if="node.to" class="page-to"> ➔ {{ node.to }}</span>
               </div>
             </div>

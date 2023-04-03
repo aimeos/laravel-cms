@@ -7,7 +7,11 @@
     <title>Laravel CMS test environment</title>
   </head>
   <body>
-    <div id="app" data-graphql="http://localhost:8000/graphql" data-languages='{"en": "English"}'></div>
+    <div id="app"
+      data-urltemplate="/:slug/:lang"
+      data-graphql="http://localhost:8000/graphql"
+      data-languages='{"en": "English"}'>
+    </div>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

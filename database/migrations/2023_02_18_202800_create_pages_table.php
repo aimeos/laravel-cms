@@ -16,15 +16,15 @@ return new class extends Migration
         Schema::connection(config('cms.db', 'sqlite'))->create('cms_pages', function (Blueprint $table) {
             $table->id();
             $table->string('tenant_id', 250);
-            $table->string('lang', 5)->nullable();
-            $table->string('name', 100)->nullable();
-            $table->string('title')->nullable();
-            $table->string('slug')->nullable();
-            $table->string('to')->nullable();
-            $table->string('domain')->nullable();
-            $table->string('tag', 30)->nullable();
-            $table->json('data');
-            $table->json('config');
+            $table->string('lang', 5);
+            $table->string('name', 100);
+            $table->string('title');
+            $table->string('slug');
+            $table->string('to');
+            $table->string('domain');
+            $table->string('tag', 30);
+            $table->json('data')->nullable();
+            $table->json('config')->nullable();
             $table->smallInteger('status');
             $table->smallInteger('cache');
             $table->nestedSet();

@@ -8,6 +8,7 @@
 namespace Aimeos\Cms\Models;
 
 use Aimeos\Cms\Concerns\Tenancy;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -136,6 +137,17 @@ class Page extends Model
 
 
     /**
+     * Interact with the cache property.
+     */
+    protected function cache(): Attribute
+    {
+        return Attribute::make(
+            set: fn($value) => $value === null ? 5 : (int) $value,
+        );
+    }
+
+
+    /**
      * Get the active content for the page.
      */
     public function content() : BelongsToMany
@@ -175,6 +187,17 @@ class Page extends Model
 
 
     /**
+     * Interact with the domain property.
+     */
+    protected function domain(): Attribute
+    {
+        return Attribute::make(
+            set: fn($value) => (string) $value,
+        );
+    }
+
+
+    /**
      * Tests if node has children.
      *
      * @return bool TRUE if node has children, FALSE if not
@@ -204,6 +227,17 @@ class Page extends Model
 
 
     /**
+     * Interact with the lang property.
+     */
+    protected function lang(): Attribute
+    {
+        return Attribute::make(
+            set: fn($value) => (string) $value,
+        );
+    }
+
+
+    /**
      * Get the page's latest head/meta data.
      */
     public function latest() : HasOne
@@ -212,6 +246,17 @@ class Page extends Model
             ->where( 'versionable_type', Page::class )
             ->orderBy( 'id', 'desc' )
             ->take( 1 );
+    }
+
+
+    /**
+     * Interact with the name property.
+     */
+    protected function name(): Attribute
+    {
+        return Attribute::make(
+            set: fn($value) => (string) $value,
+        );
     }
 
 
@@ -252,6 +297,28 @@ class Page extends Model
 
 
     /**
+     * Interact with the slug property.
+     */
+    protected function slug(): Attribute
+    {
+        return Attribute::make(
+            set: fn($value) => (string) $value,
+        );
+    }
+
+
+    /**
+     * Interact with the status property.
+     */
+    protected function status(): Attribute
+    {
+        return Attribute::make(
+            set: fn($value) => (int) $value,
+        );
+    }
+
+
+    /**
      * Get query for the complete sub-tree up to three levels.
      *
      * @return DescendantsRelation
@@ -278,6 +345,39 @@ class Page extends Model
             ->having( 'depth', '<=', ( $this->depth ?? 0 ) + 3 );
 
         return (new DescendantsRelation( $builder, $this ));
+    }
+
+
+    /**
+     * Interact with the tag property.
+     */
+    protected function tag(): Attribute
+    {
+        return Attribute::make(
+            set: fn($value) => (string) $value,
+        );
+    }
+
+
+    /**
+     * Interact with the title property.
+     */
+    protected function title(): Attribute
+    {
+        return Attribute::make(
+            set: fn($value) => (string) $value,
+        );
+    }
+
+
+    /**
+     * Interact with the to property.
+     */
+    protected function to(): Attribute
+    {
+        return Attribute::make(
+            set: fn($value) => (string) $value,
+        );
     }
 
 

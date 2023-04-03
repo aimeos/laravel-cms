@@ -11,13 +11,17 @@
 <template>
   <v-navigation-drawer width="220" :modelValue="state" @update:modelValue="$emit('update:state', $event)" :rail="width > 1200 ? false : true" expand-on-hover>
     <v-list>
-      <v-list-item prepend-icon="mdi-file-tree" title="Pages" value="pages"></v-list-item>
+      <v-list-item prepend-icon="mdi-file-tree" value="pages">
+        <router-link to="/pages">Pages</router-link>
+      </v-list-item>
     </v-list>
 
     <v-divider></v-divider>
 
     <v-list>
-      <v-list-item prepend-icon="mdi-folder-multiple-image" title="Files" value="files"></v-list-item>
+      <v-list-item prepend-icon="mdi-folder-multiple-image" value="files">
+        <router-link to="/files">Files</router-link>
+      </v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>

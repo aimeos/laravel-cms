@@ -5,8 +5,10 @@
 .v-app-bar.v-toolbar,
 .v-navigation-drawer,
 .v-navigation-drawer button,
-.v-navigation-drawer .v-list-item {
+.v-navigation-drawer .v-list-item,
+.v-navigation-drawer .v-list-item a {
   color: #ffffff !important;
+  text-decoration: none;
 }
 
 .v-app-bar-title {

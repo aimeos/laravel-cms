@@ -4,6 +4,10 @@ permalink: /graphql/authentication/
 excerpt: "How to authenticate at Laravel CMS using the GraphQL API"
 ---
 
+* [Login](#login)
+* [Retrieve user](#retrieve-user)
+* [Logout](#logout)
+
 Laravel CMS tries to authenticate against entries of the Laravel `users` table. To be able to use the GraphQL API, they need to be editors (use the `artisan` command to set the editor role):
 
 ```bash
@@ -60,7 +64,7 @@ query {
 
 ## Logout
 
-To log out the current user:
+To log the current user out of the application:
 
 ```graphql
 mutation {

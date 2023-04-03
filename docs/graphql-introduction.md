@@ -4,12 +4,6 @@ permalink: /graphql/introduction/
 excerpt: "How to manage data in Laravel CMS using the GraphQL API"
 ---
 
-The Laravel CMS GraphQL backendend API follows the GraphQL standard documented at [graphql.org](https://graphql.org) and is available at (replace "mydomain.tld" with your own one):
-
-```
-http://mydomain.tld/graphql
-```
-
 * [Authentication](#authentication)
 * [Retrieve data](#retrieve-data)
   * [Single query](#single-query)
@@ -17,6 +11,12 @@ http://mydomain.tld/graphql
 * [Modify data](#modify-data)
   * [Single mutation](#single-mutation)
   * [Batched mutations](#batched-mutations)
+
+The Laravel CMS GraphQL backendend API follows the GraphQL standard documented at [graphql.org](https://graphql.org) and is available at (replace "mydomain.tld" with your own one):
+
+```
+http://mydomain.tld/graphql
+```
 
 # Authentication
 

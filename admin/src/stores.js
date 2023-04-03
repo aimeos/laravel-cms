@@ -15,7 +15,7 @@ export const useLanguageStore = defineStore('languages', {
   state: () => {
     return {
       available: JSON.parse(app?.dataset.languages || '{}'),
-      current: app?.dataset.language || 'en'
+      current: app?.dataset.language || ''
     }
   }
 })

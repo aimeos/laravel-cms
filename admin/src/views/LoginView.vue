@@ -1,8 +1,13 @@
 <script>
   import gql from 'graphql-tag'
   import router from '../routes';
+  import { useAppStore } from '../stores'
 
   export default {
+    setup() {
+      const app = useAppStore()
+      return { app }
+    },
     apollo: {
       me: {
         query: gql`query{
@@ -13,7 +18,7 @@
         }`,
         update(data) {
           if(data.me && data.me.name && data.me.cmseditor) {
-            this.me = data.me.name
+            this.app.me = data.me.name
             router.push('/pages')
           } else {
             this.login = true
@@ -22,7 +27,6 @@
       }
     },
     data: () => ({
-      me: false,
       creds: {
         email: '',
         password: ''
@@ -55,7 +59,7 @@
           }
         }).then((r) => {
           if(r.data.cmsLogin && r.data.cmsLogin.name && r.data.cmsLogin.cmseditor) {
-            this.me = r.data.cmsLogin.name
+            this.app.me = r.data.cmsLogin.name
             router.push('/pages')
           } else {
             this.failure = true

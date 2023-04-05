@@ -24,25 +24,30 @@ final class SavePage
 
             $editor = Auth::user()?->name ?? request()->ip();
 
-            $page->fill( $args['input'] ?? [] );
-            $page->editor = $editor;
-            $page->save();
-
             if( isset( $args['input']['data'] ) && $args['input']['data'] !== $page->latest?->data )
             {
                 $page->versions()->create( [
                     'data' => $args['input']['data'],
-                    'published' => false,
                     'editor' => $editor
                 ] );
 
-                Version::where( 'versionable_id', $page->id )
+                $ids = Version::select( 'id' )
+                    ->where( 'versionable_id', $page->id )
                     ->where( 'versionable_type', Page::class )
-                    ->where( 'published', '!=', true )
-                    ->offset( 10 )
-                    ->limit( 10 )
-                    ->delete();
+                    ->where( 'published', false )
+                    ->orderBy( 'id' )
+                    ->skip( 10 )
+                    ->take( 100 )
+                    ->pluck( 'id' );
+
+                Version::whereIn( 'id', $ids )->delete();
+
+                unset( $args['input']['data'] );
             }
+
+            $page->fill( $args['input'] ?? [] );
+            $page->editor = $editor;
+            $page->save();
 
         }, 3 );
 

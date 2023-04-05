@@ -19,8 +19,9 @@
             data {
               id
               parent_id
-              lang
+              domain
               slug
+              lang
               name
               title
               to
@@ -151,9 +152,13 @@
       insert(stat, idx = null) {
         const siblings = this.$refs.tree.getSiblings(stat)
         const parent = idx !== null ? stat.parent : stat
+        const node = this.create({domain: parent?.data.domain})
         const pos = siblings.indexOf(stat)
-        const node = this.create()
         let refid = null
+
+        if(idx === null && !stat.open) {
+          this.load(stat, stat.data)
+        }
 
         switch(idx) {
           case 0: refid = stat.data.id; break
@@ -175,7 +180,9 @@
         }).then(result => {
           if(!result.errors && result.data && result.data.addPage.id) {
             node.id = result.data.addPage.id
-            this.$refs.tree.add(node, parent, idx !== null ? pos + idx : 0)
+            if(idx !== null || stat.open) {
+              this.$refs.tree.add(node, parent, idx !== null ? pos + idx : 0)
+            }
             parent.data.has = true
           } else {
             console.log(result)

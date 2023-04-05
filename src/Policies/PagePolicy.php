@@ -45,6 +45,15 @@ class PagePolicy
 
 
     /**
+     * Determine if the given page version can be published by the user.
+     */
+    public function publish( User $user ): bool
+    {
+        return $user->cmseditor > 0;
+    }
+
+
+    /**
      * Determine if the given page can be saved by the user.
      */
     public function save( User $user ): bool

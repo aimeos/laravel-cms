@@ -78,6 +78,10 @@ extend type Mutation {
   keepPage(id: ID!): Page
     @can(ability: "keep")
 
+  "Publish page data"
+  pubPage(id: ID!): Page
+    @can(ability: "publish")
+
 
   "Add a new page<->content reference"
   addRef(input: RefInput!): Ref

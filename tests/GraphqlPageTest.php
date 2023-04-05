@@ -659,7 +659,7 @@ class GraphqlPageTest extends TestAbstract
 
         $root = Page::where('tag', 'root')->firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 8 );
+        $this->expectsDatabaseQueryCount( 9 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 savePage(id: "' . $root->id . '", input: {
@@ -805,5 +805,32 @@ class GraphqlPageTest extends TestAbstract
         foreach( $page->children as $child ) {
             $this->assertNull( $child->deleted_at );
         }
+    }
+
+
+    public function testPubPage()
+    {
+        $this->seed( CmsSeeder::class );
+
+        $blog = Page::where('tag', 'blog')->firstOrFail();
+
+        $this->expectsDatabaseQueryCount( 4 );
+        $response = $this->actingAs( $this->user )->graphQL( '
+            mutation {
+                pubPage(id: "' . $blog->id . '") {
+                    id
+                }
+            }
+        ' );
+
+        $page = Page::where('id', $blog->id)->firstOrFail();
+
+        $response->assertJson( [
+            'data' => [
+                'pubPage' => [
+                    'id' => (string) $blog->id
+                ],
+            ]
+        ] );
     }
 }

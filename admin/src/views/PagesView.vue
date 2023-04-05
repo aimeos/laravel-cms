@@ -35,9 +35,8 @@
 <style>
   .page-tree, .page-details {
     position: absolute;
-    bottom: 0;
+    min-height: 100vh;
     right: 0;
     left: 0;
-    top: 0;
   }
 </style>

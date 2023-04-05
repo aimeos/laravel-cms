@@ -8,6 +8,7 @@
 namespace Aimeos\Cms\Models;
 
 use Aimeos\Cms\Concerns\Tenancy;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -93,6 +94,17 @@ class File extends Model
 
 
     /**
+     * Interact with the name property.
+     */
+    protected function name(): Attribute
+    {
+        return Attribute::make(
+            set: fn($value) => (string) $value,
+        );
+    }
+
+
+    /**
      * Generate a new UUID for the model.
      */
     public function newUniqueId() : string
@@ -136,5 +148,16 @@ class File extends Model
         }
 
         $store->delete( $this->path );
+    }
+
+
+    /**
+     * Interact with the tag property.
+     */
+    protected function tag(): Attribute
+    {
+        return Attribute::make(
+            set: fn($value) => (string) $value,
+        );
     }
 }

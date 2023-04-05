@@ -17,8 +17,8 @@ return new class extends Migration
             $table->uuid('id');
             $table->string('tenant_id');
             $table->string('mime', 100);
-            $table->string('tag', 30)->nullable();
-            $table->string('name')->nullable();
+            $table->string('tag', 30);
+            $table->string('name');
             $table->string('path');
             $table->json('previews');
             $table->string('editor');

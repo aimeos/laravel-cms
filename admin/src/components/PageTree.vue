@@ -194,14 +194,17 @@
 
       load(stat, node) {
         if(!stat.open && !node.children) {
+          stat.loading = true
+
           this.$apollo.query({
             query: gql`query($parent: ID, $limit: Int!, $page: Int!) {
               pages(parent_id: $parent, first: $limit, page: $page) {
                 data {
                   id
                   parent_id
-                  lang
+                  domain
                   slug
+                  lang
                   name
                   title
                   to
@@ -236,6 +239,8 @@
             }
           }).catch(error => {
             console.log(error)
+          }).finally(() => {
+            stat.loading = false
           })
         }
 
@@ -431,9 +436,7 @@
             variables: {
               id: stat.data.id,
               input: {
-                status: val,
-                cache: stat.data.cache || 5,
-                config: stat.data.config || '{}'
+                status: val
               }
             }
           }).then(result => {
@@ -518,7 +521,9 @@
 
         <Draggable v-model="pages" ref="tree" :defaultOpen="false" :watermark="false" virtualization @change="change()">
           <template #default="{ node, stat }">
-            <v-icon :class="{hidden: !node.has}" :icon="`mdi-menu-${stat.open ? 'down' : 'right'}`" size="large" @click="load(stat, node)"></v-icon>
+            <v-icon :class="{hidden: !node.has, load: stat.loading}" size="large" @click="load(stat, node)"
+              :icon="stat.loading ? 'mdi-loading' : (stat.open ? 'mdi-menu-down' : 'mdi-menu-right')">
+            </v-icon>
             <v-checkbox-btn v-model="stat.check"></v-checkbox-btn>
             <v-menu v-if="node.id">
               <template v-slot:activator="{ props }">
@@ -544,37 +549,37 @@
                   <v-btn prepend-icon="mdi-content-paste" variant="text" @click.stop="show('insert')">Insert</v-btn>
                 </v-list-item>
                 <v-list-item v-if="menu.insert">
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(stat, 0)">➔ Before</v-btn>
+                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(stat, 0)">🠕 Before</v-btn>
                 </v-list-item>
                 <v-list-item v-if="menu.insert">
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(stat)">➔ Into</v-btn>
+                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(stat)">🠖 Into</v-btn>
                 </v-list-item>
                 <v-list-item v-if="menu.insert">
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(stat, 1)">➔ After</v-btn>
+                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(stat, 1)">🠗 After</v-btn>
                 </v-list-item>
                 <v-list-item v-if="clip && clip.type == 'copy'">
                   <v-btn prepend-icon="mdi-content-paste" variant="text" @click.stop="show('paste')">Paste</v-btn>
                 </v-list-item>
                 <v-list-item v-if="clip && clip.type == 'copy' && menu.paste">
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(stat, 0)">➔ Before</v-btn>
+                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(stat, 0)">🠕 Before</v-btn>
                 </v-list-item>
                 <v-list-item v-if="clip && clip.type == 'copy' && menu.paste">
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(stat)">➔ Into</v-btn>
+                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(stat)">🠖 Into</v-btn>
                 </v-list-item>
                 <v-list-item v-if="clip && clip.type == 'copy' && menu.paste">
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(stat, 1)">➔ After</v-btn>
+                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(stat, 1)">🠗 After</v-btn>
                 </v-list-item>
                 <v-list-item v-if="clip && clip.type == 'cut'">
                   <v-btn prepend-icon="mdi-content-paste" variant="text" @click.stop="show('move')">Paste</v-btn>
                 </v-list-item>
                 <v-list-item v-if="clip && clip.type == 'cut' && menu.move">
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="move(stat, 0)">➔ Before</v-btn>
+                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="move(stat, 0)">🠕 Before</v-btn>
                 </v-list-item>
                 <v-list-item v-if="clip && clip.type == 'cut' && menu.move">
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="move(stat)">➔ Into</v-btn>
+                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="move(stat)">🠖 Into</v-btn>
                 </v-list-item>
                 <v-list-item v-if="clip && clip.type == 'cut' && menu.move">
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="move(stat, 1)">➔ After</v-btn>
+                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="move(stat, 1)">🠗 After</v-btn>
                 </v-list-item>
                 <v-list-item>
                   <v-btn prepend-icon="mdi-delete" variant="text" @click="remove(stat)">Delete</v-btn>
@@ -595,7 +600,8 @@
             <v-btn icon="mdi-arrow-right" variant="text" @click="$emit('update:id', '1')"></v-btn>
           </template>
         </Draggable>
-        <v-btn v-if="!pages.length" color="primary" icon="mdi-folder-plus" @click="add()"></v-btn>
+        <p v-if="$apollo.loading" class="loading">Loading ...</p>
+        <v-btn v-if="!$apollo.loading && !pages.length" color="primary" icon="mdi-folder-plus" @click="add()"></v-btn>
       </v-sheet>
     </v-container>
   </v-main>
@@ -680,6 +686,33 @@
 
   .status-hidden .node-text {
     color: #808080;
+  }
+
+  .loading {
+    animation: blink 1s;
+    animation-direction: alternate;
+    animation-iteration-count: infinite;
+  }
+
+  @keyframes blink {
+    0% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+
+  .load {
+    animation: rotate 2s;
+    animation-iteration-count: infinite;
+  }
+
+  @keyframes rotate {
+    100% {
+      transform: rotate(360deg);
+    }
   }
 
   @media (min-width: 500px) {

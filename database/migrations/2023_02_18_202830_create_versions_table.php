@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::connection(config('cms.db', 'sqlite'))->create('cms_versions', function (Blueprint $table) {
             $table->uuid('id');
             $table->string('tenant_id');
-            $table->string('versionable_id');
-            $table->string('versionable_type');
+            $table->string('versionable_id', 36);
+            $table->string('versionable_type', 50);
             $table->boolean('published');
             $table->json('data');
             $table->string('editor');

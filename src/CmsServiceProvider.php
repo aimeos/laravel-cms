@@ -42,6 +42,10 @@ class CmsServiceProvider extends ServiceProvider
 				\Aimeos\Cms\Commands\User::class,
 			] );
 		}
+
+        \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::skipWhen( function( $request ) {
+            return $request->is( trim( config( 'lighthouse.route.uri' ), '/' ) );
+        } );
 	}
 
 

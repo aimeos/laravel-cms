@@ -14,8 +14,8 @@
     },
     apollo: {
       pages: {
-        query: gql`query($parent: ID, $limit: Int!, $page: Int!) {
-          pages(parent_id: $parent, first: $limit, page: $page) {
+        query: gql`query($parent: ID, $lang: String!, $limit: Int!, $page: Int!) {
+          pages(parent_id: $parent, lang: $lang, first: $limit, page: $page) {
             data {
               id
               parent_id
@@ -41,6 +41,7 @@
         }`,
         variables() {
           return {
+            lang: this.languages.current,
             parent: null,
             limit: 50,
             page: 1
@@ -222,7 +223,7 @@
                 }
               }
             }`,
-            variables: {
+            variables: { // no lang restriction when fetching children!
               parent: node.id,
               page: stat.page ? stat.page + 1 : 1,
               limit: 50
@@ -375,6 +376,58 @@
         })
       },
 
+      reload(lang) {
+        this.loading = true
+        this.languages.current = lang
+
+        this.$apollo.query({
+          query: gql`query($parent: ID, $lang: String!, $limit: Int!, $page: Int!) {
+            pages(parent_id: $parent, lang: $lang, first: $limit, page: $page) {
+              data {
+                id
+                parent_id
+                domain
+                slug
+                lang
+                name
+                title
+                to
+                tag
+                status
+                cache
+                editor
+                created_at
+                updated_at
+                has
+              }
+              paginatorInfo {
+                currentPage
+                lastPage
+              }
+            }
+          }`,
+          variables: {
+            parent: null,
+            lang: lang,
+            page: 1,
+            limit: 50
+          }
+        }).then(result => {
+          if(!result.errors && result.data) {
+            this.pages = (result.data.pages.data || []).map(node => {
+              return {...node}
+            })
+            console.log('reloaded')
+          } else {
+            console.log(result)
+          }
+        }).catch(error => {
+          console.log(error)
+        }).finally(() => {
+          this.loading = false
+        })
+      },
+
       remove(stat) {
         if(!stat.data.id) {
           this.$refs.tree.remove(stat)
@@ -510,10 +563,10 @@
             </template>
             <v-list>
               <v-list-item>
-                <v-btn variant="text">None</v-btn>
+                <v-btn variant="text" @click="reload('')">None</v-btn>
               </v-list-item>
               <v-list-item v-for="(name, code) in languages.available" :key="code">
-                <v-btn variant="text">{{ name }}</v-btn>
+                <v-btn variant="text" @click="reload(code)">{{ name }}</v-btn>
               </v-list-item>
             </v-list>
           </v-menu>

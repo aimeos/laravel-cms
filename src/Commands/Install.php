@@ -219,6 +219,20 @@ Made with <fg=green>love</> by the Laravel CMS community. Be a part of it!
             $this->line( sprintf( '  Added CMS mutations directory to [%1$s]' . PHP_EOL, $filename ) );
         }
 
+        $string = ", 'Aimeos\\\\Cms\\\\GraphQL\\\\Queries'";
+
+        if( strpos( $content, $string ) === false && ++$done )
+        {
+            $content = str_replace( " 'App\\\\GraphQL\\\\Queries'", " ['App\\\\GraphQL\\\\Queries'" . $string . "]", $content );
+            $this->line( sprintf( '  Added CMS queries directory to [%1$s]' . PHP_EOL, $filename ) );
+        }
+
+        if( strpos( $content, $string ) === false && ++$done )
+        {
+            $content = str_replace( "['App\\\\GraphQL\\\\Queries'", "['App\\\\GraphQL\\\\Queries'" . $string, $content );
+            $this->line( sprintf( '  Added CMS queries directory to [%1$s]' . PHP_EOL, $filename ) );
+        }
+
         $string = "
             \Illuminate\Cookie\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,

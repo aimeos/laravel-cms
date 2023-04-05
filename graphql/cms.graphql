@@ -19,11 +19,10 @@ extend type Query {
     @softDeletes
     @find
 
-  "Get all root level pages"
-  pages(parent_id: ID @eq): [Page!]
-    @can(ability: "view")
+  "Get pages by parent ID and language (both optional)"
+  pages(parent_id: ID, lang: String): [Page!]
+    @paginate(builder: "Aimeos\\Cms\\GraphQL\\Pages@query")
     @softDeletes
-    @paginate
 
   "Get content item by ID"
   content(id: ID! @eq): Content

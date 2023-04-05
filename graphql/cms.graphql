@@ -196,7 +196,7 @@ type Page {
   "Relation to the ancestors of the current page up to the root page"
   ancestors: [Page!]!
 
-  "Relation to all descendant pages (limited to three levels below)"
+  "Relation to all descendant pages (limited to three levels)"
   subtree: [Page!]!
 
   "List of content elements assigned to the page"
@@ -237,14 +237,17 @@ input PageInput {
   "Tag name to identify a page, e.g. for the starting point of a navigation structure"
   tag: String
 
+  "Arbitrary page header elements"
+  data: JSON
+
   "Arbitrary configuration settings"
-  config: JSON!
+  config: JSON
 
   "Visibility status of the page, 0=inactive, 1=visible, 2=hidden in navigation"
-  status: Int!
+  status: Int
 
   "Cache lifetime in minutes"
-  cache: Int!
+  cache: Int
 
   "Date/time when the page will be shown"
   start: String

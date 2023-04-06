@@ -60,8 +60,8 @@
       Draggable,
       Navigation
     },
-    props: ['nav', 'id'],
-    emits: ['update:nav', 'update:id'],
+    props: ['nav', 'item'],
+    emits: ['update:nav', 'update:item'],
     data() {
       return {
         clip: null,
@@ -114,7 +114,7 @@
           if(!result.errors && result.data && result.data.movePage.id) {
             const srcparent = dragContext.startInfo.parent
 
-            if(srcparent && !srcparent.children.length) {
+            if(!srcparent?.children.length) {
               srcparent.data.has = false
             }
 
@@ -281,7 +281,7 @@
 
             this.$refs.tree.move(this.clip.stat, parent, index)
 
-            if(!this.clip.stat.children.length) {
+            if(!this.clip.stat.children?.length) {
               stat.parent.data.has = false
             }
             parent.data.has = true
@@ -350,7 +350,7 @@
           if(!stat.data.id) {
             this.$refs.tree.remove(stat)
 
-            if(!stat.parent.children.length) {
+            if(!stat.parent?.children.length) {
               stat.parent.data.has = false
             }
           }
@@ -368,7 +368,7 @@
             if(!result.errrors) {
               this.$refs.tree.remove(stat)
 
-              if(!stat.parent.children.length) {
+              if(!stat.parent?.children.length) {
                 stat.parent.data.has = false
               }
             } else {
@@ -437,7 +437,7 @@
         if(!stat.data.id) {
           this.$refs.tree.remove(stat)
 
-          if(!stat.parent.children.length) {
+          if(stat.parent && !stat.parent?.children.length) {
             stat.parent.data.has = false
           }
 
@@ -457,7 +457,7 @@
           if(!result.errors && result.data && result.data.dropPage.id) {
             this.$refs.tree.remove(stat)
 
-            if(!stat.parent.children.length) {
+            if(stat.parent && !stat.parent.children.length) {
               stat.parent.data.has = false
             }
           } else {
@@ -644,7 +644,9 @@
                 </v-list-item>
               </v-list>
             </v-menu>
-            <div class="node-content" :class="{'status-hidden': node.status == 2, 'status-enabled': node.status == 1, 'status-disabled': !node.status}" @click="$emit('update:id', '1')">
+            <div class="node-content"
+              :class="{'status-hidden': node.status == 2, 'status-enabled': node.status == 1, 'status-disabled': !node.status}"
+              @click="$emit('update:item', node)">
               <div class="node-text">
                 <div class="page-name">
                   <v-icon class="page-time" size="x-small" v-if="node.start || node.end">mdi-clock-outline</v-icon>
@@ -652,13 +654,13 @@
                 </div>
                 <div v-if="node.title" class="page-title">{{ node.title }}</div>
               </div>
-              <div class="node-url" @click="$emit('update:id', '1')">
+              <div class="node-url">
                 <div class="page-domain">{{ node.domain }}</div>
                 <span class="page-slug">{{ url(node) }}</span>
                 <span v-if="node.to" class="page-to"> ➔ {{ node.to }}</span>
               </div>
             </div>
-            <v-btn icon="mdi-arrow-right" variant="text" @click="$emit('update:id', '1')"></v-btn>
+            <v-btn icon="mdi-arrow-right" variant="text" @click="$emit('update:item', node)"></v-btn>
           </template>
         </Draggable>
         <p v-if="$apollo.loading" class="loading">Loading ...</p>

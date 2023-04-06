@@ -606,39 +606,57 @@
                 <v-list-item>
                   <v-btn prepend-icon="mdi-content-paste" variant="text" @click.stop="show('insert')">Insert</v-btn>
                 </v-list-item>
-                <v-list-item v-if="menu.insert">
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(stat, 0)">🠕 Before</v-btn>
-                </v-list-item>
-                <v-list-item v-if="menu.insert">
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(stat)">🠖 Into</v-btn>
-                </v-list-item>
-                <v-list-item v-if="menu.insert">
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(stat, 1)">🠗 After</v-btn>
-                </v-list-item>
-                <v-list-item v-if="clip && clip.type == 'copy'">
+                <v-fade-transition v-show="menu.insert">
+                  <v-list-item>
+                    <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(stat, 0)">🠕 Before</v-btn>
+                  </v-list-item>
+                </v-fade-transition>
+                <v-fade-transition v-show="menu.insert">
+                  <v-list-item>
+                    <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(stat)">🠖 Into</v-btn>
+                  </v-list-item>
+                </v-fade-transition>
+                <v-fade-transition v-show="menu.insert">
+                  <v-list-item>
+                    <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(stat, 1)">🠗 After</v-btn>
+                  </v-list-item>
+                </v-fade-transition>
+                <v-list-item v-show="clip && clip.type == 'copy'">
                   <v-btn prepend-icon="mdi-content-paste" variant="text" @click.stop="show('paste')">Paste</v-btn>
                 </v-list-item>
-                <v-list-item v-if="clip && clip.type == 'copy' && menu.paste">
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(stat, 0)">🠕 Before</v-btn>
-                </v-list-item>
-                <v-list-item v-if="clip && clip.type == 'copy' && menu.paste">
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(stat)">🠖 Into</v-btn>
-                </v-list-item>
-                <v-list-item v-if="clip && clip.type == 'copy' && menu.paste">
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(stat, 1)">🠗 After</v-btn>
-                </v-list-item>
-                <v-list-item v-if="clip && clip.type == 'cut'">
+                <v-fade-transition v-show="clip && clip.type == 'copy' && menu.paste">
+                  <v-list-item>
+                    <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(stat, 0)">🠕 Before</v-btn>
+                  </v-list-item>
+                </v-fade-transition>
+                <v-fade-transition v-show="clip && clip.type == 'copy' && menu.paste">
+                  <v-list-item>
+                    <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(stat)">🠖 Into</v-btn>
+                  </v-list-item>
+                </v-fade-transition>
+                <v-fade-transition v-show="clip && clip.type == 'copy' && menu.paste">
+                  <v-list-item>
+                    <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(stat, 1)">🠗 After</v-btn>
+                  </v-list-item>
+                </v-fade-transition>
+                <v-list-item v-show="clip && clip.type == 'cut'">
                   <v-btn prepend-icon="mdi-content-paste" variant="text" @click.stop="show('move')">Paste</v-btn>
                 </v-list-item>
-                <v-list-item v-if="clip && clip.type == 'cut' && menu.move">
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="move(stat, 0)">🠕 Before</v-btn>
-                </v-list-item>
-                <v-list-item v-if="clip && clip.type == 'cut' && menu.move">
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="move(stat)">🠖 Into</v-btn>
-                </v-list-item>
-                <v-list-item v-if="clip && clip.type == 'cut' && menu.move">
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="move(stat, 1)">🠗 After</v-btn>
-                </v-list-item>
+                <v-fade-transition v-show="clip && clip.type == 'cut' && menu.move">
+                  <v-list-item>
+                    <v-btn prepend-icon="mdi-content-paste" variant="text" @click="move(stat, 0)">🠕 Before</v-btn>
+                  </v-list-item>
+                </v-fade-transition>
+                <v-fade-transition v-show="clip && clip.type == 'cut' && menu.move">
+                  <v-list-item>
+                    <v-btn prepend-icon="mdi-content-paste" variant="text" @click="move(stat)">🠖 Into</v-btn>
+                  </v-list-item>
+                </v-fade-transition>
+                <v-fade-transition v-show="clip && clip.type == 'cut' && menu.move">
+                  <v-list-item>
+                    <v-btn prepend-icon="mdi-content-paste" variant="text" @click="move(stat, 1)">🠗 After</v-btn>
+                  </v-list-item>
+                </v-fade-transition>
                 <v-list-item>
                   <v-btn prepend-icon="mdi-delete" variant="text" @click="remove(stat)">Delete</v-btn>
                 </v-list-item>

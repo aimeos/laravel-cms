@@ -18,7 +18,9 @@ final class DropFile
         $file = File::withTrashed()->findOrFail( $args['id'] );
         $file->editor = Auth::user()?->name ?? request()->ip();
 
-        $file->delete();
+        $force = $args['force'] ?? false;
+        $force ? $file->forceDelete() : $file->delete();
+
         return $file;
     }
 }

@@ -18,7 +18,9 @@ final class DropContent
         $content = Content::withTrashed()->findOrFail( $args['id'] );
         $content->editor = Auth::user()?->name ?? request()->ip();
 
-        $content->delete();
+        $force = $args['force'] ?? false;
+        $force ? $content->forceDelete() : $content->delete();
+
         return $content;
     }
 }

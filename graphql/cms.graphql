@@ -70,7 +70,7 @@ extend type Mutation {
     @can(ability: "save")
 
   "Delete an existing page"
-  dropPage(id: ID!): Page
+  dropPage(id: ID!, force: Boolean): Page
     @can(ability: "drop")
 
   "Restore an existing page"
@@ -104,7 +104,7 @@ extend type Mutation {
     @can(ability: "save")
 
   "Delete an existing content element"
-  dropContent(id: ID!): Content
+  dropContent(id: ID!, force: Boolean): Content
     @can(ability: "drop")
 
   "Restore an existing content element"
@@ -121,7 +121,7 @@ extend type Mutation {
     @can(ability: "save")
 
   "Delete an existing file"
-  dropFile(id: ID!): File
+  dropFile(id: ID!, force: Boolean): File
     @can(ability: "drop")
 
   "Restore an existing file"

@@ -19,7 +19,10 @@ final class DropPage
         $page = Page::withTrashed()->findOrFail( $args['id'] );
         $page->editor = Auth::user()?->name ?? request()->ip();
 
-        DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( fn() => $page->delete(), 3 );
+        $force = $args['force'] ?? false;
+        $fcn = fn() => $force ? $page->forceDelete() : $page->delete();
+
+        DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( $fcn, 3 );
         Cache::forget( Page::key( $page ) );
 
         return $page;

@@ -86,7 +86,7 @@
         <v-text-field v-model="creds.email" label="E-Mail" variant="underlined" validate-on="blur" :rules="[
           v => !!v || 'Field is required',
           v => !!v.match(/.*@.*/) || 'Invalid e-mail address'
-        ]" clearable>
+        ]" clearable autofocus>
         </v-text-field>
         <v-text-field v-model="creds.password" :type="show ? `text` : `password`"
           label="Password" variant="underlined" :rules="[

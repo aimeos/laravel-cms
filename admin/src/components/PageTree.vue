@@ -28,6 +28,8 @@
               tag
               status
               cache
+              start
+              end
               editor
               created_at
               updated_at
@@ -212,6 +214,8 @@
                   tag
                   status
                   cache
+                  start
+                  end
                   editor
                   created_at
                   updated_at
@@ -395,6 +399,8 @@
                 tag
                 status
                 cache
+                start
+                end
                 editor
                 created_at
                 updated_at
@@ -641,7 +647,10 @@
             </v-menu>
             <div class="node-content" :class="{'status-hidden': node.status == 2, 'status-enabled': node.status == 1, 'status-disabled': !node.status}" @click="$emit('update:id', '1')">
               <div class="node-text">
-                <div class="page-name">{{ node.name || 'New' }}</div>
+                <div class="page-name">
+                  <v-icon class="page-time" size="x-small" v-if="node.start || node.end">mdi-clock-outline</v-icon>
+                  {{ node.name || 'New' }}
+                </div>
                 <div v-if="node.title" class="page-title">{{ node.title }}</div>
               </div>
               <div class="node-url" @click="$emit('update:id', '1')">
@@ -713,6 +722,10 @@
   .node-url {
     text-align: end;
     align-self: end;
+  }
+
+  .page-time {
+    vertical-align: text-top;
   }
 
   .page-domain {

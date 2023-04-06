@@ -423,7 +423,6 @@
             this.pages = (result.data.pages.data || []).map(node => {
               return {...node}
             })
-            console.log('reloaded')
           } else {
             console.log(result)
           }
@@ -557,9 +556,9 @@
             </v-list>
           </v-menu>
 
-          <v-text-field prepend-inner-icon="mdi-magnify" label="Search" variant="underlined" class="search"
+          <!-- v-text-field prepend-inner-icon="mdi-magnify" label="Search" variant="underlined" class="search"
             clearable hide-details>
-          </v-text-field>
+          </v-text-field -->
 
           <v-menu v-if="Object.keys(languages.available).length">
             <template v-slot:activator="{ props }">

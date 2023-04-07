@@ -42,7 +42,7 @@ class GraphqlFileTest extends TestAbstract
             'name' => 'Test',
             'email' => 'editor@testbench',
             'password' => 'secret',
-            'cmseditor' => 1
+            'cmseditor' => 0x7fffffff
         ]);
     }
 

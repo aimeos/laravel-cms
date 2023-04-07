@@ -13,7 +13,7 @@ class RefPolicy
      */
     public function add( User $user ): bool
     {
-        return $user->cmseditor > 0;
+        return \Aimeos\Cms\Permission::can( 'content:add', $user->cmseditor );
     }
 
 
@@ -22,7 +22,7 @@ class RefPolicy
      */
     public function drop( User $user ): bool
     {
-        return $user->cmseditor > 0;
+        return \Aimeos\Cms\Permission::can( 'content:drop', $user->cmseditor );
     }
 
 
@@ -31,6 +31,6 @@ class RefPolicy
      */
     public function save( User $user ): bool
     {
-        return $user->cmseditor > 0;
+        return \Aimeos\Cms\Permission::can( 'content:save', $user->cmseditor );
     }
 }

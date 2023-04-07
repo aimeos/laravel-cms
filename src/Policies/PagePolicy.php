@@ -13,7 +13,7 @@ class PagePolicy
      */
     public function add( User $user ): bool
     {
-        return $user->cmseditor > 0;
+        return \Aimeos\Cms\Permission::can( 'page:add', $user->cmseditor );
     }
 
 
@@ -22,7 +22,7 @@ class PagePolicy
      */
     public function drop( User $user ): bool
     {
-        return $user->cmseditor > 0;
+        return \Aimeos\Cms\Permission::can( 'page:drop', $user->cmseditor );
     }
 
 
@@ -31,7 +31,7 @@ class PagePolicy
      */
     public function keep( User $user ): bool
     {
-        return $user->cmseditor > 0;
+        return \Aimeos\Cms\Permission::can( 'page:keep', $user->cmseditor );
     }
 
 
@@ -40,7 +40,7 @@ class PagePolicy
      */
     public function move( User $user ): bool
     {
-        return $user->cmseditor > 0;
+        return \Aimeos\Cms\Permission::can( 'page:move', $user->cmseditor );
     }
 
 
@@ -49,7 +49,7 @@ class PagePolicy
      */
     public function publish( User $user ): bool
     {
-        return $user->cmseditor > 0;
+        return \Aimeos\Cms\Permission::can( 'page:publish', $user->cmseditor );
     }
 
 
@@ -58,7 +58,7 @@ class PagePolicy
      */
     public function purge( User $user ): bool
     {
-        return $user->cmseditor > 0;
+        return \Aimeos\Cms\Permission::can( 'page:purge', $user->cmseditor );
     }
 
 
@@ -67,7 +67,7 @@ class PagePolicy
      */
     public function save( User $user ): bool
     {
-        return $user->cmseditor > 0;
+        return \Aimeos\Cms\Permission::can( 'page:save', $user->cmseditor );
     }
 
 
@@ -76,6 +76,6 @@ class PagePolicy
      */
     public function view( User $user ): bool
     {
-        return $user->cmseditor > 0;
+        return \Aimeos\Cms\Permission::can( 'page:view', $user->cmseditor );
     }
 }

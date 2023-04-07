@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->smallInteger('cmseditor')->default(0);
+            $table->integer('cmseditor')->default(0);
         });
     }
 

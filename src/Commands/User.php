@@ -33,9 +33,9 @@ class User extends Command
     public function handle()
     {
         $email = $this->argument( 'email' );
-        $value = $this->option( 'disable' ) ? 0 : 1;
+        $value = $this->option( 'disable' ) ? 0 : 0x7fffffff;
 
-		if( ( $user = \Illuminate\Foundation\Auth\User::where( 'email', $email )->first() ) === null )
+        if( ( $user = \Illuminate\Foundation\Auth\User::where( 'email', $email )->first() ) === null )
         {
             $user = (new \Illuminate\Foundation\Auth\User())->forceFill( [
                 'password' => Hash::make( $this->option( 'password' ) ?: $this->secret( 'Password' ) ),

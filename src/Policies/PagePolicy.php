@@ -54,6 +54,15 @@ class PagePolicy
 
 
     /**
+     * Determine if the given page can be purged by the user.
+     */
+    public function purge( User $user ): bool
+    {
+        return $user->cmseditor > 0;
+    }
+
+
+    /**
      * Determine if the given page can be saved by the user.
      */
     public function save( User $user ): bool

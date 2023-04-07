@@ -9,7 +9,7 @@ use App\Models\User;
 class RefPolicy
 {
     /**
-     * Determine if the given page<->content can be added by the user.
+     * Determine if the given page<->content relation can be added by the user.
      */
     public function add( User $user ): bool
     {
@@ -18,7 +18,7 @@ class RefPolicy
 
 
     /**
-     * Determine if the given page<->content can be dropped by the user.
+     * Determine if the given page<->content relation can be dropped by the user.
      */
     public function drop( User $user ): bool
     {
@@ -27,7 +27,7 @@ class RefPolicy
 
 
     /**
-     * Determine if the given page<->content can be updated by the user.
+     * Determine if the given page<->content relation can be updated by the user.
      */
     public function save( User $user ): bool
     {

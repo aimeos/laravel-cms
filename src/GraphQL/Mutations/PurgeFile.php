@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Aimeos\Cms\Models\File;
 
 
-final class DropFile
+final class PurgeFile
 {
     /**
      * @param  null  $rootValue
@@ -16,8 +16,7 @@ final class DropFile
     public function __invoke( $rootValue, array $args ) : File
     {
         $file = File::withTrashed()->findOrFail( $args['id'] );
-        $file->editor = Auth::user()?->name ?? request()->ip();
-        $file->delete();
+        $file->forceDelete();
 
         return $file;
     }

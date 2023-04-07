@@ -772,25 +772,6 @@ class GraphqlPageTest extends TestAbstract
     }
 
 
-    public function testDropPageForce()
-    {
-        $this->seed( CmsSeeder::class );
-
-        $root = Page::where('tag', 'root')->firstOrFail();
-
-        $this->expectsDatabaseQueryCount( 6 );
-        $response = $this->actingAs( $this->user )->graphQL( '
-            mutation {
-                dropPage(id: "' . $root->id . '", force: true) {
-                    id
-                }
-            }
-        ' );
-
-        $this->assertNull( Page::where('tag', 'root')->first() );
-    }
-
-
     public function testKeepPage()
     {
         $this->seed( CmsSeeder::class );
@@ -851,5 +832,24 @@ class GraphqlPageTest extends TestAbstract
                 ],
             ]
         ] );
+    }
+
+
+    public function testPurgePage()
+    {
+        $this->seed( CmsSeeder::class );
+
+        $root = Page::where('tag', 'root')->firstOrFail();
+
+        $this->expectsDatabaseQueryCount( 6 );
+        $response = $this->actingAs( $this->user )->graphQL( '
+            mutation {
+                purgePage(id: "' . $root->id . '") {
+                    id
+                }
+            }
+        ' );
+
+        $this->assertNull( Page::where('tag', 'root')->first() );
     }
 }

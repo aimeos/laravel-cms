@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Aimeos\Cms\Models\Page;
 
 
-final class DropPage
+final class PurgePage
 {
     /**
      * @param  null  $rootValue
@@ -17,9 +17,8 @@ final class DropPage
     public function __invoke( $rootValue, array $args ) : Page
     {
         $page = Page::withTrashed()->findOrFail( $args['id'] );
-        $page->editor = Auth::user()?->name ?? request()->ip();
 
-        DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( fn() => $page->delete(), 3 );
+        DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( fn() => $page->forceDelete(), 3 );
         Cache::forget( Page::key( $page ) );
 
         return $page;

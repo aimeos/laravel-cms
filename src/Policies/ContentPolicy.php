@@ -36,6 +36,15 @@ class ContentPolicy
 
 
     /**
+     * Determine if the given content can be purged by the user.
+     */
+    public function purge( User $user ): bool
+    {
+        return $user->cmseditor > 0;
+    }
+
+
+    /**
      * Determine if the given content can be updated by the user.
      */
     public function save( User $user ): bool

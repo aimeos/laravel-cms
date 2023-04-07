@@ -253,25 +253,6 @@ class GraphqlFileTest extends TestAbstract
     }
 
 
-    public function testDropFileForce()
-    {
-        $this->seed( CmsSeeder::class );
-
-        $file = File::firstOrFail();
-
-        $this->expectsDatabaseQueryCount( 3 );
-        $response = $this->actingAs( $this->user )->graphQL( '
-            mutation {
-                dropFile(id: "' . $file->id . '", force: true) {
-                    id
-                }
-            }
-        ' );
-
-        $this->assertNull( File::where('id', $file->id)->first() );
-    }
-
-
     public function testKeepFile()
     {
         $this->seed( CmsSeeder::class );
@@ -299,5 +280,24 @@ class GraphqlFileTest extends TestAbstract
                 ],
             ]
         ] );
+    }
+
+
+    public function testPurgeFile()
+    {
+        $this->seed( CmsSeeder::class );
+
+        $file = File::firstOrFail();
+
+        $this->expectsDatabaseQueryCount( 3 );
+        $response = $this->actingAs( $this->user )->graphQL( '
+            mutation {
+                purgeFile(id: "' . $file->id . '") {
+                    id
+                }
+            }
+        ' );
+
+        $this->assertNull( File::where('id', $file->id)->first() );
     }
 }

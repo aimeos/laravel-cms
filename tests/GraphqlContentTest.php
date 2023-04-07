@@ -319,25 +319,6 @@ class GraphqlContentTest extends TestAbstract
     }
 
 
-    public function testDropContentForce()
-    {
-        $this->seed( CmsSeeder::class );
-
-        $content = Content::firstOrFail();
-
-        $this->expectsDatabaseQueryCount( 3 );
-        $response = $this->actingAs( $this->user )->graphQL( '
-            mutation {
-                dropContent(id: "' . $content->id . '", force: true) {
-                    id
-                }
-            }
-        ' );
-
-        $this->assertNull( Content::where('id', $content->id)->first() );
-    }
-
-
     public function testKeepContent()
     {
         $this->seed( CmsSeeder::class );
@@ -365,5 +346,24 @@ class GraphqlContentTest extends TestAbstract
                 ],
             ]
         ] );
+    }
+
+
+    public function testPurgeContent()
+    {
+        $this->seed( CmsSeeder::class );
+
+        $content = Content::firstOrFail();
+
+        $this->expectsDatabaseQueryCount( 3 );
+        $response = $this->actingAs( $this->user )->graphQL( '
+            mutation {
+                purgeContent(id: "' . $content->id . '") {
+                    id
+                }
+            }
+        ' );
+
+        $this->assertNull( Content::where('id', $content->id)->first() );
     }
 }

@@ -149,6 +149,49 @@
         this.clip = {type: 'cut', node: node, stat: stat}
       },
 
+      drop(stat) {
+        const list = stat ? [stat] : this.$refs.tree.statsFlat.filter(stat => {
+          return stat.check && stat.data.id
+        });
+
+        list.forEach(stat => {
+          this.$apollo.mutate({
+            mutation: gql`mutation ($id: ID!) {
+              dropPage(id: $id) {
+                id
+              }
+            }`,
+            variables: {
+              id: stat.data.id
+            }
+          }).then(result => {
+            if(!result.errors && result.data && result.data.dropPage.id) {
+              this.update(stat, (stat) => {
+                stat.data.deleted_at = (new Date).toISOString().replace(/T/, ' ').substring(0, 19)
+                stat.hidden = !this.trash
+                stat.check = false
+              })
+
+              if(stat.parent && !stat.parent.children?.length) {
+                stat.parent.data.has = false
+              }
+            } else {
+              console.log(result)
+            }
+          }).catch(error => {
+            console.log(error)
+          })
+        })
+      },
+
+      init(stat) {
+        if(stat.data.deleted_at && !this.trash) {
+          stat.hidden = true
+        }
+
+        return stat
+      },
+
       insert(stat, idx = null) {
         const siblings = this.$refs.tree.getSiblings(stat)
         const parent = idx !== null ? stat.parent : stat
@@ -190,6 +233,44 @@
         }).catch(error => {
           console.log(error)
         });
+      },
+
+      keep(stat) {
+        const stats = stat ? [stat] : this.$refs.tree.statsFlat.filter(stat => {
+          return stat.check && stat.data.id && stat.data.deleted_at
+        })
+        const list = stats.filter(stat => {
+          return stats.indexOf(stat.parent) === -1
+        });
+
+        list.forEach(stat => {
+          this.$apollo.mutate({
+            mutation: gql`mutation ($id: ID!) {
+              keepPage(id: $id) {
+                id
+              }
+            }`,
+            variables: {
+              id: stat.data.id
+            }
+          }).then(result => {
+            if(!result.errors) {
+              const deleted_at = stat.data.deleted_at
+
+              this.update(stat, (stat) => {
+                if(deleted_at >= stat.data.deleted_at) {
+                  stat.data.deleted_at = null
+                  stat.hidden = !this.trash
+                  stat.check = false
+                }
+              })
+            } else {
+              console.log(result)
+            }
+          }).catch(error => {
+            console.log(error)
+          })
+        })
       },
 
       load(stat, node) {
@@ -293,14 +374,6 @@
         this.show()
       },
 
-      nodeStat(stat) {
-        if(stat.data.deleted_at && !this.trash) {
-          stat.hidden = true
-        }
-
-        return stat
-      },
-
       paste(stat, idx = null) {
         const siblings = this.$refs.tree.getSiblings(stat)
         const parent = idx !== null ? stat.parent : stat
@@ -347,43 +420,26 @@
         this.show()
       },
 
-      purge(force = false) {
-        const list = this.$refs.tree.statsFlat.filter(stat => {
-          return stat.check
+      purge(stat) {
+        const list = stat ? [stat] : this.$refs.tree.statsFlat.filter(stat => {
+          return stat.check && stat.data.id
         });
 
         list.reverse().forEach(stat => {
-          if(!stat.data.id) {
-            this.$refs.tree.remove(stat)
-
-            if(!stat.parent?.children.length) {
-              stat.parent.data.has = false
-            }
-          }
-
           this.$apollo.mutate({
-            mutation: gql`mutation ($id: ID!, $force: Boolean) {
-              dropPage(id: $id, force: $force) {
+            mutation: gql`mutation ($id: ID!) {
+              purgePage(id: $id) {
                 id
               }
             }`,
             variables: {
-              id: stat.data.id,
-              force: force
+              id: stat.data.id
             }
           }).then(result => {
             if(!result.errrors) {
-              if(force) {
-                this.$refs.tree.remove(stat)
-              } else {
-                this.update(stat, (stat) => {
-                  stat.data.deleted_at = (new Date).toISOString().replace(/T/, ' ').substring(0, 19)
-                  stat.hidden = !this.trash
-                  stat.check = false
-                })
-              }
+              this.$refs.tree.remove(stat)
 
-              if(!stat.parent?.children.length) {
+              if(stat.parent && !stat.parent.children?.length) {
                 stat.parent.data.has = false
               }
             } else {
@@ -449,88 +505,6 @@
         })
       },
 
-      remove(stat, force = false) {
-        if(!stat.data.id) {
-          this.$refs.tree.remove(stat)
-
-          if(stat.parent && !stat.parent?.children.length) {
-            stat.parent.data.has = false
-          }
-
-          return
-        }
-
-        this.$apollo.mutate({
-          mutation: gql`mutation ($id: ID!, $force: Boolean) {
-            dropPage(id: $id, force: $force) {
-              id
-            }
-          }`,
-          variables: {
-            id: stat.data.id,
-            force: force
-          }
-        }).then(result => {
-          if(!result.errors && result.data && result.data.dropPage.id) {
-            if(force) {
-              this.$refs.tree.remove(stat)
-            } else {
-              this.update(stat, (stat) => {
-                stat.data.deleted_at = (new Date).toISOString().replace(/T/, ' ').substring(0, 19)
-                stat.hidden = !this.trash
-                stat.check = false
-              })
-            }
-
-            if(stat.parent && !stat.parent.children.length) {
-              stat.parent.data.has = false
-            }
-          } else {
-            console.log(result)
-          }
-        }).catch(error => {
-          console.log(error)
-        });
-      },
-
-      restore(stat) {
-        const stats = stat ? [stat] : this.$refs.tree.statsFlat.filter(stat => {
-          return stat.check && stat.data.id && stat.data.deleted_at
-        })
-        const list = stats.filter(stat => {
-          return stats.indexOf(stat.parent) === -1
-        });
-
-        list.forEach(stat => {
-          this.$apollo.mutate({
-            mutation: gql`mutation ($id: ID!) {
-              keepPage(id: $id) {
-                id
-              }
-            }`,
-            variables: {
-              id: stat.data.id
-            }
-          }).then(result => {
-            if(!result.errors) {
-              const deleted_at = stat.data.deleted_at
-
-              this.update(stat, (stat) => {
-                if(deleted_at >= stat.data.deleted_at) {
-                  stat.data.deleted_at = null
-                  stat.hidden = !this.trash
-                  stat.check = false
-                }
-              })
-            } else {
-              console.log(result)
-            }
-          }).catch(error => {
-            console.log(error)
-          })
-        })
-      },
-
       show(what = null) {
         if(what === null) {
           this.menu = {}
@@ -547,7 +521,7 @@
           return stat.check && stat.data.id
         });
 
-        list.forEach((stat, idx) => {
+        list.forEach(stat => {
           this.$apollo.mutate({
             mutation: gql`mutation ($id: ID!, $input: PageInput!) {
               savePage(id: $id, input: $input) {
@@ -562,7 +536,7 @@
             }
           }).then(result => {
             if(!result.errors) {
-              list[idx].data.status = val
+              stat.data.status = val
             } else {
               console.log(result)
             }
@@ -604,7 +578,7 @@
 
 <template>
   <v-app-bar :elevation="2" density="compact" image="src/assets/background.png">
-    <template v-slot:prepend>
+    <template #prepend>
       <v-btn @click.stop="$emit('update:nav', !nav)">
         <v-icon size="x-large">
           {{ `mdi-${nav ? 'close' : 'menu'}` }}
@@ -622,7 +596,7 @@
       <v-sheet>
         <div class="header">
           <v-menu>
-            <template v-slot:activator="{ props }">
+            <template #activator="{ props }">
               <v-btn append-icon="mdi-menu-down" variant="outlined" v-bind="props">Actions</v-btn>
             </template>
             <v-list>
@@ -642,13 +616,13 @@
                 <v-btn prepend-icon="mdi-delete-off" variant="text" @click="trashed(false)">Hide trashed</v-btn>
               </v-list-item>
               <v-list-item>
-                <v-btn prepend-icon="mdi-delete" variant="text" @click="purge()">Trash</v-btn>
+                <v-btn prepend-icon="mdi-delete" variant="text" @click="drop()">Trash</v-btn>
               </v-list-item>
               <v-list-item>
-                <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="restore()">Restore</v-btn>
+                <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="keep()">Restore</v-btn>
               </v-list-item>
               <v-list-item>
-                <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge(true)">Delete</v-btn>
+                <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge()">Delete</v-btn>
               </v-list-item>
             </v-list>
           </v-menu>
@@ -658,7 +632,7 @@
           </v-text-field -->
 
           <v-menu v-if="Object.keys(languages.available).length">
-            <template v-slot:activator="{ props }">
+            <template #activator="{ props }">
               <v-btn append-icon="mdi-menu-down" variant="outlined" location="bottom right" v-bind="props">
                 {{ languages.available[languages.current] || 'None' }}
               </v-btn>
@@ -674,14 +648,14 @@
           </v-menu>
         </div>
 
-        <Draggable v-model="pages" ref="tree" :defaultOpen="false" :watermark="false" :statHandler="nodeStat" virtualization @change="change()">
+        <Draggable v-model="pages" ref="tree" :defaultOpen="false" :watermark="false" :statHandler="init" virtualization @change="change()">
           <template #default="{ node, stat }">
             <v-icon :class="{hidden: !node.has, load: stat.loading}" size="large" @click="load(stat, node)"
               :icon="stat.loading ? 'mdi-loading' : (stat.open ? 'mdi-menu-down' : 'mdi-menu-right')">
             </v-icon>
             <v-checkbox-btn v-model="stat.check"></v-checkbox-btn>
             <v-menu v-if="node.id">
-              <template v-slot:activator="{ props }">
+              <template #activator="{ props }">
                 <v-btn icon="mdi-dots-vertical" variant="text" v-bind="props"></v-btn>
               </template>
               <v-list>
@@ -755,13 +729,13 @@
                   </v-list-item>
                 </v-fade-transition>
                 <v-list-item v-if="!node.deleted_at">
-                  <v-btn prepend-icon="mdi-delete" variant="text" @click="remove(stat)">Trash</v-btn>
+                  <v-btn prepend-icon="mdi-delete" variant="text" @click="drop(stat)">Trash</v-btn>
                 </v-list-item>
                 <v-list-item v-if="node.deleted_at">
-                  <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="restore(stat)">Restore</v-btn>
+                  <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="keep(stat)">Restore</v-btn>
                 </v-list-item>
                 <v-list-item>
-                  <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="remove(stat, true)">Delete</v-btn>
+                  <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge(stat)">Delete</v-btn>
                 </v-list-item>
               </v-list>
             </v-menu>

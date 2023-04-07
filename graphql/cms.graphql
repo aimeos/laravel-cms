@@ -119,6 +119,10 @@ extend type Mutation {
   purgeContent(id: ID!): Content
     @can(ability: "purge")
 
+  "Publish an existing content element"
+  pubContent(id: ID!): Content
+    @can(ability: "publish")
+
 
   "Adds a new file upload, optionally with previews and the describing name of the file"
   addFile(file: Upload!, previews: [Upload!], input: FileInput): File

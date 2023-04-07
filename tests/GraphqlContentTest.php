@@ -349,6 +349,33 @@ class GraphqlContentTest extends TestAbstract
     }
 
 
+    public function testPubContent()
+    {
+        $this->seed( CmsSeeder::class );
+
+        $content = Content::firstOrFail();
+
+        $this->expectsDatabaseQueryCount( 4 );
+        $response = $this->actingAs( $this->user )->graphQL( '
+            mutation {
+                pubContent(id: "' . $content->id . '") {
+                    id
+                }
+            }
+        ' );
+
+        $content = Content::where('id', $content->id)->firstOrFail();
+
+        $response->assertJson( [
+            'data' => [
+                'pubContent' => [
+                    'id' => (string) $content->id
+                ],
+            ]
+        ] );
+    }
+
+
     public function testPurgeContent()
     {
         $this->seed( CmsSeeder::class );

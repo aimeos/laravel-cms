@@ -17,8 +17,9 @@ final class PubPage
     public function __invoke( $rootValue, array $args ) : Page
     {
         $page = Page::findOrFail( $args['id'] );
-        $page->editor = Auth::user()?->name ?? request()->ip();
+
         $page->data = $page->latest?->data ?: $page->data;
+        $page->editor = Auth::user()?->name ?? request()->ip();
 
         DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( fn() => $page->save(), 3 );
 

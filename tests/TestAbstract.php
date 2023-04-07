@@ -32,7 +32,7 @@ abstract class TestAbstract extends \Orchestra\Testbench\TestCase
 
         $app['config']->set( 'cms.db', 'testing' );
 
-        \Aimeos\Cms\Tenancy::$tenantCallback = function() {
+        \Aimeos\Cms\Tenancy::$callback = function() {
             return 'test';
         };
     }

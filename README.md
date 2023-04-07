@@ -68,7 +68,7 @@ Route::group(['domain' => '{domain}'], function() {
 });
 ```
 
-The domain in one of the root pages must then match the request domain.
+The `domain` property in the pages must then match the request domain.
 
 ### Multi-tenancy
 
@@ -79,7 +79,7 @@ The [Tenancy for Laravel](https://tenancyforlaravel.com/) package is most often 
 Afterwards, tell Laravel CMS how the ID of the current tenant can be retrieved. Add this code to the `boot()` method of your `\App\Providers\AppServiceProvider` in the `./app/Providers/AppServiceProvider.php` file:
 
 ```php
-\Aimeos\Cms\Tenancy::$tenantCallback = function() {
+\Aimeos\Cms\Tenancy::$callback = function() {
     return tenancy()->initialized ? tenant()->getTenantKey() : '';
 };
 ```

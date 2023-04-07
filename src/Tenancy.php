@@ -16,7 +16,7 @@ class Tenancy
     /**
      * Anonymous callback which provides the value of the current tenant.
      */
-    public static ?\Closure $tenantCallback = null;
+    public static ?\Closure $callback = null;
 
     /**
      * Current tenant value.
@@ -31,9 +31,9 @@ class Tenancy
      */
     public static function value() : string
     {
-        if( self::$value === null && self::$tenantCallback !== null )
+        if( self::$value === null && self::$callback !== null )
         {
-            $closure = self::$tenantCallback;
+            $closure = self::$callback;
             self::$value = $closure();
         }
 

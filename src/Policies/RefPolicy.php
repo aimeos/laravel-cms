@@ -27,6 +27,15 @@ class RefPolicy
 
 
     /**
+     * Determine if the given page<->content relation can be moved by the user.
+     */
+    public function move( User $user ): bool
+    {
+        return \Aimeos\Cms\Permission::can( 'content:move', $user->cmseditor );
+    }
+
+
+    /**
      * Determine if the given page<->content relation can be updated by the user.
      */
     public function save( User $user ): bool

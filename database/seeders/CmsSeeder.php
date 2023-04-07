@@ -243,7 +243,7 @@ class CmsSeeder extends Seeder
             'tenant_id' => 'demo',
             'page_id' => $page->id,
             'content_id' => $content->id,
-            'position' => 1,
+            'position' => 2,
             'status' => 1,
             'editor' => 'seeder',
         ]);
@@ -266,7 +266,7 @@ class CmsSeeder extends Seeder
             'tenant_id' => 'demo',
             'page_id' => $page->id,
             'content_id' => $content->id,
-            'position' => 1,
+            'position' => 3,
             'status' => 1,
             'editor' => 'seeder',
         ]);
@@ -289,7 +289,7 @@ class CmsSeeder extends Seeder
             'tenant_id' => 'demo',
             'page_id' => $page->id,
             'content_id' => $content->id,
-            'position' => 1,
+            'position' => 4,
             'status' => 1,
             'editor' => 'seeder',
         ]);

@@ -36,15 +36,6 @@ class ContentPolicy
 
 
     /**
-     * Determine if the given content can be moved by the user.
-     */
-    public function move( User $user ): bool
-    {
-        return \Aimeos\Cms\Permission::can( 'content:move', $user->cmseditor );
-    }
-
-
-    /**
      * Determine if the given content can be published by the user.
      */
     public function publish( User $user ): bool

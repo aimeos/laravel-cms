@@ -90,6 +90,73 @@ class GraphqlRefTest extends TestAbstract
     }
 
 
+    public function testDropRef()
+    {
+        $this->seed( CmsSeeder::class );
+
+        $root = Page::where('tag', 'root')->firstOrFail();
+        $contents = $root->contents;
+        $content = $contents->first();
+
+        $this->expectsDatabaseQueryCount( 5 );
+        $response = $this->actingAs( $this->user )->graphQL( "
+            mutation {
+                dropRef(id: \"{$content->ref->id}\") {
+                    id
+                    page_id
+                    content_id
+                }
+            }
+        " );
+
+        $page = Page::where('tag', 'root')->firstOrFail();
+        $this->assertEquals( $contents->count() - 1, $page->contents->count() );
+
+        $response->assertJson( [
+            'data' => [
+                'dropRef' => [
+                    'id' => $content->ref->id,
+                    'page_id' => $content->ref->page_id,
+                    'content_id' => $content->ref->content_id,
+                ],
+            ]
+        ] );
+    }
+
+
+    public function testMoveRef()
+    {
+        $this->seed( CmsSeeder::class );
+
+        $root = Page::where('tag', 'article')->firstOrFail();
+        $content = $root->contents[3];
+
+        $this->expectsDatabaseQueryCount( 6 );
+        $response = $this->actingAs( $this->user )->graphQL( "
+            mutation {
+                moveRef(id: \"{$content->ref->id}\", pos: 1) {
+                    position
+                    editor
+                }
+            }
+        " );
+
+        $page = Page::where('tag', 'article')->firstOrFail();
+        $moved = $page->contents[1];
+
+        $response->assertJson( [
+            'data' => [
+                'moveRef' => [
+                    'position' => 1,
+                    'editor' => 'Test'
+                ],
+            ]
+        ] );
+
+        $this->assertEquals( $content->id, $moved->id );
+    }
+
+
     public function testSaveRef()
     {
         $this->seed( CmsSeeder::class );
@@ -120,40 +187,6 @@ class GraphqlRefTest extends TestAbstract
                     'position' => 10,
                     'status' => 0,
                     'editor' => 'Test',
-                ],
-            ]
-        ] );
-    }
-
-
-    public function testDropRef()
-    {
-        $this->seed( CmsSeeder::class );
-
-        $root = Page::where('tag', 'root')->firstOrFail();
-        $contents = $root->contents;
-        $content = $contents->first();
-
-        $this->expectsDatabaseQueryCount( 5 );
-        $response = $this->actingAs( $this->user )->graphQL( "
-            mutation {
-                dropRef(id: \"{$content->ref->id}\") {
-                    id
-                    page_id
-                    content_id
-                }
-            }
-        " );
-
-        $page = Page::where('tag', 'root')->firstOrFail();
-        $this->assertEquals( $contents->count() - 1, $page->contents->count() );
-
-        $response->assertJson( [
-            'data' => [
-                'dropRef' => [
-                    'id' => $content->ref->id,
-                    'page_id' => $content->ref->page_id,
-                    'content_id' => $content->ref->content_id,
                 ],
             ]
         ] );

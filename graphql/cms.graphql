@@ -90,6 +90,10 @@ extend type Mutation {
   addRef(input: RefInput!): Ref
     @can(ability: "add")
 
+  "Move the page<->content reference to a new position"
+  moveRef(id: ID!, pos: Int): Ref
+    @can(ability: "move")
+
   "Update an existing page<->content reference"
   saveRef(id: ID!, input: RefSaveInput!): Ref
     @can(ability: "save")

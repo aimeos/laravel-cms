@@ -22,6 +22,7 @@ extend type Query {
   "Get pages by parent ID and language (both optional)"
   pages(parent_id: ID, lang: String): [Page!]
     @paginate(builder: "Aimeos\\Cms\\GraphQL\\Pages@query")
+    @can(ability: "view", model: "Aimeos\\Cms\\Models\\Page")
     @softDeletes
 
   "Get content item by ID"

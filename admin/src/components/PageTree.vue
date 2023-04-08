@@ -53,7 +53,7 @@
         update(result) {
           return (result.pages.data || []).map(node => {
             return {...node}
-          });
+          })
         }
       }
     },
@@ -93,7 +93,7 @@
           }
         }).catch(error => {
           console.log(error)
-        });
+        })
       },
 
       change() {
@@ -128,7 +128,7 @@
           }
         }).catch(error => {
           console.log(error)
-        });
+        })
       },
 
       copy(stat, node) {
@@ -152,7 +152,7 @@
       drop(stat) {
         const list = stat ? [stat] : this.$refs.tree.statsFlat.filter(stat => {
           return stat.check && stat.data.id
-        });
+        })
 
         list.forEach(stat => {
           this.$apollo.mutate({
@@ -232,7 +232,7 @@
           }
         }).catch(error => {
           console.log(error)
-        });
+        })
       },
 
       keep(stat) {
@@ -241,7 +241,7 @@
         })
         const list = stats.filter(stat => {
           return stats.indexOf(stat.parent) === -1
-        });
+        })
 
         list.forEach(stat => {
           this.$apollo.mutate({
@@ -315,7 +315,7 @@
             if(!result.errors && result.data) {
               const children = (result.data.pages.data || []).map(node => {
                 return {...node}
-              });
+              })
               this.$refs.tree.addMulti(children, stat, 0)
               stat.page = result.data.pages.paginatorInfo.currentPage || 1
             } else {
@@ -369,7 +369,7 @@
           }
         }).catch(error => {
           console.log(error)
-        });
+        })
 
         this.show()
       },
@@ -415,7 +415,7 @@
           }
         }).catch(error => {
           console.log(error)
-        });
+        })
 
         this.show()
       },
@@ -423,7 +423,7 @@
       purge(stat) {
         const list = stat ? [stat] : this.$refs.tree.statsFlat.filter(stat => {
           return stat.check && stat.data.id
-        });
+        })
 
         list.reverse().forEach(stat => {
           this.$apollo.mutate({
@@ -519,7 +519,7 @@
       status(stat, val) {
         const list = stat ? [stat] : this.$refs.tree.statsFlat.filter(stat => {
           return stat.check && stat.data.id
-        });
+        })
 
         list.forEach(stat => {
           this.$apollo.mutate({
@@ -560,12 +560,9 @@
         }
 
         fcn(stat)
-        console.log(stat);
-
         stat.children?.forEach((stat) => {
-          console.log(stat);
           fcn(stat, fcn)
-        });
+        })
       },
 
       url(node) {

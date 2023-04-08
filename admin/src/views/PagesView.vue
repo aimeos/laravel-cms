@@ -93,5 +93,6 @@
     min-height: 100vh;
     right: 0;
     left: 0;
+    top: 0;
   }
 </style>

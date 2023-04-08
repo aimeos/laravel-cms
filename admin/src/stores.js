@@ -20,12 +20,11 @@ export const useLanguageStore = defineStore('languages', {
   }
 })
 
-export const useTypesStore = defineStore('types', {
+export const useSideStore = defineStore('side', {
   state: () => {
     return {
-      state: null,
-      type: null,
-      used: [],
+      store: {},
+      used: {}
     }
   }
 })

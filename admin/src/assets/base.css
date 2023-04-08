@@ -41,6 +41,10 @@ body, .v-main, .v-window {
   visibility: hidden;
 }
 
+.unpublished {
+  color: rgb(var(--v-theme-warning));
+}
+
 .slide-enter-active,
 .slide-leave-active {
   transition: all 0.25s;

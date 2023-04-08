@@ -32,19 +32,23 @@
           mutation: gql`mutation ($id: ID!, $input: PageInput!) {
             savePage(id: $id, input: $input) {
               id
-              lang
-              slug
+              parent_id
               domain
+              slug
+              lang
               name
               title
               to
               tag
-              data
-              config
               status
               cache
               start
               end
+              editor
+              created_at
+              updated_at
+              deleted_at
+              has
             }
           }`,
           variables: {
@@ -53,7 +57,7 @@
           }
         }).then(result => {
           if(!result.errors) {
-            this.item = {...result.data.savePage}
+            this.item = Object.assign(this.item, result.data.savePage)
           } else {
             console.log(result)
           }
@@ -79,7 +83,7 @@
       </v-layout>
       <v-layout class="page-details" key="details" v-show="details">
         <PageDetails
-          v-model:item="item"
+          :item="item"
           @update:item="save($event)"
         />
       </v-layout>

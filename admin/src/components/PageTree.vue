@@ -567,7 +567,10 @@
 
       url(node) {
         const url = this.app.url.replace(/:slug/, node.slug).replace(/:lang/, node.lang)
-        return url.endsWith('/') ? url.substring(0, url.length - 1) : url
+        const end = url.endsWith('/') ? url.length - 1 : url.length
+        const start = url.startsWith('//') ? 1 : 0
+
+        return url.substring(start, end)
       }
     },
   }

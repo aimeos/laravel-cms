@@ -69,13 +69,13 @@ class CmsSeeder extends Seeder
             'slug' => '',
             'tag' => 'root',
             'domain' => 'mydomain.tld',
-            'data' => ['meta' => ['type' => 'cms::meta', 'text' => 'Laravel CMS is outstanding']],
+            'data' => ['cms::meta' => ['type' => 'cms::meta', 'text' => 'Laravel CMS is outstanding']],
             'status' => 1,
             'editor' => 'seeder',
         ]);
         $page->versions()->create([
             'tenant_id' => 'demo',
-            'data' => ['meta' => ['type' => 'cms::meta', 'text' => 'Laravel CMS is outstanding']],
+            'data' => ['cms::meta' => ['type' => 'cms::meta', 'text' => 'Laravel CMS is outstanding']],
             'published' => true,
             'editor' => 'seeder',
         ]);

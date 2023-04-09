@@ -18,6 +18,7 @@
 </script>
 
 <template>
+  <v-container>
     <v-sheet>
       <v-tabs class="subtabs" v-model="tab" align-tabs="center" density="compact">
         <v-tab value="details">Details</v-tab>
@@ -41,6 +42,7 @@
 
       </v-window>
     </v-sheet>
+  </v-container>
 </template>
 
 <style scoped>

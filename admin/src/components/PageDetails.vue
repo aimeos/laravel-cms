@@ -110,23 +110,21 @@
       <v-tab value="preview">Preview</v-tab>
     </v-tabs>
 
-    <v-container>
-      <v-window v-model="tab">
+    <v-window v-model="tab">
 
-        <v-window-item value="page">
-          <PageDetailsPage :item="page" @update:item="page = $event" />
-        </v-window-item>
+      <v-window-item value="page">
+        <PageDetailsPage :item="page" @update:item="page = $event" />
+      </v-window-item>
 
-        <v-window-item value="content">
-          <PageDetailsContent :item="page" @update:item="page = $event"  />
-        </v-window-item>
+      <v-window-item value="content">
+        <PageDetailsContent :item="page" @update:item="page = $event"  />
+      </v-window-item>
 
-        <v-window-item value="preview">
-          <PageDetailsPreview :item="page" @update:item="page = $event"  />
-        </v-window-item>
+      <v-window-item value="preview">
+        <PageDetailsPreview :item="page" @update:item="page = $event"  />
+      </v-window-item>
 
-      </v-window>
-    </v-container>
+    </v-window>
   </v-main>
 
   <Aside v-model:state="nav" />

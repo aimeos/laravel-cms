@@ -570,7 +570,7 @@
         const end = url.endsWith('/') ? url.length - 1 : url.length
         const start = url.startsWith('//') ? 1 : 0
 
-        return url.substring(start, end)
+        return url.substring(start, end) || '/'
       }
     },
   }

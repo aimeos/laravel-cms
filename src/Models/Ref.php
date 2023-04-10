@@ -37,6 +37,8 @@ class Ref extends Model
         'position' => 0,
         'status' => 0,
         'editor' => '',
+        'start' => null,
+        'end' => null
     ];
 
     /**
@@ -56,6 +58,8 @@ class Ref extends Model
         'content_id',
         'position',
         'status',
+        'start',
+        'end'
     ];
 
     /**

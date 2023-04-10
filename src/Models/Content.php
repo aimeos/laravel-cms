@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -147,6 +148,16 @@ class Content extends Model
 
         // pruning is disabled
         return static::withoutTenancy()->where( 'id', '' );
+    }
+
+
+    /**
+     * Get the page<->content references.
+     */
+    public function ref() : HasMany
+    {
+        return $this->hasMany( Ref::class )
+            ->where( 'tenant_id', \Aimeos\Cms\Tenancy::value() );
     }
 
 

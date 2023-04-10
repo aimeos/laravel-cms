@@ -238,8 +238,10 @@ class GraphqlPageTest extends TestAbstract
         $response = $this->actingAs( $this->user )->graphQL( "{
             page(id: {$page->id}) {
                 id
-                children {
-                    tag
+                children(first: 3) {
+                    data {
+                        tag
+                    }
                 }
             }
         }" )->assertJson( [
@@ -247,7 +249,11 @@ class GraphqlPageTest extends TestAbstract
                 'page' => [
                     'id' => (string) $page->id,
                     'children' => [
-                        ['tag' => 'article'],
+                        'data' => [
+                            ['tag' => 'root'],
+                            ['tag' => 'blog'],
+                            ['tag' => 'article'],
+                        ],
                     ]
                 ],
             ]
@@ -354,8 +360,10 @@ class GraphqlPageTest extends TestAbstract
                 ancestors {
                     id
                 }
-                children {
-                    id
+                children(first: 2) {
+                    data {
+                        id
+                    }
                 }
                 contents {
                     id

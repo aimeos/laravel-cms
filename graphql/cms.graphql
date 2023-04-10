@@ -215,12 +215,12 @@ type Page {
   parent: Page
 
   "Relation to the children of the current page"
-  children: [Page!]!
+  children: [Page!]! @paginate
 
   "Relation to the ancestors of the current page up to the root page"
   ancestors: [Page!]!
 
-  "Relation to all descendant pages (limited to three levels)"
+  "Relation to all descendant pages (limited to three levels and 100 nodes)"
   subtree: [Page!]!
 
   "List of content elements assigned to the page"

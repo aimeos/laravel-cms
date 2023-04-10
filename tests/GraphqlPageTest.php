@@ -331,7 +331,7 @@ class GraphqlPageTest extends TestAbstract
                     'id' => (string) $page->id,
                     'versions' => [
                         [
-                            'data' => '{"meta":{"type":"cms::meta","text":"Laravel CMS is outstanding"}}',
+                            'data' => '{"cms::meta":{"type":"cms::meta","text":"Laravel CMS is outstanding"}}',
                             'editor' => 'seeder'
                         ],
                     ],
@@ -720,7 +720,7 @@ class GraphqlPageTest extends TestAbstract
                     'title' => "Test page",
                     'to' => "/to/page",
                     'tag' => "test",
-                    'data' => "{\"meta\":{\"type\":\"cms::meta\",\"text\":\"Laravel CMS is outstanding\"}}",
+                    'data' => "{\"cms::meta\":{\"type\":\"cms::meta\",\"text\":\"Laravel CMS is outstanding\"}}",
                     'config' => "{\"key\":\"test\"}",
                     'status' => 0,
                     'cache' => 5,
@@ -730,7 +730,7 @@ class GraphqlPageTest extends TestAbstract
                     'created_at' => (string) $root->created_at,
                     'updated_at' => (string) $page->updated_at,
                     'latest' => ['data' => '{"canonical":"to\\/page"}'],
-                    'published' => ['data' => '{"meta":{"type":"cms::meta","text":"Laravel CMS is outstanding"}}']
+                    'published' => ['data' => '{"cms::meta":{"type":"cms::meta","text":"Laravel CMS is outstanding"}}']
                 ],
             ]
         ] );

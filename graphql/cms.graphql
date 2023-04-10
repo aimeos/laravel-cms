@@ -220,9 +220,6 @@ type Page {
   "Relation to the ancestors of the current page up to the root page"
   ancestors: [Page!]!
 
-  "Relation to all descendant pages (limited to three levels and 100 nodes)"
-  subtree: [Page!]!
-
   "List of content elements assigned to the page"
   contents: [Content!]! @belongsToMany
 

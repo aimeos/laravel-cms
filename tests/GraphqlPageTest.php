@@ -289,33 +289,6 @@ class GraphqlPageTest extends TestAbstract
     }
 
 
-    public function testPageSubtree()
-    {
-        $this->seed( CmsSeeder::class );
-
-        $page = Page::where('tag', 'blog')->firstOrFail();
-
-        $this->expectsDatabaseQueryCount( 2 );
-        $response = $this->actingAs( $this->user )->graphQL( "{
-            page(id: {$page->id}) {
-                id
-                subtree {
-                    tag
-                }
-            }
-        }" )->assertJson( [
-            'data' => [
-                'page' => [
-                    'id' => (string) $page->id,
-                    'subtree' => [
-                        ['tag' => 'article'],
-                    ]
-                ],
-            ]
-        ] );
-    }
-
-
     public function testPageVersions()
     {
         $this->seed( CmsSeeder::class );
@@ -353,7 +326,7 @@ class GraphqlPageTest extends TestAbstract
 
         $page = Page::where('tag', 'disabled')->firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 6 );
+        $this->expectsDatabaseQueryCount( 5 );
         $response = $this->actingAs( $this->user )->graphQL( "{
             page(id: {$page->id}) {
                 id
@@ -368,9 +341,6 @@ class GraphqlPageTest extends TestAbstract
                 contents {
                     id
                 }
-                subtree {
-                    id
-                }
                 versions {
                     id
                 }
@@ -382,7 +352,6 @@ class GraphqlPageTest extends TestAbstract
                     'ancestors' => [],
                     'children' => [],
                     'contents' => [],
-                    'subtree' => [],
                     'versions' => [],
                 ],
             ]

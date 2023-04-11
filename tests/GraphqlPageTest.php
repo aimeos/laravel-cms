@@ -365,7 +365,7 @@ class GraphqlPageTest extends TestAbstract
 
         $page = Page::where('tag', 'root')->firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 2 );
+        $this->expectsDatabaseQueryCount( 3 );
         $response = $this->actingAs( $this->user )->graphQL( "{
             page(id: {$page->id}) {
                 id
@@ -375,6 +375,9 @@ class GraphqlPageTest extends TestAbstract
                     ref {
                         position
                         status
+                        editor
+                        start
+                        end
                     }
                 }
             }
@@ -386,10 +389,13 @@ class GraphqlPageTest extends TestAbstract
                         [
                             'lang' => '',
                             'data' => '{"type":"cms::heading","text":"Welcome to Laravel CMS"}',
-                            'ref' => [
-                                'position' => 0,
+                            'ref' => [[
                                 'status' => 1,
-                            ]
+                                'position' => 0,
+                                'editor' => 'seeder',
+                                'start' => null,
+                                'end' => null
+                            ]]
                         ],
                     ],
                 ],

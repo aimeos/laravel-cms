@@ -223,9 +223,6 @@ type Page {
   "List of content elements assigned to the page"
   contents: [Content!]! @belongsToMany
 
-  "Meta data of page<->content relation, i.e. position, status, etc."
-  ref: Ref
-
   "List of versions for the page meta data"
   versions: [Version!]! @morphMany
 
@@ -303,7 +300,7 @@ type Content {
   pages: [Page!]! @belongsToMany
 
   "Meta data of page<->content relation, i.e. position, status, etc."
-  ref: Ref
+  ref: [Ref!] @hasMany
 
   "List of versioned data for the content element"
   versions: [Version!]! @morphMany

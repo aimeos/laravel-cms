@@ -208,12 +208,9 @@ class GraphqlContentTest extends TestAbstract
                     lang
                     data
                     editor
-                    pages {
-                        tag
-                        ref {
-                            position
-                            status
-                        }
+                    ref {
+                        position
+                        status
                     }
                     latest {
                         data
@@ -228,15 +225,10 @@ class GraphqlContentTest extends TestAbstract
                     'lang' => 'en',
                     'data' => '{}',
                     'editor' => 'Test',
-                    'pages' => [
-                        [
-                            'tag' => 'root',
-                            'ref' => [
-                                'position' => 1,
-                                'status' => 0,
-                            ]
-                        ]
-                    ],
+                    'ref' => [[
+                        'position' => 1,
+                        'status' => 0,
+                    ]],
                     'latest' => ['data' => '{"key":"value"}']
                 ],
             ]

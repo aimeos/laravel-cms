@@ -80,7 +80,7 @@ class GraphqlContentTest extends TestAbstract
     {
         $this->seed( CmsSeeder::class );
 
-        $contents = Content::limit( 10 )->get();
+        $contents = Content::orderBy( 'id' )->limit( 10 )->get();
         $expected = [];
 
         foreach( $contents as $content )
@@ -91,7 +91,7 @@ class GraphqlContentTest extends TestAbstract
 
         $this->expectsDatabaseQueryCount( 2 );
         $response = $this->actingAs( $this->user )->graphQL( '{
-            contents(first: 10, page: 1) {
+            contents(first: 10) {
                 data {
                     id
                     lang
@@ -113,6 +113,55 @@ class GraphqlContentTest extends TestAbstract
                     'paginatorInfo' => [
                         'currentPage' => 1,
                         'lastPage' => 1,
+                    ]
+                ],
+            ]
+        ] );
+    }
+
+
+    public function testContentsForPage()
+    {
+        $this->seed( CmsSeeder::class );
+
+        $page = Page::where('tag', 'article')->firstOrFail();
+        $contents = $page->contents->take( 3 );
+        $expected = [];
+
+        foreach( $contents as $content )
+        {
+            $attr = collect($content->getAttributes())->except(['tenant_id'])->all();
+            $expected[] = ['id' => (string) $content->id] + $attr;
+        }
+
+        $this->expectsDatabaseQueryCount( 3 );
+        $response = $this->actingAs( $this->user )->graphQL( '{
+            contents(page_id: "' . $page->id . '", first: 3) {
+                data {
+                    id
+                    lang
+                    data
+                    editor
+                    created_at
+                    updated_at
+                    deleted_at
+                    ref {
+                        position
+                        status
+                    }
+                }
+                paginatorInfo {
+                    currentPage
+                    lastPage
+                }
+            }
+        }' )->assertJson( [
+            'data' => [
+                'contents' => [
+                    'data' => $expected,
+                    'paginatorInfo' => [
+                        'currentPage' => 1,
+                        'lastPage' => 2,
                     ]
                 ],
             ]

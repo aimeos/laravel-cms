@@ -102,7 +102,7 @@ class GraphqlPageTest extends TestAbstract
 
         $this->expectsDatabaseQueryCount( 2 );
         $response = $this->actingAs( $this->user )->graphQL( '{
-            pages(first: 10, page: 1) {
+            pages {
                 data {
                     id
                     parent_id

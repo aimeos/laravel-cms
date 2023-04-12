@@ -16,11 +16,18 @@
             name
           }
         }`,
+        error(error) {
+          console.log(error)
+          this.netfail = true
+          this.login = true
+        },
         update(data) {
           if(data.me && data.me.name && data.me.cmseditor) {
             this.app.me = data.me.name
             router.push('/pages')
           } else {
+            console.log(data)
+            this.failure = true
             this.login = true
           }
         }
@@ -32,6 +39,7 @@
         password: ''
       },
       form: null,
+      netfail: false,
       failure: false,
       loading: false,
       login: false,
@@ -66,7 +74,7 @@
           }
         }).catch((error) => {
           console.log('error', error)
-          this.failure = true
+          this.netfail = true
         }).finally(() => {
           this.loading = false
         });
@@ -97,6 +105,7 @@
           </template>
         </v-text-field>
         <v-alert v-show="failure" color="error" icon="mdi-alert-octagon" text="Login failed or user is not authorized!"></v-alert>
+        <v-alert v-show="netfail" color="error" icon="mdi-alert-octagon" text="Server is not reachable or invalid response!"></v-alert>
       </v-card-text>
 
       <v-card-actions>

@@ -26,7 +26,8 @@ return new class extends Migration
             $table->timestamps();
 
             $table->primary('id');
-            $table->unique(['page_id', 'content_id', 'status', 'start', 'end', 'position'], 'idx_pid_cid_stat_sta_end_pos');
+            $table->unique(['page_id', 'content_id', 'position'], 'unq_pid_cid_pos');
+            $table->index(['page_id', 'content_id', 'status', 'start', 'end', 'position'], 'idx_pid_cid_stat_sta_end_pos');
         });
     }
 

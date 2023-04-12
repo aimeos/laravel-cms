@@ -389,13 +389,13 @@ class GraphqlPageTest extends TestAbstract
                         [
                             'lang' => '',
                             'data' => '{"type":"cms::heading","text":"Welcome to Laravel CMS"}',
-                            'ref' => [[
+                            'ref' => [
                                 'status' => 1,
                                 'position' => 0,
                                 'editor' => 'seeder',
                                 'start' => null,
                                 'end' => null
-                            ]]
+                            ]
                         ],
                     ],
                 ],

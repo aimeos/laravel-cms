@@ -49,9 +49,11 @@
               updated_at
               deleted_at
               has
-              latest {
+              versions {
                 published
                 data
+                editor
+                created_at
               }
               contents {
                 id
@@ -59,12 +61,15 @@
                 ref {
                   position
                   status
+                  editor
                   start
                   end
                 }
-                latest {
+                versions {
                   published
                   data
+                  editor
+                  created_at
                 }
               }
             }

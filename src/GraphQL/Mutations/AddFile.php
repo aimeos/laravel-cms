@@ -2,11 +2,12 @@
 
 namespace Aimeos\Cms\GraphQL\Mutations;
 
+use Aimeos\Cms\Models\File;
+use Aimeos\Cms\GraphQL\Exception;
 use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Aimeos\Cms\Models\File;
 
 
 final class AddFile
@@ -58,7 +59,7 @@ final class AddFile
                 Storage::disk( config( 'cms.disk', 'public' ) )->delete( $path );
             }
 
-            throw $e;
+            throw new Exception( 'Uploading file failed', $e->getMessage() );
         }
 
         return null;

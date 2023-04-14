@@ -17,19 +17,12 @@
           }
         }`,
         error(error) {
-          console.log(error)
-          this.netfail = true
-          this.login = true
+          console.dir(error)
+          this.message = error.message
+          this.failure = true
         },
         update(data) {
-          if(data.me && data.me.name && data.me.cmseditor) {
-            this.app.me = data.me.name
-            router.push('/pages')
-          } else {
-            console.log(data)
-            this.failure = true
-            this.login = true
-          }
+          this.handle(data.me)
         }
       }
     },
@@ -39,8 +32,7 @@
         password: ''
       },
       form: null,
-      netfail: false,
-      failure: false,
+      error: null,
       loading: false,
       login: false,
       show: false
@@ -51,8 +43,8 @@
           return false
         }
 
+        this.error = null
         this.loading = true
-        this.failure = false
 
         this.$apollo.mutate({
           mutation: gql`mutation ($email: String!, $password: String!) {
@@ -65,19 +57,32 @@
             email: this.creds.email,
             password: this.creds.password
           }
-        }).then((r) => {
-          if(r.data.cmsLogin && r.data.cmsLogin.name && r.data.cmsLogin.cmseditor) {
-            this.app.me = r.data.cmsLogin.name
-            router.push('/pages')
-          } else {
-            this.failure = true
-          }
-        }).catch((error) => {
-          console.log('error', error)
-          this.netfail = true
+        }).then(r => {
+          this.handle(r.data.cmsLogin || null)
+        }).catch(err => {
+          console.log(`cmsLogin(email: ${this.creds.email})`, err)
+          this.error = err.message
         }).finally(() => {
           this.loading = false
         });
+      },
+
+      handle(result) {
+        if(result) {
+          if(result.name) {
+            if(result.cmseditor) {
+              this.app.me = result.name
+              this.error = null
+              router.push('/pages')
+            } else {
+              this.error = 'Not a CMS editor'
+            }
+          } else {
+            this.error = error.message
+          }
+        } else {
+          this.login = true
+        }
       }
     }
   }
@@ -85,7 +90,7 @@
 
 <template>
   <v-form class="login" :class="{show: login}" v-model="form" @submit.prevent="cmslogin()">
-    <v-card :loading="loading" class="elevation-2" :class="{failure: failure}">
+    <v-card :loading="loading" class="elevation-2" :class="{error: error}">
       <template v-slot:title>
         Login
       </template>
@@ -104,8 +109,7 @@
             <v-icon @click="show = !show">{{ show ? `mdi-eye-off` : `mdi-eye` }}</v-icon>
           </template>
         </v-text-field>
-        <v-alert v-show="failure" color="error" icon="mdi-alert-octagon" text="Login failed or user is not authorized!"></v-alert>
-        <v-alert v-show="netfail" color="error" icon="mdi-alert-octagon" text="Server is not reachable or invalid response!"></v-alert>
+        <v-alert v-show="error" color="error" icon="mdi-alert-octagon" :text="`Error: ` + error"></v-alert>
       </v-card-text>
 
       <v-card-actions>
@@ -151,7 +155,7 @@
     --v-theme-error: 255,167,38;
   }
 
-  .login .failure {
+  .login .error {
     animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
     transform: translate3d(0, 0, 0);
   }

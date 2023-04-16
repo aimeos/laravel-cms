@@ -20,14 +20,15 @@ return new class extends Migration
             $table->string('tenant_id');
             $table->smallInteger('status');
             $table->integer('position');
+            $table->boolean('published');
             $table->string('editor');
             $table->datetime('start')->nullable();
             $table->datetime('end')->nullable();
             $table->timestamps();
 
             $table->primary('id');
-            $table->unique(['page_id', 'content_id'], 'unq_pageid_contentid');
-            $table->index(['page_id', 'content_id', 'status', 'start', 'end', 'position'], 'idx_pid_cid_stat_sta_end_pos');
+            $table->unique(['page_id', 'content_id', 'published'], 'unq_pageid_contentid_published');
+            $table->index(['page_id', 'content_id', 'status', 'start', 'end', 'position'], 'idx_pid_cid_status_start_end_pos');
         });
     }
 

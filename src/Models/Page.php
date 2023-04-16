@@ -166,6 +166,7 @@ class Page extends Model
                             ->orWhere( $ref->qualifyColumn( 'end' ), null );
                     } )
                     ->where( $ref->qualifyColumn( 'tenant_id' ), \Aimeos\Cms\Tenancy::value() )
+                    ->where( $ref->qualifyColumn( 'published' ), true )
                     ->where( $ref->qualifyColumn( 'status' ), 1 );
             } )
             ->withPivot( 'position' )
@@ -179,7 +180,7 @@ class Page extends Model
     public function contents() : BelongsToMany
     {
         return $this->belongsToMany( Content::class, 'cms_page_content' )->as( 'ref' )
-            ->withPivot( 'id', 'position', 'status', 'editor', 'created_at', 'updated_at' )
+            ->withPivot( 'id', 'published', 'position', 'status', 'editor', 'created_at', 'updated_at' )
             ->wherePivot( 'tenant_id', \Aimeos\Cms\Tenancy::value() )
             ->withTimestamps()
             ->orderByPivot( 'position' );

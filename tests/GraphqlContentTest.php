@@ -145,7 +145,7 @@ class GraphqlContentTest extends TestAbstract
                     created_at
                     updated_at
                     deleted_at
-                    ref {
+                    refs {
                         position
                         status
                     }
@@ -248,7 +248,7 @@ class GraphqlContentTest extends TestAbstract
         $contents = $root->contents;
 
         $this->expectsDatabaseQueryCount( 8 );
-        $response = $this->actingAs( $this->user )->graphQL( '
+        $this->actingAs( $this->user )->graphQL( '
             mutation {
                 addContent(input: {
                     lang: "en"
@@ -257,8 +257,9 @@ class GraphqlContentTest extends TestAbstract
                     lang
                     data
                     editor
-                    ref {
+                    refs {
                         editor
+                        published
                         position
                         status
                         start
@@ -269,21 +270,20 @@ class GraphqlContentTest extends TestAbstract
                     }
                 }
             }
-        ' );
-
-        $response->assertJson( [
+        ' )->assertJson( [
             'data' => [
                 'addContent' => [
                     'lang' => 'en',
                     'data' => '{}',
                     'editor' => 'Test',
-                    'ref' => [
+                    'refs' => [[
                         'editor' => 'Test',
+                        'published' => false,
                         'position' => 1,
                         'status' => 0,
                         'start' => null,
                         'end' => null
-                    ],
+                    ]],
                     'latest' => ['data' => '{"key":"value"}']
                 ],
             ]

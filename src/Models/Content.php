@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -117,7 +118,7 @@ class Content extends Model
     public function pages() : BelongsToMany
     {
         return $this->belongsToMany( Page::class, 'cms_page_content' )->as( 'ref' )
-            ->withPivot( 'id', 'position', 'status', 'editor', 'created_at', 'updated_at' )
+            ->withPivot( 'id', 'position', 'status', 'published', 'editor', 'created_at', 'updated_at' )
             ->wherePivot( 'tenant_id', \Aimeos\Cms\Tenancy::value() )
             ->withTimestamps();
     }
@@ -151,11 +152,13 @@ class Content extends Model
 
 
     /**
-     * Get the page<->content reference.
+     * Get the page<->content references.
      */
-    public function ref() : HasOne
+    public function refs() : HasMany
     {
-        return $this->hasOne( Ref::class )->where( 'tenant_id', \Aimeos\Cms\Tenancy::value() );
+        return $this->hasMany( Ref::class )
+            ->where( 'tenant_id', \Aimeos\Cms\Tenancy::value() )
+            ->orderBy( 'id', 'desc' );
     }
 
 

@@ -36,6 +36,15 @@ class RefPolicy
 
 
     /**
+     * Determine if the given page<->content relation can be published by the user.
+     */
+    public function publish( User $user ): bool
+    {
+        return \Aimeos\Cms\Permission::can( 'content:publish', $user->cmseditor );
+    }
+
+
+    /**
      * Determine if the given page<->content relation can be updated by the user.
      */
     public function save( User $user ): bool

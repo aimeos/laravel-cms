@@ -157,6 +157,30 @@ class GraphqlRefTest extends TestAbstract
     }
 
 
+    public function testPubRef()
+    {
+        $this->seed( CmsSeeder::class );
+
+        $root = Page::where('tag', 'root')->firstOrFail();
+        $ref = $root->contents->first()->refs->last();
+
+        $this->expectsDatabaseQueryCount( 3 );
+        $this->actingAs( $this->user )->graphQL( "
+            mutation {
+                pubRef(id: \"{$ref->id}\") {
+                    id
+                }
+            }
+        " )->assertJson( [
+            'data' => [
+                'pubRef' => [
+                    'id' => $ref->id
+                ],
+            ]
+        ] );
+    }
+
+
     public function testSaveRef()
     {
         $this->seed( CmsSeeder::class );

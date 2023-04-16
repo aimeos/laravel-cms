@@ -3,6 +3,8 @@
 namespace Aimeos\Cms\GraphQL;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Query\JoinClause;
+use Illuminate\Support\Facades\DB;
 use Kalnoy\Nestedset\QueryBuilder;
 use Aimeos\Cms\Models\Content;
 use Aimeos\Cms\Models\Page;
@@ -26,22 +28,26 @@ final class Query
         $content = new Content();
         $limit = (int) ( $args['first'] ?? 15 );
 
-        $builder = Content::select( $content->qualifyColumn( '*' ) )
-            ->join( $ref->getTable(), $content->qualifyColumn( 'id' ), '=', $ref->qualifyColumn( 'content_id' ) )
-            ->skip( max( ( $args['page'] ?? 1 ) - 1, 0 ) * $limit )
-            ->take( min( max( $limit, 1 ), 100 ) );
+        $builder = Content::select( $content->qualifyColumn( '*' ) );
 
         if( $pageid = $args['page_id'] ?? null )
         {
-            $builder->where( $ref->qualifyColumn( 'page_id' ), $pageid )
-                ->orderBy( $ref->qualifyColumn( 'position' ) );
+            $lastref = DB::table( $ref->getTable() )
+                ->select( DB::raw( 'MAX(id)' ), 'content_id', 'position' )
+                ->where( 'page_id', $pageid )
+                ->groupBy( 'page_id', 'content_id', 'position' );
+
+            $builder->joinSub( $lastref, 'lastref', function ( JoinClause $join ) use ( $content, $ref ) {
+                $join->on( $content->qualifyColumn( 'id' ), '=', 'lastref.content_id' );
+            } )->orderBy( 'lastref.position' );
         }
         else
         {
             $builder->orderBy( $content->qualifyColumn( 'id' ) );
         }
 
-        return $builder;
+        return $builder->skip( max( ( $args['page'] ?? 1 ) - 1, 0 ) * $limit )
+            ->take( min( max( $limit, 1 ), 100 ) );
 }
 
 

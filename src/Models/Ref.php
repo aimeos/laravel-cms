@@ -34,6 +34,7 @@ class Ref extends Model
      */
     protected $attributes = [
         'tenant_id' => '',
+        'published' => false,
         'position' => 0,
         'status' => 0,
         'editor' => '',
@@ -56,6 +57,7 @@ class Ref extends Model
     protected $fillable = [
         'page_id',
         'content_id',
+        'published',
         'position',
         'status',
         'start',

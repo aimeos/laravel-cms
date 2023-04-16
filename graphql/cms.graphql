@@ -95,6 +95,10 @@ extend type Mutation {
   moveRef(id: ID!, pos: Int): Ref
     @can(ability: "move")
 
+  "Publish an existing page<->content reference"
+  pubRef(id: ID!): Ref
+    @can(ability: "publish")
+
   "Update an existing page<->content reference"
   saveRef(id: ID!, input: RefSaveInput!): Ref
     @can(ability: "save")
@@ -300,7 +304,7 @@ type Content {
   pages: [Page!]! @belongsToMany
 
   "Meta data of page<->content relation, i.e. position, status, etc."
-  ref: Ref @hasOne
+  refs: [Ref!]! @hasMany
 
   "List of versioned data for the content element"
   versions: [Version!]! @morphMany
@@ -329,6 +333,9 @@ type Ref {
 
   "Unique ID of the referenced content element"
   content_id: ID!
+
+  "If reference is currently published or not"
+  published: Boolean!
 
   "Position the content element withing the page"
   position: Int!

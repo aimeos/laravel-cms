@@ -2,10 +2,10 @@
 
 namespace Aimeos\Cms\GraphQL;
 
+use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\DB;
-use Kalnoy\Nestedset\QueryBuilder;
 use Aimeos\Cms\Models\Content;
 use Aimeos\Cms\Models\Page;
 use Aimeos\Cms\Models\Ref;
@@ -26,24 +26,29 @@ final class Query
     {
         $ref = new Ref();
         $content = new Content();
+        $tenant = \Aimeos\Cms\Tenancy::value();
         $limit = (int) ( $args['first'] ?? 15 );
-
-        $builder = Content::select( $content->qualifyColumn( '*' ) );
 
         if( $pageid = $args['page_id'] ?? null )
         {
-            $lastref = DB::table( $ref->getTable() )
-                ->select( DB::raw( 'MAX(id)' ), 'content_id', 'position' )
-                ->where( 'page_id', $pageid )
-                ->groupBy( 'page_id', 'content_id', 'position' );
-
-            $builder->joinSub( $lastref, 'lastref', function ( JoinClause $join ) use ( $content, $ref ) {
-                $join->on( $content->qualifyColumn( 'id' ), '=', 'lastref.content_id' );
-            } )->orderBy( 'lastref.position' );
+            $builder = Content::query()
+                ->select( $content->qualifyColumn( '*' ) )
+                ->from( 'cms_page_content' )
+                ->join( $content->getTable(), $ref->qualifyColumn( 'content_id' ), '=', $content->qualifyColumn( 'id' ) )
+                ->where( $ref->qualifyColumn( 'page_id' ), $pageid )
+                ->where( $ref->qualifyColumn( 'tenant_id' ), $tenant )
+                ->where( $content->qualifyColumn( 'tenant_id' ), $tenant )
+                ->where( $ref->qualifyColumn( 'id' ), function( QueryBuilder $query ) use ( $ref, $pageid )  {
+                    $query->select( DB::raw( 'MAX(id)' ) )
+                        ->from( $ref->getTable() . ' AS maxlist' )
+                        ->whereColumn( 'maxlist.page_id', $pageid )
+                        ->whereColumn( 'maxlist.content_id', $ref->qualifyColumn( 'content_id' ) )
+                        ->groupBy( 'maxlist.page_id', 'maxlist.content_id' );
+                } )->orderBy( $ref->qualifyColumn( 'position' ) );
         }
         else
         {
-            $builder->orderBy( $content->qualifyColumn( 'id' ) );
+            $builder = Content::orderBy( $content->qualifyColumn( 'id' ) );
         }
 
         return $builder->skip( max( ( $args['page'] ?? 1 ) - 1, 0 ) * $limit )
@@ -57,7 +62,7 @@ final class Query
      * @param  null  $rootValue
      * @param  array  $args
      */
-    public function pages( $rootValue, array $args ) : QueryBuilder
+    public function pages( $rootValue, array $args ) : \Kalnoy\Nestedset\QueryBuilder
     {
         $limit = (int) ( $args['first'] ?? 15 );
 

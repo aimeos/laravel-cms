@@ -20,6 +20,13 @@ The easy, flexible and scalable API-first Laravel CMS package:
 
 It can be installed into any existing Laravel application.
 
+* [Installation](#installation)
+* [Authorization](#authorization)
+* [Clean up](#clean-up)
+* [Multi-domain](#multi-domain)
+* [Multi-tenancy](#multi-tenancy)
+* [Custom authorization](#custom-authorization)
+
 ## Installation
 
 Run this command within your Laravel application directory:
@@ -32,7 +39,7 @@ If you don't want to add any demo pages, remove the `--seed` option.
 
 ### Authorization
 
-To allow existing users to edit CMS content or to create a new user if it doesn't exist yet, you can use the `cms:editor` command (replace the e-mail address by the users one):
+To allow existing users to edit CMS content or to create a new users if they don't exist yet, you can use the `cms:editor` command (replace the e-mail address by the users one):
 
 ```bash
 php artisan cms:editor editor@example.com
@@ -46,7 +53,7 @@ php artisan cms:editor --disable editor@example.com
 
 ### Clean up
 
-To clean up deleted pages, contents and files regularly, add these lines to the `schedule()` method in your `app/Console/Kernel.php` class:
+To clean up soft-deleted pages, contents and files regularly, add these lines to the `schedule()` method in your `app/Console/Kernel.php` class:
 
 ```php
 $schedule->command('model:prune', [
@@ -57,6 +64,8 @@ $schedule->command('model:prune', [
         \Aimeos\Cms\Models\File::class],
 ])->daily();
 ```
+
+You can configure the timeframe after soft-deleted items will be removed permantently by setting the [cms.purge](https://github.com/aimeos/laravel-cms/blob/master/config/cms.php#L48) option. It's value must be the number of days after the items will be removed permanently or FALSE if the soft-deleted items shouldn't be removed at all.
 
 ### Multi-domain
 
@@ -83,3 +92,44 @@ Afterwards, tell Laravel CMS how the ID of the current tenant can be retrieved. 
     return tenancy()->initialized ? tenant()->getTenantKey() : '';
 };
 ```
+
+### Custom authorization
+
+If you want to integrate Laravel CMS into another application, you may want to grant access based ony your own authorization scheme. You can replace the Laravel CMS permission handling by adding your own function. Add this code to the `boot()` method of your `\App\Providers\AppServiceProvider` in the `./app/Providers/AppServiceProvider.php` file:
+
+```php
+\Aimeos\Cms\Permission::$callback = function( string $action, int value ) : bool {
+    if( /* check access */ ) {
+        return true;
+    }
+
+    return false;
+};
+```
+
+The first parameter is the action access is requested for, e.g. "page:view" while the second parameter is the authorization bitmap of the user records from the `cmseditor` column of the Laravel `users` table. The function must return TRUE to grant access or FALSE if access is denied.
+
+Available actions which access can be granted to are:
+
+* page:view (show page tree)
+* page:save (update existing pages)
+* page:add (add new pages)
+* page:drop (soft-delete pages)
+* page:keep (restore soft-deleted pages)
+* page:purge (delete pages permanently)
+* page:publish (publish page meta data)
+* page:move (move pages in the tree)
+* content:view (show content elements)
+* content:save (update existing content elements)
+* content:add (add new content elements)
+* content:drop (soft-delete content elements)
+* content:keep (restore soft-deleted content elements)
+* content:purge (delete content elements permanently)
+* content:publish (publish content elements)
+* content:move (move content elements within a page)
+* file:view (show uploaded files)
+* file:save (update existing files)
+* file:add (add new files)
+* file:drop (soft-delete files)
+* file:keep (restore soft-deleted files)
+* file:purge (delete files permanently)

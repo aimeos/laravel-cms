@@ -10,7 +10,7 @@ og_image: /assets/laravel-cms.svg
 comments:
   provider: "disqus"
   disqus:
-    shortname: "aimeos"
+    shortname: "laravel-cms-org"
 lunr:
   search_within_pages: true
 defaults:

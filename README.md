@@ -1,4 +1,4 @@
-![Laravell CMS](laravel-cms.svg)
+![Laravell CMS](assets/laravel-cms.svg)
 
 # Laravel CMS - Powerful as Contentful, simple as Wordpress!
 

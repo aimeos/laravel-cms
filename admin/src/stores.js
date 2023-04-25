@@ -53,26 +53,23 @@ export const useSideStore = defineStore('side', {
     used: {}
   }),
   actions: {
+    isUsed(key, what) {
+      if(typeof this.used[key] === 'undefined') {
+        this.used[key] = {}
+      }
+
+      if(typeof this.used[key][what] === 'undefined') {
+        this.used[key][what] = true
+      }
+
+      return this.used[key][what]
+    },
+
     toggle(key, what) {
       if(!this.used[key]) {
         this.used[key] = {}
       }
       this.used[key][what] = !this.used[key][what]
-    }
-  },
-  getters: {
-    isUsed: (state) => {
-      return (key, what) => {
-        if(typeof state.used[key] === 'undefined') {
-          state.used[key] = {}
-        }
-
-        if(typeof state.used[key][what] === 'undefined') {
-          state.used[key][what] = true
-        }
-
-        return state.used[key][what]
-      }
     }
   }
 })

@@ -13,7 +13,7 @@ class ContentPolicy
      */
     public function add( User $user ): bool
     {
-        return \Aimeos\Cms\Permission::can( 'content:add', $user->cmseditor );
+        return \Aimeos\Cms\Permission::can( 'content:add', $user );
     }
 
 
@@ -22,7 +22,7 @@ class ContentPolicy
      */
     public function drop( User $user ): bool
     {
-        return \Aimeos\Cms\Permission::can( 'content:drop', $user->cmseditor );
+        return \Aimeos\Cms\Permission::can( 'content:drop', $user );
     }
 
 
@@ -31,7 +31,7 @@ class ContentPolicy
      */
     public function keep( User $user ): bool
     {
-        return \Aimeos\Cms\Permission::can( 'content:keep', $user->cmseditor );
+        return \Aimeos\Cms\Permission::can( 'content:keep', $user );
     }
 
 
@@ -40,7 +40,7 @@ class ContentPolicy
      */
     public function publish( User $user ): bool
     {
-        return \Aimeos\Cms\Permission::can( 'content:publish', $user->cmseditor );
+        return \Aimeos\Cms\Permission::can( 'content:publish', $user );
     }
 
 
@@ -49,7 +49,7 @@ class ContentPolicy
      */
     public function purge( User $user ): bool
     {
-        return \Aimeos\Cms\Permission::can( 'content:purge', $user->cmseditor );
+        return \Aimeos\Cms\Permission::can( 'content:purge', $user );
     }
 
 
@@ -58,7 +58,7 @@ class ContentPolicy
      */
     public function save( User $user ): bool
     {
-        return \Aimeos\Cms\Permission::can( 'content:save', $user->cmseditor );
+        return \Aimeos\Cms\Permission::can( 'content:save', $user );
     }
 
 
@@ -67,6 +67,6 @@ class ContentPolicy
      */
     public function view( User $user ): bool
     {
-        return \Aimeos\Cms\Permission::can( 'content:view', $user->cmseditor );
+        return \Aimeos\Cms\Permission::can( 'content:view', $user );
     }
 }

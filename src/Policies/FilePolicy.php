@@ -13,7 +13,7 @@ class FilePolicy
      */
     public function add( User $user ): bool
     {
-        return \Aimeos\Cms\Permission::can( 'file:add', $user->cmseditor );
+        return \Aimeos\Cms\Permission::can( 'file:add', $user );
     }
 
 
@@ -22,7 +22,7 @@ class FilePolicy
      */
     public function drop( User $user ): bool
     {
-        return \Aimeos\Cms\Permission::can( 'file:drop', $user->cmseditor );
+        return \Aimeos\Cms\Permission::can( 'file:drop', $user );
     }
 
 
@@ -31,7 +31,7 @@ class FilePolicy
      */
     public function keep( User $user ): bool
     {
-        return \Aimeos\Cms\Permission::can( 'file:keep', $user->cmseditor );
+        return \Aimeos\Cms\Permission::can( 'file:keep', $user );
     }
 
 
@@ -40,7 +40,7 @@ class FilePolicy
      */
     public function purge( User $user ): bool
     {
-        return \Aimeos\Cms\Permission::can( 'file:purge', $user->cmseditor );
+        return \Aimeos\Cms\Permission::can( 'file:purge', $user );
     }
 
 
@@ -49,7 +49,7 @@ class FilePolicy
      */
     public function save( User $user ): bool
     {
-        return \Aimeos\Cms\Permission::can( 'file:save', $user->cmseditor );
+        return \Aimeos\Cms\Permission::can( 'file:save', $user );
     }
 
 
@@ -58,6 +58,6 @@ class FilePolicy
      */
     public function view( User $user ): bool
     {
-        return \Aimeos\Cms\Permission::can( 'file:view', $user->cmseditor );
+        return \Aimeos\Cms\Permission::can( 'file:view', $user );
     }
 }

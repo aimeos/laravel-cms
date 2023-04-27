@@ -13,7 +13,7 @@ class RefPolicy
      */
     public function add( User $user ): bool
     {
-        return \Aimeos\Cms\Permission::can( 'content:add', $user->cmseditor );
+        return \Aimeos\Cms\Permission::can( 'content:add', $user );
     }
 
 
@@ -22,7 +22,7 @@ class RefPolicy
      */
     public function drop( User $user ): bool
     {
-        return \Aimeos\Cms\Permission::can( 'content:drop', $user->cmseditor );
+        return \Aimeos\Cms\Permission::can( 'content:drop', $user );
     }
 
 
@@ -31,7 +31,7 @@ class RefPolicy
      */
     public function move( User $user ): bool
     {
-        return \Aimeos\Cms\Permission::can( 'content:move', $user->cmseditor );
+        return \Aimeos\Cms\Permission::can( 'content:move', $user );
     }
 
 
@@ -40,7 +40,7 @@ class RefPolicy
      */
     public function publish( User $user ): bool
     {
-        return \Aimeos\Cms\Permission::can( 'content:publish', $user->cmseditor );
+        return \Aimeos\Cms\Permission::can( 'content:publish', $user );
     }
 
 
@@ -49,6 +49,6 @@ class RefPolicy
      */
     public function save( User $user ): bool
     {
-        return \Aimeos\Cms\Permission::can( 'content:save', $user->cmseditor );
+        return \Aimeos\Cms\Permission::can( 'content:save', $user );
     }
 }

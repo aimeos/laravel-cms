@@ -20,6 +20,8 @@ The easy, flexible and scalable API-first Laravel CMS package:
 
 It can be installed into any existing Laravel application.
 
+## Table of contents
+
 * [Installation](#installation)
 * [Authorization](#authorization)
 * [Clean up](#clean-up)
@@ -98,7 +100,7 @@ Afterwards, tell Laravel CMS how the ID of the current tenant can be retrieved. 
 If you want to integrate Laravel CMS into another application, you may want to grant access based ony your own authorization scheme. You can replace the Laravel CMS permission handling by adding your own function. Add this code to the `boot()` method of your `\App\Providers\AppServiceProvider` in the `./app/Providers/AppServiceProvider.php` file:
 
 ```php
-\Aimeos\Cms\Permission::$callback = function( string $action, int value ) : bool {
+\Aimeos\Cms\Permission::$callback = function( string $action, \App\Models\User $user ) : bool {
     if( /* check access */ ) {
         return true;
     }

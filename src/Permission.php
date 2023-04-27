@@ -53,15 +53,15 @@ class Permission
      * Checks if the user has the permission for the requested action.
      *
      * @param string action Name of the requested action, e.g. "page:view"
-     * @param int $value User permissions
+     * @param \App\Models\User $user Laravel user object
      * @return bool TRUE of the user is allowed to perform the action, FALSE if not
      */
-    public static function can( string $action, int $value ) : bool
+    public static function can( string $action, \App\Models\User $user ) : bool
     {
         if( $closure = self::$callback ) {
-            return $closure( $action, $value );
+            return $closure( $action, $user );
         }
 
-        return isset( self::$can[$action] ) && self::$can[$action] & $value;
+        return isset( self::$can[$action] ) && self::$can[$action] & $user->cmseditor;
     }
 }

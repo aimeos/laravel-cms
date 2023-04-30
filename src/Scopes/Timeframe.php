@@ -26,7 +26,7 @@ class Timeframe implements Scope
      */
     public function apply( Builder $builder, Model $model )
     {
-        if( empty( Auth::user()->cmseditor ) )
+        if( \Aimeos\Cms\Permission::can( '*', Auth::user() ) )
         {
             $builder
                 ->where( function( Builder $query ) use ( $model ) {

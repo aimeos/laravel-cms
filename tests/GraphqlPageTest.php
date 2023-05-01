@@ -67,6 +67,7 @@ class GraphqlPageTest extends TestAbstract
                 domain
                 to
                 tag
+                meta
                 data
                 config
                 status
@@ -113,6 +114,7 @@ class GraphqlPageTest extends TestAbstract
                     domain
                     to
                     tag
+                    meta
                     data
                     config
                     status
@@ -169,6 +171,7 @@ class GraphqlPageTest extends TestAbstract
                     domain
                     to
                     tag
+                    meta
                     data
                     config
                     status
@@ -300,6 +303,7 @@ class GraphqlPageTest extends TestAbstract
             page(id: {$page->id}) {
                 id
                 versions {
+                    meta
                     data
                     editor
                 }
@@ -310,7 +314,8 @@ class GraphqlPageTest extends TestAbstract
                     'id' => (string) $page->id,
                     'versions' => [
                         [
-                            'data' => '{"cms::meta":{"type":"cms::meta","text":"Laravel CMS is outstanding"}}',
+                            'meta' => '{"cms::meta":{"type":"cms::meta","text":"Laravel CMS is outstanding"}}',
+                            'data' => '[{"type":"cms::heading","text":"Welcome to Laravel CMS"}]',
                             'editor' => 'seeder'
                         ],
                     ],
@@ -365,21 +370,13 @@ class GraphqlPageTest extends TestAbstract
 
         $page = Page::where('tag', 'root')->firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 3 );
+        $this->expectsDatabaseQueryCount( 2 );
         $response = $this->actingAs( $this->user )->graphQL( "{
             page(id: {$page->id}) {
                 id
                 contents {
                     lang
                     data
-                    refs {
-                        published
-                        position
-                        status
-                        editor
-                        start
-                        end
-                    }
                 }
             }
         }" )->assertJson( [
@@ -390,14 +387,6 @@ class GraphqlPageTest extends TestAbstract
                         [
                             'lang' => '',
                             'data' => '{"type":"cms::heading","text":"Welcome to Laravel CMS"}',
-                            'refs' => [[
-                                'status' => 1,
-                                'position' => 0,
-                                'published' => true,
-                                'editor' => 'seeder',
-                                'start' => null,
-                                'end' => null
-                            ]]
                         ],
                     ],
                 ],
@@ -421,7 +410,8 @@ class GraphqlPageTest extends TestAbstract
                     title: "Test page"
                     to: "/to/page"
                     tag: "test"
-                    data: "{\"canonical\":\"to\/page\"}"
+                    data: "[{\"type\":\"cms::heading\",\"text\":\"Welcome to Laravel CMS\"}]",
+                    meta: "{\"canonical\":\"to\/page\"}"
                     config: "{\"key\":\"test\"}"
                     status: 0
                     cache: 0
@@ -437,6 +427,7 @@ class GraphqlPageTest extends TestAbstract
                     title
                     to
                     tag
+                    meta
                     data
                     config
                     status
@@ -455,7 +446,7 @@ class GraphqlPageTest extends TestAbstract
 
         $attr = collect($page->getAttributes())->except(['tenant_id', '_lft', '_rgt'])->all();
         $expected = ['id' => (string) $page->id, 'parent_id' => null] + $attr;
-        $expected['data'] = '{}'; // status is 0, so not yet published
+        $expected['data'] = '[]'; // status is 0, so not yet published
 
         $response->assertJson( [
             'data' => [
@@ -482,6 +473,7 @@ class GraphqlPageTest extends TestAbstract
                     title: "Test page"
                     to: "/to/page"
                     tag: "test"
+                    meta: "{}"
                     data: "{}"
                     config: "{}"
                     status: 0
@@ -521,6 +513,7 @@ class GraphqlPageTest extends TestAbstract
                     title: "Test page"
                     to: "/to/page"
                     tag: "test"
+                    meta: "{}"
                     data: "{}"
                     config: "{}"
                     status: 0
@@ -644,7 +637,7 @@ class GraphqlPageTest extends TestAbstract
 
         $root = Page::where('tag', 'root')->firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 9 );
+        $this->expectsDatabaseQueryCount( 10 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 savePage(id: "' . $root->id . '", input: {
@@ -655,7 +648,8 @@ class GraphqlPageTest extends TestAbstract
                     title: "Test page"
                     to: "/to/page"
                     tag: "test"
-                    data: "{\"canonical\":\"to\/page\"}"
+                    meta: "{\"canonical\":\"to\/page\"}"
+                    data: "[{\"type\":\"cms::heading\",\"text\":\"Welcome to Laravel CMS\"}]",
                     config: "{\"key\":\"test\"}"
                     status: 0
                     cache: 5
@@ -671,6 +665,7 @@ class GraphqlPageTest extends TestAbstract
                     title
                     to
                     tag
+                    meta
                     data
                     config
                     status
@@ -705,8 +700,9 @@ class GraphqlPageTest extends TestAbstract
                     'title' => "Test page",
                     'to' => "/to/page",
                     'tag' => "test",
-                    'data' => "{\"cms::meta\":{\"type\":\"cms::meta\",\"text\":\"Laravel CMS is outstanding\"}}",
-                    'config' => "{\"key\":\"test\"}",
+                    'meta' => '{"cms::meta":{"type":"cms::meta","text":"Laravel CMS is outstanding"}}',
+                    'data' => '[{"type":"cms::heading","text":"Welcome to Laravel CMS"}]',
+                    'config' => '{"key":"test"}',
                     'status' => 0,
                     'cache' => 5,
                     'editor' => 'Test editor',
@@ -714,8 +710,12 @@ class GraphqlPageTest extends TestAbstract
                     'end' => '2099-01-01 00:00:00',
                     'created_at' => (string) $root->created_at,
                     'updated_at' => (string) $page->updated_at,
-                    'latest' => ['data' => '{"canonical":"to\\/page"}'],
-                    'published' => ['data' => '{"cms::meta":{"type":"cms::meta","text":"Laravel CMS is outstanding"}}']
+                    'latest' => [
+                        'data' => '[{"type":"cms::heading","text":"Welcome to Laravel CMS"}]'
+                    ],
+                    'published' => [
+                        'data' => '[{"type":"cms::heading","text":"Welcome to Laravel CMS"}]'
+                    ]
                 ],
             ]
         ] );

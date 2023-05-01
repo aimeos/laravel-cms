@@ -40,11 +40,13 @@ final class AddPage
 
             if( isset( $args['input']['data'] ) )
             {
-                $page->versions()->create( [
+                $version = $page->versions()->create( [
                     'data' => $args['input']['data'],
                     'published' => $page->status > 0 ? true : false,
                     'editor' => $editor
                 ] );
+
+                $version->files()->attach( $args['files'] ?? [] );
             }
         }, 3 );
 

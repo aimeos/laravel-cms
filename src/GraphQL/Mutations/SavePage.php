@@ -26,10 +26,12 @@ final class SavePage
 
             if( isset( $args['input']['data'] ) && $args['input']['data'] !== $page->latest?->data )
             {
-                $page->versions()->create( [
+                $version = $page->versions()->create( [
                     'data' => $args['input']['data'],
                     'editor' => $editor
                 ] );
+
+                $version->files()->sync( $args['files'] ?? [] );
 
                 $ids = Version::select( 'id' )
                     ->where( 'versionable_id', $page->id )
@@ -40,9 +42,13 @@ final class SavePage
                     ->take( 100 )
                     ->pluck( 'id' );
 
-                Version::whereIn( 'id', $ids )->delete();
+                Version::whereIn( 'id', $ids )->forceDelete();
 
                 unset( $args['input']['data'] );
+            }
+
+            if( isset( $args['input']['contents'] ) ) {
+                $page->contents()->sync( $args['input']['contents'] );
             }
 
             $page->fill( $args['input'] ?? [] );

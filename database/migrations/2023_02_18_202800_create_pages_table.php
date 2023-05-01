@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('domain');
             $table->string('tag', 30);
             $table->json('data')->nullable();
+            $table->json('meta')->nullable();
             $table->json('config')->nullable();
             $table->smallInteger('status');
             $table->smallInteger('cache');

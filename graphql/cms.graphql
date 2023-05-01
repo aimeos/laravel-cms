@@ -32,10 +32,10 @@ extend type Query {
     @find
 
   "Get available content items"
-  contents(page_id: ID): [Content!]!
-    @paginate(builder: "\\Aimeos\\Cms\\GraphQL\\Query@contents", defaultCount: 50)
-    @can(ability: "view", model: "\\Aimeos\\Cms\\Models\\Content")
+  contents: [Content!] @orderBy(column: "id", direction: ASC)
+    @can(ability: "view")
     @softDeletes
+    @paginate
 
   "Get available files"
   files: [File!] @orderBy(column: "id", direction: DESC)
@@ -59,7 +59,7 @@ extend type Mutation {
 
 
   "Add a new page below the page referenced by 'parent' and before the page referenced by 'ref' (or append if NULL)"
-  addPage(input: PageInput!, parent: ID, ref: ID): Page
+  addPage(input: PageInput!, parent: ID, ref: ID, files: [ID!]): Page
     @can(ability: "add")
 
   "Move the page below the page referenced by 'parent' and before the page referenced by 'ref' (or append if NULL)"
@@ -67,7 +67,7 @@ extend type Mutation {
     @can(ability: "move")
 
   "Update the values of an existing page"
-  savePage(id: ID!, input: PageInput!): Page
+  savePage(id: ID!, input: PageInput!, files: [ID!]): Page
     @can(ability: "save")
 
   "Delete an existing page"
@@ -87,48 +87,27 @@ extend type Mutation {
     @can(ability: "publish")
 
 
-  "Add a new page<->content reference"
-  addRef(input: RefInput!): Ref
+  "Add a new shared content element with file references"
+  addContent(input: ContentInput!, files: [ID!]): Content
     @can(ability: "add")
 
-  "Move the page<->content reference to a new position"
-  moveRef(id: ID!, pos: Int): Ref
-    @can(ability: "move")
-
-  "Publish an existing page<->content reference"
-  pubRef(id: ID!): Ref
-    @can(ability: "publish")
-
-  "Update an existing page<->content reference"
-  saveRef(id: ID!, input: RefSaveInput!): Ref
-    @can(ability: "save")
-
-  "Delete an existing page<->content reference"
-  dropRef(id: ID!): Ref
-    @can(ability: "drop")
-
-
-  "Add a new content element with file references and optionally assign it to the page at the passed position"
-  addContent(input: ContentInput!, files: [ID!], page_id: ID, position: Int): Content
-    @can(ability: "add")
-
-  "Update an existing content element"
+  "Update an existing shared content element"
   saveContent(id: ID!, input: ContentInput!, files: [ID!]): Content
     @can(ability: "save")
 
-  "Delete an existing content element"
+  "Delete an existing shared content element"
   dropContent(id: ID!): Content
     @can(ability: "drop")
 
-  "Restore an existing content element"
+  "Restore an existing shared content element"
   keepContent(id: ID!): Content
     @can(ability: "keep")
 
-  "Purge an existing content element"
+  "Purge an existing shared content element"
   purgeContent(id: ID!): Content
     @can(ability: "purge")
 
-  "Publish an existing content element"
+  "Publish an existing shared content element"
   pubContent(id: ID!): Content
     @can(ability: "publish")
 
@@ -170,7 +149,7 @@ type Page {
   "Domain name the root page (!) is responsible for"
   domain: String
 
-  "Short page name for menues"
+  "Short page name for menus"
   name: String
 
   "Descriptive page title"
@@ -183,6 +162,9 @@ type Page {
   tag: String
 
   "Arbitrary page header elements"
+  meta: JSON!
+
+  "Arbitrary page content elements"
   data: JSON!
 
   "Arbitrary configuration settings"
@@ -224,7 +206,7 @@ type Page {
   "Relation to the ancestors of the current page up to the root page"
   ancestors: [Page!]!
 
-  "List of content elements assigned to the page"
+  "List of shared content elements assigned to the page"
   contents: [Content!]! @belongsToMany
 
   "List of versions for the page meta data"
@@ -260,6 +242,9 @@ input PageInput {
   tag: String
 
   "Arbitrary page header elements"
+  meta: JSON
+
+  "Arbitrary page content elements"
   data: JSON
 
   "Arbitrary configuration settings"
@@ -276,6 +261,9 @@ input PageInput {
 
   "Date/time when the page will be hidden"
   end: String
+
+  "List of shard content IDs used"
+  contents: [ID!]
 }
 
 type Content {
@@ -303,9 +291,6 @@ type Content {
   "Relation of all pages the content element belongs to"
   pages: [Page!]! @belongsToMany
 
-  "Meta data of page<->content relation, i.e. position, status, etc."
-  refs: [Ref!]! @hasMany
-
   "List of versioned data for the content element"
   versions: [Version!]! @morphMany
 
@@ -324,80 +309,14 @@ input ContentInput {
   data: JSON!
 }
 
-type Ref {
-  "Unique ID of the page<->content reference"
-  id: ID!
-
-  "Unique ID of the referenced page"
-  page_id: ID!
-
-  "Unique ID of the referenced content element"
-  content_id: ID!
-
-  "If reference is currently published or not"
-  published: Boolean!
-
-  "Position the content element withing the page"
-  position: Int!
-
-  "Visibility status of the content element within the page, 0=inactive, 1=visible"
-  status: Int!
-
-  "Date/time when the content element will be shown"
-  start: String
-
-  "Date/time when the content element will be hidden"
-  end: String
-
-  "Name of the last user who added or updated the page<->content reference"
-  editor: String!
-
-  "Date/time value when the page<->content was created"
-  created_at: String!
-
-  "Date/time value when the page<->content was last modified"
-  updated_at: String!
-}
-
-input RefInput {
-  "Unique ID of the referenced page"
-  page_id: ID!
-
-  "Unique ID of the referenced content element"
-  content_id: ID!
-
-  "Position the content element withing the page"
-  position: Int!
-
-  "Visibility status of the content element within the page, 0=inactive, 1=visible"
-  status: Int!
-
-  "Date/time when the content element will be shown"
-  start: String
-
-  "Date/time when the content element will be hidden"
-  end: String
-}
-
-input RefSaveInput {
-  "Position the content element withing the page"
-  position: Int!
-
-  "Visibility status of the content element within the page, 0=inactive, 1=visible"
-  status: Int!
-
-  "Date/time when the content element will be shown"
-  start: String
-
-  "Date/time when the content element will be hidden"
-  end: String
-}
-
 type Version {
   "Unique version ID"
   id: ID!
 
-  "Arbitrary versioned data"
+  "Arbitrary versioned header elements"
+  meta: JSON
+
+  "Arbitrary versioned content elements"
   data: JSON!
 
   "If versioned content is currently published or not"

@@ -12,6 +12,7 @@ use LaravelJsonApi\Eloquent\Fields\Relations\BelongsToMany;
 use LaravelJsonApi\Eloquent\Fields\Relations\HasMany;
 use LaravelJsonApi\Eloquent\Fields\Relations\HasOne;
 use LaravelJsonApi\Eloquent\Fields\ArrayHash;
+use LaravelJsonApi\Eloquent\Fields\ArrayList;
 use LaravelJsonApi\Eloquent\Fields\DateTime;
 use LaravelJsonApi\Eloquent\Fields\Boolean;
 use LaravelJsonApi\Eloquent\Fields\Number;
@@ -85,10 +86,14 @@ class PageSchema extends Schema
             Str::make( 'domain' )->readOnly(),
             Boolean::make( 'has' )->readOnly(),
             Number::make( 'cache' )->readOnly(),
-            ArrayHash::make( 'data' )->readOnly(),
+            ArrayList::make( 'data' )->readOnly(),
+            ArrayHash::make( 'meta' )->readOnly(),
+            ArrayHash::make( 'config' )->readOnly(),
             DateTime::make( 'createdAt' )->readOnly(),
             DateTime::make( 'updatedAt' )->readOnly(),
-            BelongsToMany::make( 'content' )->type( 'pages' )->readOnly(),
+            HasMany::make( 'contents' )->type( 'contents' )->readOnly()->serializeUsing(
+                static fn($relation) => $relation->withoutLinks()
+            ),
             HasOne::make( 'parent' )->type( 'pages' )->readOnly()->serializeUsing(
                 static fn($relation) => $relation->withoutLinks()
             ),

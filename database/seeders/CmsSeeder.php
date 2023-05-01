@@ -8,7 +8,6 @@ use Aimeos\Cms\Models\Version;
 use Aimeos\Cms\Models\Content;
 use Aimeos\Cms\Models\File;
 use Aimeos\Cms\Models\Page;
-use Aimeos\Cms\Models\Ref;
 
 
 class CmsSeeder extends Seeder
@@ -38,7 +37,7 @@ class CmsSeeder extends Seeder
     }
 
 
-    protected function file()
+    protected function file() : File
     {
         return File::forceCreate([
             'mime' => 'image/jpeg',
@@ -51,7 +50,7 @@ class CmsSeeder extends Seeder
     }
 
 
-    protected function home()
+    protected function content() : Content
     {
         $content = Content::forceCreate([
             'data' => ['type' => 'cms::heading', 'text' => 'Welcome to Laravel CMS'],
@@ -63,49 +62,44 @@ class CmsSeeder extends Seeder
             'editor' => 'seeder',
         ]);
 
+        return $content;
+    }
+
+
+    protected function home() : Page
+    {
         $page = Page::forceCreate([
             'name' => 'Home',
             'title' => 'Home | Laravel CMS',
             'slug' => '',
             'tag' => 'root',
             'domain' => 'mydomain.tld',
-            'data' => ['cms::meta' => ['type' => 'cms::meta', 'text' => 'Laravel CMS is outstanding']],
+            'meta' => ['cms::meta' => ['type' => 'cms::meta', 'text' => 'Laravel CMS is outstanding']],
+            'data' => [['type' => 'cms::heading', 'text' => 'Welcome to Laravel CMS']],
             'status' => 1,
             'editor' => 'seeder',
         ]);
         $page->versions()->forceCreate([
-            'data' => ['cms::meta' => ['type' => 'cms::meta', 'text' => 'Laravel CMS is outstanding']],
+            'meta' => ['cms::meta' => ['type' => 'cms::meta', 'text' => 'Laravel CMS is outstanding']],
+            'data' => [['type' => 'cms::heading', 'text' => 'Welcome to Laravel CMS']],
             'published' => true,
             'editor' => 'seeder',
         ]);
-
-        Ref::forceCreate([
-            'page_id' => $page->id,
-            'content_id' => $content->id,
-            'published' => false,
-            'position' => 1,
-            'status' => 1,
-            'editor' => 'seeder',
-        ]);
-
-        Ref::forceCreate([
-            'page_id' => $page->id,
-            'content_id' => $content->id,
-            'published' => true,
-            'position' => 0,
-            'status' => 1,
-            'editor' => 'seeder',
-        ]);
+        $page->contents()->attach( $this->content()->id );
 
         return $page;
     }
 
 
-    protected function addBlog( Page $home )
+    protected function addBlog( Page $home)
     {
         $page = Page::forceCreate([
             'name' => 'Blog',
             'title' => 'Blog | Laravel CMS',
+            'data' => [
+                ['type' => 'cms::heading', 'text' => 'Blog example'],
+                ['type' => 'cms::blog']
+            ],
             'slug' => 'blog',
             'tag' => 'blog',
             'status' => 1,
@@ -113,204 +107,55 @@ class CmsSeeder extends Seeder
         ]);
         $page->appendToNode( $home )->save();
 
-        $content = Content::forceCreate([
-            'data' => ['type' => 'cms::heading', 'text' => 'Blog example'],
-            'editor' => 'seeder',
-        ]);
-        $content->versions()->forceCreate([
-            'data' => ['type' => 'cms::heading', 'text' => 'Blog example'],
-            'published' => true,
-            'editor' => 'seeder',
-        ]);
-
-        Ref::forceCreate([
-            'page_id' => $page->id,
-            'content_id' => $content->id,
-            'published' => true,
-            'position' => 0,
-            'status' => 1,
-            'editor' => 'seeder',
-        ]);
-
-
-        $content = Content::forceCreate([
-            'data' => ['type' => 'cms::blog'],
-            'editor' => 'seeder',
-        ]);
-        $content->versions()->forceCreate([
-            'data' => ['type' => 'cms::blog'],
-            'published' => true,
-            'editor' => 'seeder',
-        ]);
-
-        Ref::forceCreate([
-            'page_id' => $page->id,
-            'content_id' => $content->id,
-            'published' => true,
-            'position' => 1,
-            'status' => 1,
-            'editor' => 'seeder',
-        ]);
-
         return $this->addBlogArticle( $page );
     }
 
 
     protected function addBlogArticle( Page $blog )
     {
+        $data = [
+            [
+                'type' => 'cms::article',
+                'title' => 'Welcome to Laravel CMS',
+                'cover' => [
+                    'type' => 'cms::image',
+                    'name' => 'Welcome to Laravel CMS',
+                    'path' => 'https://aimeos.org/tips/wp-content/uploads/2023/01/ai-ecommerce-2.jpg',
+                    'previews' => [
+                        1000 => 'https://aimeos.org/tips/wp-content/uploads/2023/01/ai-ecommerce-2.jpg'
+                    ],
+                ],
+                'intro' => 'Laravel CMS is lightweight, lighting fast, easy to use, fully customizable and scalable from one-pagers to millions of pages',
+            ],
+            ['type' => 'cms::heading', 'level' => 2, 'text' => 'Rethink content management!'],
+            ['type' => 'cms::text', 'text' => 'Laravel CMS is exceptional in every way. Headless and API-first!'],
+            ['type' => 'cms::heading', 'level' => 2, 'text' => 'API first!'],
+            ['type' => 'cms::text', 'text' => 'Use GraphQL for editing the pages, contents and files:'],
+            ['type' => 'cms::code', 'language' => 'graphql', 'text' => 'mutation {
+  cmsLogin(email: "editor@example.org", password: "secret") {
+    name
+    email
+  }
+}'          ],
+        ];
+
         $page = Page::forceCreate([
             'name' => 'Welcome to Laravel CMS',
             'title' => 'Welcome to Laravel CMS | Laravel CMS',
             'slug' => 'welcome-to-laravelcms',
             'tag' => 'article',
+            'data' => $data,
             'status' => 1,
             'editor' => 'seeder',
         ]);
         $page->appendToNode( $blog )->save();
 
-        $data = [
-            'type' => 'cms::article',
-            'title' => 'Welcome to Laravel CMS',
-            'cover' => [
-                'type' => 'cms::image',
-                'name' => 'Welcome to Laravel CMS',
-                'path' => 'https://aimeos.org/tips/wp-content/uploads/2023/01/ai-ecommerce-2.jpg',
-                'previews' => [
-                    1000 => 'https://aimeos.org/tips/wp-content/uploads/2023/01/ai-ecommerce-2.jpg'
-                ],
-            ],
-            'intro' => 'Laravel CMS is lightweight, lighting fast, easy to use, fully customizable and scalable from one-pagers to millions of pages',
-        ];
-
-        $content = Content::forceCreate([
-            'data' => $data,
-            'editor' => 'seeder',
-        ]);
-        $version = $content->versions()->forceCreate([
+        $version = $page->versions()->forceCreate([
             'data' => $data,
             'published' => true,
             'editor' => 'seeder',
         ]);
         $version->files()->attach( $this->file() );
-
-        Ref::forceCreate([
-            'page_id' => $page->id,
-            'content_id' => $content->id,
-            'published' => true,
-            'position' => 0,
-            'status' => 1,
-            'editor' => 'seeder',
-        ]);
-
-
-        $data = ['type' => 'cms::heading', 'level' => 2, 'text' => 'Rethink content management!'];
-        $content = Content::forceCreate([
-            'data' => $data,
-            'editor' => 'seeder',
-        ]);
-        $version = $content->versions()->forceCreate([
-            'data' => $data,
-            'published' => true,
-            'editor' => 'seeder',
-        ]);
-
-        Ref::forceCreate([
-            'page_id' => $page->id,
-            'content_id' => $content->id,
-            'published' => true,
-            'position' => 1,
-            'status' => 1,
-            'editor' => 'seeder',
-        ]);
-
-
-        $data = ['type' => 'cms::text', 'text' => 'Laravel CMS is exceptional in every way. Headless and API-first!'];
-        $content = Content::forceCreate([
-            'data' => $data,
-            'editor' => 'seeder',
-        ]);
-        $version = $content->versions()->forceCreate([
-            'data' => $data,
-            'published' => true,
-            'editor' => 'seeder',
-        ]);
-
-        Ref::forceCreate([
-            'page_id' => $page->id,
-            'content_id' => $content->id,
-            'published' => true,
-            'position' => 2,
-            'status' => 1,
-            'editor' => 'seeder',
-        ]);
-
-
-        $data = ['type' => 'cms::heading', 'level' => 2, 'text' => 'API first!'];
-        $content = Content::forceCreate([
-            'data' => $data,
-            'editor' => 'seeder',
-        ]);
-        $version = $content->versions()->forceCreate([
-            'data' => $data,
-            'published' => true,
-            'editor' => 'seeder',
-        ]);
-
-        Ref::forceCreate([
-            'page_id' => $page->id,
-            'content_id' => $content->id,
-            'published' => true,
-            'position' => 3,
-            'status' => 1,
-            'editor' => 'seeder',
-        ]);
-
-
-        $data = ['type' => 'cms::text', 'text' => 'Use GraphQL for editing the pages, contents and files:'];
-        $content = Content::forceCreate([
-            'data' => $data,
-            'editor' => 'seeder',
-        ]);
-        $version = $content->versions()->forceCreate([
-            'data' => $data,
-            'published' => true,
-            'editor' => 'seeder',
-        ]);
-
-        Ref::forceCreate([
-            'page_id' => $page->id,
-            'content_id' => $content->id,
-            'published' => true,
-            'position' => 4,
-            'status' => 1,
-            'editor' => 'seeder',
-        ]);
-
-
-        $data = ['type' => 'cms::code', 'language' => 'graphql', 'text' => 'mutation {
-  cmsLogin(email: "editor@example.org", password: "secret") {
-    name
-    email
-  }
-}'      ];
-        $content = Content::forceCreate([
-            'data' => $data,
-            'editor' => 'seeder',
-        ]);
-        $version = $content->versions()->forceCreate([
-            'data' => $data,
-            'published' => true,
-            'editor' => 'seeder',
-        ]);
-
-        Ref::forceCreate([
-            'page_id' => $page->id,
-            'content_id' => $content->id,
-            'published' => true,
-            'position' => 1,
-            'status' => 1,
-            'editor' => 'seeder',
-        ]);
 
         return $this;
     }
@@ -318,39 +163,22 @@ class CmsSeeder extends Seeder
 
     protected function addDev( Page $home )
     {
-        $page = Page::forceCreate([
-            'name' => 'Dev',
-            'title' => 'For Developer | Laravel CMS',
-            'slug' => 'dev',
-            'status' => 1,
-            'editor' => 'seeder',
-        ]);
-        $page->appendToNode( $home )->save();
-
-        $data = [
+        $data = [[
             'type' => 'cms::markdown',
             'text' => '# For Developers
 
 This is content created by GitHub-flavored markdown syntax',
-        ];
-        $content = Content::forceCreate([
-            'data' => $data,
-            'editor' => 'seeder',
-        ]);
-        $content->versions()->forceCreate([
-            'data' => $data,
-            'published' => true,
-            'editor' => 'seeder',
-        ]);
+        ]];
 
-        Ref::forceCreate([
-            'page_id' => $page->id,
-            'content_id' => $content->id,
-            'published' => true,
-            'position' => 0,
+        $page = Page::forceCreate([
+            'name' => 'Dev',
+            'title' => 'For Developer | Laravel CMS',
+            'slug' => 'dev',
+            'data' => $data,
             'status' => 1,
             'editor' => 'seeder',
         ]);
+        $page->appendToNode( $home )->save();
 
         return $this;
     }

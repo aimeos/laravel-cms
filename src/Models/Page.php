@@ -48,7 +48,8 @@ class Page extends Model
         'to' => '',
         'name' => '',
         'title' => '',
-        'data' => '{}',
+        'data' => '[]',
+        'meta' => '{}',
         'config' => '{}',
         'status' => 0,
         'cache' => 5,
@@ -70,7 +71,8 @@ class Page extends Model
         'to' => 'string',
         'name' => 'string',
         'title' => 'string',
-        'data' => 'object',
+        'data' => 'array',
+        'meta' => 'object',
         'config' => 'object',
     ];
 
@@ -148,42 +150,11 @@ class Page extends Model
 
 
     /**
-     * Get the active content for the page.
-     */
-    public function content() : BelongsToMany
-    {
-        $ref = new Ref;
-
-        return $this->belongsToMany( Content::class, 'cms_page_content' )
-            ->where( function( Builder $query ) use ( $ref ) {
-                return $query
-                    ->where( function( Builder $query ) use ( $ref ) {
-                        return $query->where( $ref->qualifyColumn( 'start' ), '>=', date( 'Y-m-d H:i:00' ) )
-                            ->orWhere( $ref->qualifyColumn( 'start' ), null );
-                    } )
-                    ->where( function( Builder $query ) use ( $ref ) {
-                        return $query->where( $ref->qualifyColumn( 'end' ), '<=', date( 'Y-m-d H:i:00' ) )
-                            ->orWhere( $ref->qualifyColumn( 'end' ), null );
-                    } )
-                    ->where( $ref->qualifyColumn( 'tenant_id' ), \Aimeos\Cms\Tenancy::value() )
-                    ->where( $ref->qualifyColumn( 'published' ), true )
-                    ->where( $ref->qualifyColumn( 'status' ), 1 );
-            } )
-            ->withPivot( 'position' )
-            ->orderByPivot( 'position' );
-    }
-
-
-    /**
-     * Get all content for the page.
+     * Get the shard content for the page.
      */
     public function contents() : BelongsToMany
     {
-        return $this->belongsToMany( Content::class, 'cms_page_content' )->as( 'ref' )
-            ->withPivot( 'id', 'published', 'position', 'status', 'editor', 'created_at', 'updated_at' )
-            ->wherePivot( 'tenant_id', \Aimeos\Cms\Tenancy::value() )
-            ->withTimestamps()
-            ->orderByPivot( 'position' );
+        return $this->belongsToMany( Content::class, 'cms_page_content' );
     }
 
 

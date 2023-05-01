@@ -117,10 +117,7 @@ class Content extends Model
      */
     public function pages() : BelongsToMany
     {
-        return $this->belongsToMany( Page::class, 'cms_page_content' )->as( 'ref' )
-            ->withPivot( 'id', 'position', 'status', 'published', 'editor', 'created_at', 'updated_at' )
-            ->wherePivot( 'tenant_id', \Aimeos\Cms\Tenancy::value() )
-            ->withTimestamps();
+        return $this->belongsToMany( Page::class, 'cms_page_content' );
     }
 
 
@@ -148,17 +145,6 @@ class Content extends Model
 
         // pruning is disabled
         return static::withoutTenancy()->where( 'id', '' );
-    }
-
-
-    /**
-     * Get the page<->content references.
-     */
-    public function refs() : HasMany
-    {
-        return $this->hasMany( Ref::class )
-            ->where( 'tenant_id', \Aimeos\Cms\Tenancy::value() )
-            ->orderBy( 'id', 'desc' );
     }
 
 

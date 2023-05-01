@@ -24,7 +24,7 @@ class JsonapiTest extends TestAbstract
         \LaravelJsonApi\Laravel\Facades\JsonApiRoute::server( "cms" )->prefix( "cms" )->resources( function( $server ) {
             $server->resource( "pages", \Aimeos\Cms\JsonApi\V1\Controllers\PageController::class )->readOnly()
                 ->relationships( function( $relationships ) {
-                    $relationships->hasOne( 'content' )->readOnly();
+                    $relationships->hasMany( 'contents' )->readOnly();
                 });
             });
     }
@@ -85,14 +85,14 @@ class JsonapiTest extends TestAbstract
     {
         $this->seed( \Database\Seeders\CmsSeeder::class );
 
-        $page = \Aimeos\Cms\Models\Page::where('tag', 'blog')->firstOrFail();
-        $contents = $page->content;
+        $page = \Aimeos\Cms\Models\Page::where('tag', 'root')->firstOrFail();
+        $contents = $page->contents;
 
         $this->expectsDatabaseQueryCount( 3 ); // page + content + content count
-        $response = $this->jsonApi()->expects( 'contents' )->get( "cms/pages/{$page->id}/content" );
+        $response = $this->jsonApi()->expects( 'contents' )->get( "cms/pages/{$page->id}/contents" );
 
         $response->assertFetchedManyInOrder( $contents );
-        $this->assertGreaterThanOrEqual( 2, count( $contents ) );
+        $this->assertGreaterThanOrEqual( 1, count( $contents ) );
         $response->assertJsonPath( 'meta.baseurl', '/storage/' );
     }
 
@@ -160,12 +160,12 @@ class JsonapiTest extends TestAbstract
         $page = \Aimeos\Cms\Models\Page::where('tag', 'root')->firstOrFail();
         $expected = [];
 
-        foreach( $page->content as $item ){
+        foreach( $page->contents as $item ){
             $expected[] = ['type' => 'contents', 'id' => $item->id];
         }
 
-        $this->expectsDatabaseQueryCount( 2 ); // page + content
-        $response = $this->jsonApi()->expects( 'pages' )->includePaths( 'content' )->get( "cms/pages/{$page->id}" );
+        $this->expectsDatabaseQueryCount( 2 ); // page + contents
+        $response = $this->jsonApi()->expects( 'pages' )->includePaths( 'contents' )->get( "cms/pages/{$page->id}" );
         $response->assertFetchedOne( $page )->assertIncluded( $expected );
 
         $this->assertGreaterThanOrEqual( 1, count( $expected ) );

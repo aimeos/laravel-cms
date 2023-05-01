@@ -5,7 +5,6 @@ namespace Aimeos\Cms\GraphQL\Mutations;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Aimeos\Cms\Models\Content;
-use Aimeos\Cms\Models\Ref;
 
 
 final class AddContent
@@ -36,17 +35,6 @@ final class AddContent
                 ] );
 
                 $version->files()->attach( $args['files'] ?? [] );
-            }
-
-            if( $pageId = $args['page_id'] ?? null )
-            {
-                $ref = new Ref();
-                $ref->page_id = $pageId;
-                $ref->content_id = $content->id;
-                $ref->position = $args['position'] ?? 0;
-                $ref->tenant_id = \Aimeos\Cms\Tenancy::value();
-                $ref->editor = $editor;
-                $ref->save();
             }
 
         }, 3 );

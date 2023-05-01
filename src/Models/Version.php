@@ -33,7 +33,8 @@ class Version extends Model
      */
     protected $attributes = [
         'tenant_id' => '',
-        'data' => '{}',
+        'data' => '[]',
+        'meta' => '{}',
         'published' => false,
         'editor' => '',
     ];
@@ -44,7 +45,8 @@ class Version extends Model
      * @var array
      */
     protected $casts = [
-        'data' => 'object',
+        'data' => 'array',
+        'meta' => 'object',
     ];
 
     /**
@@ -61,6 +63,7 @@ class Version extends Model
      */
     protected $fillable = [
         'data',
+        'meta',
         'editor',
     ];
 

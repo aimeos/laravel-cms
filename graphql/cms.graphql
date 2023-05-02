@@ -37,17 +37,17 @@ extend type Query {
     @softDeletes
     @paginate
 
-  "Get available files"
-  files: [File!] @orderBy(column: "id", direction: DESC)
-    @can(ability: "view")
-    @softDeletes
-    @paginate
-
   "Get file item by ID"
   file(id: ID! @eq): File
     @can(ability: "view")
     @softDeletes
     @find
+
+  "Get available files"
+  files: [File!] @orderBy(column: "id", direction: DESC)
+    @can(ability: "view")
+    @softDeletes
+    @paginate
 }
 
 extend type Mutation {

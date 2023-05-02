@@ -41,16 +41,16 @@ If you don't want to add any demo pages, remove the `--seed` option.
 
 ### Authorization
 
-To allow existing users to edit CMS content or to create a new users if they don't exist yet, you can use the `cms:editor` command (replace the e-mail address by the users one):
+To allow existing users to edit CMS content or to create a new users if they don't exist yet, you can use the `cms:user` command (replace the e-mail address by the users one):
 
 ```bash
-php artisan cms:editor editor@example.com
+php artisan cms:user editor@example.com
 ```
 
 To disallow users to edit CMS content, use:
 
 ```bash
-php artisan cms:editor --disable editor@example.com
+php artisan cms:user --disable editor@example.com
 ```
 
 ### Clean up
@@ -100,7 +100,7 @@ Afterwards, tell Laravel CMS how the ID of the current tenant can be retrieved. 
 If you want to integrate Laravel CMS into another application, you may want to grant access based ony your own authorization scheme. You can replace the Laravel CMS permission handling by adding your own function. Add this code to the `boot()` method of your `\App\Providers\AppServiceProvider` in the `./app/Providers/AppServiceProvider.php` file:
 
 ```php
-\Aimeos\Cms\Permission::$callback = function( string $action, \App\Models\User $user ) : bool {
+\Aimeos\Cms\Permission::$callback = function( string $action, ?\App\Models\User $user ) : bool {
     if( /* check access */ ) {
         return true;
     }

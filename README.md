@@ -109,7 +109,7 @@ If you want to integrate Laravel CMS into another application, you may want to g
 };
 ```
 
-The first parameter is the action access is requested for, e.g. "page:view" while the second parameter is the authorization bitmap of the user records from the `cmseditor` column of the Laravel `users` table. The function must return TRUE to grant access or FALSE if access is denied.
+The first parameter is the action access is requested for, e.g. "page:view" while the second parameter is the user object if authenticated. By default, permissions of CMS users are checked against the authorization bitmap from the `cmseditor` column of their user object from the Laravel `users` table. The function must return TRUE to grant access or FALSE if access is denied.
 
 Available actions which access can be granted to are:
 

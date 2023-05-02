@@ -94,18 +94,40 @@ class PageSchema extends Schema
             HasMany::make( 'contents' )->type( 'contents' )->readOnly()->serializeUsing(
                 static fn($relation) => $relation->withoutLinks()
             ),
-            HasOne::make( 'parent' )->type( 'pages' )->readOnly()->serializeUsing(
-                static fn($relation) => $relation->withoutLinks()
-            ),
-            HasMany::make( 'children' )->type( 'pages' )->readOnly()->serializeUsing(
-                static fn($relation) => $relation->withoutLinks()
-            ),
-            HasMany::make( 'ancestors' )->type( 'pages' )->readOnly()->serializeUsing(
-                static fn($relation) => $relation->withoutLinks()
-            ),
-            HasMany::make( 'subtree' )->type( 'pages' )->readOnly()->serializeUsing(
-                static fn($relation) => $relation->withoutLinks()
-            ),
+            HasOne::make( 'parent' )->type( 'pages' )->readOnly()->serializeUsing( function( $relation ) {
+                if( $item = $relation->data() ) {
+                    unset( $item->data, $item->meta );
+                    $relation->withData( $item );
+                }
+                $relation->withoutLinks();
+            }),
+            HasMany::make( 'children' )->type( 'pages' )->readOnly()->serializeUsing( function( $relation ) {
+                if( is_iterable( $data = $relation->data() ) ) {
+                    foreach( $data as $item ) {
+                        unset( $item->data, $item->meta );
+                    }
+                    $relation->withData( $data );
+                }
+                $relation->withoutLinks();
+            }),
+            HasMany::make( 'ancestors' )->type( 'pages' )->readOnly()->serializeUsing( function( $relation ) {
+                if( is_iterable( $data = $relation->data() ) ) {
+                    foreach( $data as $item ) {
+                        unset( $item->data, $item->meta );
+                    }
+                    $relation->withData( $data );
+                }
+                $relation->withoutLinks();
+            }),
+            HasMany::make( 'subtree' )->type( 'pages' )->readOnly()->serializeUsing( function( $relation ) {
+                if( is_iterable( $data = $relation->data() ) ) {
+                    foreach( $data as $item ) {
+                        unset( $item->data, $item->meta );
+                    }
+                    $relation->withData( $data );
+                }
+                $relation->withoutLinks();
+            }),
         ];
     }
 

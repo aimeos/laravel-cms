@@ -10,7 +10,7 @@ The Laravel CMS JSON frontend API follows the JSON:API standard documented at [j
 http://mydomain.tld/api/cms/pages
 ```
 
-The `pages` endpoint will return items from the page tree as well as related content elements depending on parameters added.
+The `pages` endpoint will return items from the page tree as well as related shared content elements depending on parameters added.
 
 * [Available properties](#available-properties)
   * [Page properties](#page-properties)
@@ -51,12 +51,19 @@ The available page properties are:
         "to": "",
         "domain": "mydomain.tld",
         "cache": 5,
-        "data": {
-            "meta": {
+        "data": [
+            {
+                "text": "Welcome to Laravel CMS",
+                "type": "cms::heading"
+            }
+        ],
+        "meta": {
+            "cms::meta": {
                 "text": "Laravel CMS is outstanding",
                 "type": "cms::meta"
             }
         },
+        "config": null,
         "createdAt": "2023-03-12T16:06:26.000000Z",
         "updatedAt": "2023-03-12T16:06:26.000000Z"
     }
@@ -90,8 +97,14 @@ domain
 cache
 : How long the returned response (and therefore the generated page can be cached
 
-data
+meta
 : Set of arbitrary page meta data that should be part of the page head
+
+data
+: List of arbitrary page content elements that should be part of the page body
+
+config
+: Arbitrary key/value pairs with page configuation
 
 createdAt
 : ISO date/time when the page was created
@@ -99,9 +112,9 @@ createdAt
 updatedAt
 : ISO date/time when the page was last modified
 
-### Content properties
+### Shared content properties
 
-The available content properties are:
+The available properties of content shared between pages are:
 
 ```json
 {
@@ -152,8 +165,8 @@ http://mydomain.tld/api/cms/pages?filter[tag]=root&filter[domain]=mydomain.tld&f
 
 When including related resources, you can get all data you need to render the page including the navigation in one request. The available related resources are:
 
-content
-: List of content elements for the requested page (paginated if more than 50 items)
+contents
+: List of shared content elements for the requested page (paginated if more than 50 items)
 
 parent
 : Parent page item
@@ -167,10 +180,10 @@ children
 subtree
 : Tree of sub-pages up to three levels deep for building a mega-menu
 
-To get the page tagged with `blog` including its ancestors and content elements use:
+To get the page tagged with `blog` including its ancestors and shared content elements use:
 
 ```
-http://mydomain.tld/api/cms/pages?filter[tag]=blog&include=ancestors,content
+http://mydomain.tld/api/cms/pages?filter[tag]=blog&include=ancestors,contents
 ```
 
 There are detailed examples for the most often used requests available:
@@ -178,7 +191,6 @@ There are detailed examples for the most often used requests available:
 - [Root page with navigation](jsonapi-root-navigation.md)
 - [Root page with mega-menu](jsonapi-root-megamenu.md)
 - [Sub-pages with breadcrumb](jsonapi-subpages-breadcrumb.md)
-- [Page content only](jsonapi-content-only.md)
 
 ### Pagination
 
@@ -199,25 +211,19 @@ http://mydomain.tld/api/cms/pages?page[number]=2&page[size]=25
 This can be combined with `filter` and `include` parameters too:
 
 ```
-http://mydomain.tld/api/cms/pages?filter[lang]=en&include=content&page[number]=2&page[size]=25
-```
-
-It does also work with related content links to load more content elements if the user scrolls down the page:
-
-```
-http://mydomain.tld/api/cms/pages/3/content?page[number]=2&page[size]=5
+http://mydomain.tld/api/cms/pages?filter[lang]=en&include=contents&page[number]=2&page[size]=25
 ```
 
 In the last case, use the [link](#links) instead of constructing the URL yourself!
 
 ### Sparse fields
 
-Most often, you don't need all page or content properties and you can reduce the amount of data returned in the response by using the `fields` parameter. The requested fields can be limited for pages and content elements separately and the property names must be concatenated by comma.
+Most often, you don't need all page or shared content properties and you can reduce the amount of data returned in the response by using the `fields` parameter. The requested fields can be limited for pages and shared content elements separately and the property names must be concatenated by comma.
 
-To retrieve the `slug` and `lang` of the root pages only and the `data` property of the content elements, use:
+To retrieve the `slug` and `lang` of the root pages only and the `data` property of the shared content elements, use:
 
 ```
-http://mydomain.tld/api/cms/pages?include=content&fields[pages]=slug,lang&fields[contents]=data
+http://mydomain.tld/api/cms/pages?include=contents&fields[pages]=slug,lang&fields[contents]=data
 ```
 
 Then, the attributes of the returned pages in the [data section](#data) will contain only:
@@ -253,7 +259,7 @@ In the JSON-encoded response, there are three sections which are important:
 
 #### Base URL
 
-The meta section always contains the `baseurl` key which is the base URL to all files/images referenced in the page head data or the content elements. Typically, you will see this in most responses:
+The meta section always contains the `baseurl` key which is the base URL to all files/images referenced by the page or the shared content elements. Typically, you will see this in most responses:
 
 ```json
 "meta": {
@@ -265,7 +271,7 @@ In Laravel, you can change the base URL in the `./config/filesystems.php` file w
 
 #### Paged results
 
-Responses which returns a collection of pages (`/api/cms/pages`) and contents (e.g. `/api/cms/pages/1/content`), you will also notice a `page` key in the `meta` section which contains the pagination information:
+Responses which returns a collection of pages (`/api/cms/pages`), you will also notice a `page` key in the `meta` section which contains the pagination information:
 
 ```json
 "meta": {
@@ -304,22 +310,11 @@ The `links` section in the JSON API response is always included and contains the
 },
 ```
 
-Every time a collection of items is returned (e.g. by the `pages` or `pages/<id>/content` endpoints), there will be links for the first, last, previous and next results, e.g.:
-
-```json
-"links": {
-    "first": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/content?page[number]=1&page[size]=2",
-    "last": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/content?page[number]=3&page[size]=2",
-    "next": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/content?page[number]=3&page[size]=2",
-    "prev": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/content?page[number]=1&page[size]=2",
-},
-```
-
 Thus, you can always use the links to fetch data and don't have to construct the links yourself!
 
 ## Data
 
-The `data` section of the JSON:API response contains either a single resource (in case of e.g. `/api/cms/pages/1`) or a collection of resources (for `/api/cms/pages` or `/api/cms/pages/1/content`).
+The `data` section of the JSON:API response contains either a single resource (in case of e.g. `/api/cms/pages/1`) or a collection of resources (for `/api/cms/pages`).
 
 ### Single item
 
@@ -338,28 +333,38 @@ Using a request which returns a single page, then the response is like:
         "tag": "root",
         "to": "",
         "domain": "mydomain.tld",
+        "has": true,
         "cache": 5,
-        "data": {
-            "meta": {
+        "data": [
+            {
+                "text": "Welcome to Laravel CMS",
+                "type": "cms::heading"
+            }
+        ],
+        "meta": {
+            "cms::meta": {
                 "text": "Laravel CMS is outstanding",
                 "type": "cms::meta"
             }
         },
-        "createdAt": "2023-03-12T16:06:26.000000Z",
-        "updatedAt": "2023-03-12T16:06:26.000000Z"
+        "config": null,
+        "createdAt": "2023-05-01T09:36:30.000000Z",
+        "updatedAt": "2023-05-01T09:36:30.000000Z"
     },
     "relationships": {
-        "content": {
-            "links": {
-                "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/1\/content",
-                "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/1\/relationships\/content"
-            }
+        "contents": {
+            "data": [
+                {
+                    "type": "contents",
+                    "id": "0187d6ab-b76d-75ee-8830-ab00b4259aa5"
+                }
+            ]
         }
     },
     "links": {
-        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/1"
+        "self": "http:\/\/localhost:8000\/api\/cms\/pages\/1"
     }
-}
+},
 ```
 
 The `data` section contains exactly one object with `type` and `id` properties which uniquely identifies the resource. Within the `attributes` part, the page properties are listed like shown above but could be also less if you've requested only [specific fields](#sparse-fields). In the `links` part, the `self` URL to retrieve the same page data is included. The `relationships` part is described in the [relationships section](#relationships) of this document.
@@ -382,114 +387,112 @@ For request returning multiple items, the `data` section will be similar to:
             "tag": "root",
             "to": "",
             "domain": "mydomain.tld",
+            "has": true,
             "cache": 5,
-            "data": {
-                "meta": {
+            "data": [
+                {
+                    "text": "Welcome to Laravel CMS",
+                    "type": "cms::heading"
+                }
+            ],
+            "meta": {
+                "cms::meta": {
                     "text": "Laravel CMS is outstanding",
                     "type": "cms::meta"
                 }
             },
-            "createdAt": "2023-03-12T16:06:26.000000Z",
-            "updatedAt": "2023-03-12T16:06:26.000000Z"
+            "config": null,
+            "createdAt": "2023-05-01T09:36:30.000000Z",
+            "updatedAt": "2023-05-01T09:36:30.000000Z"
         },
         "relationships": {
-            "content": {
-                "links": {
-                    "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/1\/content",
-                    "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/1\/relationships\/content"
-                }
+            "contents": {
+                "data": [
+                    {
+                        "type": "contents",
+                        "id": "0187d6ab-b76d-75ee-8830-ab00b4259aa5"
+                    }
+                ]
             }
         },
         "links": {
-            "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/1"
+            "self": "http:\/\/localhost:8000\/api\/cms\/pages\/1"
         }
-    }
-]
+    },
+    // ...
+],
 ```
 
-It's the same like for responses returning single resources but the `data` section contains a list of page items. If you call the URL inside `relationships/content/links/related`, you will get a list of content items:
-
-```json
-"data": [
-    {
-        "type": "contents",
-        "id": "0186d692-be0b-798c-9450-0a676209b7a6",
-        "attributes": {
-            "lang": "",
-            "data": {
-                "text": "Welcome to Laravel CMS",
-                "type": "cms::heading"
-            },
-            "created_at": "2023-03-12T16:06:26.000000Z"
-        }
-    }
-]
-```
+It's the same like for responses returning single resources but the `data` section contains a list of page items.
 
 ### Relationships
 
-By default, the `relationships` section contains a link to retrieve the content for that page (`/api/cms/pages/1/content`). If you use the [include parameter](#include-resources) to get related resources in the same request there will be a key for each related resource below `relationships`.
+If you use the [include parameter](#include-resources) to get related resources in the same request there will be a key for each related resource below `relationships`.
 
-For a request which should include the parent page, ancestor pages, child pages, the page subtree and the content like:
+For a request which should include the parent page, ancestor pages, child pages, the page subtree and the contents like:
 
 ```
-http://mydomain.tld/api/cms/pages/1?include=parent,ancestors,children,subtree,content
+http://mydomain.tld/api/cms/pages/1?include=parent,ancestors,children,subtree,contents
 ```
 
 Then, the `relationships` section will contain:
 
 ```json
 "relationships": {
-    "content": {
-        "links": {
-            "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/2\/content",
-            "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/2\/relationships\/content"
-        },
+    "contents": {
         "data": [
             {
                 "type": "contents",
-                "id": "0186d692-be63-7611-a960-926d29954be3"
-            },
-            {
-                "type": "contents",
-                "id": "0186d692-be82-7bf7-96fe-f35f8d0b77b8"
+                "id": "0187d6ab-b76d-75ee-8830-ab00b4259aa5"
             }
         ]
     },
     "parent": {
-        "data": {
-            "type": "pages",
-            "id": "1"
-        }
+        "data": null
     },
     "children": {
         "data": [
             {
                 "type": "pages",
-                "id": "3"
+                "id": "2"
+            },
+            {
+                "type": "pages",
+                "id": "4"
+            },
+            {
+                "type": "pages",
+                "id": "5"
             }
         ]
     },
     "ancestors": {
-        "data": [
-            {
-                "type": "pages",
-                "id": "1"
-            }
-        ]
+        "data": []
     },
     "subtree": {
         "data": [
             {
                 "type": "pages",
+                "id": "2"
+            },
+            {
+                "type": "pages",
                 "id": "3"
+            },
+            {
+                "type": "pages",
+                "id": "4"
+            },
+            {
+                "type": "pages",
+                "id": "5"
             }
         ]
     }
 },
 ```
 
-Each key in the `relationships` part will a reference to a single item (like for `parent`) or references to multiple items in their `data` sections. The items itself will be part of the [`included` section](#included) of the returned response. In case of the root page, the `parent/data` key can also be NULL because there's no parent page for the root page any more:
+Each key in the `relationships` part will a reference to a single item (like for `parent`) or references to multiple items in their `data` sections. The items themselves will be part of the [`included` section](#included) of the returned response. In case of the root page, the `parent/data` key can also be NULL because there's no parent page for the root page any more:
 
 ```json
 "relationships": {
@@ -501,7 +504,7 @@ Each key in the `relationships` part will a reference to a single item (like for
 
 ## Included
 
-The `included` section of each JSON API response is only available if you've added the `include` parameter to the URL, e.g. `/api/cms/pages/1?include=content`. In that case the `relationships/content/data` part contains the list of references:
+The `included` section of each JSON API response is only available if you've added the `include` parameter to the URL, e.g. `/api/cms/pages/1?include=contents`. In that case the `relationships/contents/data` part contains the list of references:
 
 ```json
 {
@@ -514,7 +517,7 @@ The `included` section of each JSON API response is only available if you've add
         "more keys": "..."
     },
     "relationships": {
-        "content": {
+        "contents": {
             "data": [
                 {
                     "type": "contents",
@@ -545,4 +548,4 @@ And the `included` section for that response then contains:
 ]
 ```
 
-It consists of a flat list of page or content items identified by their `type` and `id` values. You must now match the type and ID within the `relationships/content` section with the type and ID within the `included` section.
+It consists of a flat list of page or shared content items identified by their `type` and `id` values. You must now match the type and ID within the `relationships/contents` section with the type and ID within the `included` section.

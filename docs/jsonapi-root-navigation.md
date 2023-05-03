@@ -4,16 +4,16 @@ permalink: /jsonapi/root-navigation/
 excerpt: "How to retrieve the root page and children from Laravel CMS using the JSON:API to build a page with navigation"
 ---
 
-Retrieve the root page with content and first level sub-pages to build the navigation:
+Retrieve the root page with shared content elements and first level sub-pages to build the navigation:
 
 ```
-http://mydomain.tld/api/cms/pages?filter[tag]=root&include=children,content
+http://mydomain.tld/api/cms/pages?filter[tag]=root&include=children,contents
 ```
 
 In case the site uses more than one language and sets the `lang` property for each page:
 
 ```
-http://mydomain.tld/api/cms/pages?filter[tag]=root&filter[lang]=en&include=children,content
+http://mydomain.tld/api/cms/pages?filter[tag]=root&filter[lang]=en&include=children,contents
 ```
 
 The result will be a JSON:API response which looks like:
@@ -35,8 +35,8 @@ The result will be a JSON:API response which looks like:
         "version": "1.0"
     },
     "links": {
-        "first": "http:\/\/mydomain.tld\/api\/cms\/pages?filter%5Btag%5D=root&include=children%2Ccontent&page%5Bnumber%5D=1&page%5Bsize%5D=15",
-        "last": "http:\/\/mydomain.tld\/api\/cms\/pages?filter%5Btag%5D=root&include=children%2Ccontent&page%5Bnumber%5D=1&page%5Bsize%5D=15"
+        "first": "http:\/\/mydomain.tld\/api\/cms\/pages?filter%5Btag%5D=root&include=children%2Ccontents&page%5Bnumber%5D=1&page%5Bsize%5D=15",
+        "last": "http:\/\/mydomain.tld\/api\/cms\/pages?filter%5Btag%5D=root&include=children%2Ccontents&page%5Bnumber%5D=1&page%5Bsize%5D=15"
     },
     "data": [
         {
@@ -51,26 +51,30 @@ The result will be a JSON:API response which looks like:
                 "tag": "root",
                 "to": "",
                 "domain": "mydomain.tld",
+                "has": true,
                 "cache": 5,
-                "data": {
-                    "meta": {
+                "data": [
+                    {
+                        "text": "Welcome to Laravel CMS",
+                        "type": "cms::heading"
+                    }
+                ],
+                "meta": {
+                    "cms::meta": {
                         "text": "Laravel CMS is outstanding",
                         "type": "cms::meta"
                     }
                 },
-                "createdAt": "2023-03-12T16:06:26.000000Z",
-                "updatedAt": "2023-03-12T16:06:26.000000Z"
+                "config": null,
+                "createdAt": "2023-05-01T09:36:30.000000Z",
+                "updatedAt": "2023-05-01T09:36:30.000000Z"
             },
             "relationships": {
-                "content": {
-                    "links": {
-                        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/1\/content",
-                        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/1\/relationships\/content"
-                    },
+                "contents": {
                     "data": [
                         {
                             "type": "contents",
-                            "id": "0186d692-be0b-798c-9450-0a676209b7a6"
+                            "id": "0187d6ab-b76d-75ee-8830-ab00b4259aa5"
                         }
                     ]
                 },
@@ -99,14 +103,14 @@ The result will be a JSON:API response which looks like:
     "included": [
         {
             "type": "contents",
-            "id": "0186d692-be0b-798c-9450-0a676209b7a6",
+            "id": "0187d6ab-b76d-75ee-8830-ab00b4259aa5",
             "attributes": {
                 "lang": "",
                 "data": {
                     "text": "Welcome to Laravel CMS",
                     "type": "cms::heading"
                 },
-                "createdAt": "2023-03-12T16:06:26.000000Z"
+                "createdAt": "2023-05-01T09:36:30.000000Z"
             }
         },
         {
@@ -121,18 +125,13 @@ The result will be a JSON:API response which looks like:
                 "tag": "blog",
                 "to": "",
                 "domain": "",
+                "has": true,
                 "cache": 5,
                 "data": null,
-                "createdAt": "2023-03-12T16:06:26.000000Z",
-                "updatedAt": "2023-03-12T16:06:26.000000Z"
-            },
-            "relationships": {
-                "content": {
-                    "links": {
-                        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/2\/content",
-                        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/2\/relationships\/content"
-                    }
-                }
+                "meta": null,
+                "config": null,
+                "createdAt": "2023-05-01T09:36:30.000000Z",
+                "updatedAt": "2023-05-01T09:36:30.000000Z"
             },
             "links": {
                 "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/2"
@@ -150,18 +149,13 @@ The result will be a JSON:API response which looks like:
                 "tag": "",
                 "to": "",
                 "domain": "",
+                "has": false,
                 "cache": 5,
                 "data": null,
-                "createdAt": "2023-03-12T16:06:26.000000Z",
-                "updatedAt": "2023-03-12T16:06:26.000000Z"
-            },
-            "relationships": {
-                "content": {
-                    "links": {
-                        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/4\/content",
-                        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/4\/relationships\/content"
-                    }
-                }
+                "meta": null,
+                "config": null,
+                "createdAt": "2023-05-01T09:36:30.000000Z",
+                "updatedAt": "2023-05-01T09:36:30.000000Z"
             },
             "links": {
                 "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/4"
@@ -179,18 +173,13 @@ The result will be a JSON:API response which looks like:
                 "tag": "hidden",
                 "to": "",
                 "domain": "",
+                "has": false,
                 "cache": 5,
                 "data": null,
-                "createdAt": "2023-03-12T16:06:27.000000Z",
-                "updatedAt": "2023-03-12T16:06:27.000000Z"
-            },
-            "relationships": {
-                "content": {
-                    "links": {
-                        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/5\/content",
-                        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/5\/relationships\/content"
-                    }
-                }
+                "meta": null,
+                "config": null,
+                "createdAt": "2023-05-01T09:36:30.000000Z",
+                "updatedAt": "2023-05-01T09:36:30.000000Z"
             },
             "links": {
                 "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/5"

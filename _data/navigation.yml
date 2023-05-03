@@ -17,8 +17,6 @@ docs:
         url: /jsonapi/root-megamenu/
       - title: "Sub-pages with breadcrumb"
         url: /jsonapi/subpages-breadcrumb/
-      - title: "Content only"
-        url: /jsonapi/content-only/
 
   - title: "Backend GraphQL API"
     children:

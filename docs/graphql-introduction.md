@@ -244,3 +244,51 @@ The result is a batched query with a response like this one:
   }
 }
 ```
+
+## Error handling
+
+Errors can occur in different situations:
+
+* Network problem
+* User isn't authenticated
+* Request was invalid
+* Invalid data
+
+You have to handle these errors slightly different, depending on the type of error:
+
+```javascript
+fetch('http://mydomain.tld/graphql', {
+	method: 'POST',
+	credentials: 'include',
+	body: 'invalid'
+}).then(response => {
+	return response.json();
+}).then(data => {
+  if(!data.error) {
+    console.log(data.error);
+  } else {
+    console.log(data);
+  }
+}).catch(error => {
+	console.log(error);
+});
+```
+
+In case of a network problem, e.g. if the server isn't reachable, the code in the function passed to `catch()` will be executed. In all other cases, the function passed to `then()` will be called and you have to check if the returned data contains an `error` property like this:
+
+```json
+[
+  {
+    "errors":[
+      {
+        "message":"Internal server error",
+        "locations":[{"line":2,"column":3}],
+        "path":["cmsLogin"],
+        "extensions":{
+          "debugMessage":"Invalid credentials"
+        }
+      }
+    ]
+  }
+]
+```

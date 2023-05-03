@@ -17,6 +17,7 @@ return new class extends Migration
             $table->uuid('id');
             $table->string('tenant_id');
             $table->string('lang', 5)->nullable();
+            $table->string('label');
             $table->json('data');
             $table->string('editor');
             $table->timestamps();

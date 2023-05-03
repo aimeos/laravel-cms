@@ -125,6 +125,9 @@ id (string, read-only)
 lang (string)
 : ISO language code, e.g. 'en', 'en_GB' or empty for default language
 
+label (string)
+: Arbitrary string which describes the content
+
 data (JSON encoded object)
 : Arbitrary content element
 

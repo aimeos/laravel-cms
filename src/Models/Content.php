@@ -39,6 +39,7 @@ class Content extends Model
     protected $attributes = [
         'tenant_id' => '',
         'lang' => '',
+        'label' => '',
         'data' => '{}',
         'editor' => '',
     ];
@@ -51,6 +52,7 @@ class Content extends Model
     protected $casts = [
         'data' => 'object',
         'lang' => 'string',
+        'label' => 'string',
     ];
 
     /**
@@ -67,6 +69,7 @@ class Content extends Model
      */
     protected $fillable = [
         'lang',
+        'label',
     ];
 
     /**

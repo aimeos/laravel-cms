@@ -273,6 +273,9 @@ type Content {
   "ISO language code, e.g. 'en', 'en_GB' or empty for default language"
   lang: String
 
+  "Arbitrary string which describes the content"
+  label: String
+
   "Arbitrary content element"
   data: JSON!
 
@@ -304,6 +307,9 @@ type Content {
 input ContentInput {
   "ISO language code, e.g. 'en', 'en_GB' or empty for default language"
   lang: String
+
+  "Arbitrary string which describes the content"
+  label: String
 
   "Arbitrary content element"
   data: JSON!

@@ -146,9 +146,6 @@ deleted_at (string or null, read-only)
 pages (list of page objects, read-only)
 : Relation of all pages the content element belongs to
 
-refs ([reference object](#reference-properties))
-: Meta data of page<->content relation, i.e. position, status, etc.
-
 versions (list of [version objects](#version-properties), read-only)
 : List of versioned data for the content element
 
@@ -157,41 +154,6 @@ latest ([version object](#version-properties), read-only)
 
 published ([version object](#version-properties), read-only)
 : Published version of the content data
-
-## Reference properties
-
-id (string, read-only)
-: Unique ID of the page<->content reference
-
-page_id (string, read-only)
-: Unique ID of the referenced page
-
-content_id (string, read-only)
-: Unique ID of the referenced content element
-
-published (boolean)
-: TRUE if reference is published, FALSE if not
-
-position (integer)
-: Position the content element withing the page
-
-status (integer)
-: Visibility status of the content element within the page, 0=inactive, 1=visible
-
-start (string or null)
-: Date/time when the content element will be shown
-
-end (string or null)
-: Date/time when the content element will be hidden
-
-editor (string, read-only)
-: Name of the last user who added or updated the page<->content reference
-
-created_at (string, read-only)
-: Date/time value when the page<->content was created
-
-updated_at (string, read-only)
-: Date/time value when the page<->content was last modified
 
 ## Version properties
 

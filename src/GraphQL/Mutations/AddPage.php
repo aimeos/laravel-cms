@@ -46,8 +46,13 @@ final class AddPage
                     'editor' => $editor
                 ] );
 
-                $version->files()->attach( $args['files'] ?? [] );
+                $version->files()->attach( $args['input']['files'] ?? [] );
             }
+
+            if( isset( $args['input']['contents'] ) ) {
+                $page->contents()->sync( $args['input']['contents'] );
+            }
+
         }, 3 );
 
         return $page;

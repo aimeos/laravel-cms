@@ -34,7 +34,7 @@ final class AddContent
                     'editor' => $editor
                 ] );
 
-                $version->files()->attach( $args['files'] ?? [] );
+                $version->files()->attach( $args['input']['files'] ?? [] );
             }
 
         }, 3 );

@@ -31,7 +31,7 @@ final class SavePage
                     'editor' => $editor
                 ] );
 
-                $version->files()->sync( $args['files'] ?? [] );
+                $version->files()->sync( $args['input']['files'] ?? [] );
 
                 $ids = Version::select( 'id' )
                     ->where( 'versionable_id', $page->id )

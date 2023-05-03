@@ -5,6 +5,8 @@ namespace Tests;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
 use Nuwave\Lighthouse\Testing\RefreshesSchemaCache;
 use Database\Seeders\CmsSeeder;
+use Aimeos\Cms\Models\Content;
+use Aimeos\Cms\Models\File;
 use Aimeos\Cms\Models\Page;
 
 
@@ -376,6 +378,7 @@ class GraphqlPageTest extends TestAbstract
                 id
                 contents {
                     lang
+                    label
                     data
                 }
             }
@@ -386,6 +389,7 @@ class GraphqlPageTest extends TestAbstract
                     'contents' => [
                         [
                             'lang' => '',
+                            'label' => 'Test shared content',
                             'data' => '{"type":"cms::heading","text":"Welcome to Laravel CMS"}',
                         ],
                     ],
@@ -399,7 +403,10 @@ class GraphqlPageTest extends TestAbstract
     {
         $this->seed( CmsSeeder::class );
 
-        $this->expectsDatabaseQueryCount( 4 );
+        $file = File::firstOrFail();
+        $content = Content::firstOrFail();
+
+        $this->expectsDatabaseQueryCount( 8 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 addPage(input: {
@@ -417,6 +424,8 @@ class GraphqlPageTest extends TestAbstract
                     cache: 0
                     start: "2023-01-01 00:00:00"
                     end: "2099-01-01 00:00:00"
+                    contents: ["' . $content->id . '"]
+                    files: ["' . $file->id . '"]
                 }) {
                     id
                     parent_id
@@ -438,6 +447,11 @@ class GraphqlPageTest extends TestAbstract
                     created_at
                     updated_at
                     deleted_at
+                    contents {
+                        lang
+                        data
+                        label
+                    }
                 }
             }
         ' );
@@ -635,9 +649,11 @@ class GraphqlPageTest extends TestAbstract
     {
         $this->seed( CmsSeeder::class );
 
+        $file = File::firstOrFail();
+        $content = Content::firstOrFail();
         $root = Page::where('tag', 'root')->firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 10 );
+        $this->expectsDatabaseQueryCount( 13 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 savePage(id: "' . $root->id . '", input: {
@@ -655,6 +671,8 @@ class GraphqlPageTest extends TestAbstract
                     cache: 5
                     start: "2023-01-01 00:00:00"
                     end: "2099-01-01 00:00:00"
+                    contents: ["' . $content->id . '"]
+                    files: ["' . $file->id . '"]
                 }) {
                     id
                     parent_id
@@ -673,6 +691,11 @@ class GraphqlPageTest extends TestAbstract
                     editor
                     start
                     end
+                    contents {
+                        lang
+                        data
+                        label
+                    }
                     created_at
                     updated_at
                     deleted_at

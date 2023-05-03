@@ -53,6 +53,7 @@ class CmsSeeder extends Seeder
     protected function content() : Content
     {
         $content = Content::forceCreate([
+            'label' => 'Test shared content',
             'data' => ['type' => 'cms::heading', 'text' => 'Welcome to Laravel CMS'],
             'editor' => 'seeder',
         ]);

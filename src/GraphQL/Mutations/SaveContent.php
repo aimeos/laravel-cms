@@ -34,7 +34,7 @@ final class SaveContent
                     'editor' => $editor
                 ] );
 
-                $version->files()->sync( $args['files'] ?? [] );
+                $version->files()->sync( $args['input']['files'] ?? [] );
 
                 Version::where( 'versionable_id', $content->id )
                     ->where( 'versionable_type', Content::class )

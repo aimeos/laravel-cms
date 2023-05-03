@@ -59,7 +59,7 @@ extend type Mutation {
 
 
   "Add a new page below the page referenced by 'parent' and before the page referenced by 'ref' (or append if NULL)"
-  addPage(input: PageInput!, parent: ID, ref: ID, files: [ID!]): Page
+  addPage(input: PageInput!, parent: ID, ref: ID): Page
     @can(ability: "add")
 
   "Move the page below the page referenced by 'parent' and before the page referenced by 'ref' (or append if NULL)"
@@ -67,7 +67,7 @@ extend type Mutation {
     @can(ability: "move")
 
   "Update the values of an existing page"
-  savePage(id: ID!, input: PageInput!, files: [ID!]): Page
+  savePage(id: ID!, input: PageInput!): Page
     @can(ability: "save")
 
   "Delete an existing page"
@@ -88,11 +88,11 @@ extend type Mutation {
 
 
   "Add a new shared content element with file references"
-  addContent(input: ContentInput!, files: [ID!]): Content
+  addContent(input: ContentInput!): Content
     @can(ability: "add")
 
   "Update an existing shared content element"
-  saveContent(id: ID!, input: ContentInput!, files: [ID!]): Content
+  saveContent(id: ID!, input: ContentInput!): Content
     @can(ability: "save")
 
   "Delete an existing shared content element"
@@ -262,8 +262,11 @@ input PageInput {
   "Date/time when the page will be hidden"
   end: String
 
-  "List of shard content IDs used"
+  "List of shared content IDs used in the data property"
   contents: [ID!]
+
+  "List of file IDs used in the meta or data properties"
+  files: [ID!]
 }
 
 type Content {
@@ -313,6 +316,9 @@ input ContentInput {
 
   "Arbitrary content element"
   data: JSON!
+
+  "List of file IDs used in the meta or data properties"
+  files: [ID!]
 }
 
 type Version {

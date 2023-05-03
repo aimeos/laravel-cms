@@ -61,6 +61,7 @@ class GraphqlContentTest extends TestAbstract
         $response = $this->actingAs( $this->user )->graphQL( "{
             content(id: \"{$content->id}\") {
                 id
+                label
                 lang
                 data
                 editor
@@ -94,6 +95,7 @@ class GraphqlContentTest extends TestAbstract
             contents(first: 10) {
                 data {
                     id
+                    label
                     lang
                     data
                     editor
@@ -163,7 +165,8 @@ class GraphqlContentTest extends TestAbstract
                 addContent(input: {
                     lang: "en"
                     data: "{\\"key\\":\\"value\\"}"
-                }, files: ["' . $file->id . '"]) {
+                    files: ["' . $file->id . '"]
+                }) {
                     lang
                     data
                     editor
@@ -191,46 +194,12 @@ class GraphqlContentTest extends TestAbstract
     }
 
 
-    public function testAddContentToPage()
-    {
-        $this->seed( CmsSeeder::class );
-
-        $content = Content::all()->firstOrFail();
-        $blog = Page::where('tag', 'blog')->firstOrFail();
-        $contents = $blog->contents;
-
-        $this->expectsDatabaseQueryCount( 7 );
-        $this->actingAs( $this->user )->graphQL( '
-            mutation {
-                savePage(id: ' . $blog->id . ', input: {
-                    contents: ["' . $content->id . '"]
-                }) {
-                    editor
-                    contents {
-                        data
-                    }
-                }
-            }
-        ' )->assertJson( [
-            'data' => [
-                'savePage' => [
-                    'editor' => 'Test',
-                    'contents' => [[
-                        'data' => "{\"type\":\"cms::heading\",\"text\":\"Welcome to Laravel CMS\"}"
-                    ]]
-                ],
-            ]
-        ] );
-        $this->assertEquals( $contents->count() + 1, Page::where('tag', 'blog')->first()?->contents->count() );
-    }
-
-
     public function testSaveContent()
     {
         $this->seed( CmsSeeder::class );
 
         $file = File::firstOrFail();
-        $content = Page::where( 'tag', 'root' )->firstOrFail()->contents->first();
+        $content = Content::firstOrFail();
 
         $this->expectsDatabaseQueryCount( 10 );
         $response = $this->actingAs( $this->user )->graphQL( '
@@ -238,7 +207,8 @@ class GraphqlContentTest extends TestAbstract
                 saveContent(id: "' . $content->id . '", input: {
                     lang: "en"
                     data: "{\\"key\\":\\"value\\"}"
-                }, files: ["' . $file->id . '"]) {
+                    files: ["' . $file->id . '"]
+                }) {
                     id
                     lang
                     data

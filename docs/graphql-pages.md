@@ -276,7 +276,8 @@ The returned JSON data will contain all page properties without an additional `d
       "title": "Home | Laravel CMS",
       "to": "",
       "tag": "root",
-      "data": "{\"meta\":{\"text\":\"Laravel CMS is outstanding\",\"type\":\"cms::meta\"}}",
+      "meta": "{\"cms:meta\":{\"text\":\"Laravel CMS is outstanding\",\"type\":\"cms::meta\"}}",
+      "data": "[{\"type\":\"cms::heading\",\"text\":\"Welcome to Laravel CMS\"}]",
       "config": "{}",
       "status": 1,
       "cache": 5,
@@ -308,12 +309,15 @@ mutation {
     title: "A Laravel CMS test page",
     to: "https://laravel-cms.org",
     tag: "test",
-    data: "{}",
+    meta: "{}",
+    data: "[]",
     config: "{}",
     status: 0,
     cache: 5,
     start: "2023-04-01 00:00:00",
-    end: null
+    end: null,
+    contents: ["0187d6ab-b76d-75ee-8830-ab00b4259aa5", "0187d6ab-b76d-75ee-8840-7e8026251ba0"],
+    files: ["0187d6ab-b76d-75ee-8b0d-1b59cc3a1ab7"]
   }) {
     id
   }
@@ -323,9 +327,17 @@ mutation {
 Required parameters are:
 
 input
-: JSON object with key/value pairs for the page properties
+: JSON object with key/value pairs for the [page properties](../graphql-datatypes.md#page-properties)
 
-All properties are optional and this request will return:
+All properties are optional. The input parameter contains two additional parameters which must be passed if shared content elements or files are referenced in the `data` or `meta` property:
+
+contents (list of IDs)
+: List of IDs from the shared content elements which are referenced in `data` or `meta` sections
+
+files (list of IDs)
+: List of IDs from the files which are referenced in `data` or `meta` sections
+
+The request will return:
 
 ```json
 {
@@ -351,12 +363,15 @@ mutation {
     title: "A Laravel CMS test page",
     to: "https://laravel-cms.org",
     tag: "test",
-    data: "{}",
+    meta: "{}",
+    data: "[]",
     config: "{}",
     status: 0,
     cache: 5,
     start: "2023-04-01 00:00:00",
-    end: null
+    end: null,
+    contents: ["0187d6ab-b76d-75ee-8830-ab00b4259aa5", "0187d6ab-b76d-75ee-8840-7e8026251ba0"],
+    files: ["0187d6ab-b76d-75ee-8b0d-1b59cc3a1ab7"]
   }, parent_id: 1) {
     id
   }
@@ -366,12 +381,20 @@ mutation {
 Required parameters are:
 
 input
-: JSON object with key/value pairs for the page properties
+: JSON object with key/value pairs for the [page properties](../graphql-datatypes.md#page-properties)
 
 parent_id (optional)
 : ID of the parent where the new page will be inserted below
 
-The difference is the second parameter named `parent_id` in the `addPage()` mutation and also returns:
+The `contents` and `files` properties in the `input` parameter must be passed if shared content elements or files are referenced in the `data` or `meta` property:
+
+contents (list of IDs)
+: List of IDs from the shared content elements which are referenced in `data` or `meta` sections
+
+files (list of IDs)
+: List of IDs from the files which are referenced in `data` or `meta` sections
+
+The main difference is the second parameter named `parent_id` in the `addPage()` mutation and also returns:
 
 ```json
 {
@@ -397,12 +420,15 @@ mutation {
     title: "A Laravel CMS test page",
     to: "https://laravel-cms.org",
     tag: "test",
-    data: "{}",
+    meta: "{}",
+    data: "[]",
     config: "{}",
     status: 0,
     cache: 5,
     start: "2023-04-01 00:00:00",
-    end: null
+    end: null,
+    contents: ["0187d6ab-b76d-75ee-8830-ab00b4259aa5", "0187d6ab-b76d-75ee-8840-7e8026251ba0"],
+    files: ["0187d6ab-b76d-75ee-8b0d-1b59cc3a1ab7"]
   }, parent: 1, ref: 2) {
     id
   }
@@ -412,13 +438,21 @@ mutation {
 Required parameters are:
 
 input
-: JSON object with key/value pairs for the page properties
+: JSON object with key/value pairs for the [page properties](../graphql-datatypes.md#page-properties)
 
 parent (optional)
 : ID of the parent where the new page will be inserted below
 
 ref (optional)
 : ID of the page the new one will be inserted before
+
+The `contents` and `files` properties in the `input` parameter must be passed if shared content elements or files are referenced in the `data` or `meta` property:
+
+contents (list of IDs)
+: List of IDs from the shared content elements which are referenced in `data` or `meta` sections
+
+files (list of IDs)
+: List of IDs from the files which are referenced in `data` or `meta` sections
 
 The second parameter in the `addPage()` is still `parent_id` but followed by the ID of the page where the new pages should be inserted before. Like the other mutations it returns:
 
@@ -550,12 +584,15 @@ mutation {
     title: "A Laravel CMS test page",
     to: "https://laravel-cms.org",
     tag: "test",
-    data: "{}",
+    meta: "{}",
+    data: "[]",
     config: "{}",
     status: 0,
     cache: 5,
     start: "2023-04-01 00:00:00",
-    end: null
+    end: null,
+    contents: ["0187d6ab-b76d-75ee-8830-ab00b4259aa5", "0187d6ab-b76d-75ee-8840-7e8026251ba0"],
+    files: ["0187d6ab-b76d-75ee-8b0d-1b59cc3a1ab7"]
   }) {
     id
   }
@@ -568,11 +605,19 @@ ID
 : ID of the page to store the changed properties for
 
 input
-: JSON object with key/value pairs for the page properties
+: JSON object with key/value pairs for the [page properties](../graphql-datatypes.md#page-properties)
 
-All properties are optional.
+All properties are optional. The input parameter contains two additional parameters which must be passed if shared content elements or files are referenced in the `data` or `meta` property:
+
+contents (list of IDs)
+: List of IDs from the shared content elements which are referenced in `data` or `meta` sections
+
+files (list of IDs)
+: List of IDs from the files which are referenced in `data` or `meta` sections
 
 Note: Any value passed in `data` will create a new record in the version table for that data which can be published afterwards.
+
+When your page meta data (`meta` field) or body data (`data` field) contains file references, you must pass their IDs using the `files` parameter. This ensures that the files are not deleted accidentially because no references exist.
 
 This request will return:
 

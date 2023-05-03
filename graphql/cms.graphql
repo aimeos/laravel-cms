@@ -320,7 +320,7 @@ type Version {
   id: ID!
 
   "Arbitrary versioned header elements"
-  meta: JSON
+  meta: JSON!
 
   "Arbitrary versioned content elements"
   data: JSON!

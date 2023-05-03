@@ -161,7 +161,10 @@ id (string, read-only)
 : Unique version ID
 
 data (JSON encoded object, read-only)
-: Arbitrary versioned data
+: Arbitrary versioned body data
+
+meta (JSON encoded object, read-only)
+: Arbitrary versioned meta data
 
 published (boolean, read-only)
 : If versioned content is currently published or not

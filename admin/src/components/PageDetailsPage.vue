@@ -1,7 +1,7 @@
 <script>
-  import PageDetailsPageConfig from '../components/PageDetailsPageConfig.vue'
-  import PageDetailsPageProps from '../components/PageDetailsPageProps.vue'
-  import PageDetailsPageMeta from '../components/PageDetailsPageMeta.vue'
+  import PageDetailsPageConfig from './PageDetailsPageConfig.vue'
+  import PageDetailsPageProps from './PageDetailsPageProps.vue'
+  import PageDetailsPageMeta from './PageDetailsPageMeta.vue'
 
   export default {
     components: {
@@ -22,7 +22,7 @@
     <v-sheet>
       <v-tabs class="subtabs" v-model="tab" align-tabs="center" density="compact">
         <v-tab value="details">Details</v-tab>
-        <v-tab value="meta" class="unpublished">Meta</v-tab>
+        <v-tab value="meta">Meta</v-tab>
         <v-tab value="config">Config</v-tab>
       </v-tabs>
 

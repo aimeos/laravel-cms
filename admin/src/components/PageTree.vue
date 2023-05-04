@@ -35,6 +35,9 @@
               updated_at
               deleted_at
               has
+              latest {
+                published
+              }
             }
             paginatorInfo {
               currentPage
@@ -51,9 +54,7 @@
           }
         },
         update(result) {
-          return (result.pages.data || []).map(node => {
-            return {...node}
-          })
+          return JSON.parse(JSON.stringify(result.pages.data || []))
         }
       }
     },
@@ -299,6 +300,9 @@
                   updated_at
                   deleted_at
                   has
+                  latest {
+                    published
+                  }
                 }
                 paginatorInfo {
                   currentPage
@@ -313,9 +317,7 @@
             }
           }).then(result => {
             if(!result.errors && result.data) {
-              const children = (result.data.pages.data || []).map(node => {
-                return {...node}
-              })
+              const children = JSON.parse(JSON.stringify(result.data.pages.data || []))
               this.$refs.tree.addMulti(children, stat, 0)
               stat.page = result.data.pages.paginatorInfo.currentPage || 1
             } else {
@@ -420,6 +422,34 @@
         this.show()
       },
 
+      publish() {
+        const list = this.$refs.tree.statsFlat.filter(stat => {
+          return stat.check && stat.data.id && stat.data.latest && !stat.data.latest.published
+        })
+
+        list.reverse().forEach(stat => {
+          this.$apollo.mutate({
+            mutation: gql`mutation ($id: ID!) {
+              pubPage(id: $id) {
+                id
+              }
+            }`,
+            variables: {
+              id: stat.data.id
+            }
+          }).then(result => {
+            if(!result.errors) {
+              stat.data.latest.published = true
+              stat.check = false
+            } else {
+              console.log(`pubPage(id: ${stat.data.id})`, result)
+            }
+          }).catch(error => {
+            console.log(`pubPage(id: ${stat.data.id})`, error)
+          })
+        })
+      },
+
       purge(stat) {
         const list = stat ? [stat] : this.$refs.tree.statsFlat.filter(stat => {
           return stat.check && stat.data.id
@@ -436,7 +466,7 @@
               id: stat.data.id
             }
           }).then(result => {
-            if(!result.errrors) {
+            if(!result.errors) {
               this.$refs.tree.remove(stat)
 
               if(stat.parent && !stat.parent.children?.length) {
@@ -477,6 +507,9 @@
                 updated_at
                 deleted_at
                 has
+                latest {
+                  published
+                }
               }
               paginatorInfo {
                 currentPage
@@ -601,6 +634,9 @@
             </template>
             <v-list>
               <v-list-item>
+                <v-btn prepend-icon="mdi-publish" variant="text" @click="publish()">Publish</v-btn>
+              </v-list-item>
+              <v-list-item>
                 <v-btn prepend-icon="mdi-eye-off" variant="text" @click="status(null, 0)">Disable</v-btn>
               </v-list-item>
               <v-list-item>
@@ -653,7 +689,7 @@
             <v-icon :class="{hidden: !node.has, load: stat.loading}" size="large" @click="load(stat, node)"
               :icon="stat.loading ? 'mdi-loading' : (stat.open ? 'mdi-menu-down' : 'mdi-menu-right')">
             </v-icon>
-            <v-checkbox-btn v-model="stat.check"></v-checkbox-btn>
+            <v-checkbox-btn v-model="stat.check" :class="{draft: node.latest && !node.latest.published}"></v-checkbox-btn>
             <v-menu v-if="node.id">
               <template #activator="{ props }">
                 <v-btn icon="mdi-dots-vertical" variant="text" v-bind="props"></v-btn>
@@ -777,6 +813,11 @@
   .v-input.search {
     width: 100%;
     order: 3;
+  }
+
+  .draft {
+    background-color: #ffe0c0;
+    border-radius: 50%;
   }
 
   .drag-placeholder {

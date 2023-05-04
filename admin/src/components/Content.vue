@@ -1,50 +1,36 @@
 <script>
-  import Element from '../components/Element.vue'
-  import History from '../components/History.vue'
+  import Element from './Element.vue'
 
   export default {
     components: {
-      Element,
-      History
+      Element
     },
-    props: ['clip', 'checked', 'content', 'type'],
-    emits: ['copy', 'cut', 'insert', 'paste', 'remove', 'status', 'update:checked', 'update:data', 'update:draft', 'update:type'],
+    props: ['clip', 'checked', 'content'],
+    emits: ['copy', 'cut', 'insert', 'paste', 'remove', 'update:checked', 'update:content'],
     data: () => ({
-      data: {},
-      history: false
+      data: {}
     }),
-    computed: {
-      isDraft() {
-        return !this.content.id || this.content.versions && (
-            this.content.versions[0]?.data !== this.content.data
-            || this.content.versions[0]?.data !== JSON.stringify(this.data)
-          )
-      }
-    },
     methods: {
       use(data) {
         this.data = data
-        this.history = false
-        this.$emit('update:data', JSON.stringify(this.data))
-      },
+      }
     },
     watch: {
+      content: {
+        immediate: true,
+        handler(content, old) {
+          if(content != old) {
+            this.data = {...content}
+          }
+        }
+      },
+
       data: {
         deep: true,
         handler(data, old) {
-/*          if(Object.keys(old) !== [] && data !== old) {
-console.log('data', old, data)
-            this.$emit('update:data', JSON.stringify(data))
+          if(data != old) {
+            this.$emit('update:content', data)
           }
-*/        }
-      },
-
-      content: {
-        immediate: true,
-        handler(content) {
-          this.data = JSON.parse(content.versions ? content.versions[0]?.data : (content.data || '{}'))
-          this.$emit('update:type', this.data.type)
-          this.$emit('update:draft', this.isDraft)
         }
       }
     }
@@ -52,22 +38,15 @@ console.log('data', old, data)
 </script>
 
 <template>
-  <v-expansion-panel :class="{'status-enabled': content.ref.status, 'status-disabled': !content.ref.status}" elevation="1">
+  <v-expansion-panel elevation="1">
     <v-expansion-panel-title collapse-icon="mdi-pencil">
-      <v-checkbox-btn :class="{draft: isDraft}"
-        :model-value="checked" @click.stop="$emit('update:checked', !checked)">
+      <v-checkbox-btn :model-value="checked" @click.stop="$emit('update:checked', !checked)">
       </v-checkbox-btn>
       <v-menu>
         <template v-slot:activator="{ props }">
           <v-btn icon="mdi-dots-vertical" variant="text" v-bind="props"></v-btn>
         </template>
         <v-list>
-          <v-list-item v-if="content.ref.status">
-            <v-btn prepend-icon="mdi-eye-off" variant="text" @click="$emit('status', 0)">Disable</v-btn>
-          </v-list-item>
-          <v-list-item v-if="!content.ref.status">
-            <v-btn prepend-icon="mdi-eye" variant="text" @click="$emit('status', 1)">Enable</v-btn>
-          </v-list-item>
           <v-list-item>
             <v-btn prepend-icon="mdi-content-copy" variant="text" @click="$emit('copy')">Copy</v-btn>
           </v-list-item>
@@ -89,11 +68,6 @@ console.log('data', old, data)
           <v-list-item>
             <v-btn prepend-icon="mdi-delete" variant="text" @click="$emit('remove')">Delete</v-btn>
           </v-list-item>
-          <v-list-item v-if="content.versions">
-            <v-btn prepend-icon="mdi-history" variant="text" @click="history = true">
-              History
-            </v-btn>
-          </v-list-item>
         </v-list>
       </v-menu>
 
@@ -107,37 +81,9 @@ console.log('data', old, data)
 
       <Element v-model:data="data" />
 
-      <v-container>
-        <v-row>
-          <v-col cols="12" md="6">
-            <v-text-field type="datetime-local" v-model="content.ref.start" label="Start date"
-              variant="underlined"></v-text-field>
-          </v-col>
-          <v-col cols="12" md="6">
-            <v-text-field type="datetime-local" v-model="content.ref.end" label="End date"
-              variant="underlined"></v-text-field>
-          </v-col>
-        </v-row>
-      </v-container>
-
-      <Teleport to="body">
-        <v-dialog v-model="history" scrollable width="auto">
-          <History type="content" :data="data" :versions="content.versions"
-            @use="use($event)" @hide="history = false" />
-        </v-dialog>
-      </Teleport>
-
     </v-expansion-panel-text>
   </v-expansion-panel>
 </template>
 
 <style scoped>
-  .status-disabled .panel-heading {
-    text-decoration: line-through;
-  }
-
-  .draft {
-    background-color: #ffe0c0;
-    border-radius: 50%;
-  }
 </style>

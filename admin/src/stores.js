@@ -20,10 +20,6 @@ export const useLanguageStore = defineStore('languages', {
  * Side store with contextual information
  *
  * store {
- *   published {
- *     "live": 2,
- *     "draft": 5
- *   }
  *   type {
  *     "cms:heading": 3,
  *     "cms:text": 8,
@@ -31,14 +27,9 @@ export const useLanguageStore = defineStore('languages', {
  *   }
  * },
  * show {
- *   published: true,
  *   type: false
  * },
  * used {
- *   published {
- *     "live": true
- *     "draft": false
- *   }
  *   type {
  *     "cms:heading": true,
  *     "cms:text": false,

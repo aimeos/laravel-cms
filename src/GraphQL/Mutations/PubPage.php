@@ -18,12 +18,21 @@ final class PubPage
     {
         $page = Page::findOrFail( $args['id'] );
 
-        $page->data = $page->latest?->data ?: $page->data;
-        $page->editor = Auth::user()?->name ?? request()->ip();
+        if( $page->latest )
+        {
+            DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( function() use ( $page ) {
 
-        DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( fn() => $page->save(), 3 );
+                $latest = $page->latest;
+                $latest->published = true;
+                $latest->save();
 
-        Cache::forget( Page::key( $page ) );
+                $page->data = $latest->data;
+                $page->editor = Auth::user()?->name ?? request()->ip();
+                $page->save();
+            }, 3 );
+
+            Cache::forget( Page::key( $page ) );
+        }
 
         return $page;
     }

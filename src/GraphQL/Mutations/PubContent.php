@@ -3,6 +3,7 @@
 namespace Aimeos\Cms\GraphQL\Mutations;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Aimeos\Cms\Models\Content;
 
 
@@ -16,10 +17,20 @@ final class PubContent
     {
         $content = Content::findOrFail( $args['id'] );
 
-        $content->data = $content->latest?->data ?: $content->data;
-        $content->editor = Auth::user()?->name ?? request()->ip();
+        if( $content->latest )
+        {
+            DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( function() use ( $content ) {
 
-        $content->save();
+                $latest = $content->latest;
+                $latest->published = true;
+                $latest->save();
+
+                $content->data = $latest->data;
+                $content->editor = Auth::user()?->name ?? request()->ip();
+                $content->save();
+
+            }, 3 );
+        }
 
         return $content;
     }

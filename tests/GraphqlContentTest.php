@@ -305,7 +305,7 @@ class GraphqlContentTest extends TestAbstract
 
         $content = Content::firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 4 );
+        $this->expectsDatabaseQueryCount( 5 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 pubContent(id: "' . $content->id . '") {

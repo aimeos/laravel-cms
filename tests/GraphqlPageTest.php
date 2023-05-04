@@ -820,23 +820,23 @@ class GraphqlPageTest extends TestAbstract
     {
         $this->seed( CmsSeeder::class );
 
-        $blog = Page::where('tag', 'blog')->firstOrFail();
+        $page = Page::where('tag', 'root')->firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 4 );
+        $this->expectsDatabaseQueryCount( 5 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
-                pubPage(id: "' . $blog->id . '") {
+                pubPage(id: "' . $page->id . '") {
                     id
                 }
             }
         ' );
 
-        $page = Page::where('id', $blog->id)->firstOrFail();
+        $page = Page::where('id', $page->id)->firstOrFail();
 
         $response->assertJson( [
             'data' => [
                 'pubPage' => [
-                    'id' => (string) $blog->id
+                    'id' => (string) $page->id
                 ],
             ]
         ] );

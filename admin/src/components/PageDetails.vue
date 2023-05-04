@@ -1,9 +1,9 @@
 <script>
   import gql from 'graphql-tag'
-  import Aside from '../components/Aside.vue'
-  import PageDetailsPage from '../components/PageDetailsPage.vue'
-  import PageDetailsContent from '../components/PageDetailsContent.vue'
-  import PageDetailsPreview from '../components/PageDetailsPreview.vue'
+  import Aside from './Aside.vue'
+  import PageDetailsPage from './PageDetailsPage.vue'
+  import PageDetailsContent from './PageDetailsContent.vue'
+  import PageDetailsPreview from './PageDetailsPreview.vue'
 
 
   export default {
@@ -40,8 +40,9 @@
               tag
               status
               cache
-              data
               config
+              data
+              meta
               start
               end
               editor
@@ -49,28 +50,16 @@
               updated_at
               deleted_at
               has
-              versions {
-                published
-                data
-                editor
-                created_at
-              }
               contents {
                 id
                 data
-                ref {
-                  position
-                  status
-                  editor
-                  start
-                  end
-                }
-                versions {
-                  published
-                  data
-                  editor
-                  created_at
-                }
+              }
+              versions {
+                published
+                meta
+                data
+                editor
+                created_at
               }
             }
           }`,
@@ -95,7 +84,8 @@
   <v-app-bar :elevation="2" density="compact" image="src/assets/background.png">
     <v-app-bar-title>
       <div class="app-title" @click="$emit('update:item', page)">
-        <v-icon icon="mdi-keyboard-backspace"></v-icon> Back to pages
+        <v-icon icon="mdi-keyboard-backspace"></v-icon>
+        Back to pages
       </div>
     </v-app-bar-title>
 
@@ -111,7 +101,7 @@
   <v-main>
     <v-tabs fixed-tabs v-model="tab">
       <v-tab value="page">Page</v-tab>
-      <v-tab value="content" class="unpublished">Content</v-tab>
+      <v-tab value="content">Content</v-tab>
       <v-tab value="preview">Preview</v-tab>
     </v-tabs>
 
@@ -149,10 +139,6 @@
   }
 
   .v-badge--dot .v-badge__badge {
-      margin-inline-start: 0.5rem;
-    }
-
-  .unpublished {
-    color: rgb(var(--v-theme-warning));
+    margin-inline-start: 0.5rem;
   }
 </style>

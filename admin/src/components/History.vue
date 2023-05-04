@@ -2,16 +2,24 @@
   import { diffJson } from 'diff'
 
   export default {
-    props: ['type', 'index', 'data', 'versions'],
+    props: ['name', 'data', 'versions'],
     emit: ['hide', 'use'],
     data: () => ({
+      list: [],
     }),
+    mounted() {
+      this.versions.forEach(v => {
+        const item = {...v}
+        item[this.name] = JSON.parse(v[this.name])
+        this.list.push(item)
+      })
+    },
     methods: {
       diff(old, str) {
         if(old && str) {
           return diffJson(old, str)
-        } else if(old) {
-          return [old]
+        } else if(str) {
+          return [str]
         }
         return []
       }
@@ -32,31 +40,30 @@
 
       <v-card-text>
         <v-timeline side="end" align="start">
-          <v-timeline-item :key="-1" size="small" dot-color="blue">
+          <v-timeline-item v-if="versions[0] && versions[0][name] != JSON.stringify(data)" size="small" dot-color="blue">
 
             <v-card class="elevation-2">
-              <v-card-title>
-                Current
-              </v-card-title>
+              <v-card-title>Current</v-card-title>
               <v-card-text>
-                <span v-for="part of diff(JSON.parse(versions[0] ? versions[0].data : {}), data)"
-                  :class="{added: part.added, removed: part.removed}">{{ part.value }}</span>
+                <span v-for="part of diff(list[0] ? list[0][name] : {}, data)"
+                  :class="{added: part.added, removed: part.removed}">{{ part.value || part }}</span>
               </v-card-text>
             </v-card>
 
           </v-timeline-item>
-          <v-timeline-item v-for="(version, idx) in versions" :key="idx" size="small"
+
+          <v-timeline-item v-for="(version, idx) in list" :key="idx" size="small"
             :dot-color="version.published ? 'success' : 'grey-lighten-1'">
 
             <v-card class="elevation-2">
               <v-card-title>{{ version.created_at }}</v-card-title>
               <v-card-subtitle>{{ version.editor }}</v-card-subtitle>
               <v-card-text>
-                <span v-for="part of diff(JSON.parse(versions[idx+1] ? versions[idx+1].data : version.data), JSON.parse(version.data))"
-                  :class="{added: part.added, removed: part.removed}">{{ part.value }}</span>
+                <span v-for="part of diff(version[idx+1] ? version[idx+1][name] : version[name], version[name])"
+                  :class="{added: part.added, removed: part.removed}">{{ part.value || part }}</span>
               </v-card-text>
               <v-card-actions>
-                <v-btn variant="outlined" @click="$emit('use', JSON.parse(version.data))">
+                <v-btn variant="outlined" @click="$emit('use', version[name])">
                   Use
                 </v-btn>
               </v-card-actions>

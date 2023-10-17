@@ -30,6 +30,7 @@ The `pages` endpoint will return items from the page tree as well as related sha
     * [Multiple item](#multiple-items)
     * [Relationships](#relationships)
   * [Included](#included)
+* [Error handling](#error-handling)
 
 ## Available properties
 
@@ -549,3 +550,53 @@ And the `included` section for that response then contains:
 ```
 
 It consists of a flat list of page or shared content items identified by their `type` and `id` values. You must now match the type and ID within the `relationships/contents` section with the type and ID within the `included` section.
+
+## Error handling
+
+Errors can and will occur sooner or later. The [JSON:API standard](https://jsonapi.org/format/#errors) like every REST protocol uses the HTTP status codes to signal error conditions. Used HTTP status codes are:
+
+* 2xx : Successful operation
+    * 200 : Operation was performed successfully
+    * 201 : Resource has been created
+* 4xx : Bad request
+    * 401 : Authentication required
+    * 403 : Operation is forbidden/unsupported
+    * 404 : The resource wasn't found
+* 5xx : Internal server error
+    * 500 : A non-recoverable error occurred
+    * 501 : Operation not implemented
+
+Also, the JSON API standard specifies an "errors" section in the JSON response that can contain error hints for one or more operations:
+
+```json
+{
+    "errors": [
+        {
+            "title": "No product with ID 1 available",
+            "detail": "<stack trace where the error occured>"
+        },
+        ...
+    ]
+}
+```
+
+Each error item contains a "title" attribute that contains the error message for the user and the "detail" attribute including the stack trace for developers. You should show the error details because they are only helpful for developers:
+
+```js
+const promise = fetch('/api/cms/pages?...', {
+    method: 'GET',
+    credentials: 'same-origin',
+}).then(response => {
+    if(!response.ok) {
+        throw new Error(response.statusText)
+    }
+    return response.json();
+}).then(result => {
+    if(result.errors) {
+        throw result.errors
+    }
+    return result
+}).catch(err => {
+    console.error(err)
+})
+```

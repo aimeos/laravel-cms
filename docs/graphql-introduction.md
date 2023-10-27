@@ -11,6 +11,7 @@ excerpt: "How to manage data in Laravel CMS using the GraphQL API"
 * [Modify data](#modify-data)
   * [Single mutation](#single-mutation)
   * [Batched mutations](#batched-mutations)
+* [Error handling](#error-handling)
 
 The Laravel CMS GraphQL backendend API follows the GraphQL standard documented at [graphql.org](https://graphql.org) and is available at (replace "mydomain.tld" with your own one):
 
@@ -258,19 +259,21 @@ You have to handle these errors slightly different, depending on the type of err
 
 ```javascript
 fetch('http://mydomain.tld/graphql', {
-	method: 'POST',
-	credentials: 'include',
-	body: 'invalid'
+    method: 'POST',
+    credentials: 'include',
+    body: 'invalid'
 }).then(response => {
+    if(!response.ok) {
+        throw new Error(response.statusText)
+    }
 	return response.json();
-}).then(data => {
-  if(!data.error) {
-    console.log(data.error);
-  } else {
-    console.log(data);
-  }
-}).catch(error => {
-	console.log(error);
+}).then(result => {
+    if(result.errors) {
+        throw result.errors
+    }
+    return result
+}).catch(err => {
+    console.error(err)
 });
 ```
 

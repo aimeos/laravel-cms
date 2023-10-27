@@ -34,6 +34,7 @@ It can be installed into any existing Laravel application.
 Run this command within your Laravel application directory:
 
 ```bash
+composer req aimeos/laravel-cms
 php artisan cms:install --seed
 ```
 

@@ -99,12 +99,12 @@
         <v-text-field v-model="creds.email" label="E-Mail" variant="underlined" validate-on="blur" :rules="[
           v => !!v || 'Field is required',
           v => !!v.match(/.*@.*/) || 'Invalid e-mail address'
-        ]" clearable autofocus>
+        ]" autocomplete="username" clearable autofocus>
         </v-text-field>
         <v-text-field v-model="creds.password" :type="show ? `text` : `password`"
           label="Password" variant="underlined" :rules="[
             v => !!v || 'Field is required'
-          ]" clearable>
+          ]" autocomplete="current-password" clearable>
           <template v-slot:append-inner>
             <v-icon @click="show = !show">{{ show ? `mdi-eye-off` : `mdi-eye` }}</v-icon>
           </template>

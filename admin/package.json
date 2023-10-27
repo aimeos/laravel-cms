@@ -14,29 +14,29 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
-    "@he-tree/vue": "^2.3.0",
-    "@vue/apollo-option": "^4.0.0-beta.4",
-    "apollo-link-batch-http": "^1.2.14",
-    "diff": "^5.1.0",
-    "pinia": "^2.0.33",
-    "sass": "^1.59.3",
-    "vite-plugin-vuetify": "^1.0.2",
-    "vue": "^3.2.47",
+    "@he-tree/vue": "^2.7",
+    "@vue/apollo-option": "^4.0.0-beta.9",
+    "apollo-link-batch-http": "^1.2",
+    "diff": "^5.1",
+    "pinia": "^2.1",
+    "sass": "^1.69",
+    "vite-plugin-vuetify": "^1.0",
+    "vue": "^3.3",
     "vue-observe-visibility": "^2.0.0-alpha.1",
-    "vue-router": "^4.1.6",
-    "vuetify": "^2.6.15"
+    "vue-router": "^4.2",
+    "vuetify": "^3.3"
   },
   "devDependencies": {
-    "@mdi/font": "^7.1.96",
+    "@mdi/font": "^7.3",
     "@rushstack/eslint-patch": "^1.2.0",
-    "@vitejs/plugin-vue": "^4.0.0",
+    "@vitejs/plugin-vue": "^4.4",
     "@vue/eslint-config-prettier": "^7.1.0",
-    "cypress": "^12.7.0",
+    "cypress": "^13.3.2",
     "eslint": "^8.34.0",
     "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-vue": "^9.9.0",
     "prettier": "^2.8.4",
     "start-server-and-test": "^2.0.0",
-    "vite": "^4.2.3"
+    "vite": "^4.5"
   }
 }

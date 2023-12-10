@@ -16,7 +16,7 @@
 		"league/commonmark": "^2.0",
 		"kalnoy/nestedset": "^6.0",
 		"symfony/uid": "^6.0",
-		"intervention/image": "^2.7"
+		"intervention/image": "^3.0"
 	},
 	"require-dev": {
 		"orchestra/testbench": "^8.0",

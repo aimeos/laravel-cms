@@ -4,7 +4,7 @@ namespace Aimeos\Cms\GraphQL\Mutations;
 
 use Aimeos\Cms\Models\File;
 use Aimeos\Cms\GraphQL\Exception;
-use Intervention\Image\ImageManagerStatic as Image;
+use Intervention\Image\ImageManager;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -31,7 +31,7 @@ final class AddFile
             {
                 if( str_starts_with( $preview->getClientMimeType(), 'image/' ) )
                 {
-                    $width = Image::make( $preview )->width();
+                    $width = ImageManager::gd()->read( $preview )->width();
                     $previews[$width] = Storage::disk( config( 'cms.disk', 'public' ) )->putFile( $dir, $preview, 'public' );
                 }
             }

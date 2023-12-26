@@ -58,25 +58,4 @@ return [
     |
     */
     'view' => 'cms::content',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Custom content elements
-    |--------------------------------------------------------------------------
-    |
-    | Additional content elements which are available in the custom section of
-    | the CMS editor.
-    |
-    | Each content element needs a Blade partial named after the key of the
-    | content element and ".blade.php" appended in the ./resources/views/
-    | directory, e.g. for the key "heading", the template is
-    | ./resources/views/heading.blade.php.
-    |
-    | For better structuring inside the ./resources/views/ directory, the
-    | content elements can be prefixed with a sub-directory name, e.g. the key
-    | "cms.heading" would map to ./resources/views/cms/heading.blade.php
-    |
-    */
-    'elements' => [
-    ]
 ];

@@ -20,7 +20,7 @@
     "diff": "^5.1",
     "pinia": "^2.1",
     "sass": "^1.69",
-    "vite-plugin-vuetify": "^1.0",
+    "vite-plugin-vuetify": "^2.1",
     "vue": "^3.3",
     "vue-observe-visibility": "^2.0.0-alpha.1",
     "vue-router": "^4.2",
@@ -29,7 +29,7 @@
   "devDependencies": {
     "@mdi/font": "^7.3",
     "@rushstack/eslint-patch": "^1.2.0",
-    "@vitejs/plugin-vue": "^4.4",
+    "@vitejs/plugin-vue": "^5.2",
     "@vue/eslint-config-prettier": "^7.1.0",
     "cypress": "^13.3.2",
     "eslint": "^8.34.0",
@@ -37,6 +37,6 @@
     "eslint-plugin-vue": "^9.9.0",
     "prettier": "^2.8.4",
     "start-server-and-test": "^2.0.3",
-    "vite": "^4.5"
+    "vite": "^6.2"
   }
 }

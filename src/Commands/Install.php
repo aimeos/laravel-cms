@@ -127,17 +127,18 @@ Made with <fg=green>love</> by the Laravel CMS community. Be a part of it!
     protected function exception() : int
     {
         $done = 0;
-        $filename = 'app/Exceptions/Handler.php';
+        $filename = 'bootstrap/app.php';
         $content = file_get_contents( base_path( $filename ) );
 
-        $search = 'public function register()
-    {';
+        $search = "->withExceptions(function (Exceptions \$exceptions) {\n";
 
         $string = '
-        $this->renderable(
-            \LaravelJsonApi\Exceptions\ExceptionParser::make()->renderable()
+        $exceptions->dontReport(
+            \LaravelJsonApi\Core\Exceptions\JsonApiException::class,
         );
-        ';
+        $exceptions->render(
+            \LaravelJsonApi\Exceptions\ExceptionParser::renderer(),
+        );';
 
         if( strpos( $content, '\LaravelJsonApi\Exceptions\ExceptionParser' ) === false && ++$done )
         {
@@ -263,46 +264,42 @@ Made with <fg=green>love</> by the Laravel CMS community. Be a part of it!
     protected function route() : int
     {
         $filename = 'routes/web.php';
-        $content = file_get_contents( base_path( $filename ) );
+        $abspath = base_path( $filename );
 
-        $string = "Route::group([/* uncomment for multi-domain routing: 'domain' => '{domain}'*/], function() {
-    Route::get('{slug?}/{lang?}', [\Aimeos\Cms\Http\Controllers\PageController::class, 'index'])
-        ->where(['lang' => '[a-z]{2}(\_[A-Z]{2})?')
-        ->name('cms.page');
-});";
+        if( ( $content = file_get_contents( $abspath ) ) === false )
+        {
+            $this->error( sprintf( '  Reading file [%1$s] failed!' . PHP_EOL, $filename ) );
+            return 1;
+        }
 
         if( strpos( $content, '{slug' ) === false )
         {
-            file_put_contents( base_path( $filename ), $content . "\n\n" . $string );
-            $this->line( sprintf( '  File [%1$s] updated' . PHP_EOL, $filename ) );
+            $content .= "\n\nRoute::group([/* uncomment for multi-domain routing: 'domain' => '{domain}'*/], function() {
+    Route::get('{slug?}/{lang?}', [\Aimeos\Cms\Http\Controllers\PageController::class, 'index'])
+        ->where(['lang' => '[a-z]{2}(\_[A-Z]{2})?'])
+        ->name('cms.page');
+});";;
         }
-        else
+
+
+        if( strpos( $content, "->resource('pages'" ) === false )
         {
-            $this->line( sprintf( '  File [%1$s] already up to date' . PHP_EOL, $filename ) );
-        }
-
-
-        $filename = 'routes/api.php';
-        $content = file_get_contents( base_path( $filename ) );
-
-        $string = '
-\LaravelJsonApi\Laravel\Facades\JsonApiRoute::server("cms")->prefix("cms")->resources(function($server) {
-    $server->resource("pages", \Aimeos\Cms\JsonApi\V1\Controllers\PageController::class)->readOnly()
-        ->relationships(function ($relationships) {
-            $relationships->hasMany("contents")->readOnly();
+            $content .= "\n\n
+\LaravelJsonApi\Laravel\Facades\JsonApiRoute::server('cms')->prefix('cms')->resources(function($server) {
+    $server->resource('pages', \Aimeos\Cms\JsonApi\V1\Controllers\PageController::class)->readOnly()
+        ->relationships(function (\$relationships) {
+            \$relationships->hasMany('contents')->readOnly();
         });
-});';
-
-        if( strpos( $content, '->resource("pages"' ) === false )
-        {
-            file_put_contents( base_path( $filename ), $content . PHP_EOL . $string );
-            $this->line( sprintf( '  File [%1$s] updated' . PHP_EOL, $filename ) );
-        }
-        else
-        {
-            $this->line( sprintf( '  File [%1$s] already up to date' . PHP_EOL, $filename ) );
+});";
         }
 
+        if( file_put_contents( $abspath, $content ) === false )
+        {
+            $this->error( sprintf( '  Updating file [%1$s] failed!' . PHP_EOL, $filename ) );
+            return 1;
+        }
+
+        $this->line( sprintf( '  File [%1$s] updated' . PHP_EOL, $filename ) );
         return 0;
     }
 

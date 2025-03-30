@@ -64,11 +64,12 @@ $schedule->command('model:prune', [
         \Aimeos\Cms\Models\Page::class,
         \Aimeos\Cms\Models\Version::class,
         \Aimeos\Cms\Models\Content::class,
-        \Aimeos\Cms\Models\File::class],
+        \Aimeos\Cms\Models\File::class
+    ],
 ])->daily();
 ```
 
-You can configure the timeframe after soft-deleted items will be removed permantently by setting the [cms.purge](https://github.com/aimeos/laravel-cms/blob/master/config/cms.php#L48) option. It's value must be the number of days after the items will be removed permanently or FALSE if the soft-deleted items shouldn't be removed at all.
+You can configure the timeframe after soft-deleted items will be removed permantently by setting the [cms.purge](https://github.com/aimeos/laravel-cms/blob/master/config/cms.php) option. It's value must be the number of days after the items will be removed permanently or FALSE if the soft-deleted items shouldn't be removed at all.
 
 ### Multi-domain
 

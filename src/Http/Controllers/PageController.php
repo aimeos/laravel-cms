@@ -16,6 +16,17 @@ class PageController extends Controller
 {
     use AuthorizesRequests, ValidatesRequests;
 
+    /**
+     * Return the admin page view.
+     *
+     * @return \Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function admin(): View
+    {
+        return view('cms::admin');
+    }
+
 
     /**
      * Show the page for a given URL.

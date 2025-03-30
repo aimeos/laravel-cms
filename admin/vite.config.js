@@ -11,5 +11,15 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
-  }
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        entryFileNames: '[name].js',
+        assetFileNames: (asset) => {
+          return asset.names.includes('index.css') ? 'index.css' : 'assets/[name]-[hash][extname]'
+        }
+      }
+    }
+  },
 })

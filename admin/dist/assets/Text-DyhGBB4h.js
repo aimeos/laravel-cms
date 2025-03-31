@@ -1,1 +1,0 @@
-import{_ as n,d as r,m as d,f as l,o as s}from"../index.js";const i={props:["data","config"],emits:["update:data"]};function p(t,a,e,u,c,f){return s(),r(l,d({label:e.config.label||"Value",variant:"underlined"},e.data,{"onUpdate:modelValue":a[0]||(a[0]=o=>t.$emit("update:data",o))}),null,16,["label"])}const _=n(i,[["render",p]]);export{_ as default};

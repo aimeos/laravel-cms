@@ -2,8 +2,8 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { BatchHttpLink } from "apollo-link-batch-http"
 import { createApolloProvider } from '@vue/apollo-option'
-import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client/core'
-import { ObserveVisibility } from 'vue-observe-visibility'
+import { ApolloClient, InMemoryCache } from '@apollo/client/core'
+import VueObserveVisibility from 'vue3-observe-visibility'
 
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
@@ -17,7 +17,8 @@ import router from './routes'
 import App from './App.vue'
 
 
-const pinia = createPinia();
+const app = createApp(App)
+const pinia = createPinia()
 const vuetify = createVuetify({
   components,
   directives,
@@ -48,6 +49,4 @@ const apolloClient = new ApolloClient({cache: new InMemoryCache(), link: httpLin
 const apolloProvider = createApolloProvider({defaultClient: apolloClient})
 
 
-createApp(App).use(pinia).use(router).use(vuetify).use(apolloProvider)
-  .directive('observe-visibility', ObserveVisibility)
-  .mount('#app')
+app.use(pinia).use(router).use(vuetify).use(apolloProvider).use(VueObserveVisibility).mount('#app')

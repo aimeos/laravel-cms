@@ -44,7 +44,7 @@ Made with <fg=green>love</> by the Laravel CMS community. Be a part of it!
         $result = 0;
 
         $this->comment( '  Publishing CMS files ...' );
-        $result += $this->call( 'vendor:publish', ['--tag' => 'cms'] );
+        $result += $this->call( 'vendor:publish', ['--provider' => 'Aimeos\Cms\CmsServiceProvider'] );
 
         $this->comment( '  Publishing JSON:API configuration ...' );
         $result += $this->call( 'vendor:publish', ['--provider' => 'LaravelJsonApi\Laravel\ServiceProvider'] );
@@ -272,15 +272,18 @@ Made with <fg=green>love</> by the Laravel CMS community. Be a part of it!
             return 1;
         }
 
+        if( strpos( $content, 'cms.page' ) === false ) {
+            $content .= "\n\nRoute::get('cms', [\Aimeos\Cms\Http\Controllers\PageController::class, 'admin'])->name('cms.admin');";
+        }
+
         if( strpos( $content, '{slug' ) === false )
         {
             $content .= "\n\nRoute::group([/* uncomment for multi-domain routing: 'domain' => '{domain}'*/], function() {
     Route::get('{slug?}/{lang?}', [\Aimeos\Cms\Http\Controllers\PageController::class, 'index'])
         ->where(['lang' => '[a-z]{2}(\_[A-Z]{2})?'])
         ->name('cms.page');
-});";;
+});";
         }
-
 
         if( strpos( $content, "->resource('pages'" ) === false )
         {

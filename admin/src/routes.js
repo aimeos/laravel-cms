@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { useAppStore } from './stores'
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(window.location.pathname),
   routes: [
     {
       path: '/',
@@ -29,12 +29,8 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if(to.matched.some(record => record.meta.auth)) {
-    if (!useAppStore().me) {
+  if(to.matched.some(record => record.meta.auth) && !useAppStore().me) {
       next({ name: 'login' })
-    } else {
-      next()
-    }
   } else {
     next()
   }

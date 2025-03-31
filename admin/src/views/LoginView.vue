@@ -121,7 +121,7 @@
 
 <style>
   body {
-    background-image: url('src/assets/bg-full.jpg');
+    background-image: url('../assets/bg-full.jpg');
     background-size: cover;
   }
 

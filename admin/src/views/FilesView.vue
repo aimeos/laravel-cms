@@ -33,17 +33,8 @@
 </template>
 
 <style>
-  header.v-app-bar {
-    background-color: #102050 !important;
-    color: #fff !important;
-  }
-
   nav.v-navigation-drawer {
     background-color: #ebf4ff;
-  }
-
-  .v-main, .v-sheet {
-    background-color: #f8fbff !important;
   }
 
   .v-sheet {

@@ -2,7 +2,11 @@
  * Common styles
  */
 
-.v-app-bar.v-toolbar,
+.v-app-bar.v-toolbar {
+  background-color: #10446b !important;
+  color: #ffffff !important;
+}
+
 .v-navigation-drawer,
 .v-navigation-drawer button,
 .v-navigation-drawer .v-list-item,
@@ -23,10 +27,6 @@ body, .v-main, .v-window {
   background-color: rgb(var(--v-theme-background));
 }
 
-.v-sheet {
-  background-color: #ffffff;
-}
-
 .v-container, .v-sheet .v-window {
   background-color: transparent;
 }
@@ -35,6 +35,7 @@ body, .v-main, .v-window {
   margin: 1rem 0;
   padding: 2rem 2.5%;
   box-shadow: 0px 3px 9px 0px #A8B8C825 !important;
+  background-color: #ffffff;
 }
 
 .hidden {

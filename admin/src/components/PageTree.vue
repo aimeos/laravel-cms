@@ -5,6 +5,7 @@
   import { useLanguageStore } from '../stores'
   import { useAppStore } from '../stores'
   import Navigation from './Navigation.vue'
+  import bgUrl from '../assets/bg.jpg'
 
   export default {
     setup() {
@@ -610,7 +611,7 @@
 </script>
 
 <template>
-  <v-app-bar :elevation="2" density="compact" image="src/assets/background.png">
+  <v-app-bar :elevation="2" density="compact" :image="bgurl">
     <template #prepend>
       <v-btn @click.stop="$emit('update:nav', !nav)">
         <v-icon size="x-large">

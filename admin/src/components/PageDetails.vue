@@ -4,6 +4,7 @@
   import PageDetailsPage from './PageDetailsPage.vue'
   import PageDetailsContent from './PageDetailsContent.vue'
   import PageDetailsPreview from './PageDetailsPreview.vue'
+  import bgUrl from '../assets/bg.jpg'
 
 
   export default {
@@ -81,7 +82,7 @@
 </script>
 
 <template>
-  <v-app-bar :elevation="2" density="compact" image="src/assets/background.png">
+  <v-app-bar :elevation="2" density="compact" :image="bgUrl">
     <v-app-bar-title>
       <div class="app-title" @click="$emit('update:item', page)">
         <v-icon icon="mdi-keyboard-backspace"></v-icon>

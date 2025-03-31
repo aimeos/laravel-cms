@@ -1,6 +1,7 @@
 <script>
   import Navigation from '../components/Navigation.vue'
   import PageDetails from '../components/PageDetails.vue'
+  import bgUrl from '../assets/bg.jpg'
 
   export default {
     components: {
@@ -17,7 +18,7 @@
 <template>
     <v-layout>
 
-      <v-app-bar :elevation="2" density="compact" image="src/assets/background.png">
+      <v-app-bar :elevation="2" density="compact" :image="bgUrl">
         <template v-slot:prepend>
           <v-btn @click.stop="nav = !nav"><v-icon size="x-large">{{ nav ? 'mdi-close' : 'mdi-menu' }}</v-icon></v-btn>
         </template>

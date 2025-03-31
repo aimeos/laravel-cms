@@ -5,7 +5,7 @@ const app = document.querySelector('#app');
 export const useAppStore = defineStore('app', {
   state: () => ({
     me: null,
-    url: app?.dataset.urltemplate || '/:slug/:lang'
+    url: app?.dataset.urltemplate || '/:slug/la_NG'
   })
 })
 

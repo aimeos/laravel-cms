@@ -599,7 +599,7 @@
       },
 
       url(node) {
-        const url = this.app.url.replace(/:slug/, node.slug).replace(/:lang/, node.lang)
+        const url = this.app.url.replace(/:slug/, node.slug).replace(/la_NG/, node.lang)
         const end = url.endsWith('/') ? url.length - 1 : url.length
         const start = url.startsWith('//') ? 1 : 0
 

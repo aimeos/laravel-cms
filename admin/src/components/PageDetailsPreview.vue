@@ -13,7 +13,7 @@
     }),
     computed: {
       url() {
-        const url = this.app.url.replace(/:domain/, this.item.domain).replace(/:slug/, this.item.slug).replace(/:lang/, this.item.lang)
+        const url = this.app.url.replace(/:domain/, this.item.domain).replace(/:slug/, this.item.slug).replace(/la_NG/, this.item.lang)
         const end = url.endsWith('/') ? url.length - 1 : url.length
         const start = url.startsWith('//') ? 1 : 0
 

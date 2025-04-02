@@ -2,6 +2,11 @@
  * Common styles
  */
 
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  transition: background-color 0s 600000s, color 0s 600000s !important;
+}
+
 .v-app-bar.v-toolbar {
   background-color: #10446b !important;
   color: #ffffff !important;

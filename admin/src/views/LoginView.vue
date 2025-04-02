@@ -98,15 +98,15 @@
       <v-card-text>
         <v-text-field v-model="creds.email" label="E-Mail" variant="underlined" validate-on="blur" :rules="[
           v => !!v || 'Field is required',
-          v => !!v.match(/.*@.*/) || 'Invalid e-mail address'
-        ]" autocomplete="username" clearable autofocus>
+          v => !!v.match(/.+@.+/) || 'Invalid e-mail address'
+        ]" autocomplete="username" autofocus>
         </v-text-field>
         <v-text-field v-model="creds.password" :type="show ? `text` : `password`"
           label="Password" variant="underlined" :rules="[
             v => !!v || 'Field is required'
-          ]" autocomplete="current-password" clearable>
+          ]" autocomplete="current-password">
           <template v-slot:append-inner>
-            <v-icon @click="show = !show">{{ show ? `mdi-eye-off` : `mdi-eye` }}</v-icon>
+            <v-icon @click="show = !show" @keydown="[13, 32].includes($event.keyCode) ? show = !show : false">{{ show ? `mdi-eye-off` : `mdi-eye` }}</v-icon>
           </template>
         </v-text-field>
         <v-alert v-show="error" color="error" icon="mdi-alert-octagon" :text="`Error: ` + error"></v-alert>

@@ -18,7 +18,7 @@
     <div id="app"
       data-graphql="{{ route('graphql') }}"
       data-languages='{"en": "English"}'
-      data-urltemplate="{{ route('cms.page', ['slug' => ':slug', 'lang' => 'la_NG']) }}">
+      data-urltemplate="{{ route('cms.page', ['slug' => ':slug', 'lang' => 'xx_XX']) }}">
     </div>
   </body>
 </html>

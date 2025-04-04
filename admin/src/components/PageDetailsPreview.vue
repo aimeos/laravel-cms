@@ -8,35 +8,30 @@
       const app = useAppStore()
       return { app }
     },
-    data: () => ({
-      height: '100vh'
-    }),
     computed: {
       url() {
-        const url = this.app.url.replace(/:domain/, this.item.domain).replace(/:slug/, this.item.slug).replace(/la_NG/, this.item.lang)
-        const end = url.endsWith('/') ? url.length - 1 : url.length
-        const start = url.startsWith('//') ? 1 : 0
+        const url = this.app.url
+          .replace(/:domain/, this.item.domain)
+          .replace(/:slug/, this.item.slug)
+          .replace(/xx_XX/, this.item.lang)
+          .replace(/\/+$/g, '')
 
-        return url.substring(start, end) || '/'
-      }
-    },
-    methods: {
-      resize() {
-        this.height = this.$refs.preview.contentWindow.document.body.scrollHeight + 'px'
+        return url + (url.includes('?') ? '&' : '?') + 'cid=' + this.item.id
       }
     }
   }
 </script>
 
 <template>
-  <iframe ref="preview" :src="url" :style="'min-height: ' + height" @load="resize()"></iframe>
+  <iframe ref="preview" :src="url"></iframe>
 </template>
 
 <style>
   iframe {
     width: 100%;
-    padding: 1rem 0 0;
+    padding: 0;
     margin: 0;
     border: none;
+    min-height: calc(100vh - 6.5rem);
   }
 </style>

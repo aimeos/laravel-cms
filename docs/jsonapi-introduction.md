@@ -7,7 +7,7 @@ excerpt: "How to fetch data from Laravel CMS using the JSON:API"
 The Laravel CMS JSON frontend API follows the JSON:API standard documented at [jsonapi.org](https://jsonapi.org) and is available at (replace "mydomain.tld" with your own one):
 
 ```
-http://mydomain.tld/api/cms/pages
+http://mydomain.tld/cms/pages
 ```
 
 The `pages` endpoint will return items from the page tree as well as related shared content elements depending on parameters added.

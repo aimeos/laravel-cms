@@ -54,6 +54,12 @@ To disallow users to edit CMS content, use:
 php artisan cms:user --disable editor@example.com
 ```
 
+The CMS admin backend is available at (replace "mydomain.tld" with your own one):
+
+```
+http://mydomain.tld/cmsadmin
+```
+
 ### Clean up
 
 To clean up soft-deleted pages, contents and files regularly, add these lines to the `schedule()` method in your `app/Console/Kernel.php` class:

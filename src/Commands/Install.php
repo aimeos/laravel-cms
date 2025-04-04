@@ -273,7 +273,7 @@ Made with <fg=green>love</> by the Laravel CMS community. Be a part of it!
         }
 
         if( strpos( $content, 'cms.admin' ) === false ) {
-            $content .= "\n\nRoute::get('cmsadm', [\Aimeos\Cms\Http\Controllers\PageController::class, 'admin'])->name('cms.admin');";
+            $content .= "\n\nRoute::get('cmsadmin', [\Aimeos\Cms\Http\Controllers\PageController::class, 'admin'])->name('cms.admin');";
         }
 
         if( strpos( $content, '{slug' ) === false )

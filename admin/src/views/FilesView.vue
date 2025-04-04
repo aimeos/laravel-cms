@@ -10,7 +10,8 @@
     },
     data: () => ({
       nav: null,
-      aside: null
+      aside: null,
+      bgUrl: bgUrl,
     }),
   }
 </script>

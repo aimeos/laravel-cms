@@ -20,6 +20,7 @@
       tab: 'page',
       nav: null,
       page: {},
+      bgUrl: bgUrl,
     }),
     watch: {
       item() {

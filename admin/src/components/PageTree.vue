@@ -70,7 +70,8 @@
         clip: null,
         menu: {},
         pages: [],
-        trash: false
+        trash: false,
+        bgUrl: bgUrl,
       }
     },
     methods: {
@@ -611,7 +612,7 @@
 </script>
 
 <template>
-  <v-app-bar :elevation="2" density="compact" :image="bgurl">
+  <v-app-bar :elevation="2" density="compact" :image="bgUrl">
     <template #prepend>
       <v-btn @click.stop="$emit('update:nav', !nav)">
         <v-icon size="x-large">

@@ -272,8 +272,8 @@ Made with <fg=green>love</> by the Laravel CMS community. Be a part of it!
             return 1;
         }
 
-        if( strpos( $content, 'cms.page' ) === false ) {
-            $content .= "\n\nRoute::get('cms', [\Aimeos\Cms\Http\Controllers\PageController::class, 'admin'])->name('cms.admin');";
+        if( strpos( $content, 'cms.admin' ) === false ) {
+            $content .= "\n\nRoute::get('cmsadm', [\Aimeos\Cms\Http\Controllers\PageController::class, 'admin'])->name('cms.admin');";
         }
 
         if( strpos( $content, '{slug' ) === false )
@@ -289,7 +289,7 @@ Made with <fg=green>love</> by the Laravel CMS community. Be a part of it!
         {
             $content .= "\n\n
 \LaravelJsonApi\Laravel\Facades\JsonApiRoute::server('cms')->prefix('cms')->resources(function($server) {
-    $server->resource('pages', \Aimeos\Cms\JsonApi\V1\Controllers\PageController::class)->readOnly()
+    $server->resource('pages', \Aimeos\Cms\JsonApi\V1\Controllers\JsonapiController::class)->readOnly()
         ->relationships(function (\$relationships) {
             \$relationships->hasMany('contents')->readOnly();
         });

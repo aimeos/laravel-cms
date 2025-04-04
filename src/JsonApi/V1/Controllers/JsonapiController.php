@@ -3,11 +3,11 @@
 namespace Aimeos\Cms\JsonApi\V1\Controllers;
 
 use Illuminate\Support\Facades\Storage;
-use LaravelJsonApi\Laravel\Http\Controllers\JsonApiController;
 use LaravelJsonApi\Core\Responses\DataResponse;
 use LaravelJsonApi\Core\Responses\RelatedResponse;
 use LaravelJsonApi\Eloquent\Fields\Relations\Relation;
 use LaravelJsonApi\Laravel\Http\Requests\ResourceQuery;
+use LaravelJsonApi\Laravel\Http\Controllers\JsonApiController as Controller;
 use Aimeos\Cms\JsonApi\V1\Pages\PageCollectionQuery;
 use Aimeos\Cms\JsonApi\V1\Pages\PageQuery;
 use Aimeos\Cms\Models\Page;
@@ -16,7 +16,7 @@ use Aimeos\Cms\Models\Page;
 /**
  * Custom controller to add meta data to responses.
  */
-class PageController extends JsonApiController
+class JsonapiController extends Controller
 {
     /**
      * Adds global meta data to single resource response.

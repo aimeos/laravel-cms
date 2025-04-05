@@ -79,7 +79,7 @@
         ]" item-title="val" item-value="key" variant="underlined"></v-select>
       </v-col>
       <v-col cols="12">
-        <v-text-field v-model="item.to" label="Target URL" variant="underlined"></v-text-field>
+        <v-text-field v-model="item.to" label="Redirect URL" variant="underlined"></v-text-field>
       </v-col>
     </v-row>
 

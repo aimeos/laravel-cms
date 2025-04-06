@@ -1,47 +1,20 @@
 <script>
-  import Element from './Element.vue'
+  import Fields from './Fields.vue'
 
   export default {
     components: {
-      Element
+      Fields
     },
-    props: ['clip', 'checked', 'content'],
-    emits: ['copy', 'cut', 'insert', 'paste', 'remove', 'update:checked', 'update:content'],
-    data: () => ({
-      data: {}
-    }),
-    methods: {
-      use(data) {
-        this.data = data
-      }
-    },
-    watch: {
-      content: {
-        immediate: true,
-        handler(content, old) {
-          if(content != old) {
-            this.data = {...content}
-          }
-        }
-      },
-
-      data: {
-        deep: true,
-        handler(data, old) {
-          if(data != old) {
-            this.$emit('update:content', data)
-          }
-        }
-      }
-    }
+    props: ['clip', 'content'],
+    emits: ['copy', 'cut', 'insert', 'paste', 'remove', 'update:content'],
   }
 </script>
 
 <template>
-  <v-expansion-panel elevation="1">
+  <v-expansion-panel elevation="1" rounded="lg">
     <v-expansion-panel-title collapse-icon="mdi-pencil">
-      <v-checkbox-btn :model-value="checked" @click.stop="$emit('update:checked', !checked)">
-      </v-checkbox-btn>
+      <v-checkbox-btn v-model="content._checked"></v-checkbox-btn>
+
       <v-menu>
         <template v-slot:activator="{ props }">
           <v-btn icon="mdi-dots-vertical" variant="text" v-bind="props"></v-btn>
@@ -71,19 +44,36 @@
         </v-list>
       </v-menu>
 
-
-      <div class="panel-heading">
-        {{ data.type }}
-        <span class="subtext">{{ data.title || data.text || '' }}</span>
-      </div>
+      <div class="content-type">{{ content.type }}</div>
+      <div class="content-title">{{ content.data?.title || content.data?.text || '' }}</div>
     </v-expansion-panel-title>
     <v-expansion-panel-text>
 
-      <Element v-model:data="data" />
+      <Fields :fields="content.fields" v-model:data="content.data" />
 
     </v-expansion-panel-text>
   </v-expansion-panel>
 </template>
 
 <style scoped>
+  div.v-expansion-panel:nth-of-type(2n+1) .v-expansion-panel-title {
+    background-color: #40749b10;
+  }
+
+  .v-expansion-panel.v-expansion-panel--active .v-expansion-panel-title {
+    background-color: #40749b !important;
+    color: #fff;
+  }
+
+  .v-expansion-panel-title .v-selection-control {
+    flex: none;
+  }
+
+  .v-expansion-panel-title .content-type {
+    min-width: 10rem;
+  }
+
+  .v-expansion-panel-title .content-title {
+    font-weight: bold;
+  }
 </style>

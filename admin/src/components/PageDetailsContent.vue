@@ -7,8 +7,8 @@
   export default {
     components: {
       Content,
-      Elements,
-      History
+      History,
+      Elements
     },
     setup() {
       const aside = useSideStore()
@@ -26,9 +26,37 @@
       vhistory: false,
       velements: false,
       elements: {
-        'cms::text': {type: 'cms::text', icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21,6V8H3V6H21M3,18H12V16H3V18M3,13H21V11H3V13Z" /></svg>'},
-        'cms::heading': {type: 'cms::heading', 'text': {type: 'cms::string'}, 'level': {type: 'cms::number'}, icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3,4H5V10H9V4H11V18H9V12H5V18H3V4M13,8H15.31L15.63,5H17.63L17.31,8H19.31L19.63,5H21.63L21.31,8H23V10H21.1L20.9,12H23V14H20.69L20.37,17H18.37L18.69,14H16.69L16.37,17H14.37L14.69,14H13V12H14.9L15.1,10H13V8M17.1,10L16.9,12H18.9L19.1,10H17.1Z" /></svg>'},
-        'cms::article': {type: 'cms::article', 'title': {type: 'cms::string'}, 'intro': {type: 'cms::text'}, 'cover': {type: 'cms::image'}, icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 21H5C3.89 21 3 20.11 3 19V5C3 3.89 3.89 3 5 3H19C20.11 3 21 3.89 21 5V10.33C20.7 10.21 20.37 10.14 20.04 10.14C19.67 10.14 19.32 10.22 19 10.37V5H5V19H10.11L10 19.11V21M7 9H17V7H7V9M7 17H12.11L14 15.12V15H7V17M7 13H16.12L17 12.12V11H7V13M21.7 13.58L20.42 12.3C20.21 12.09 19.86 12.09 19.65 12.3L18.65 13.3L20.7 15.35L21.7 14.35C21.91 14.14 21.91 13.79 21.7 13.58M12 22H14.06L20.11 15.93L18.06 13.88L12 19.94V22Z" /></svg>'},
+        'cms::heading': {
+          type: 'heading',
+          icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3,4H5V10H9V4H11V18H9V12H5V18H3V4M13,8H15.31L15.63,5H17.63L17.31,8H19.31L19.63,5H21.63L21.31,8H23V10H21.1L20.9,12H23V14H20.69L20.37,17H18.37L18.69,14H16.69L16.37,17H14.37L14.69,14H13V12H14.9L15.1,10H13V8M17.1,10L16.9,12H18.9L19.1,10H17.1Z" /></svg>',
+          fields: {
+            'level': {type: 'select', options: [
+              {value: 1, label: 'H1'},
+              {value: 2, label: 'H2'},
+              {value: 3, label: 'H3'},
+              {value: 4, label: 'H4'},
+              {value: 5, label: 'H5'},
+              {value: 6, label: 'H6'}
+            ]},
+            'text': {type: 'string'},
+          }
+        },
+        'cms::paragraph': {
+          type: 'paragraph',
+          icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21,6V8H3V6H21M3,18H12V16H3V18M3,13H21V11H3V13Z" /></svg>',
+          fields: {
+            'text': {type: 'text'},
+          }
+        },
+        'cms::article': {
+          type: 'article',
+          icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 21H5C3.89 21 3 20.11 3 19V5C3 3.89 3.89 3 5 3H19C20.11 3 21 3.89 21 5V10.33C20.7 10.21 20.37 10.14 20.04 10.14C19.67 10.14 19.32 10.22 19 10.37V5H5V19H10.11L10 19.11V21M7 9H17V7H7V9M7 17H12.11L14 15.12V15H7V17M7 13H16.12L17 12.12V11H7V13M21.7 13.58L20.42 12.3C20.21 12.09 19.86 12.09 19.65 12.3L18.65 13.3L20.7 15.35L21.7 14.35C21.91 14.14 21.91 13.79 21.7 13.58M12 22H14.06L20.11 15.93L18.06 13.88L12 19.94V22Z" /></svg>',
+          fields: {
+            'title': {type: 'string'},
+            'intro': {type: 'text'},
+            'cover': {type: 'images'},
+          }
+        },
       }
     }),
     mounted() {
@@ -36,10 +64,17 @@
     },
     methods: {
       add(code, idx) {
+        if(!this.elements[code]) {
+          console.error('Element not found', code)
+          return
+        }
+
+        const entry = Object.assign(JSON.parse(JSON.stringify(this.elements[code])), {data: {}})
+
         if(idx !== null) {
-          this.contents.splice(idx, 0, {type: code})
+          this.contents.splice(idx, 0, entry)
         } else {
-          this.contents.push({type: code})
+          this.contents.push(entry)
         }
 
         this.velements = false
@@ -161,8 +196,7 @@
         <Content v-for="(content, idx) in contents"
           :key="idx"
           :clip="clip"
-          :content="content" @update:content="contents[idx] = $event"
-          v-model:checked="content._checked"
+          v-model:content="contents[idx]"
           @copy="copy(idx)"
           @cut="cut(idx)"
           @insert="insert(idx + $event)"

@@ -5,11 +5,11 @@
     data: () => ({
       panel: [0],
       elements: {
-        'cms::test': {type: 'cms::test', data: {
+        'cms::test': {type: 'cms::test', fields: {
           'test/key': {type: 'cms::string', label: 'Test string config'},
           'test/color': {type: 'cms::color', label: 'Test color selector'}
         }},
-        'cms::test2': {type: 'cms::test2', data: {
+        'cms::test2': {type: 'cms::test2', fields: {
           'test2/key': {type: 'cms::string', label: 'Second string value'}
         }},
       }
@@ -28,8 +28,8 @@
 
           <v-container>
             <v-row>
-              <v-col v-for="(def, key) in entry.data" cols="12" md="6">
-                <v-text-field :label="def.label || 'Value'" variant="underlined">{{ item.config[key] || '' }}</v-text-field>
+              <v-col v-for="(def, key) in entry.fields" cols="12" md="6">
+                <input :is="name(def.type)" :config="def" v-model="item.config[key]" />
               </v-col>
             </v-row>
           </v-container>

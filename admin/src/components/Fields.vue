@@ -1,34 +1,99 @@
 <script>
+  import gql from 'graphql-tag'
+  import { useAppStore } from '../stores'
+
   export default {
     props: ['data', 'fields'],
     emits: ['update:data'],
     data: () => ({
       img: {}
     }),
-    methods: {
-      image(code, file) {
-        if(this.img[code]) {
-          URL.revokeObjectURL(this.img[code])
-          this.img[code] = null
-        }
-        if(file) {
-          this.img[code] = URL.createObjectURL(file)
-        }
-        return this.img[code]
-      },
-
-
-      images(code, files) {
-        if(this.img[code] && this.img[code]?.length) {
-          this.img[code].map(file => URL.revokeObjectURL(file))
-          this.img[code] = []
-        }
-        if(files && files.length) {
-          this.img[code] = files.map(file => URL.createObjectURL(file))
-        }
-        return this.img[code]
-      },
+    setup() {
+      const app = useAppStore()
+      return { app }
     },
+    methods: {
+      async upload(code, file) {
+        this.data[code] = {path: URL.createObjectURL(file), uploading: true}
+
+        await this.$apollo.mutate({
+          mutation: gql`mutation($file: Upload!) {
+            addFile(file: $file) {
+              id
+              mime
+              name
+              path
+              previews
+            }
+          }`,
+          variables: {
+            file: file
+          },
+          context: {
+            hasUpload: true
+          }
+        }).then(response => {
+          if(response.errors) {
+            throw response.errors
+          }
+          return response.data?.addFile || {}
+        }).then(data => {
+          data.previews = JSON.parse(data.previews) || {}
+          URL.revokeObjectURL(this.data[code].path)
+          this.data[code] = data
+        }).catch(error => {
+          this.data[code].uploading = false
+          console.error(`addFile(` + code + `)`, error)
+        })
+      },
+
+
+      async uploads(code, files) {
+        this.data[code] = []
+
+        for(const idx in files) {
+          this.data[code][idx] = {path: URL.createObjectURL(files[idx]), uploading: true}
+
+          await this.$apollo.mutate({
+            mutation: gql`mutation($file: Upload!) {
+              addFile(file: $file) {
+                id
+                mime
+                name
+                path
+                previews
+              }
+            }`,
+            variables: {
+              file: files[idx]
+            },
+            context: {
+              hasUpload: true
+            }
+          }).then(response => {
+            if(response.errors) {
+              throw response.errors
+            }
+            return response.data?.addFile || {}
+          }).then(data => {
+            data.previews = JSON.parse(data.previews) || {}
+            URL.revokeObjectURL(this.data[code][idx].path)
+            this.data[code][idx] = data
+          }).catch(error => {
+            this.data[code][idx].uploading = false
+            console.error(`addFile(` + code + `)`, error)
+          })
+        }
+      },
+
+
+      url(path) {
+        if(path.startsWith('http') || path.startsWith('blob:')) {
+          return path
+        }
+        return this.app.urlfiles.replace(/\/+$/g, '') + '/' + path
+      }
+    }
   }
 </script>
 
@@ -76,21 +141,21 @@
           <div v-if="field.type === 'image'">
             <v-file-input
               :label="field.label || ''"
-              @update:model-value="data[code] = image(code, $event)"
+              @update:model-value="upload(code, $event)"
               variant="underlined"
               show-size="1024"
               clearable
             ></v-file-input>
 
-            <v-progress-linear
+            <v-progress-linear v-if="data[code].uploading"
               color="primary"
-              height="6"
+              height="5"
               indeterminate
               rounded
             ></v-progress-linear>
 
             <v-img v-if="data[code]"
-              :src="data[code]"
+              :src="url(data[code].path)"
               max-width="50vw"
               max-height="50vh"
             ></v-img>
@@ -99,7 +164,7 @@
           <div v-if="field.type === 'images'">
             <v-file-input
               :label="field.label || ''"
-              @update:model-value="data[code] = images(code, $event)"
+              @update:model-value="uploads(code, $event)"
               variant="underlined"
               show-size="1024"
               clearable
@@ -107,17 +172,15 @@
               counter
             ></v-file-input>
 
-            <v-progress-linear
-              color="primary"
-              height="6"
-              indeterminate
-              rounded
-            ></v-progress-linear>
-
             <v-carousel v-if="data[code]?.length">
-              <v-carousel-item v-for="image in data[code]"
-                :src="image"
-              ></v-carousel-item>
+              <v-carousel-item v-for="entry in data[code]" :src="url(entry.path)">
+                <v-progress-linear v-if="entry.uploading"
+                  color="primary"
+                  height="5"
+                  indeterminate
+                  rounded
+                ></v-progress-linear>
+              </v-carousel-item>
             </v-carousel>
           </div>
 
@@ -194,5 +257,9 @@
   .v-form label {
     font-weight: bold;
     text-transform: capitalize;
+  }
+
+  .v-form .v-file-input + .v-carousel {
+    margin-top: 1rem;
   }
 </style>

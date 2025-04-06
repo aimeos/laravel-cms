@@ -1,8 +1,9 @@
-import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import { createApp, defineAsyncComponent } from 'vue'
 import { BatchHttpLink } from "apollo-link-batch-http"
 import { createApolloProvider } from '@vue/apollo-option'
-import { ApolloClient, InMemoryCache } from '@apollo/client/core'
+import { ApolloClient, ApolloLink, InMemoryCache } from '@apollo/client/core'
+import createUploadLink from 'apollo-upload-client/createUploadLink.mjs'
 import VueObserveVisibility from 'vue3-observe-visibility'
 
 import '@mdi/font/css/materialdesignicons.css'
@@ -39,12 +40,20 @@ const vuetify = createVuetify({
 })
 
 const node = document.querySelector('#app')
-const httpLink = new BatchHttpLink({
-  uri: node && node.dataset && node.dataset.graphql || '/graphql',
-  batchMax: 50,
-  batchInterval: 20,
-  credentials: 'include'
-})
+const httpLink = ApolloLink.split(
+  operation => operation.getContext().hasUpload,
+  createUploadLink({
+    uri: node && node.dataset && node.dataset.graphql || '/graphql',
+    credentials: 'include'
+  }),
+  new BatchHttpLink({
+    uri: node && node.dataset && node.dataset.graphql || '/graphql',
+    batchMax: 50,
+    batchInterval: 20,
+    credentials: 'include'
+  })
+)
+
 const apolloClient = new ApolloClient({cache: new InMemoryCache(), link: httpLink})
 const apolloProvider = createApolloProvider({defaultClient: apolloClient})
 

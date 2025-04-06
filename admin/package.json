@@ -24,6 +24,7 @@
     "@he-tree/vue": "^2.9",
     "@vue/apollo-option": "^4.2",
     "apollo-link-batch-http": "^1.2",
+    "apollo-upload-client": "^18.0.1",
     "diff": "^7.0",
     "pinia": "^3.0",
     "sass": "^1.86",

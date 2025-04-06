@@ -6,6 +6,7 @@ export const useAppStore = defineStore('app', {
   state: () => ({
     me: null,
     url: app?.dataset.urltemplate || '/:slug/xx_XX',
+    urlfiles: app?.dataset.urlfiles || '/storage',
   })
 })
 

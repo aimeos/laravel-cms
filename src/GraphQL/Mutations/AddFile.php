@@ -22,7 +22,7 @@ final class AddFile
             return null;
         }
 
-        $dir = 'cms/' . \Aimeos\Cms\Tenancy::value();
+        $dir = trim( 'cms/' . \Aimeos\Cms\Tenancy::value(), '/' );
         $previews = [];
 
         try
@@ -43,7 +43,7 @@ final class AddFile
             $file->tag = $args['input']['tag'] ?? '';
             $file->mime = $upload->getClientMimeType();
             $file->path = $path;
-            $file->previews = $previews;
+            $file->previews = (object) $previews;
             $file->editor = Auth::user()?->name ?? request()->ip();
             $file->save();
 

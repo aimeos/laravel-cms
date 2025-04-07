@@ -13,10 +13,45 @@
       return { app }
     },
     methods: {
-      async upload(code, file) {
+      srcset(map) {
+        let list = []
+        for(const key in map) {
+          list.push(`${this.url(map[key])} ${key}w`)
+        }
+        return list.join(', ')
+      },
+
+
+      file(code, file) {
         this.data[code] = {path: URL.createObjectURL(file), uploading: true}
 
-        await this.$apollo.mutate({
+        this.upload(file).then(data => {
+          URL.revokeObjectURL(this.data[code].path)
+          this.data[code] = data
+        }).finally(() => {
+          delete this.data[code].uploading
+        })
+      },
+
+
+      files(code, files) {
+        this.data[code] = []
+
+        for(const idx in files) {
+          this.data[code][idx] = {path: URL.createObjectURL(files[idx]), uploading: true}
+
+          this.upload(files[idx]).then(data => {
+            URL.revokeObjectURL(this.data[code][idx].path)
+            this.data[code][idx] = data
+          }).finally(() => {
+            delete this.data[code][idx].uploading
+          })
+        }
+      },
+
+
+      async upload(file) {
+        return await this.$apollo.mutate({
           mutation: gql`mutation($file: Upload!) {
             addFile(file: $file) {
               id
@@ -38,52 +73,13 @@
           }
           return response.data?.addFile || {}
         }).then(data => {
+          delete data.__typename
           data.previews = JSON.parse(data.previews) || {}
-          URL.revokeObjectURL(this.data[code].path)
-          this.data[code] = data
+          return data
         }).catch(error => {
           this.data[code].uploading = false
           console.error(`addFile(` + code + `)`, error)
         })
-      },
-
-
-      async uploads(code, files) {
-        this.data[code] = []
-
-        for(const idx in files) {
-          this.data[code][idx] = {path: URL.createObjectURL(files[idx]), uploading: true}
-
-          await this.$apollo.mutate({
-            mutation: gql`mutation($file: Upload!) {
-              addFile(file: $file) {
-                id
-                mime
-                name
-                path
-                previews
-              }
-            }`,
-            variables: {
-              file: files[idx]
-            },
-            context: {
-              hasUpload: true
-            }
-          }).then(response => {
-            if(response.errors) {
-              throw response.errors
-            }
-            return response.data?.addFile || {}
-          }).then(data => {
-            data.previews = JSON.parse(data.previews) || {}
-            URL.revokeObjectURL(this.data[code][idx].path)
-            this.data[code][idx] = data
-          }).catch(error => {
-            this.data[code][idx].uploading = false
-            console.error(`addFile(` + code + `)`, error)
-          })
-        }
       },
 
 
@@ -141,7 +137,7 @@
           <div v-if="field.type === 'image'">
             <v-file-input
               :label="field.label || ''"
-              @update:model-value="upload(code, $event)"
+              @update:model-value="file(code, $event)"
               variant="underlined"
               show-size="1024"
               clearable
@@ -156,6 +152,7 @@
 
             <v-img v-if="data[code]"
               :src="url(data[code].path)"
+              :srcset="srcset(data[code].previews)"
               max-width="50vw"
               max-height="50vh"
             ></v-img>
@@ -164,7 +161,7 @@
           <div v-if="field.type === 'images'">
             <v-file-input
               :label="field.label || ''"
-              @update:model-value="uploads(code, $event)"
+              @update:model-value="files(code, $event)"
               variant="underlined"
               show-size="1024"
               clearable
@@ -172,8 +169,11 @@
               counter
             ></v-file-input>
 
-            <v-carousel v-if="data[code]?.length">
-              <v-carousel-item v-for="entry in data[code]" :src="url(entry.path)">
+            <v-carousel v-if="data[code]?.length"
+              :show-arrows="data[code].length > 1">
+              <v-carousel-item v-for="entry in data[code]"
+                :src="url(entry.path)"
+                :srcset="srcset(entry.previews)">
                 <v-progress-linear v-if="entry.uploading"
                   color="primary"
                   height="5"

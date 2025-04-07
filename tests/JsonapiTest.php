@@ -22,7 +22,7 @@ class JsonapiTest extends TestAbstract
     protected function defineRoutes( $router )
     {
         \LaravelJsonApi\Laravel\Facades\JsonApiRoute::server( "cms" )->prefix( "cms" )->resources( function( $server ) {
-            $server->resource( "pages", \Aimeos\Cms\JsonApi\V1\Controllers\PageController::class )->readOnly()
+            $server->resource( "pages", \Aimeos\Cms\JsonApi\V1\Controllers\JsonapiController::class )->readOnly()
                 ->relationships( function( $relationships ) {
                     $relationships->hasMany( 'contents' )->readOnly();
                 });

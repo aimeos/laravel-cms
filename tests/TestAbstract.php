@@ -4,12 +4,14 @@ namespace Tests;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
+use Orchestra\Testbench\Concerns\WithLaravelMigrations;
 
 
 abstract class TestAbstract extends \Orchestra\Testbench\TestCase
 {
     use RefreshDatabase;
-	use InteractsWithViews;
+    use InteractsWithViews;
+    use WithLaravelMigrations;
 
 
     protected ?\App\Models\User $user = null;

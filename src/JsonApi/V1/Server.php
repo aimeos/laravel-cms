@@ -2,6 +2,8 @@
 
 namespace Aimeos\Cms\JsonApi\V1;
 
+use Illuminate\Support\Facades\Url;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use LaravelJsonApi\Core\Server\Server as BaseServer;
 use LaravelJsonApi\Core\Document\JsonApi;
@@ -16,7 +18,7 @@ class Server extends BaseServer
      *
      * @var string
      */
-    protected string $baseUri = '/api/cms';
+    protected string $baseUri;
 
 
     /**
@@ -42,5 +44,20 @@ class Server extends BaseServer
             Contents\ContentSchema::class,
             Pages\PageSchema::class,
         ];
+    }
+
+
+    /**
+     * Returns the base URL for generated links in the JSON API response.
+     *
+     * @return string Base URL
+     */
+    protected function baseUri(): string
+    {
+        if( !isset( $this->baseUri ) ) {
+            $this->baseUri = Route::has( 'cms.pages' ) ? str_replace( '/pages', '', Url::route( 'cms.pages' ) ) : '/cms';
+        }
+
+        return $this->baseUri;
     }
 }

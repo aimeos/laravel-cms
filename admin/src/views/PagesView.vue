@@ -59,10 +59,10 @@
           if(!result.errors) {
             this.item = Object.assign(this.item, result.data.savePage)
           } else {
-            console.log(`savePage(id: ${item.id})`, result)
+            console.error(`savePage(id: ${item.id})`, result)
           }
         }).catch(error => {
-          console.log(`savePage(id: ${item.id})`, error)
+          console.error(`savePage(id: ${item.id})`, error)
         })
 
         this.details = false

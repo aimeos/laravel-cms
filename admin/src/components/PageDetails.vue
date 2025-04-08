@@ -72,10 +72,10 @@
           if(!result.errors && result.data) {
             this.page = Object.assign(this.page, result.data.page);
           } else {
-            console.log(`page(id: ${this.item.id})`, result)
+            console.error(`page(id: ${this.item.id})`, result)
           }
         }).catch(error => {
-          console.log(`page(id: ${this.item.id})`, error)
+          console.error(`page(id: ${this.item.id})`, error)
         })
       }
     }

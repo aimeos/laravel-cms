@@ -92,10 +92,10 @@
             node.id = result.data.addPage.id
             this.$refs.tree.add(node)
           } else {
-            console.log(`addPage(add root)`, result)
+            console.error(`addPage(add root)`, result)
           }
         }).catch(error => {
-          console.log(`addPage(add root)`, error)
+          console.error(`addPage(add root)`, error)
         })
       },
 
@@ -127,10 +127,10 @@
               parent.data.has = true
             }
           } else {
-            console.log(`movePage(id: ${dragContext.startInfo.dragNode.data.id})`, result)
+            console.error(`movePage(id: ${dragContext.startInfo.dragNode.data.id})`, result)
           }
         }).catch(error => {
-          console.log(`movePage(id: ${dragContext.startInfo.dragNode.data.id})`, error)
+          console.error(`movePage(id: ${dragContext.startInfo.dragNode.data.id})`, error)
         })
       },
 
@@ -179,10 +179,10 @@
                 stat.parent.data.has = false
               }
             } else {
-              console.log(`dropPage(id: ${stat.data.id})`, result)
+              console.error(`dropPage(id: ${stat.data.id})`, result)
             }
           }).catch(error => {
-            console.log(`dropPage(id: ${stat.data.id})`, error)
+            console.error(`dropPage(id: ${stat.data.id})`, error)
           })
         })
       },
@@ -231,10 +231,10 @@
             }
             parent.data.has = true
           } else {
-            console.log(`addPage(insert node)`, result)
+            console.error(`addPage(insert node)`, result)
           }
         }).catch(error => {
-          console.log(`addPage(insert node)`, error)
+          console.error(`addPage(insert node)`, error)
         })
       },
 
@@ -268,10 +268,10 @@
                 }
               })
             } else {
-              console.log(`keepPage(id: ${stat.data.id})`, result)
+              console.error(`keepPage(id: ${stat.data.id})`, result)
             }
           }).catch(error => {
-            console.log(`keepPage(id: ${stat.data.id})`, error)
+            console.error(`keepPage(id: ${stat.data.id})`, error)
           })
         })
       },
@@ -323,10 +323,10 @@
               this.$refs.tree.addMulti(children, stat, 0)
               stat.page = result.data.pages.paginatorInfo.currentPage || 1
             } else {
-              console.log(`pages(id: ${node.id})`, result)
+              console.error(`pages(id: ${node.id})`, result)
             }
           }).catch(error => {
-            console.log(`pages(id: ${node.id})`, error)
+            console.error(`pages(id: ${node.id})`, error)
           }).finally(() => {
             stat.loading = false
           })
@@ -369,10 +369,10 @@
             }
             parent.data.has = true
           } else {
-            console.log(`movePage(id: ${this.clip.node.id})`, result)
+            console.error(`movePage(id: ${this.clip.node.id})`, result)
           }
         }).catch(error => {
-          console.log(`movePage(id: ${this.clip.node.id})`, error)
+          console.error(`movePage(id: ${this.clip.node.id})`, error)
         })
 
         this.show()
@@ -415,10 +415,10 @@
             this.$refs.tree.add(node, parent, index)
             parent.data.has = true
           } else {
-            console.log(`addPage(id: ${this.clip.node.id})`, result)
+            console.error(`addPage(id: ${this.clip.node.id})`, result)
           }
         }).catch(error => {
-          console.log(`addPage(id: ${this.clip.node.id})`, error)
+          console.error(`addPage(id: ${this.clip.node.id})`, error)
         })
 
         this.show()
@@ -444,10 +444,10 @@
               stat.data.latest.published = true
               stat.check = false
             } else {
-              console.log(`pubPage(id: ${stat.data.id})`, result)
+              console.error(`pubPage(id: ${stat.data.id})`, result)
             }
           }).catch(error => {
-            console.log(`pubPage(id: ${stat.data.id})`, error)
+            console.error(`pubPage(id: ${stat.data.id})`, error)
           })
         })
       },
@@ -475,10 +475,10 @@
                 stat.parent.data.has = false
               }
             } else {
-              console.log(`purgePage(id: ${stat.data.id})`, result)
+              console.error(`purgePage(id: ${stat.data.id})`, result)
             }
           }).catch(error => {
-            console.log(`purgePage(id: ${stat.data.id})`, error)
+            console.error(`purgePage(id: ${stat.data.id})`, error)
           })
         })
       },
@@ -531,10 +531,10 @@
               return {...node}
             })
           } else {
-            console.log(`pages(parent: null)`, result)
+            console.error(`pages(parent: null)`, result)
           }
         }).catch(error => {
-          console.log(`pages(parent: null)`, error)
+          console.error(`pages(parent: null)`, error)
         }).finally(() => {
           this.loading = false
         })
@@ -573,10 +573,10 @@
             if(!result.errors) {
               stat.data.status = val
             } else {
-              console.log(`savePage(id: ${stat.data.id})`, result)
+              console.error(`savePage(id: ${stat.data.id})`, result)
             }
           }).catch(error => {
-            console.log(`savePage(id: ${stat.data.id})`, error)
+            console.error(`savePage(id: ${stat.data.id})`, error)
           })
         })
       },

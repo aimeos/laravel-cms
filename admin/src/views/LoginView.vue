@@ -60,7 +60,7 @@
         }).then(r => {
           this.handle(r.data.cmsLogin || null)
         }).catch(err => {
-          console.log(`cmsLogin(email: ${this.creds.email})`, err)
+          console.error(`cmsLogin(email: ${this.creds.email})`, err)
           this.error = err.message
         }).finally(() => {
           this.loading = false

@@ -65,7 +65,7 @@
     methods: {
       add(code, idx) {
         if(!this.elements[code]) {
-          console.error('Element not found', code)
+          console.error(`Element not found "${code}"`)
           return
         }
 

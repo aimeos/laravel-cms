@@ -30,7 +30,7 @@ final class AddFile
         {
             $filename = $upload->getClientOriginalName();
             $ext = preg_replace( '/[[:cntrl:]]|[[:blank]]|\/|\./smu', '', pathinfo( $filename, PATHINFO_EXTENSION ) );
-            $path = $this->name( $upload ) . '.' . $ext;
+            $path = $dir . '/' . $this->name( $upload ) . '.' . $ext;
 
             if( !$disk->put( $path, $upload, 'public' ) ) {
                 throw new \RuntimeException( sprintf( 'Unable to store file "%s" to "%s"', $filename, $path ) );

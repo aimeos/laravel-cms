@@ -109,6 +109,7 @@
             :items="field.options || []"
             :label="field.label || ''"
             v-model="data[code]"
+            density="comfortable"
             variant="underlined"
           ></v-autocomplete>
 
@@ -123,6 +124,7 @@
             :multiple="field.multiple"
             :chips="field.multiple"
             v-model="data[code]"
+            density="comfortable"
             variant="underlined"
             clearable
           ></v-combobox>
@@ -130,6 +132,7 @@
           <v-file-input v-if="field.type === 'file'"
             :label="field.label || ''"
             v-model="data[code]"
+            density="comfortable"
             variant="underlined"
             clearable
           ></v-file-input>
@@ -187,6 +190,7 @@
           <v-number-input v-if="field.type === 'number'"
             :label="field.label || ''"
             v-model="data[code]"
+            density="comfortable"
             variant="outlined"
           ></v-number-input>
 
@@ -208,6 +212,7 @@
             :multiple="field.multiple"
             :chips="field.multiple"
             v-model="data[code]"
+            density="comfortable"
             variant="underlined"
             item-title="label"
           ></v-select>
@@ -225,14 +230,18 @@
           <v-text-field v-if="field.type === 'string'"
             :label="field.label || ''"
             v-model="data[code]"
+            density="comfortable"
             variant="underlined"
             clearable
           ></v-text-field>
 
           <v-textarea v-if="field.type === 'text'"
             :label="field.label || ''"
+            :auto-grow="true"
+            :counter="true"
             v-model="data[code]"
             variant="underlined"
+            density="comfortable"
             clearable
           ></v-textarea>
 

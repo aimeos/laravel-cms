@@ -65,6 +65,10 @@
     color: #fff;
   }
 
+  .v-expansion-panel-title {
+    padding: 8px 16px;
+  }
+
   .v-expansion-panel-title .v-selection-control {
     flex: none;
   }

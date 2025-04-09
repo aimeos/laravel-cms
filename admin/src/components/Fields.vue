@@ -144,7 +144,7 @@
         if(path.startsWith('http') || path.startsWith('blob:')) {
           return path
         }
-        return this.app.urlfiles.replace(/\/+$/g, '') + '/' + path
+        return this.app.urlfile.replace(/\/+$/g, '') + '/' + path
       }
     }
   }

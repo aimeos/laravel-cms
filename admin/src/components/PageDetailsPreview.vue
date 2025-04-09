@@ -10,7 +10,7 @@
     },
     computed: {
       url() {
-        const url = this.app.url
+        const url = this.app.urlpage
           .replace(/:domain/, this.item.domain)
           .replace(/:slug/, this.item.slug)
           .replace(/xx_XX/, this.item.lang)

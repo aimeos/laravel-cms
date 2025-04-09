@@ -1,16 +1,17 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAppStore } from './stores'
 
+const url = document.querySelector('#app')?.dataset?.urlbase || ''
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
-      path: window.location.pathname + '/',
+      path: url + '/',
       name: 'login',
       component: () => import('./views/LoginView.vue')
     },
     {
-      path: window.location.pathname + '/pages',
+      path: url + '/pages',
       name: 'pages',
       component: () => import('./views/PagesView.vue'),
       meta: {
@@ -18,7 +19,7 @@ const router = createRouter({
       }
     },
     {
-      path: window.location.pathname + '/files',
+      path: url + '/files',
       name: 'files',
       component: () => import('./views/FilesView.vue'),
       meta: {

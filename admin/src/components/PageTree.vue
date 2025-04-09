@@ -601,7 +601,7 @@
       },
 
       url(node) {
-        return this.app.url
+        return this.app.urlpage
           .replace(/:domain/, node.domain)
           .replace(/:slug/, node.slug)
           .replace(/xx_XX/, node.lang)

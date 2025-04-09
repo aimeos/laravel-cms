@@ -43,11 +43,11 @@ const node = document.querySelector('#app')
 const httpLink = ApolloLink.split(
   operation => operation.getContext().hasUpload,
   createUploadLink({
-    uri: node && node.dataset && node.dataset.graphql || '/graphql',
+    uri: node?.dataset?.urlgraphql || '/graphql',
     credentials: 'include'
   }),
   new BatchHttpLink({
-    uri: node && node.dataset && node.dataset.graphql || '/graphql',
+    uri: node?.dataset?.urlgraphql || '/graphql',
     batchMax: 50,
     batchInterval: 20,
     credentials: 'include'

@@ -58,4 +58,12 @@ const apolloClient = new ApolloClient({cache: new InMemoryCache(), link: httpLin
 const apolloProvider = createApolloProvider({defaultClient: apolloClient})
 
 
+const fields = import.meta.glob("@/fields/**/*.vue");
+
+for(const path in fields) {
+  const name = path.split("/").at(-1).split(".")[0]
+  app.component(name, defineAsyncComponent(fields[path]));
+}
+
+
 app.use(pinia).use(router).use(vuetify).use(apolloProvider).use(VueObserveVisibility).mount('#app')

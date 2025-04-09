@@ -60,3 +60,8 @@ body, .v-main, .v-window {
 .slide-leave-to {
   transform: translateX(100%);
 }
+
+.v-form label {
+  font-weight: bold;
+  text-transform: capitalize;
+}

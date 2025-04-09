@@ -1,52 +1,114 @@
 <script>
   import gql from 'graphql-tag'
   import { useAppStore } from '../stores'
+  import { VueDraggable } from 'vue-draggable-plus'
 
   export default {
+    components: {
+      VueDraggable
+    },
     props: ['data', 'fields'],
     emits: ['update:data'],
     data: () => ({
-      img: {}
     }),
     setup() {
       const app = useAppStore()
       return { app }
     },
     methods: {
+      addListItem(code) {
+        if(!this.data[code]) {
+          this.data[code] = []
+        }
+        this.data[code].push('')
+      },
+
+
+      removeListItem(code, idx) {
+        if(typeof this.data[code][idx] !== 'undefined') {
+          this.data[code].splice(idx, 1)
+        }
+        return false
+      },
+
+
+      file(code, ev) {
+        const files = ev.target.files || ev.dataTransfer.files || []
+
+        if(!files.length) {
+          return
+        }
+
+        this.data[code] = {path: URL.createObjectURL(files[0]), uploading: true}
+
+        this.upload(files[0]).then(data => {
+          URL.revokeObjectURL(this.data[code].path)
+          this.data[code] = data
+        }).catch(error => {
+          delete this.data[code]
+          console.error(`addFile(` + code + `)`, error)
+        })
+      },
+
+
+      files(code, ev) {
+        const files = ev.target.files || ev.dataTransfer.files || []
+
+        if(!files.length) {
+          return
+        }
+
+        if(!this.data[code]) {
+          this.data[code] = []
+        }
+
+        for(let i = 0; i < files.length; i++) {
+          const idx = this.data[code].length
+          this.data[code][idx] = {path: URL.createObjectURL(files[i]), uploading: true}
+
+          this.upload(files[i]).then(data => {
+            URL.revokeObjectURL(this.data[code][idx].path)
+            this.data[code][idx] = data
+          }).catch(error => {
+            delete this.data[code][idx]
+            console.error(`addFile(` + code + `)`, error)
+          })
+        }
+      },
+
+      async remove(code, idx = null) {
+        const entry = idx !== null ? this.data[code][idx] : this.data[code]
+
+        await this.$apollo.mutate({
+          mutation: gql`mutation($id: ID!) {
+            dropFile(id: $id) {
+              id
+            }
+          }`,
+          variables: {
+            id: entry.id
+          }
+        }).then(response => {
+          if(response.errors) {
+            throw response.errors
+          }
+          if(idx !== null) {
+            this.data[code].splice(idx, 1)
+          } else {
+            delete this.data[code]
+          }
+        }).catch(error => {
+          console.error(`dropFile(${code})`, error)
+        })
+      },
+
+
       srcset(map) {
         let list = []
         for(const key in map) {
           list.push(`${this.url(map[key])} ${key}w`)
         }
         return list.join(', ')
-      },
-
-
-      file(code, file) {
-        this.data[code] = {path: URL.createObjectURL(file), uploading: true}
-
-        this.upload(file).then(data => {
-          URL.revokeObjectURL(this.data[code].path)
-          this.data[code] = data
-        }).finally(() => {
-          delete this.data[code].uploading
-        })
-      },
-
-
-      files(code, files) {
-        this.data[code] = []
-
-        for(const idx in files) {
-          this.data[code][idx] = {path: URL.createObjectURL(files[idx]), uploading: true}
-
-          this.upload(files[idx]).then(data => {
-            URL.revokeObjectURL(this.data[code][idx].path)
-            this.data[code][idx] = data
-          }).finally(() => {
-            delete this.data[code][idx].uploading
-          })
-        }
       },
 
 
@@ -71,14 +133,9 @@
           if(response.errors) {
             throw response.errors
           }
-          return response.data?.addFile || {}
-        }).then(data => {
-          delete data.__typename
+          const data = response.data?.addFile || {}
           data.previews = JSON.parse(data.previews) || {}
           return data
-        }).catch(error => {
-          this.data[code].uploading = false
-          console.error(`addFile(` + code + `)`, error)
         })
       },
 
@@ -138,53 +195,84 @@
           ></v-file-input>
 
           <div v-if="field.type === 'image'">
-            <v-file-input
-              :label="field.label || ''"
-              @update:model-value="file(code, $event)"
-              variant="underlined"
-              show-size="1024"
-              clearable
-            ></v-file-input>
-
-            <v-progress-linear v-if="data[code].uploading"
-              color="primary"
-              height="5"
-              indeterminate
-              rounded
-            ></v-progress-linear>
-
-            <v-img v-if="data[code]"
-              :src="url(data[code].path)"
-              :srcset="srcset(data[code].previews)"
-              max-width="50vw"
-              max-height="50vh"
-            ></v-img>
+            <div v-if="data[code]" class="image">
+              <v-progress-linear v-if="data[code].uploading"
+                color="primary"
+                height="5"
+                indeterminate
+                rounded
+              ></v-progress-linear>
+              <v-img
+                :draggable="false"
+                :src="url(data[code].path)"
+                :srcset="srcset(data[code].previews)"
+              ></v-img>
+              <button v-if="data[code].id" @click="remove(code)"
+                title="Remove image"
+                type="button">
+                <v-icon icon="mdi-trash-can" role="img"></v-icon>
+              </button>
+            </div>
+            <div v-else class="image file-input">
+              <input type="file"
+                @input="file(code, $event)"
+                :id="code + '-images-1'"
+                :value="null"
+                accept="image/*"
+                hidden>
+              <label :for="code + '-images-1'">Add file</label>
+            </div>
           </div>
 
-          <div v-if="field.type === 'images'">
-            <v-file-input
-              :label="field.label || ''"
-              @update:model-value="files(code, $event)"
-              variant="underlined"
-              show-size="1024"
-              clearable
-              multiple
-              counter
-            ></v-file-input>
+          <VueDraggable v-if="field.type === 'images'" v-model="data[code]" draggable=".image" group="images" class="images">
+            <div v-for="(item, idx) in (data[code] || [])" :key="idx" class="image">
+              <v-progress-linear v-if="item.uploading"
+                color="primary"
+                height="5"
+                indeterminate
+                rounded
+              ></v-progress-linear>
+              <v-img
+                :srcset="srcset(item.previews)"
+                :src="url(item.path)"
+                draggable="false"
+              ></v-img>
+              <button v-if="item.id" @click="remove(code, idx)"
+                title="Remove image"
+                type="button">
+                <v-icon icon="mdi-trash-can" role="img"></v-icon>
+              </button>
+            </div>
+            <div class="file-input">
+              <input type="file"
+                @input="files(code, $event)"
+                :id="code + '-images-1'"
+                :value="null"
+                accept="image/*"
+                multiple
+                hidden>
+              <label :for="code + '-images-1'">Add files</label>
+            </div>
+          </VueDraggable>
 
-            <v-carousel v-if="data[code]?.length"
-              :show-arrows="data[code].length > 1">
-              <v-carousel-item v-for="entry in data[code]"
-                :src="url(entry.path)"
-                :srcset="srcset(entry.previews)">
-                <v-progress-linear v-if="entry.uploading"
-                  color="primary"
-                  height="5"
-                  indeterminate
-                  rounded
-                ></v-progress-linear>
-              </v-carousel-item>
-            </v-carousel>
+          <div v-if="field.type === 'list'" class="list">
+            <VueDraggable v-model="data[code]" group="list">
+              <v-text-field v-for="(item, idx) in (data[code] || [])" :key="idx"
+                @click:append="removeListItem(code, idx)"
+                :label="field.label || ''"
+                v-model="data[code][idx]"
+                density="comfortable"
+                variant="underlined"
+                append-icon="mdi-trash-can"
+              ></v-text-field>
+            </VueDraggable>
+
+            <button
+              @click="addListItem(code)"
+              title="Add item"
+              type="button">
+              <v-icon icon="mdi-plus-box" role="img"></v-icon>
+            </button>
           </div>
 
           <v-number-input v-if="field.type === 'number'"
@@ -235,6 +323,16 @@
             clearable
           ></v-text-field>
 
+          <v-textarea v-if="field.type === 'table'"
+            placeholder="val;val;val
+val;val;val"
+            :auto-grow="true"
+            v-model="data[code]"
+            variant="underlined"
+            density="comfortable"
+            clearable
+          ></v-textarea>
+
           <v-textarea v-if="field.type === 'text'"
             :label="field.label || ''"
             :auto-grow="true"
@@ -268,7 +366,38 @@
     text-transform: capitalize;
   }
 
-  .v-form .v-file-input + .v-carousel {
-    margin-top: 1rem;
+  .images,
+  .images .sortable {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .image, .file-input {
+    display: inline-flex;
+    border: 1px solid #808080;
+    border-radius: 0.5rem;
+    position: relative;
+    height: 178px;
+    width: 178px;
+    margin: 1px;
+  }
+
+  .file-input label {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    height: 176px;
+    width: 176px;
+  }
+
+  .image button {
+    position: absolute;
+    background-color: rgba(var(--v-theme-primary), 0.75);
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    color: #fff;
+    right: 0;
+    top: 0;
   }
 </style>

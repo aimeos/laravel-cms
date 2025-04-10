@@ -3,38 +3,56 @@
     props: ['ce', 'index'],
     emits: ['add'],
     data: () => ({
-      panel: [0]
-    })
+      tab: ['basic']
+    }),
+    computed: {
+      groups() {
+        const map = {}
+
+        for(const code in this.ce) {
+          const name = this.ce[code].group || 'uncategorized'
+          map[name] = map[name] || []
+          map[name].push(this.ce[code])
+        }
+
+        return map
+      }
+    }
   }
 </script>
 
 <template>
-  <v-container>
-    <v-expansion-panels v-model="panel">
+  <v-container class="rounded-lg">
+    <v-tabs v-model="tab">
+      <v-tab v-for="(group, name) in groups" :key="name" :value="name">{{ name }}</v-tab>
+    </v-tabs>
 
-      <v-expansion-panel elevation="1">
-        <v-expansion-panel-title>
-          Available elements
-        </v-expansion-panel-title>
-        <v-expansion-panel-text>
+    <v-tabs-window v-model="tab">
+      <v-tabs-window-item v-for="name in Object.keys(groups)" :key="name" :value="name">
 
-          <v-btn v-for="(data, code) in ce" :key="code" variant="text" stacked
-            @click="$emit('add', {type: code, index: index})">
+        <v-card flat>
+          <v-btn v-for="item in groups[name]" :key="item.type" variant="text" stacked
+            @click="$emit('add', {type: item.type, index: index})">
             <template v-slot:prepend>
-                <span class="icon" v-html="data.icon"></span>
+                <span class="icon" v-html="item.icon"></span>
             </template>
-            {{ code }}
+            {{ item.type }}
           </v-btn>
+        </v-card>
 
-        </v-expansion-panel-text>
-      </v-expansion-panel>
-
-    </v-expansion-panels>
+      </v-tabs-window-item>
+    </v-tabs-window>
   </v-container>
 </template>
 
 <style scoped>
-.icon {
-  width: 3rem;
-}
+  .v-container {
+    background-color: rgb(var(--v-theme-background));
+    max-width: 100%;
+    width: 50vw;
+  }
+
+  .icon {
+    width: 2rem;
+  }
 </style>

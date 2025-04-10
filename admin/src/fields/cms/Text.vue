@@ -1,5 +1,5 @@
 <script>
-  import { ClassicEditor, Markdown, Essentials, PasteFromOffice, Fullscreen, Clipboard, FindAndReplace, RemoveFormat, Heading, Paragraph, Bold, Italic, Strikethrough, BlockQuote, Code, CodeBlock, AutoLink, Link, List } from 'ckeditor5';
+  import { ClassicEditor, Markdown, Essentials, PasteFromOffice, Fullscreen, Clipboard, FindAndReplace, RemoveFormat, Paragraph, Bold, Italic, Strikethrough, Code, AutoLink, Link } from 'ckeditor5';
   import { Ckeditor } from '@ckeditor/ckeditor5-vue';
   import 'ckeditor5/ckeditor5.css';
 
@@ -18,8 +18,8 @@
       ckconfig() {
         return {
           licenseKey: 'GPL',
-          plugins: [ Markdown, Essentials, PasteFromOffice, Fullscreen, Clipboard, FindAndReplace, RemoveFormat, Heading, Paragraph, Bold, Italic, Strikethrough, BlockQuote, Code, CodeBlock, AutoLink, Link, List ],
-          toolbar: [ 'undo', 'redo', 'removeFormat', '|', 'heading', '|', 'bold', 'italic', 'strikethrough', 'code', 'link', '|', 'blockQuote', 'codeBlock', '|', 'bulletedList', 'numberedList', '|', 'fullscreen' ]
+          plugins: [ Markdown, Essentials, PasteFromOffice, Fullscreen, Clipboard, FindAndReplace, RemoveFormat, Paragraph, Bold, Italic, Strikethrough, Code, AutoLink, Link ],
+          toolbar: [ 'undo', 'redo', 'removeFormat', '|', 'bold', 'italic', 'strikethrough', 'code', 'link', '|', 'fullscreen' ]
         }
       }
     }

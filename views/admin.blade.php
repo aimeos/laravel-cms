@@ -18,7 +18,7 @@
     <div id="app"
       data-graphql="{{ route('graphql') }}"
       data-languages='{"en": "English"}'
-      data-urlbase="{{ route('cms.admin') }}"
+      data-urlbase="{{ route('cms.admin', [], false) }}"
       data-urlpage="{{ route('cms.page', ['domain' => ':domain', 'slug' => ':slug', 'lang' => 'la_NG']) }}"
       data-urlfile="{{ \Illuminate\Support\Facades\Storage::disk( config( 'cms.disk', 'public' ) )->url( '' ) }}">
     </div>

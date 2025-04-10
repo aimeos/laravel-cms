@@ -1,0 +1,1 @@
+import{_ as l,c as s,e as d,o as n}from"../index.js";const u={props:["modelValue","config"],emits:["update:modelValue"]};function m(o,e,a,r,c,p){return n(),s(d,{modelValue:a.modelValue,"onUpdate:modelValue":e[0]||(e[0]=t=>o.$emit("update:modelValue",t)),"show-adjacent-months":""},null,8,["modelValue"])}const V=l(u,[["render",m]]);export{V as default};

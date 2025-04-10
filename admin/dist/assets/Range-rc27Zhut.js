@@ -1,0 +1,1 @@
+import{_ as t,c as d,J as n,o as s}from"../index.js";const u={props:["modelValue","config"],emits:["update:modelValue"]};function r(o,e,a,m,p,c){return s(),d(n,{modelValue:a.modelValue,"onUpdate:modelValue":e[0]||(e[0]=l=>o.$emit("update:modelValue",l))},null,8,["modelValue"])}const V=t(u,[["render",r]]);export{V as default};

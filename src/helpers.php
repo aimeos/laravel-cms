@@ -31,3 +31,12 @@ if( !function_exists( 'cmsurl' ) )
         return \Illuminate\Support\Facades\Storage::disk( config( 'cms.disk', 'public' ) )->url( $path );
     }
 }
+
+
+if( !function_exists( 'cmsasset' ) )
+{
+    function cmsasset( string $path ): string
+    {
+        return asset( $path ) . '?v=' . filemtime( public_path( $path ) );
+    }
+}

@@ -11,8 +11,8 @@
 
     <title>Laravel CMS Admin</title>
 
-    <script type="module" crossorigin src="{{ asset('vendor/cms/admin/index.js') }}"></script>
-    <link rel="stylesheet" crossorigin href="{{ asset('vendor/cms/admin/index.css') }}">
+    <script type="module" crossorigin src="{{ cmsasset('vendor/cms/admin/index.js') }}"></script>
+    <link rel="stylesheet" crossorigin href="{{ cmsasset('vendor/cms/admin/index.css') }}">
   </head>
   <body>
     <div id="app"

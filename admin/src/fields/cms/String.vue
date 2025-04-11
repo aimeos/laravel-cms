@@ -8,6 +8,11 @@
 <template>
   <v-text-field
     :label="config.label || ''"
+    :placeholder="config.placeholder || ''"
+    :rules="[
+      v => (!config.max || v && v.length <= config.max) || `Maximum length is ${config.max} characters`,
+      v => (!config.min || v && v.length >= config.min) || `Minimum length is ${config.min} characters`
+    ]"
     :modelValue="modelValue"
     @update:modelValue="$emit('update:modelValue', $event)"
     density="comfortable"

@@ -12,7 +12,7 @@
 
 <template>
   <v-expansion-panel elevation="1" rounded="lg">
-    <v-expansion-panel-title collapse-icon="mdi-pencil">
+    <v-expansion-panel-title expand-icon="mdi-pencil">
       <v-checkbox-btn v-model="content._checked"></v-checkbox-btn>
 
       <v-menu>
@@ -56,19 +56,6 @@
 </template>
 
 <style scoped>
-  div.v-expansion-panel:nth-of-type(2n+1) .v-expansion-panel-title {
-    background-color: #40749b10;
-  }
-
-  .v-expansion-panel.v-expansion-panel--active .v-expansion-panel-title {
-    background-color: #40749b !important;
-    color: #fff;
-  }
-
-  .v-expansion-panel-title {
-    padding: 8px 16px;
-  }
-
   .v-expansion-panel-title .v-selection-control {
     flex: none;
   }

@@ -61,9 +61,26 @@ body, .v-main, .v-window {
   transform: translateX(100%);
 }
 
+.list div.v-expansion-panel:nth-of-type(2n+1) .v-expansion-panel-title {
+  background-color: #4070a020;
+}
+
+.list .v-expansion-panel.v-expansion-panel--active .v-expansion-panel-title {
+  background-color: #4070a0 !important;
+  color: #fff;
+}
+
+.list .v-expansion-panel-title {
+  padding: 8px 16px;
+}
+
 .v-form label {
   font-weight: bold;
   text-transform: capitalize;
+}
+
+.ck-editor__editable_inline {
+  min-height: 200px;
 }
 
 .ck-content ul,

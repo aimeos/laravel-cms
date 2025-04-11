@@ -132,10 +132,6 @@
 </template>
 
 <style scoped>
-  .v-expansion-panel:nth-of-type(2n+1) .v-expansion-panel-title {
-    background-color: #ebf4ff;
-  }
-
   .btn-group {
     padding: 1rem 0;
   }

@@ -222,7 +222,7 @@
         </v-btn>
       </div>
 
-      <v-expansion-panels>
+      <v-expansion-panels class="list">
         <Content v-for="(content, idx) in contents"
           :key="idx"
           :clip="clip"
@@ -258,9 +258,6 @@
 </template>
 
 <style scoped>
-.v-expansion-panel:nth-of-type(2n+1) .v-expansion-panel-title {
-    background-color: #FAFAFA !important;
-  }
 .header {
   display: flex;
   align-items: center;
@@ -272,35 +269,6 @@
 .bulk {
   display: flex;
   align-items: center;
-}
-
-.v-expansion-panel {
-  border-inline-start: 3px solid inherit !important;
-  border-radius: 0;
-}
-
-.v-expansion-panel-title__overlay {
-  background-color: transparent !important;
-}
-
-.v-expansion-panel--active {
-  border-color: #000080 !important
-}
-
-.panel-heading {
-  overflow: hidden;
-}
-
-.subtext {
-  display: block;
-  overflow: hidden;
-  max-width: 25rem;
-  max-height: 1.75rem;
-  padding-top: 0.25rem;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: #808080;
-  font-size: 80%;
 }
 
 .btn-group {

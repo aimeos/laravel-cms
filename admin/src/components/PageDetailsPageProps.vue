@@ -23,6 +23,13 @@
         return list
       }
     },
+    methods: {
+      updateSlug(focused) {
+        if(!focused && this.item.slug[0] === '_') {
+          this.item.slug = this.item.name.replace(/[ ]+/g, '-').toLowerCase()
+        }
+      }
+    },
     watch: {
       item: {
         deep: true,
@@ -51,11 +58,11 @@
 
     <v-row>
       <v-col cols="12" md="6">
-        <v-text-field v-model="item.name" label="Page name" variant="underlined" counter="30" required></v-text-field>
+        <v-text-field v-model="item.name" label="Page name" variant="underlined" counter="30" required @update:focused="updateSlug($event)"></v-text-field>
         <v-text-field v-model="item.title" label="Page title" variant="underlined" counter="70"></v-text-field>
       </v-col>
       <v-col cols="12" md="6">
-        <v-text-field v-model="item.slug" label="URL segment" variant="underlined" counter="255" required></v-text-field>
+        <v-text-field v-model="item.slug" label="URL path" variant="underlined" counter="255" required></v-text-field>
         <v-text-field v-model="item.domain" label="Domain" variant="underlined"></v-text-field>
       </v-col>
     </v-row>

@@ -101,7 +101,7 @@
 @section('cms-content')
 
 <div class="container">
-	@foreach($page->content as $content)
+	@foreach($page->content ?? [] as $content)
 		@includeFirst([$content['data']['type'] ?? '', 'cms::invalid'], ['data' => $content['data'] ?? []])
 	@endforeach
 </div>

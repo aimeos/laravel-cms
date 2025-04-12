@@ -7,7 +7,7 @@
 
 <template>
   <v-textarea
-    :label="config.label || ''"
+    :placeholder="config.placeholder || ''"
     :modelValue="modelValue"
     @update:modelValue="$emit('update:modelValue', $event)"
     density="comfortable"

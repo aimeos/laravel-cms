@@ -7,7 +7,6 @@
 
 <template>
   <v-switch
-    :label="config.label || ''"
     :modelValue="modelValue"
     @update:modelValue="$emit('update:modelValue', $event)"
     inset

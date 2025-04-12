@@ -7,9 +7,8 @@
 
 <template>
   <v-select
-    :placeholder="config.placeholder || ''"
     :items="config.options || []"
-    :label="config.label || ''"
+    :placeholder="config.placeholder || ''"
     :multiple="config.multiple"
     :chips="config.multiple"
     :modelValue="modelValue"

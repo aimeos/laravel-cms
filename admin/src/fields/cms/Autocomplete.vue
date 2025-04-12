@@ -8,7 +8,7 @@
 <template>
   <v-autocomplete
     :items="config.options || []"
-    :label="config.label || ''"
+    :placeholder="config.placeholder || ''"
     :modelValue="modelValue"
     @update:modelValue="$emit('update:modelValue', $event)"
     density="comfortable"

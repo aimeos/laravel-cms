@@ -14,7 +14,6 @@
 
 <template>
   <v-text-field
-    :label="config.label || ''"
     :placeholder="config.placeholder || ''"
     :rules="[
       v => (config.required && !!v) || `Value is required`,

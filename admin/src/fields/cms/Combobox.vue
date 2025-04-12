@@ -8,7 +8,7 @@
 <template>
   <v-combobox
     :items="config.options || []"
-    :label="config.label || ''"
+    :placeholder="config.placeholder || ''"
     :multiple="config.multiple"
     :chips="config.multiple"
     :modelValue="modelValue"

@@ -34,7 +34,7 @@
 </script>
 
 <template>
-  <v-navigation-drawer location="end" width="220" :modelValue="state" @update:modelValue="$emit('update:state', $event)" :rail="width > 1200 ? false : true" expand-on-hover>
+  <v-navigation-drawer location="end" rail-width="220" :modelValue="state" @update:modelValue="$emit('update:state', $event)" :rail="width > 1200 ? false : true" expand-on-hover>
 
     <v-expansion-panels variant="accordion" v-model="panel">
       <v-expansion-panel v-for="(items, key) in aside.store" :key="key" v-show="aside.show[key]" elevation="0">

@@ -277,17 +277,16 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 1rem;
-  margin: 0 0.5rem 1rem;
+  margin-bottom: 2rem;
+}
+
+.header > * {
+  margin: 0.5rem 0;
 }
 
 .bulk {
   display: flex;
   align-items: center;
-}
-
-.btn-group {
-  padding: 1rem 0;
 }
 
 .v-input.search {

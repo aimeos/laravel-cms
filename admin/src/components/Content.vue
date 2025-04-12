@@ -64,12 +64,4 @@
   .v-expansion-panel-title .v-selection-control {
     flex: none;
   }
-
-  .v-expansion-panel-title .content-type {
-    min-width: 10rem;
-  }
-
-  .v-expansion-panel-title .content-title {
-    font-weight: bold;
-  }
 </style>

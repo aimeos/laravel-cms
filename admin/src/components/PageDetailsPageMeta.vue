@@ -144,10 +144,6 @@
 </template>
 
 <style scoped>
-  .btn-group {
-    padding: 1rem 0;
-  }
-
   .header {
     display: flex;
     justify-content: end;

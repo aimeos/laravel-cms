@@ -47,10 +47,6 @@
 
 <style scoped>
   .subtabs {
-    margin-bottom: 2rem;
-  }
-
-  .btn-group {
-    padding: 1rem 0;
+    background-color: rgb(var(--v-theme-surface));
   }
 </style>

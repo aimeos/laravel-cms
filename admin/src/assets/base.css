@@ -7,16 +7,23 @@ input:-webkit-autofill:focus {
   transition: background-color 0s 600000s, color 0s 600000s !important;
 }
 
+body,
+.v-main {
+  --cms-primary: 64, 112, 160;
+  --cms-primary-dark: 16, 64, 112;
+  background-color: rgb(var(--v-theme-background));
+}
+
 .v-app-bar.v-toolbar {
-  background-color: #10446b !important;
-  color: #ffffff !important;
+  background-color: rgb(var(--cms-primary-dark)) !important;
+  color: rgb(var(--v-theme-surface)) !important;
 }
 
 .v-navigation-drawer,
 .v-navigation-drawer button,
 .v-navigation-drawer .v-list-item,
 .v-navigation-drawer .v-list-item a {
-  color: #ffffff !important;
+  color: rgb(var(--v-theme-surface)) !important;
   text-decoration: none;
 }
 
@@ -25,22 +32,84 @@ input:-webkit-autofill:focus {
 }
 
 nav.v-navigation-drawer {
-  background: linear-gradient(180deg, #10446b 0, #40749b 100%);
+  background: linear-gradient(180deg, rgb(var(--cms-primary-dark)) 0, rgb(var(--cms-primary)) 100%);
 }
 
-body, .v-main, .v-window {
-  background-color: rgb(var(--v-theme-background));
+.v-dialog > .v-overlay__content {
+  max-width: calc(100% - 2.5%) !important;
+  margin: 0 !important;
 }
 
-.v-container, .v-sheet .v-window {
+.v-window,
+.v-container {
   background-color: transparent;
 }
 
+.v-container {
+  padding: min(16px, 2.5%);
+}
+
 .v-sheet {
-  margin: 1rem 0;
+  margin: 0;
   padding: 2rem 2.5%;
   box-shadow: 0px 3px 9px 0px #A8B8C825 !important;
-  background-color: #ffffff;
+  background-color: rgb(var(--v-theme-surface));
+}
+
+.v-col-xxl, .v-col-xxl-auto, .v-col-xxl-12, .v-col-xxl-11, .v-col-xxl-10, .v-col-xxl-9, .v-col-xxl-8, .v-col-xxl-7, .v-col-xxl-6, .v-col-xxl-5, .v-col-xxl-4, .v-col-xxl-3, .v-col-xxl-2, .v-col-xxl-1, .v-col-xl, .v-col-xl-auto, .v-col-xl-12, .v-col-xl-11, .v-col-xl-10, .v-col-xl-9, .v-col-xl-8, .v-col-xl-7, .v-col-xl-6, .v-col-xl-5, .v-col-xl-4, .v-col-xl-3, .v-col-xl-2, .v-col-xl-1, .v-col-lg, .v-col-lg-auto, .v-col-lg-12, .v-col-lg-11, .v-col-lg-10, .v-col-lg-9, .v-col-lg-8, .v-col-lg-7, .v-col-lg-6, .v-col-lg-5, .v-col-lg-4, .v-col-lg-3, .v-col-lg-2, .v-col-lg-1, .v-col-md, .v-col-md-auto, .v-col-md-12, .v-col-md-11, .v-col-md-10, .v-col-md-9, .v-col-md-8, .v-col-md-7, .v-col-md-6, .v-col-md-5, .v-col-md-4, .v-col-md-3, .v-col-md-2, .v-col-md-1, .v-col-sm, .v-col-sm-auto, .v-col-sm-12, .v-col-sm-11, .v-col-sm-10, .v-col-sm-9, .v-col-sm-8, .v-col-sm-7, .v-col-sm-6, .v-col-sm-5, .v-col-sm-4, .v-col-sm-3, .v-col-sm-2, .v-col-sm-1, .v-col, .v-col-auto, .v-col-12, .v-col-11, .v-col-10, .v-col-9, .v-col-8, .v-col-7, .v-col-6, .v-col-5, .v-col-4, .v-col-3, .v-col-2, .v-col-1 {
+  padding: min(12px, 1.25%) !important;
+}
+
+.v-selection-control--density-default {
+  --v-selection-control-size: 48px !important;
+}
+
+.v-btn.v-btn--density-default:not(.v-btn--stacked) {
+  height: 48px;
+}
+
+.list.v-expansion-panels {
+  display: block;
+}
+
+.list div.v-expansion-panel:nth-of-type(2n+1) .v-expansion-panel-title {
+  background-color: rgba(var(--cms-primary), 0.125);
+}
+
+.list .v-expansion-panel.v-expansion-panel--active .v-expansion-panel-title {
+  background-color: rgb(var(--cms-primary)) !important;
+  color: #fff;
+}
+
+.list .v-expansion-panel-title {
+  padding: 8px 16px;
+}
+
+.list .v-expansion-panel-title .element-title {
+  font-weight: bold;
+  flex-grow: 1;
+  max-height: 48px;
+  overflow: hidden;
+  text-wrap: nowrap;
+}
+
+.list .v-expansion-panel-title .element-type {
+  margin-inline-start: 1rem;
+}
+
+.list .v-expansion-panel-title__icon {
+  margin-inline-start: unset;
+  padding: 0.8rem;
+}
+
+.list .v-expansion-panel-text__wrapper {
+  padding: 8px 2.5% 16px;
+}
+
+.list .form-label {
+  display: flex;
+  font-weight: bold;
+  text-transform: capitalize;
 }
 
 .hidden {
@@ -51,6 +120,10 @@ body, .v-main, .v-window {
   color: rgb(var(--v-theme-warning));
 }
 
+.btn-group {
+  padding: 1rem 0;
+}
+
 .slide-enter-active,
 .slide-leave-active {
   transition: all 0.25s;
@@ -59,24 +132,6 @@ body, .v-main, .v-window {
 .slide-enter-from,
 .slide-leave-to {
   transform: translateX(100%);
-}
-
-.list div.v-expansion-panel:nth-of-type(2n+1) .v-expansion-panel-title {
-  background-color: #4070a020;
-}
-
-.list .v-expansion-panel.v-expansion-panel--active .v-expansion-panel-title {
-  background-color: #4070a0 !important;
-  color: #fff;
-}
-
-.list .v-expansion-panel-title {
-  padding: 8px 16px;
-}
-
-.v-form label {
-  font-weight: bold;
-  text-transform: capitalize;
 }
 
 .ck-editor__editable_inline {

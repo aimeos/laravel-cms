@@ -34,7 +34,7 @@
           <v-btn v-for="item in groups[name]" :key="item.type" variant="text" stacked
             @click="$emit('add', {type: item.type, index: index})">
             <template v-slot:prepend>
-                <span class="icon" v-html="item.icon"></span>
+              <span class="icon" v-html="item.icon"></span>
             </template>
             {{ item.type }}
           </v-btn>
@@ -49,7 +49,7 @@
   .v-container {
     background-color: rgb(var(--v-theme-background));
     max-width: 100%;
-    width: 50vw;
+    min-width: 50vw;
   }
 
   .icon {

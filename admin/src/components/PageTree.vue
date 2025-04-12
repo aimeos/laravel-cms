@@ -875,10 +875,6 @@
     display: block;
   }
 
-  .page-title {
-    height: 2.5rem;
-  }
-
   .page-domain, .page-to {
     white-space: nowrap;
     text-overflow: ellipsis;

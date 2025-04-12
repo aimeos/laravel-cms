@@ -43,7 +43,7 @@
       meta: {},
       velements: false,
       vhistory: false,
-      panel: [0]
+      panel: []
     }),
     mounted() {
       this.meta = JSON.parse(this.item.versions[0]?.meta || this.item.meta || '{}')
@@ -64,12 +64,21 @@
           return
         }
 
+        if(this.meta[code]) {
+          return
+        }
+
         this.meta[code] = Object.assign(JSON.parse(JSON.stringify(this.elements[code])), {data: {}})
+        this.panel.push(Object.keys(this.meta).length - 1)
         this.velements = false
       },
 
       remove(code) {
         delete this.meta[code]
+      },
+
+      title(el) {
+        return Object.values(el.data || {}).filter(v => typeof v !== 'object' && !!v).join(' - ').substring(0, 50) || el.label || ''
       },
 
       use(data) {
@@ -91,32 +100,35 @@
 </script>
 
 <template>
-  <div class="header">
-    <v-btn :class="{hidden: !item.versions.length}" variant="outlined" @click="vhistory = true">
-      History
-    </v-btn>
-  </div>
+  <v-sheet>
+    <div class="header">
+      <v-btn icon="mdi-history"
+        :class="{hidden: !item.versions.length}"
+        @click="vhistory = true"
+        variant="outlined"
+        elevation="0"
+      ></v-btn>
+    </div>
 
-  <v-expansion-panels class="list">
+    <v-expansion-panels class="list" v-model="panel" multiple>
 
-    <v-expansion-panel v-for="(el, code) in meta || {}" :key="code" elevation="1" rounded="lg">
-      <v-expansion-panel-title expand-icon="mdi-pencil">
-        <v-btn icon="mdi-delete" variant="text" @click="remove(code)"></v-btn>
-        <div class="panel-heading">
-          {{ el.type }}
-          <span class="subtext">{{ el.data?.title || el.data?.text || '' }}</span>
-        </div>
-      </v-expansion-panel-title>
-      <v-expansion-panel-text>
-        <Fields :fields="el.fields" v-model:data="el.data" />
-      </v-expansion-panel-text>
-    </v-expansion-panel>
+      <v-expansion-panel v-for="(el, code) in meta || {}" :key="code" elevation="1" rounded="lg">
+        <v-expansion-panel-title expand-icon="mdi-pencil">
+          <v-btn icon="mdi-delete" variant="text" @click="remove(code)"></v-btn>
+          <div class="element-title">{{ title(el) }}</div>
+          <div class="element-type">{{ el.type }}</div>
+        </v-expansion-panel-title>
+        <v-expansion-panel-text>
+          <Fields :fields="el.fields" v-model:data="el.data" />
+        </v-expansion-panel-text>
+      </v-expansion-panel>
 
-  </v-expansion-panels>
+    </v-expansion-panels>
 
-  <div v-if="available" class="btn-group">
-    <v-btn icon="mdi-view-grid-plus" color="primary" @click="velements = true"></v-btn>
-  </div>
+    <div v-if="available" class="btn-group">
+      <v-btn icon="mdi-view-grid-plus" color="primary" @click="velements = true"></v-btn>
+    </div>
+  </v-sheet>
 
   <Teleport to="body">
     <v-dialog v-model="velements" scrollable width="auto">

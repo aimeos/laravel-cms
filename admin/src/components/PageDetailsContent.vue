@@ -201,7 +201,7 @@
 
 <template>
   <v-container v-observe-visibility="visibility">
-    <v-sheet elevation="0">
+    <v-sheet>
 
       <div class="header">
         <div class="bulk">
@@ -222,9 +222,12 @@
           clearable hide-details @input="search($event.target.value)" @click:clear="search('')">
         </v-text-field>
 
-        <v-btn :class="{hidden: !item.versions.length}" variant="outlined" @click="vhistory = true">
-          History
-        </v-btn>
+        <v-btn icon="mdi-history"
+          :class="{hidden: !item.versions.length}"
+          @click="vhistory = true"
+          variant="outlined"
+          elevation="0"
+        ></v-btn>
       </div>
 
       <v-expansion-panels class="list" v-model="panel" multiple>

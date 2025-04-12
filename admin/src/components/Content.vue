@@ -7,6 +7,11 @@
     },
     props: ['clip', 'content'],
     emits: ['copy', 'cut', 'insert', 'paste', 'remove', 'update:content'],
+    methods: {
+      title(content) {
+        return Object.values(content.data || {}).filter(v => typeof v !== 'object' && !!v).join(' - ').substring(0, 50) || content.label || ''
+      }
+    }
   }
 </script>
 
@@ -44,8 +49,8 @@
         </v-list>
       </v-menu>
 
-      <div class="content-type">{{ content.type }}</div>
-      <div class="content-title">{{ content.data?.title || content.data?.text || '' }}</div>
+      <div class="element-title">{{ title(content) }}</div>
+      <div class="element-type">{{ content.type }}</div>
     </v-expansion-panel-title>
     <v-expansion-panel-text>
 

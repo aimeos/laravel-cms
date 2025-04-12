@@ -3,12 +3,14 @@
   import History from './History.vue'
   import Elements from './Elements.vue'
   import { useSideStore } from '../stores'
+  import { VueDraggable } from 'vue-draggable-plus'
 
   export default {
     components: {
       Content,
       History,
-      Elements
+      Elements,
+      VueDraggable
     },
     setup() {
       const aside = useSideStore()
@@ -18,6 +20,7 @@
     emits: ['update:item'],
     data: () => ({
       contents: [],
+      panel: [],
       menu: {},
       side: {},
       clip: null,
@@ -103,8 +106,10 @@
 
         if(idx !== null) {
           this.contents.splice(idx, 0, entry)
+          this.panel.push(this.panel.includes(idx) ? idx + 1 : idx)
         } else {
           this.contents.push(entry)
+          this.panel.push(this.contents.length - 1)
         }
 
         this.velements = false
@@ -222,18 +227,25 @@
         </v-btn>
       </div>
 
-      <v-expansion-panels class="list">
-        <Content v-for="(content, idx) in contents"
-          :key="idx"
-          :clip="clip"
-          v-model:content="contents[idx]"
-          @copy="copy(idx)"
-          @cut="cut(idx)"
-          @insert="insert(idx + $event)"
-          @paste="paste(idx + $event)"
-          @remove="remove(idx)"
-          v-show="show(content)"
-        />
+      <v-expansion-panels class="list" v-model="panel" multiple>
+        <VueDraggable
+          v-model="contents"
+          draggable=".content"
+          group="content">
+          <Content v-for="(content, idx) in contents"
+            class="content"
+            :key="idx"
+            :clip="clip"
+            :content="contents[idx]"
+            @update:content="contents[idx] = $event"
+            @copy="copy(idx)"
+            @cut="cut(idx)"
+            @insert="insert(idx + $event)"
+            @paste="paste(idx + $event)"
+            @remove="remove(idx)"
+            v-show="show(content)"
+          />
+        </VueDraggable>
       </v-expansion-panels>
 
       <div class="btn-group">

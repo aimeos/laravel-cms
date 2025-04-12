@@ -18,8 +18,8 @@
 </script>
 
 <template>
-  <v-container>
-    <v-sheet>
+  <v-form @submit.prevent>
+    <v-container>
       <v-tabs class="subtabs" v-model="tab" align-tabs="center" density="compact">
         <v-tab value="details">Details</v-tab>
         <v-tab value="meta">Meta</v-tab>
@@ -41,8 +41,8 @@
         </v-window-item>
 
       </v-window>
-    </v-sheet>
-  </v-container>
+    </v-container>
+  </v-form>
 </template>
 
 <style scoped>

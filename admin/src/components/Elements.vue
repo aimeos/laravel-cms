@@ -1,18 +1,25 @@
 <script>
+  import { useElementStore } from '../stores'
+
   export default {
-    props: ['ce', 'index'],
+    props: ['type'],
     emits: ['add'],
     data: () => ({
-      tab: ['basic']
+      tab: ['basic'],
     }),
+    setup() {
+      const elements = useElementStore()
+      return { elements }
+    },
     computed: {
       groups() {
         const map = {}
+        const items = this.elements[this.type] || {}
 
-        for(const code in this.ce) {
-          const name = this.ce[code].group || 'uncategorized'
+        for(const code in items) {
+          const name = items[code].group || 'uncategorized'
           map[name] = map[name] || []
-          map[name].push(this.ce[code])
+          map[name].push(items[code])
         }
 
         return map
@@ -32,7 +39,7 @@
 
         <v-card flat>
           <v-btn v-for="item in groups[name]" :key="item.type" variant="text" stacked
-            @click="$emit('add', {type: item.type, index: index})">
+            @click="$emit('add', JSON.parse(JSON.stringify(item)))">
             <template v-slot:prepend>
               <span class="icon" v-html="item.icon"></span>
             </template>

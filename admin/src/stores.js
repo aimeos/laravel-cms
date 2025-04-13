@@ -23,9 +23,9 @@ export const useLanguageStore = defineStore('languages', {
  *
  * store {
  *   type {
- *     "cms:heading": 3,
- *     "cms:text": 8,
- *     "cms:article": 1
+ *     "heading": 3,
+ *     "text": 8,
+ *     "article": 1
  *   }
  * },
  * show {
@@ -33,9 +33,9 @@ export const useLanguageStore = defineStore('languages', {
  * },
  * used {
  *   type {
- *     "cms:heading": true,
- *     "cms:text": false,
- *     "cms:artice": true
+ *     "heading": true,
+ *     "text": false,
+ *     "artice": true
  *   }
  * }
  */
@@ -65,4 +65,13 @@ export const useSideStore = defineStore('side', {
       this.used[key][what] = !this.used[key][what]
     }
   }
+})
+
+
+export const useElementStore = defineStore('elements', {
+  state: () => ({
+    content: {},
+    meta: {},
+    config: {}
+  })
 })

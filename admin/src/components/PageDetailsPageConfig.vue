@@ -1,6 +1,7 @@
 <script>
-  import Elements from './Elements.vue'
   import Fields from './Fields.vue'
+  import Elements from './Elements.vue'
+  import { useElementStore } from '../stores'
 
   export default {
     components: {
@@ -9,26 +10,14 @@
     },
     props: ['item'],
     emits: ['update:item'],
+    setup() {
+      const elements = useElementStore()
+      return { elements }
+    },
     data: () => ({
       panel: [],
       config: {},
       velements: false,
-      elements: {
-        'test': {
-          type: 'test',
-          label: 'Test string+color',
-          fields: {
-            'test/key': {type: 'string', label: 'Test string config'},
-            'test/color': {type: 'color', label: 'Test color selector'}
-          }
-        },
-        'test2': {
-          type: 'test2',
-          fields: {
-            'test2/key': {type: 'string', label: 'Second string value'}
-          }
-        },
-      }
     }),
     computed: {
       available() {
@@ -36,18 +25,13 @@
       }
     },
     methods: {
-      add(code) {
-        if(!this.elements[code]) {
-          console.error(`Element not found "${code}"`)
+      add(item) {
+        if(this.config[item.type]) {
           return
         }
 
-        if(this.config[code]) {
-          return
-        }
-
-        this.config[code] = Object.assign(JSON.parse(JSON.stringify(this.elements[code])), {data: {}})
-        this.panel.push(Object.keys(this.meta).length - 1)
+        this.config[item.type] = Object.assign(item, {data: {}})
+        this.panel.push(Object.keys(this.config).length - 1)
         this.velements = false
       },
 
@@ -91,7 +75,7 @@
 
   <Teleport to="body">
     <v-dialog v-model="velements" scrollable width="auto">
-      <Elements :ce="elements" @add="add($event.type)" />
+      <Elements type="config" @add="add($event)" />
     </v-dialog>
   </Teleport>
 </template>

@@ -128,12 +128,15 @@ class GraphqlContentTest extends TestAbstract
 
         $content = Content::firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 2 );
+        $this->expectsDatabaseQueryCount( 3 );
         $response = $this->actingAs( $this->user )->graphQL( '{
             content(id: "' . $content->id . '") {
                 id
                 versions {
                     data
+                    files {
+                        path
+                    }
                     editor
                 }
             }
@@ -144,6 +147,7 @@ class GraphqlContentTest extends TestAbstract
                     'versions' => [
                         [
                             'data' => '{"type":"cms::heading","text":"Welcome to Laravel CMS"}',
+                            'files' => [],
                             'editor' => 'seeder'
                         ],
                     ],

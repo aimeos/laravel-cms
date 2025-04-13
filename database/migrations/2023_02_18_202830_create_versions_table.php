@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('versionable_type', 50);
             $table->boolean('published');
             $table->json('data');
-            $table->json('meta');
             $table->string('editor');
             $table->timestamps();
 

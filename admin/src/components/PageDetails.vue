@@ -43,7 +43,6 @@
               status
               cache
               config
-              data
               meta
               start
               end
@@ -52,16 +51,36 @@
               updated_at
               deleted_at
               has
-              contents {
-                id
-                data
-              }
               versions {
                 published
-                meta
                 data
                 editor
                 created_at
+                files {
+                  id
+                  mime
+                  path
+                  previews
+                  editor
+                  updated_at
+                }
+              }
+              contents {
+                id
+                versions {
+                  published
+                  data
+                  editor
+                  created_at
+                  files {
+                    id
+                    mime
+                    path
+                    previews
+                    editor
+                    updated_at
+                  }
+                }
               }
             }
           }`,

@@ -31,7 +31,7 @@
       velements: false,
     }),
     mounted() {
-      this.contents = JSON.parse(this.item.versions[0] ? this.item.versions[0].data : this.item.data || '[]')
+      this.contents = JSON.parse(this.item.versions[0]?.data || this.item.data || '[]')
     },
     methods: {
       add(item, idx) {
@@ -123,7 +123,7 @@
         handler() {
           const types = {}
 
-          this.contents.forEach((el) => {
+          this.contents.forEach(el => {
             if(el.type) {
               types[el.type] = (types[el.type] || 0) + 1
             }
@@ -231,7 +231,7 @@
 
   <Teleport to="body">
     <v-dialog v-model="vhistory" scrollable width="auto">
-      <History name="data" :data="clean()" :versions="item.versions || []" @use="use($event)" @hide="vhistory = false" />
+      <History :data="clean()" :versions="item.contents?.versions || []" @use="use($event)" @hide="vhistory = false" />
     </v-dialog>
   </Teleport>
 

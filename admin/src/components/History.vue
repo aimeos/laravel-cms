@@ -2,7 +2,7 @@
   import { diffJson } from 'diff'
 
   export default {
-    props: ['name', 'data', 'versions'],
+    props: ['data', 'versions'],
     emit: ['hide', 'use'],
     data: () => ({
       list: [],
@@ -10,9 +10,17 @@
     mounted() {
       this.versions.forEach(v => {
         const item = {...v}
-        item[this.name] = JSON.parse(v[this.name])
+        item.data = JSON.parse(v.data || '{}')
         this.list.push(item)
       })
+    },
+    computed: {
+      current() {
+        const item = {...this.data}
+        delete item.__typename
+        delete item.versions
+        return item
+      }
     },
     methods: {
       diff(old, str) {
@@ -40,12 +48,12 @@
 
       <v-card-text>
         <v-timeline side="end" align="start">
-          <v-timeline-item v-if="versions[0] && versions[0][name] != JSON.stringify(data)" size="small" dot-color="blue">
+          <v-timeline-item v-if="versions[0]?.data != JSON.stringify(data)" size="small" dot-color="blue">
 
             <v-card class="elevation-2">
               <v-card-title>Current</v-card-title>
               <v-card-text>
-                <span v-for="part of diff(list[0] ? list[0][name] : {}, data)"
+                <span v-for="part of diff(list[0]?.data || {}, current)"
                   :class="{added: part.added, removed: part.removed}">{{ part.value || part }}</span>
               </v-card-text>
             </v-card>
@@ -59,11 +67,11 @@
               <v-card-title>{{ version.created_at }}</v-card-title>
               <v-card-subtitle>{{ version.editor }}</v-card-subtitle>
               <v-card-text>
-                <span v-for="part of diff(version[idx+1] ? version[idx+1][name] : version[name], version[name])"
+                <span v-for="part of diff(list[idx+1]?.data || version.data, version.data)"
                   :class="{added: part.added, removed: part.removed}">{{ part.value || part }}</span>
               </v-card-text>
               <v-card-actions>
-                <v-btn variant="outlined" @click="$emit('use', version[name])">
+                <v-btn variant="outlined" @click="$emit('use', version.data)">
                   Use
                 </v-btn>
               </v-card-actions>

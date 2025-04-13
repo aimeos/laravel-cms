@@ -1,19 +1,36 @@
 <script>
-  import PageDetailsPageConfig from './PageDetailsPageConfig.vue'
-  import PageDetailsPageProps from './PageDetailsPageProps.vue'
+  import History from './History.vue'
   import PageDetailsPageMeta from './PageDetailsPageMeta.vue'
+  import PageDetailsPageProps from './PageDetailsPageProps.vue'
+  import PageDetailsPageConfig from './PageDetailsPageConfig.vue'
 
   export default {
     components: {
-      PageDetailsPageConfig,
+      History,
+      PageDetailsPageMeta,
       PageDetailsPageProps,
-      PageDetailsPageMeta
+      PageDetailsPageConfig,
     },
     props: ['item'],
     emits: ['update:item'],
     data: () => ({
       tab: 'details',
-    })
+      vhistory: false,
+    }),
+    computed: {
+      history() {
+        return this.vhistory ? true : false
+      }
+    },
+    methods: {
+      use(data) {
+        this.vhistory = null
+        this.$emit('update:item', {
+          ...this.item,
+          ...data
+        })
+      }
+    },
   }
 </script>
 
@@ -25,6 +42,15 @@
         <v-tab value="meta">Meta</v-tab>
         <v-tab value="config">Config</v-tab>
       </v-tabs>
+
+      <div class="header">
+        <v-btn icon="mdi-history"
+          :class="{hidden: !item.versions?.length}"
+          @click="vhistory = true"
+          variant="outlined"
+          elevation="0"
+        ></v-btn>
+      </div>
 
       <v-window v-model="tab">
 
@@ -43,10 +69,21 @@
       </v-window>
     </v-container>
   </v-form>
+
+  <Teleport to="body">
+    <v-dialog v-model="vhistory" scrollable width="auto">
+      <History :data="item" :versions="item.versions || []" @use="use($event)" @hide="vhistory = false" />
+    </v-dialog>
+  </Teleport>
 </template>
 
 <style scoped>
   .subtabs {
     background-color: rgb(var(--v-theme-surface));
+  }
+
+  .header {
+    display: flex;
+    justify-content: end;
   }
 </style>

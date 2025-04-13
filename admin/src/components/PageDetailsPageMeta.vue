@@ -1,13 +1,11 @@
 <script>
   import Fields from './Fields.vue'
-  import History from './History.vue'
   import Elements from './Elements.vue'
   import { useElementStore } from '../stores'
 
   export default {
     components: {
       Elements,
-      History,
       Fields,
     },
     props: ['item'],
@@ -19,19 +17,14 @@
     data: () => ({
       meta: {},
       velements: false,
-      vhistory: false,
       panel: []
     }),
     mounted() {
-      this.meta = JSON.parse(this.item.versions[0]?.meta || this.item.meta || '{}')
+      this.meta = JSON.parse(this.item.versions[0]?.data?.meta || this.item.meta || '{}')
     },
     computed: {
       available() {
         return Object.keys(this.elements).length
-      },
-
-      history() {
-        return this.vhistory ? true : false
       }
     },
     methods: {
@@ -51,11 +44,6 @@
 
       title(el) {
         return Object.values(el.data || {}).filter(v => typeof v !== 'object' && !!v).join(' - ').substring(0, 50) || el.label || ''
-      },
-
-      use(data) {
-        this.meta = data
-        this.vhistory = null
       }
     },
     watch: {
@@ -73,15 +61,6 @@
 
 <template>
   <v-sheet>
-    <div class="header">
-      <v-btn icon="mdi-history"
-        :class="{hidden: !item.versions.length}"
-        @click="vhistory = true"
-        variant="outlined"
-        elevation="0"
-      ></v-btn>
-    </div>
-
     <v-expansion-panels class="list" v-model="panel" multiple>
 
       <v-expansion-panel v-for="(el, code) in meta || {}" :key="code" elevation="1" rounded="lg">
@@ -107,17 +86,7 @@
       <Elements type="meta" @add="add($event)" />
     </v-dialog>
   </Teleport>
-
-  <Teleport to="body">
-    <v-dialog v-model="vhistory" scrollable width="auto">
-      <History name="meta" :data="meta" :versions="item.versions || []" @use="use($event)" @hide="vhistory = false" />
-    </v-dialog>
-  </Teleport>
 </template>
 
 <style scoped>
-  .header {
-    display: flex;
-    justify-content: end;
-  }
 </style>

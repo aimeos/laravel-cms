@@ -48,6 +48,16 @@
         this.vhistory = null
       }
     },
+    watch: {
+      config: {
+        deep: true,
+        handler() {
+          const item = {...this.item}
+          item.config = this.config
+          this.$emit('update:item', item)
+        }
+      }
+    }
   }
 </script>
 

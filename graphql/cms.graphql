@@ -262,10 +262,10 @@ input PageInput {
   "Date/time when the page will be hidden"
   end: String
 
-  "List of shared content IDs used in the data property"
+  "List of content IDs referenced by the page"
   contents: [ID!]
 
-  "List of file IDs used in the meta or data properties"
+  "List of file IDs used in the meta data"
   files: [ID!]
 }
 
@@ -324,9 +324,6 @@ input ContentInput {
 type Version {
   "Unique version ID"
   id: ID!
-
-  "Arbitrary versioned header elements"
-  meta: JSON!
 
   "Arbitrary versioned content elements"
   data: JSON!

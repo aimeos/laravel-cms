@@ -1,5 +1,5 @@
 <script>
-  import Content from './Content.vue'
+  import Fields from './Fields.vue'
   import History from './History.vue'
   import Elements from './Elements.vue'
   import { useSideStore } from '../stores'
@@ -7,7 +7,7 @@
 
   export default {
     components: {
-      Content,
+      Fields,
       History,
       Elements,
       VueDraggable
@@ -170,6 +170,10 @@
         )
       },
 
+      title(content) {
+        return Object.values(content.data || {}).filter(v => typeof v !== 'object' && !!v).join(' - ').substring(0, 50) || content.label || ''
+      },
+
       toggle() {
         this.contents.forEach(el => {
           el._checked = !el._checked
@@ -231,23 +235,51 @@
       </div>
 
       <v-expansion-panels class="list" v-model="panel" multiple>
-        <VueDraggable
-          v-model="contents"
-          draggable=".content"
-          group="content">
-          <Content v-for="(content, idx) in contents"
-            class="content"
-            :key="idx"
-            :clip="clip"
-            :content="contents[idx]"
-            @update:content="contents[idx] = $event"
-            @copy="copy(idx)"
-            @cut="cut(idx)"
-            @insert="insert(idx + $event)"
-            @paste="paste(idx + $event)"
-            @remove="remove(idx)"
-            v-show="show(content)"
-          />
+        <VueDraggable v-model="contents" draggable=".content" group="content">
+
+          <v-expansion-panel v-for="(content, idx) in contents" :key="idx" v-show="show(content)" class="content" elevation="1" rounded="lg">
+            <v-expansion-panel-title expand-icon="mdi-pencil">
+              <v-checkbox-btn v-model="content._checked"></v-checkbox-btn>
+
+              <v-menu>
+                <template v-slot:activator="{ props }">
+                  <v-btn icon="mdi-dots-vertical" variant="text" v-bind="props"></v-btn>
+                </template>
+                <v-list>
+                  <v-list-item>
+                    <v-btn prepend-icon="mdi-content-copy" variant="text" @click="copy(idx)">Copy</v-btn>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-btn prepend-icon="mdi-content-cut" variant="text" @click="cut(idx)">Cut</v-btn>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(idx)">Insert before</v-btn>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(idx + 1)">Insert after</v-btn>
+                  </v-list-item>
+                  <v-list-item v-if="clip">
+                    <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(idx)">Paste before</v-btn>
+                  </v-list-item>
+                  <v-list-item v-if="clip">
+                    <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(idx + 1)">Paste after</v-btn>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-btn prepend-icon="mdi-delete" variant="text" @click="remove(idx)">Delete</v-btn>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+
+              <div class="element-title">{{ title(content) }}</div>
+              <div class="element-type">{{ content.type }}</div>
+            </v-expansion-panel-title>
+            <v-expansion-panel-text>
+
+              <Fields :fields="content.fields" v-model:data="content.data" />
+
+            </v-expansion-panel-text>
+          </v-expansion-panel>
+
         </VueDraggable>
       </v-expansion-panels>
 
@@ -292,4 +324,8 @@
 .v-input.search {
   max-width: 30rem;
 }
+
+.v-expansion-panel-title .v-selection-control {
+    flex: none;
+  }
 </style>

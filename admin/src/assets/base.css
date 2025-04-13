@@ -35,6 +35,10 @@ nav.v-navigation-drawer {
   background: linear-gradient(180deg, rgb(var(--cms-primary-dark)) 0, rgb(var(--cms-primary)) 100%);
 }
 
+.v-tabs--density-compact {
+  --v-tabs-height: 48px !important;
+}
+
 .v-dialog > .v-overlay__content {
   max-width: calc(100% - 2.5%) !important;
   margin: 0 !important;

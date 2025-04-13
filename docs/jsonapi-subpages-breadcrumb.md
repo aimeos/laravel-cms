@@ -21,7 +21,7 @@ The `included` section contains the list of shared content elements that should 
         "version": "1.0"
     },
     "links": {
-        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/2"
+        "self": "http:\/\/mydomain.tld\/cms\/pages\/2"
     },
     "data": {
         "type": "pages",
@@ -65,7 +65,7 @@ The `included` section contains the list of shared content elements that should 
             }
         },
         "links": {
-            "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/2"
+            "self": "http:\/\/mydomain.tld\/cms\/pages\/2"
         }
     },
     "included": [
@@ -90,7 +90,7 @@ The `included` section contains the list of shared content elements that should 
                 "updatedAt": "2023-05-01T09:36:30.000000Z"
             },
             "links": {
-                "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/1"
+                "self": "http:\/\/mydomain.tld\/cms\/pages\/1"
             }
         }
     ]

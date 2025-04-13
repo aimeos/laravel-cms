@@ -35,8 +35,8 @@ The result will be a JSON:API response which looks like:
         "version": "1.0"
     },
     "links": {
-        "first": "http:\/\/mydomain.tld\/api\/cms\/pages?filter%5Btag%5D=root&include=children%2Ccontents&page%5Bnumber%5D=1&page%5Bsize%5D=15",
-        "last": "http:\/\/mydomain.tld\/api\/cms\/pages?filter%5Btag%5D=root&include=children%2Ccontents&page%5Bnumber%5D=1&page%5Bsize%5D=15"
+        "first": "http:\/\/mydomain.tld\/cms\/pages?filter%5Btag%5D=root&include=children%2Ccontents&page%5Bnumber%5D=1&page%5Bsize%5D=15",
+        "last": "http:\/\/mydomain.tld\/cms\/pages?filter%5Btag%5D=root&include=children%2Ccontents&page%5Bnumber%5D=1&page%5Bsize%5D=15"
     },
     "data": [
         {
@@ -96,7 +96,7 @@ The result will be a JSON:API response which looks like:
                 }
             },
             "links": {
-                "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/1"
+                "self": "http:\/\/mydomain.tld\/cms\/pages\/1"
             }
         }
     ],
@@ -134,7 +134,7 @@ The result will be a JSON:API response which looks like:
                 "updatedAt": "2023-05-01T09:36:30.000000Z"
             },
             "links": {
-                "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/2"
+                "self": "http:\/\/mydomain.tld\/cms\/pages\/2"
             }
         },
         {
@@ -158,7 +158,7 @@ The result will be a JSON:API response which looks like:
                 "updatedAt": "2023-05-01T09:36:30.000000Z"
             },
             "links": {
-                "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/4"
+                "self": "http:\/\/mydomain.tld\/cms\/pages\/4"
             }
         },
         {
@@ -182,7 +182,7 @@ The result will be a JSON:API response which looks like:
                 "updatedAt": "2023-05-01T09:36:30.000000Z"
             },
             "links": {
-                "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/5"
+                "self": "http:\/\/mydomain.tld\/cms\/pages\/5"
             }
         }
     ]

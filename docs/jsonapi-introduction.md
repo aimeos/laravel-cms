@@ -239,7 +239,7 @@ Then, the attributes of the returned pages in the [data section](#data) will con
             "slug": ""
         },
         "links": {
-            "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/1"
+            "self": "http:\/\/mydomain.tld\/cms\/pages\/1"
         }
     }
 ]
@@ -307,7 +307,7 @@ The `links` section in the JSON API response is always included and contains the
 
 ```json
 "links": {
-    "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/1"
+    "self": "http:\/\/mydomain.tld\/cms\/pages\/1"
 },
 ```
 
@@ -363,7 +363,7 @@ Using a request which returns a single page, then the response is like:
         }
     },
     "links": {
-        "self": "http:\/\/localhost:8000\/api\/cms\/pages\/1"
+        "self": "http:\/\/localhost:8000\/cms\/pages\/1"
     }
 },
 ```
@@ -417,7 +417,7 @@ For request returning multiple items, the `data` section will be similar to:
             }
         },
         "links": {
-            "self": "http:\/\/localhost:8000\/api\/cms\/pages\/1"
+            "self": "http:\/\/localhost:8000\/cms\/pages\/1"
         }
     },
     // ...

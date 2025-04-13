@@ -29,10 +29,10 @@ With that URL, you can fetch the page content now:
         "version": "1.0"
     },
     "links": {
-        "first": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/content?page%5Bnumber%5D=1&page%5Bsize%5D=50",
-        "last": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/content?page%5Bnumber%5D=1&page%5Bsize%5D=50",
-        "related": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/content",
-        "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/3\/relationships\/content"
+        "first": "http:\/\/mydomain.tld\/cms\/pages\/3\/content?page%5Bnumber%5D=1&page%5Bsize%5D=50",
+        "last": "http:\/\/mydomain.tld\/cms\/pages\/3\/content?page%5Bnumber%5D=1&page%5Bsize%5D=50",
+        "related": "http:\/\/mydomain.tld\/cms\/pages\/3\/content",
+        "self": "http:\/\/mydomain.tld\/cms\/pages\/3\/relationships\/content"
     },
     "data": [
         {

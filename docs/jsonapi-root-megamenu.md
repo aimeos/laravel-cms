@@ -37,8 +37,8 @@ Then, the page tree (up to three levels deep) including the shared content eleme
         "version": "1.0"
     },
     "links": {
-        "first": "http:\/\/mydomain.tld\/api\/cms\/pages?filter%5Btag%5D=root&include=subtree%2Ccontents&page%5Bnumber%5D=1&page%5Bsize%5D=15",
-        "last": "http:\/\/mydomain.tld\/api\/cms\/pages?filter%5Btag%5D=root&include=subtree%2Ccontents&page%5Bnumber%5D=1&page%5Bsize%5D=15"
+        "first": "http:\/\/mydomain.tld\/cms\/pages?filter%5Btag%5D=root&include=subtree%2Ccontents&page%5Bnumber%5D=1&page%5Bsize%5D=15",
+        "last": "http:\/\/mydomain.tld\/cms\/pages?filter%5Btag%5D=root&include=subtree%2Ccontents&page%5Bnumber%5D=1&page%5Bsize%5D=15"
     },
     "data": [
         {
@@ -102,7 +102,7 @@ Then, the page tree (up to three levels deep) including the shared content eleme
                 }
             },
             "links": {
-                "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/1"
+                "self": "http:\/\/mydomain.tld\/cms\/pages\/1"
             }
         }
     ],
@@ -140,7 +140,7 @@ Then, the page tree (up to three levels deep) including the shared content eleme
                 "updatedAt": "2023-05-01T09:36:30.000000Z"
             },
             "links": {
-                "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/2"
+                "self": "http:\/\/mydomain.tld\/cms\/pages\/2"
             }
         },
         {
@@ -164,7 +164,7 @@ Then, the page tree (up to three levels deep) including the shared content eleme
                 "updatedAt": "2023-05-01T09:36:30.000000Z"
             },
             "links": {
-                "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/3"
+                "self": "http:\/\/mydomain.tld\/cms\/pages\/3"
             }
         },
         {
@@ -188,7 +188,7 @@ Then, the page tree (up to three levels deep) including the shared content eleme
                 "updatedAt": "2023-05-01T09:36:30.000000Z"
             },
             "links": {
-                "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/4"
+                "self": "http:\/\/mydomain.tld\/cms\/pages\/4"
             }
         },
         {
@@ -212,7 +212,7 @@ Then, the page tree (up to three levels deep) including the shared content eleme
                 "updatedAt": "2023-05-01T09:36:30.000000Z"
             },
             "links": {
-                "self": "http:\/\/mydomain.tld\/api\/cms\/pages\/5"
+                "self": "http:\/\/mydomain.tld\/cms\/pages\/5"
             }
         }
     ]

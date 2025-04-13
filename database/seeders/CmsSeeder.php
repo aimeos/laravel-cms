@@ -50,15 +50,15 @@ class CmsSeeder extends Seeder
     }
 
 
-    protected function content() : Content
+    protected function content( array $data ) : Content
     {
         $content = Content::forceCreate([
             'label' => 'Test shared content',
-            'data' => ['type' => 'cms::heading', 'text' => 'Welcome to Laravel CMS'],
+            'data' => $data,
             'editor' => 'seeder',
         ]);
         $content->versions()->forceCreate([
-            'data' => ['type' => 'cms::heading', 'text' => 'Welcome to Laravel CMS'],
+            'data' => $data,
             'published' => true,
             'editor' => 'seeder',
         ]);
@@ -76,17 +76,26 @@ class CmsSeeder extends Seeder
             'tag' => 'root',
             'domain' => 'mydomain.tld',
             'meta' => ['cms::meta' => ['type' => 'cms::meta', 'text' => 'Laravel CMS is outstanding']],
-            'data' => [['type' => 'cms::heading', 'text' => 'Welcome to Laravel CMS']],
             'status' => 1,
             'editor' => 'seeder',
         ]);
         $page->versions()->forceCreate([
-            'meta' => ['cms::meta' => ['type' => 'cms::meta', 'text' => 'Laravel CMS is outstanding']],
-            'data' => [['type' => 'cms::heading', 'text' => 'Welcome to Laravel CMS']],
+            'data' => [
+                'name' => 'Home',
+                'title' => 'Home | Laravel CMS',
+                'slug' => '',
+                'tag' => 'root',
+                'domain' => 'mydomain.tld',
+                'meta' => ['cms::meta' => ['type' => 'cms::meta', 'text' => 'Laravel CMS is outstanding']],
+                'status' => 1,
+                'editor' => 'seeder',
+            ],
             'published' => true,
             'editor' => 'seeder',
         ]);
-        $page->contents()->attach( $this->content()->id );
+
+        $data = ['type' => 'cms::heading', 'text' => 'Welcome to Laravel CMS'];
+        $page->contents()->attach( $this->content( $data )->id );
 
         return $page;
     }
@@ -97,16 +106,18 @@ class CmsSeeder extends Seeder
         $page = Page::forceCreate([
             'name' => 'Blog',
             'title' => 'Blog | Laravel CMS',
-            'data' => [
-                ['type' => 'cms::heading', 'text' => 'Blog example'],
-                ['type' => 'cms::blog']
-            ],
             'slug' => 'blog',
             'tag' => 'blog',
             'status' => 1,
             'editor' => 'seeder',
         ]);
         $page->appendToNode( $home )->save();
+
+        $data = [
+            ['type' => 'cms::heading', 'text' => 'Blog example'],
+            ['type' => 'cms::blog']
+        ];
+        $page->contents()->attach( $this->content( $data )->id );
 
         return $this->addBlogArticle( $page );
     }
@@ -145,11 +156,11 @@ class CmsSeeder extends Seeder
             'title' => 'Welcome to Laravel CMS | Laravel CMS',
             'slug' => 'welcome-to-laravelcms',
             'tag' => 'article',
-            'data' => $data,
             'status' => 1,
             'editor' => 'seeder',
         ]);
         $page->appendToNode( $blog )->save();
+        $page->contents()->attach( $this->content( $data )->id );
 
         $version = $page->versions()->forceCreate([
             'data' => $data,
@@ -175,11 +186,11 @@ This is content created by GitHub-flavored markdown syntax',
             'name' => 'Dev',
             'title' => 'For Developer | Laravel CMS',
             'slug' => 'dev',
-            'data' => $data,
             'status' => 1,
             'editor' => 'seeder',
         ]);
         $page->appendToNode( $home )->save();
+        $page->contents()->attach( $this->content( $data )->id );
 
         return $this;
     }

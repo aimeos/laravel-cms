@@ -48,7 +48,6 @@ class Page extends Model
         'to' => '',
         'name' => '',
         'title' => '',
-        'data' => '[]',
         'meta' => '{}',
         'config' => '{}',
         'status' => 0,
@@ -71,7 +70,6 @@ class Page extends Model
         'to' => 'string',
         'name' => 'string',
         'title' => 'string',
-        'data' => 'array',
         'meta' => 'object',
         'config' => 'object',
     ];
@@ -310,7 +308,7 @@ class Page extends Model
             } )
             ->groupBy(
                 'id', 'tenant_id', 'lang', 'name', 'title',
-                'slug', 'to', 'tag', 'data', 'config', 'status',
+                'slug', 'to', 'tag', 'meta', 'config', 'status',
                 'cache', '_lft', '_rgt', 'parent_id', 'editor',
                 'created_at', 'updated_at', 'deleted_at'
             )

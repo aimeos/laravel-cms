@@ -86,7 +86,6 @@ class PageSchema extends Schema
             Str::make( 'domain' )->readOnly(),
             Boolean::make( 'has' )->readOnly(),
             Number::make( 'cache' )->readOnly(),
-            ArrayList::make( 'data' )->readOnly(),
             ArrayHash::make( 'meta' )->readOnly(),
             ArrayHash::make( 'config' )->readOnly(),
             DateTime::make( 'createdAt' )->readOnly(),

@@ -26,7 +26,6 @@ final class PubPage
                 $latest->published = true;
                 $latest->save();
 
-                $page->data = $latest->data;
                 $page->editor = Auth::user()?->name ?? request()->ip();
                 $page->save();
             }, 3 );

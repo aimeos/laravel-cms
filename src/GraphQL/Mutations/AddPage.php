@@ -25,10 +25,6 @@ final class AddPage
             $page->tenant_id = \Aimeos\Cms\Tenancy::value();
             $page->editor = $editor;
 
-            if( $page->status > 0 && isset( $args['input']['data'] ) ) {
-                $page->data = $args['input']['data'];
-            }
-
             if( isset( $args['ref'] ) ) {
                 $page->beforeNode( Page::findOrFail( $args['ref'] ) );
             }
@@ -38,10 +34,10 @@ final class AddPage
 
             $page->save();
 
-            if( isset( $args['input']['data'] ) )
+            if( isset( $args['input'] ) )
             {
                 $version = $page->versions()->create( [
-                    'data' => $args['input']['data'],
+                    'data' => $args['input'],
                     'published' => $page->status > 0 ? true : false,
                     'editor' => $editor
                 ] );

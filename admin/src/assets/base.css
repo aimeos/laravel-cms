@@ -138,8 +138,17 @@ nav.v-navigation-drawer {
   transform: translateX(100%);
 }
 
+.ck-editor {
+  --ck-color-base-border: #767676;
+  --ck-border-radius: 0.5rem;
+}
+
 .ck-editor__editable_inline {
   min-height: 200px;
+}
+
+.ck.ck-editor__editable.ck-focused:not(.ck-editor__nested-editable) {
+  border: 1px solid #767676 !important;
 }
 
 .ck-content ul,

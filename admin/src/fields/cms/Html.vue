@@ -11,7 +11,7 @@
     :modelValue="modelValue"
     @update:modelValue="$emit('update:modelValue', $event)"
     density="comfortable"
-    variant="underlined"
+    variant="outlined"
     clearable
   ></v-textarea>
 </template>

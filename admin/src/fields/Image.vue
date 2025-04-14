@@ -1,6 +1,6 @@
 <script>
   import gql from 'graphql-tag'
-  import { useAppStore } from '../../stores'
+  import { useAppStore } from '../stores'
 
   export default {
     props: {

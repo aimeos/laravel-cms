@@ -31,11 +31,11 @@
       velements: false,
     }),
     mounted() {
-      this.contents = JSON.parse(this.item.versions[0]?.data || this.item.data || '[]')
+      this.contents = this.item.versions[0]?.data ? JSON.parse(this.item.versions[0]?.data) : this.item.contents
     },
     methods: {
       add(item, idx) {
-        const entry = Object.assign(item, {data: {}})
+        const entry = Object.assign(item, {data: {}, files: []})
 
         if(idx !== null) {
           this.contents.splice(idx, 0, entry)
@@ -208,7 +208,7 @@
             </v-expansion-panel-title>
             <v-expansion-panel-text>
 
-              <Fields :fields="content.fields" v-model:data="content.data" />
+              <Fields :fields="content.fields" v-model:data="content.data" v-model:assets="content.files" />
 
             </v-expansion-panel-text>
           </v-expansion-panel>

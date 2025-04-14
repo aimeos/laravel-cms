@@ -3,15 +3,34 @@
   import { useAppStore } from '../../stores'
 
   export default {
-    props: ['modelValue', 'config'],
-    emits: ['update:modelValue'],
+    props: {
+      'modelValue': {type: [Object, null], default: () => null},
+      'config': {type: Object, default: () => {}},
+      'assets': {type: Array, default: () => []},
+    },
+    emits: ['update:modelValue', 'addAsset', 'removeAsset'],
     setup() {
       const app = useAppStore()
       return { app }
     },
     data() {
       return {
+        image: {},
         index: Math.floor(Math.random() * 100000),
+      }
+    },
+    beforeMount() {
+      if(this.modelValue?.id) {
+        const idx = this.assets.findIndex(item => item.id === this.modelValue.id)
+
+        if(idx !== -1) {
+          this.image = this.assets[idx]
+        }
+      }
+    },
+    unmounted() {
+      if(this.image.path && this.image.path.startsWith('blob:')) {
+        URL.revokeObjectURL(this.image.path)
       }
     },
     methods: {
@@ -22,7 +41,8 @@
           return
         }
 
-        this.$emit('update:modelValue', {path: URL.createObjectURL(files[0]), uploading: true})
+        const path = URL.createObjectURL(files[0])
+        this.image = {path: path, uploading: true}
 
         this.$apollo.mutate({
           mutation: gql`mutation($file: Upload!) {
@@ -44,11 +64,14 @@
           if(response.errors) {
             throw response.errors
           }
+
           const data = response.data?.addFile || {}
           data.previews = JSON.parse(data.previews) || {}
+          delete data.__typename
 
-          URL.revokeObjectURL(this.modelValue.path)
-          this.$emit('update:modelValue', data)
+          this.$emit('addAsset', data)
+          this.image = Object.assign(data, {path: path}) // avoid blank image
+          URL.revokeObjectURL(path)
         }).catch(error => {
           console.error(`addFile()`, error)
         })
@@ -56,9 +79,11 @@
 
 
       remove() {
-        if(!this.modelValue?.id) {
+        if(!this.image.id) {
           return
         }
+
+        const id = this.image.id
 
         this.$apollo.mutate({
           mutation: gql`mutation($id: ID!) {
@@ -67,13 +92,15 @@
             }
           }`,
           variables: {
-            id: this.modelValue.id
+            id: id
           }
         }).then(response => {
           if(response.errors) {
             throw response.errors
           }
-          this.$emit('update:modelValue', null)
+
+          this.$emit('removeAsset', id)
+          this.image = {}
         }).catch(error => {
           console.error(`dropFile(${code})`, error)
         })
@@ -95,13 +122,23 @@
         }
         return this.app.urlfile.replace(/\/+$/g, '') + '/' + path
       }
+    },
+    watch: {
+      image: {
+        deep: true,
+        handler() {
+          if(this.image.id) {
+            this.$emit('update:modelValue', {id: this.image.id, type: 'file'})
+          }
+        }
+      }
     }
   }
 </script>
 
 <template>
-  <div v-if="modelValue" class="image">
-    <v-progress-linear v-if="modelValue.uploading"
+  <div v-if="image.path" class="image">
+    <v-progress-linear v-if="image.uploading"
       color="primary"
       height="5"
       indeterminate
@@ -109,10 +146,10 @@
     ></v-progress-linear>
     <v-img
       :draggable="false"
-      :src="url(modelValue.path)"
-      :srcset="srcset(modelValue.previews)"
+      :src="url(image.path)"
+      :srcset="srcset(image.previews)"
     ></v-img>
-    <button v-if="modelValue.id" @click="remove()"
+    <button v-if="image.id" @click="remove()"
       title="Remove image"
       type="button">
       <v-icon icon="mdi-trash-can" role="img"></v-icon>
@@ -132,7 +169,7 @@
 <style scoped>
   .image, .file-input {
     display: inline-flex;
-    border: 1px solid #808080;
+    border: 1px solid #767676;
     border-radius: 0.5rem;
     position: relative;
     height: 178px;

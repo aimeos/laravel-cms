@@ -71,7 +71,7 @@
         <div class="element-type">{{ el.type }}</div>
       </v-expansion-panel-title>
       <v-expansion-panel-text>
-        <Fields :fields="el.fields" v-model:data="el.data" />
+        <Fields :fields="el.fields" v-model:data="el.data" v-model:assets="el.files" />
       </v-expansion-panel-text>
     </v-expansion-panel>
 

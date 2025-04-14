@@ -7,16 +7,38 @@
     components: {
       VueDraggable
     },
-    props: ['modelValue', 'config'],
-    emits: ['update:modelValue'],
+    props: {
+      'modelValue': {type: Array, default: () => []},
+      'config': {type: Object, default: () => {}},
+      'assets': {type: Array, default: () => []},
+    },
+    emits: ['update:modelValue', 'addAsset', 'removeAsset'],
     setup() {
       const app = useAppStore()
       return { app }
     },
     data() {
       return {
+        images: [],
         index: Math.floor(Math.random() * 100000),
+        value: null
       }
+    },
+    beforeMount() {
+      for(let entry of this.modelValue) {
+        const idx = this.assets.findIndex(item => item.id === entry.id)
+
+        if(idx !== -1) {
+          this.images.push(this.assets[idx])
+        }
+      }
+    },
+    unmounted() {
+      this.images.forEach(item => {
+        if(item.path && item.path.startsWith('blob:')) {
+          URL.revokeObjectURL(item.path)
+        }
+      })
     },
     methods: {
       add(ev) {
@@ -26,17 +48,13 @@
           return
         }
 
-        const items = []
-        const promises = []
-        const entries = [...this.modelValue || []]
+        Array.from(files).forEach(file => {
+          const path = URL.createObjectURL(file)
+          const idx = this.images.length
 
-        for(let i = 0; i < files.length; i++) {
-          items[i] = {path: URL.createObjectURL(files[i]), uploading: true}
-        }
-        this.$emit('update:modelValue', [...entries].concat(items))
+          this.images[idx] = {path: path, uploading: true}
 
-        for(let i = 0; i < files.length; i++) {
-          promises.push(this.$apollo.mutate({
+          this.$apollo.mutate({
             mutation: gql`mutation($file: Upload!) {
               addFile(file: $file) {
                 id
@@ -47,7 +65,7 @@
               }
             }`,
             variables: {
-              file: files[i]
+              file: file
             },
             context: {
               hasUpload: true
@@ -56,26 +74,29 @@
             if(response.errors) {
               throw response.errors
             }
+
             const data = response.data?.addFile || {}
             data.previews = JSON.parse(data.previews) || {}
+            delete data.__typename
 
-            URL.revokeObjectURL(items[i].path)
-            items[i] = data
+            this.$emit('addAsset', data)
+            this.images[idx] = Object.assign(data, {path: path}) // avoid blank image
           }).catch(error => {
-            console.error(`addFile()`, error)
-          }))
-        }
-
-        Promise.all(promises).then(() => {
-          this.$emit('update:modelValue', [...entries].concat(items))
+            console.error(`add()`, error)
+          })
         })
+
+        this.value = null
       },
 
 
       remove(idx) {
-        if(!this.modelValue[idx]?.id) {
+        if(!this.images[idx]?.id) {
+          this.images.splice(idx, 1)
           return
         }
+
+        const id = this.images[idx].id
 
         this.$apollo.mutate({
           mutation: gql`mutation($id: ID!) {
@@ -84,13 +105,15 @@
             }
           }`,
           variables: {
-            id: this.modelValue[idx].id
+            id: id
           }
         }).then(response => {
           if(response.errors) {
             throw response.errors
           }
-          this.$emit('update:modelValue', null)
+
+          this.$emit('removeAsset', id)
+          this.images.splice(idx, 1)
         }).catch(error => {
           console.error(`dropFile(${code})`, error)
         })
@@ -112,25 +135,34 @@
         }
         return this.app.urlfile.replace(/\/+$/g, '') + '/' + path
       }
+    },
+    watch: {
+      images: {
+        deep: true,
+        handler() {
+          this.$emit('update:modelValue', this.images.filter(item => !!item.id).map(item => {
+            return {id: item.id, type: 'file'}
+          }))
+        }
+      }
     }
   }
 </script>
 
 <template>
   <VueDraggable
-    :modelValue="modelValue"
-    @update:modelValue="$emit('update:modelValue', $event)"
+    v-model="images"
     draggable=".image"
     group="images"
     class="images">
-    <div v-for="(item, idx) in (modelValue || [])" :key="idx" class="image">
+    <div v-for="(item, idx) in images" :key="idx" class="image">
       <v-progress-linear v-if="item.uploading"
         color="primary"
         height="5"
         indeterminate
         rounded
       ></v-progress-linear>
-      <v-img
+      <v-img v-if="item.path"
         :srcset="srcset(item.previews)"
         :src="url(item.path)"
         draggable="false"
@@ -145,7 +177,7 @@
       <input type="file"
         @input="add($event)"
         :id="'images-' + index"
-        :value="null"
+        :value="value"
         accept="image/*"
         multiple
         hidden>
@@ -163,7 +195,7 @@
 
   .image, .file-input {
     display: inline-flex;
-    border: 1px solid #808080;
+    border: 1px solid #767676;
     border-radius: 0.5rem;
     position: relative;
     height: 178px;

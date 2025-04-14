@@ -7,6 +7,7 @@
 
 <template>
   <v-text-field
+    :counter="config.max"
     :placeholder="config.placeholder || ''"
     :rules="[
       v => (!config.max || v && v.length <= config.max) || `Maximum length is ${config.max} characters`,

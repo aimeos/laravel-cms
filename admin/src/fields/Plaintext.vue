@@ -7,6 +7,7 @@
 
 <template>
   <v-textarea
+    :counter="config.max"
     :placeholder="config.placeholder || ''"
     :modelValue="modelValue"
     @update:modelValue="$emit('update:modelValue', $event)"

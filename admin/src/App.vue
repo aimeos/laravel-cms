@@ -40,6 +40,21 @@
             'text': {type: 'text', min: 1},
           }
         },
+        'table': {
+          type: 'table',
+          group: 'basic',
+          icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm15 2h-4v3h4zm0 4h-4v3h4zm0 4h-4v3h3a1 1 0 0 0 1-1zm-5 3v-3H6v3zm-5 0v-3H1v2a1 1 0 0 0 1 1zm-4-4h4V8H1zm0-4h4V4H1zm5-3v3h4V4zm4 4H6v3h4z"/></svg>',
+          fields: {
+            'title': {type: 'string'},
+            'header': {type: 'select', options: [
+              {value: '', label: 'None'},
+              {value: 'row', label: 'First row'},
+              {value: 'col', label: 'First column'},
+              {value: 'row+col', label: 'First row and column'},
+            ]},
+            'content': {type: 'table'},
+          }
+        },
         'article': {
           type: 'article',
           group: 'content',
@@ -54,19 +69,17 @@
             'gallery': {type: 'images'},
           }
         },
-        'table': {
-          type: 'table',
-          group: 'basic',
-          icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm15 2h-4v3h4zm0 4h-4v3h4zm0 4h-4v3h3a1 1 0 0 0 1-1zm-5 3v-3H6v3zm-5 0v-3H1v2a1 1 0 0 0 1 1zm-4-4h4V8H1zm0-4h4V4H1zm5-3v3h4V4zm4 4H6v3h4z"/></svg>',
+        'services': {
+          type: 'services',
+          group: 'content',
+          label: 'List of services',
+          icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 21H5C3.89 21 3 20.11 3 19V5C3 3.89 3.89 3 5 3H19C20.11 3 21 3.89 21 5V10.33C20.7 10.21 20.37 10.14 20.04 10.14C19.67 10.14 19.32 10.22 19 10.37V5H5V19H10.11L10 19.11V21M7 9H17V7H7V9M7 17H12.11L14 15.12V15H7V17M7 13H16.12L17 12.12V11H7V13M21.7 13.58L20.42 12.3C20.21 12.09 19.86 12.09 19.65 12.3L18.65 13.3L20.7 15.35L21.7 14.35C21.91 14.14 21.91 13.79 21.7 13.58M12 22H14.06L20.11 15.93L18.06 13.88L12 19.94V22Z" /></svg>',
           fields: {
-            'title': {type: 'string'},
-            'header': {type: 'select', options: [
-              {value: '', label: 'None'},
-              {value: 'row', label: 'First row'},
-              {value: 'col', label: 'First column'},
-              {value: 'row+col', label: 'First row and column'},
-            ]},
-            'content': {type: 'table'},
+            'cards': {type: 'items', item: {
+              'name': {type: 'string', min: 1},
+              'text': {type: 'text', min: 1},
+              'image': {type: 'image'},
+            }},
           }
         },
       }

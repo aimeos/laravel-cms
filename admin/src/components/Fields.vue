@@ -30,20 +30,28 @@
 </script>
 
 <template>
-  <v-container>
-    <v-row v-for="(field, code) in fields" :key="code">
-      <v-col cols="12" sm="3" class="form-label">
-        <v-label>{{ field.label || code }}</v-label>
-      </v-col>
-      <v-col cols="12" sm="9">
-        <component :is="field.type?.charAt(0)?.toUpperCase() + field.type?.slice(1)"
-          v-model="data[code]"
-          :config="field"
-          :assets="assets"
-          @addAsset="addAsset($event)"
-          @removeAsset="removeAsset($event)"
-        ></component>
-      </v-col>
-    </v-row>
-  </v-container>
+  <div v-for="(field, code) in fields" :key="code" class="item">
+    <v-label>{{ field.label || code }}</v-label>
+    <component :is="field.type?.charAt(0)?.toUpperCase() + field.type?.slice(1)"
+      v-model="data[code]"
+      :config="field"
+      :assets="assets"
+      @addAsset="addAsset($event)"
+      @removeAsset="removeAsset($event)"
+    ></component>
+  </div>
 </template>
+
+<style scoped>
+  .item {
+    margin: 1.5rem 0;
+    padding-inline-start: 1rem;
+    border-inline-start: 3px solid #D0D8E0;
+  }
+
+  label {
+    font-weight: bold;
+    text-transform: capitalize;
+    margin-bottom: 0.5rem;
+  }
+</style>

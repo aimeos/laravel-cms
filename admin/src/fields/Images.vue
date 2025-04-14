@@ -154,7 +154,7 @@
     v-model="images"
     draggable=".image"
     group="images"
-    class="images">
+    class="files">
     <div v-for="(item, idx) in images" :key="idx" class="image">
       <v-progress-linear v-if="item.uploading"
         color="primary"
@@ -187,8 +187,8 @@
 </template>
 
 <style scoped>
-  .images,
-  .images .sortable {
+  .files,
+  .files .sortable {
     display: flex;
     flex-wrap: wrap;
   }

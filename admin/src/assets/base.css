@@ -110,12 +110,6 @@ nav.v-navigation-drawer {
   padding: 8px 2.5% 16px;
 }
 
-.list .form-label {
-  display: flex;
-  font-weight: bold;
-  text-transform: capitalize;
-}
-
 .hidden {
   visibility: hidden;
 }
@@ -139,8 +133,14 @@ nav.v-navigation-drawer {
 }
 
 .ck-editor {
+  --ck-color-toolbar-background: #F8F9FA;
   --ck-color-base-border: #767676;
   --ck-border-radius: 0.5rem;
+}
+
+.ck-toolbar {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 .ck-editor__editable_inline {
@@ -154,4 +154,10 @@ nav.v-navigation-drawer {
 .ck-content ul,
 .ck-content ol {
   margin-inline-start: 1rem;
+}
+
+.files {
+  border: 1px dashed #767676;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
 }

@@ -137,38 +137,43 @@
 </script>
 
 <template>
-  <div v-if="image.path" class="image">
-    <v-progress-linear v-if="image.uploading"
-      color="primary"
-      height="5"
-      indeterminate
-      rounded
-    ></v-progress-linear>
-    <v-img
-      :draggable="false"
-      :src="url(image.path)"
-      :srcset="srcset(image.previews)"
-    ></v-img>
-    <button v-if="image.id" @click="remove()"
-      title="Remove image"
-      type="button">
-      <v-icon icon="mdi-trash-can" role="img"></v-icon>
-    </button>
-  </div>
-  <div v-else class="image file-input">
-    <input type="file"
-      @input="add($event)"
-      :id="'image-' + index"
-      :value="null"
-      accept="image/*"
-      hidden>
-    <label :for="'image-' + index">Add file</label>
+  <div class="files">
+    <div v-if="image.path" class="image">
+      <v-progress-linear v-if="image.uploading"
+        color="primary"
+        height="5"
+        indeterminate
+        rounded
+      ></v-progress-linear>
+      <v-img
+        :draggable="false"
+        :src="url(image.path)"
+        :srcset="srcset(image.previews)"
+      ></v-img>
+      <button v-if="image.id" @click="remove()"
+        title="Remove image"
+        type="button">
+        <v-icon icon="mdi-trash-can" role="img"></v-icon>
+      </button>
+    </div>
+    <div v-else class="image file-input">
+      <input type="file"
+        @input="add($event)"
+        :id="'image-' + index"
+        :value="null"
+        accept="image/*"
+        hidden>
+      <label :for="'image-' + index">Add file</label>
+    </div>
   </div>
 </template>
 
 <style scoped>
+  .image {
+    display: flex;
+  }
+
   .image, .file-input {
-    display: inline-flex;
     border: 1px solid #767676;
     border-radius: 0.5rem;
     position: relative;

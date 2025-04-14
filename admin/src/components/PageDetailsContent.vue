@@ -167,10 +167,10 @@
         ></v-btn>
       </div>
 
-      <v-expansion-panels class="list" v-model="panel" multiple>
+      <v-expansion-panels class="list" v-model="panel" elevation="0" multiple>
         <VueDraggable v-model="contents" draggable=".content" group="content">
 
-          <v-expansion-panel v-for="(content, idx) in contents" :key="idx" v-show="show(content)" class="content" elevation="1" rounded="lg">
+          <v-expansion-panel v-for="(content, idx) in contents" :key="idx" v-show="show(content)" class="content">
             <v-expansion-panel-title expand-icon="mdi-pencil">
               <v-checkbox-btn v-model="content._checked"></v-checkbox-btn>
 
@@ -217,7 +217,7 @@
       </v-expansion-panels>
 
       <div class="btn-group">
-        <v-btn icon="mdi-view-grid-plus" color="primary" @click="velements = true"></v-btn>
+        <v-btn icon="mdi-view-grid-plus" color="primary" @click="velements = true" elevation="0"></v-btn>
       </div>
     </v-sheet>
   </v-container>

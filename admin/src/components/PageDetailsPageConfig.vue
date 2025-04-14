@@ -62,9 +62,9 @@
 </script>
 
 <template>
-  <v-expansion-panels class="list" v-model="panel" multiple>
+  <v-expansion-panels class="list" v-model="panel" elevation="0" multiple>
 
-    <v-expansion-panel v-for="(el, code) in config || {}" :key="code" elevation="1" rounded="lg">
+    <v-expansion-panel v-for="(el, code) in config || {}" :key="code">
       <v-expansion-panel-title expand-icon="mdi-pencil">
         <v-btn icon="mdi-delete" variant="text" @click="remove(code)"></v-btn>
         <div class="element-title">{{ title(el) }}</div>
@@ -78,7 +78,7 @@
   </v-expansion-panels>
 
   <div v-if="available" class="btn-group">
-    <v-btn icon="mdi-view-grid-plus" color="primary" @click="velements = true"></v-btn>
+    <v-btn icon="mdi-view-grid-plus" color="primary" @click="velements = true" elevation="0"></v-btn>
   </div>
 
   <Teleport to="body">

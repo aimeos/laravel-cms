@@ -50,18 +50,22 @@ nav.v-navigation-drawer {
 }
 
 .v-container {
-  padding: min(16px, 2.5%);
+  padding: 0 !important;
+}
+
+.v-row  {
+  margin: 0.5rem 0 !important;
+}
+
+.v-row > div[class*="v-col"] {
+  padding: 0 1rem;
 }
 
 .v-sheet {
   margin: 0;
-  padding: 2rem 2.5%;
+  padding: 1rem;
   box-shadow: 0px 3px 9px 0px #A8B8C825 !important;
   background-color: rgb(var(--v-theme-surface));
-}
-
-.v-col-xxl, .v-col-xxl-auto, .v-col-xxl-12, .v-col-xxl-11, .v-col-xxl-10, .v-col-xxl-9, .v-col-xxl-8, .v-col-xxl-7, .v-col-xxl-6, .v-col-xxl-5, .v-col-xxl-4, .v-col-xxl-3, .v-col-xxl-2, .v-col-xxl-1, .v-col-xl, .v-col-xl-auto, .v-col-xl-12, .v-col-xl-11, .v-col-xl-10, .v-col-xl-9, .v-col-xl-8, .v-col-xl-7, .v-col-xl-6, .v-col-xl-5, .v-col-xl-4, .v-col-xl-3, .v-col-xl-2, .v-col-xl-1, .v-col-lg, .v-col-lg-auto, .v-col-lg-12, .v-col-lg-11, .v-col-lg-10, .v-col-lg-9, .v-col-lg-8, .v-col-lg-7, .v-col-lg-6, .v-col-lg-5, .v-col-lg-4, .v-col-lg-3, .v-col-lg-2, .v-col-lg-1, .v-col-md, .v-col-md-auto, .v-col-md-12, .v-col-md-11, .v-col-md-10, .v-col-md-9, .v-col-md-8, .v-col-md-7, .v-col-md-6, .v-col-md-5, .v-col-md-4, .v-col-md-3, .v-col-md-2, .v-col-md-1, .v-col-sm, .v-col-sm-auto, .v-col-sm-12, .v-col-sm-11, .v-col-sm-10, .v-col-sm-9, .v-col-sm-8, .v-col-sm-7, .v-col-sm-6, .v-col-sm-5, .v-col-sm-4, .v-col-sm-3, .v-col-sm-2, .v-col-sm-1, .v-col, .v-col-auto, .v-col-12, .v-col-11, .v-col-10, .v-col-9, .v-col-8, .v-col-7, .v-col-6, .v-col-5, .v-col-4, .v-col-3, .v-col-2, .v-col-1 {
-  padding: min(12px, 1.25%) !important;
 }
 
 .v-selection-control--density-default {
@@ -76,17 +80,20 @@ nav.v-navigation-drawer {
   display: block;
 }
 
-.list div.v-expansion-panel:nth-of-type(2n+1) .v-expansion-panel-title {
-  background-color: rgba(var(--cms-primary), 0.125);
+.list .v-expansion-panel {
+  border-radius: 0;
 }
 
-.list .v-expansion-panel.v-expansion-panel--active .v-expansion-panel-title {
-  background-color: rgb(var(--cms-primary)) !important;
-  color: #fff;
+.list .v-expansion-panel.v-expansion-panel--active {
+  border: 1px solid #D0D8E0;
+}
+
+.list .v-expansion-panel--active > .v-expansion-panel-title:not(.v-expansion-panel-title--static) {
+  min-height: 48px;
 }
 
 .list .v-expansion-panel-title {
-  padding: 8px 16px;
+  padding: 0;
 }
 
 .list .v-expansion-panel-title .element-title {
@@ -107,7 +114,7 @@ nav.v-navigation-drawer {
 }
 
 .list .v-expansion-panel-text__wrapper {
-  padding: 8px 2.5% 16px;
+  padding: 0 1rem;
 }
 
 .hidden {

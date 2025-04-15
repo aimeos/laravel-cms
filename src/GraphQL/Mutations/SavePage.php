@@ -33,12 +33,16 @@ final class SavePage
 
                 $version->files()->sync( $args['input']['files'] ?? [] );
 
-                Version::where( 'versionable_id', $page->id )
+                $ids = Version::select( 'id' )
+                    ->where( 'versionable_id', $page->id )
                     ->where( 'versionable_type', Page::class )
-                    ->where( 'published', '!=', true )
-                    ->offset( 10 )
-                    ->limit( 10 )
-                    ->delete();
+                    ->where( 'published', false )
+                    ->orderBy( 'id' )
+                    ->skip( 10 )
+                    ->take( 10 )
+                    ->pluck( 'id' );
+
+                Version::whereIn( 'id', $ids )->forceDelete();
             }
 
             if( isset( $args['input']['contents'] ) ) {

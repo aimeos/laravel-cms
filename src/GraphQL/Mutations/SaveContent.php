@@ -36,12 +36,16 @@ final class SaveContent
 
                 $version->files()->sync( $args['input']['files'] ?? [] );
 
-                Version::where( 'versionable_id', $content->id )
+                $ids = Version::select( 'id' )
+                    ->where( 'versionable_id', $content->id )
                     ->where( 'versionable_type', Content::class )
-                    ->where( 'published', '!=', true )
-                    ->offset( 10 )
-                    ->limit( 10 )
-                    ->delete();
+                    ->where( 'published', false )
+                    ->orderBy( 'id' )
+                    ->skip( 10 )
+                    ->take( 10 )
+                    ->pluck( 'id' );
+
+                Version::whereIn( 'id', $ids )->forceDelete();
             }
 
         }, 3 );

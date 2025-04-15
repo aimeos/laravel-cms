@@ -28,6 +28,8 @@
           input[key] = input[key] ? input[key].replace(/T/, ' ') + ':00' : null
         }
 
+        input['contents'] = item.contents.map(el => el.id).filter(id => !!id)
+
         this.$apollo.mutate({
           mutation: gql`mutation ($id: ID!, $input: PageInput!) {
             savePage(id: $id, input: $input) {

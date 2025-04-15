@@ -67,6 +67,7 @@
               }
               contents {
                 id
+                type
                 versions {
                   published
                   data

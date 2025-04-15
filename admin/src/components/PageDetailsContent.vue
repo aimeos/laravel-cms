@@ -1,4 +1,5 @@
 <script>
+  import gql from 'graphql-tag'
   import Fields from './Fields.vue'
   import History from './History.vue'
   import Elements from './Elements.vue'
@@ -31,7 +32,16 @@
       velements: false,
     }),
     mounted() {
-      this.contents = this.item.versions[0]?.data ? JSON.parse(this.item.versions[0]?.data) : this.item.contents
+      this.contents = this.item.contents.map(el => {
+        const entry = {...this.elements.content[el.type] || {}}
+
+        entry.data = JSON.parse(el.versions[0]?.data || '{}')
+        entry.files = el.versions[0]?.files || []
+        entry.created_at = el.versions[0]?.created_at || null
+        entry.editor = el.versions[0]?.editor || null
+
+        return entry
+      })
     },
     computed: {
       changed() {
@@ -94,27 +104,86 @@
         this.contents.splice(idx, 1)
       },
 
+      save() {
+        this.contents.forEach((el, idx) => {
+          if(!el._changed) {
+            return
+          }
+
+          let name
+          let mutation
+          let variables = {
+            id: el.id,
+            input: {
+              type: el.type,
+              lang: this.item.lang,
+              label: this.title(el),
+              data: JSON.stringify(el.data),
+              files: el.files.map(f => f.id),
+            }
+          }
+
+          if(el.id) {
+            name = 'saveContent'
+            mutation = gql`mutation($id: ID!, $input: ContentInput!) {
+              saveContent(id: $id, input: $input) {
+                id
+              }
+            }`
+          } else {
+            name = 'addContent'
+            mutation = gql`mutation($input: ContentInput!) {
+              addContent(input: $input) {
+                id
+              }
+            }`
+          }
+
+          this.$apollo.mutate({
+            mutation: mutation,
+            variables: variables
+          }).then(response => {
+            if(response.errors) {
+              throw response.errors
+            }
+
+            if(response.data && response.data[name]?.id) {
+              el.id = response.data[name]?.id
+              el._changed = false
+            }
+          }).catch(error => {
+            console.error(`save()`, el, mutation, variables, error)
+          })
+        })
+      },
+
       search(term) {
         this.contents.forEach(el => {
           el._hide = term !== '' && !JSON.stringify(el).toLocaleLowerCase().includes(term)
         })
       },
 
-      show(content) {
+      shown(el) {
         return (
-          typeof content._hide === 'undefined' || typeof content._hide !== 'undefined' && content._hide !== true
+          typeof el._hide === 'undefined' || typeof el._hide !== 'undefined' && el._hide !== true
         ) && (
-          this.aside.isUsed('type', content.type)
+          this.aside.isUsed('type', el.type)
         )
       },
 
-      title(content) {
-        return Object.values(content.data || {}).filter(v => typeof v !== 'object' && !!v).join(' - ').substring(0, 50) || content.label || ''
+      title(el) {
+        return Object.keys(el.fields)
+          .map(key => el.data[key] && typeof el.data[key] !== 'object' ? el.data[key] : null)
+          .filter(v => !!v)
+          .join(' - ')
+          .substring(0, 50) || el.label || ''
       },
 
       toggle() {
         this.contents.forEach(el => {
-          el._checked = !el._checked
+          if(this.shown(el)) {
+            el._checked = !el._checked
+          }
         })
       },
 
@@ -123,8 +192,8 @@
         el._changed = true
       },
 
-      visibility(isVisible) {
-        this.aside.show['type'] = isVisible ? true : false
+      visibility(type) {
+        this.aside.show['type'] = type ? true : false
       }
     },
     watch: {
@@ -140,6 +209,8 @@
           })
 
           this.aside.store['type'] = types
+
+          this.$emit('update:item', {...this.item, contents: this.contents})
         }
       }
     }
@@ -165,16 +236,30 @@
           </v-menu>
         </div>
 
-        <v-text-field prepend-inner-icon="mdi-magnify" label="Search" variant="underlined" class="search"
-          clearable hide-details @input="search($event.target.value)" @click:clear="search('')">
-        </v-text-field>
+        <v-text-field
+          prepend-inner-icon="mdi-magnify"
+          variant="underlined"
+          label="Search"
+          class="search"
+          clearable
+          hide-details
+          @input="search($event.target.value)"
+          @click:clear="search('')"
+        ></v-text-field>
 
-        <v-btn icon="mdi-history"
-          :class="{hidden: !item.versions.length}"
-          @click="vhistory = true"
-          variant="outlined"
-          elevation="0"
-        ></v-btn>
+        <div class="actions">
+          <v-btn icon="mdi-history"
+            :class="{hidden: !item.versions.length}"
+            @click="vhistory = true"
+            variant="outlined"
+            elevation="0"
+          ></v-btn>
+          <v-btn
+            @click="save()"
+            :color="changed ? 'primary' : ''"
+            elevation="0"
+          >Save</v-btn>
+        </div>
       </div>
 
       <v-expansion-panels class="list" v-model="panel" elevation="0" multiple>
@@ -263,6 +348,10 @@
 
 .header > * {
   margin: 0.5rem 0;
+}
+
+.actions button {
+  margin-inline-start: 0.5rem;
 }
 
 .bulk {

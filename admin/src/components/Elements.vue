@@ -37,7 +37,7 @@
     <v-tabs-window v-model="tab">
       <v-tabs-window-item v-for="name in Object.keys(groups)" :key="name" :value="name">
 
-        <v-card flat>
+        <v-card>
           <v-btn v-for="item in groups[name]" :key="item.type" variant="text" stacked
             @click="$emit('add', JSON.parse(JSON.stringify(item)))">
             <template v-slot:prepend>
@@ -54,9 +54,22 @@
 
 <style scoped>
   .v-container {
-    background-color: rgb(var(--v-theme-background));
+    background-color: rgb(var(--v-theme-surface));
     max-width: 100%;
     min-width: 50vw;
+    padding: 1rem !important;
+  }
+
+  .v-tabs {
+    background-color: rgb(var(--v-theme-background));
+  }
+
+  .v-card {
+    padding: 1rem 0;
+  }
+
+  .v-btn {
+    width: 10rem;
   }
 
   .icon {

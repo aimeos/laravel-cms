@@ -61,7 +61,6 @@ class Version extends Model
      */
     protected $fillable = [
         'data',
-        'editor',
     ];
 
     /**

@@ -22,6 +22,46 @@
       page: {},
       bgUrl: bgUrl,
     }),
+    methods: {
+      save() {
+        if(!this.page.id) {
+          return
+        }
+
+        const input = {}
+        const allowed = ['lang','slug','domain','name','title','to','tag','data','config','status','cache','start','end']
+
+        allowed.forEach(key => {
+          if(typeof this.page[key] !== 'undefined') {
+            input[key] = this.page[key]
+          }
+        })
+
+        for(const key of ['start', 'end']) {
+          input[key] = input[key] ? input[key].replace(/T/, ' ') + ':00' : null
+        }
+
+        input['contents'] = this.page.contents.map(el => el.id).filter(id => !!id)
+
+        this.$apollo.mutate({
+          mutation: gql`mutation ($id: ID!, $input: PageInput!) {
+            savePage(id: $id, input: $input) {
+              id
+            }
+          }`,
+          variables: {
+            id: this.page.id,
+            input: input
+          }
+        }).then(response => {
+          if(response.errors) {
+            throw response.errors
+          }
+        }).catch(error => {
+          console.error(`savePage(id: ${this.page.id})`, error)
+        })
+      }
+    },
     watch: {
       item() {
         if(this.page.id && this.item.id === this.page.id) {
@@ -105,7 +145,7 @@
 <template>
   <v-app-bar :elevation="2" density="compact" :image="bgUrl">
     <v-app-bar-title>
-      <div class="app-title" @click="$emit('update:item', page)">
+      <div class="app-title" @click="save(); $emit('update:item', page)">
         <v-icon icon="mdi-keyboard-backspace"></v-icon>
         Back to pages
       </div>

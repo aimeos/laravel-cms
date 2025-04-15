@@ -13,63 +13,6 @@
       nav: null,
       item: {},
     }),
-    methods: {
-      save(item) {
-        const input = {}
-        const allowed = ['lang','slug','domain','name','title','to','tag','data','config','status','cache','start','end']
-
-        allowed.forEach(key => {
-          if(typeof item[key] !== 'undefined') {
-            input[key] = item[key]
-          }
-        })
-
-        for(const key of ['start', 'end']) {
-          input[key] = input[key] ? input[key].replace(/T/, ' ') + ':00' : null
-        }
-
-        input['contents'] = item.contents.map(el => el.id).filter(id => !!id)
-
-        this.$apollo.mutate({
-          mutation: gql`mutation ($id: ID!, $input: PageInput!) {
-            savePage(id: $id, input: $input) {
-              id
-              parent_id
-              domain
-              slug
-              lang
-              name
-              title
-              to
-              tag
-              status
-              cache
-              start
-              end
-              editor
-              created_at
-              updated_at
-              deleted_at
-              has
-            }
-          }`,
-          variables: {
-            id: item.id,
-            input: input
-          }
-        }).then(result => {
-          if(!result.errors) {
-            this.item = Object.assign(this.item, result.data.savePage)
-          } else {
-            console.error(`savePage(id: ${item.id})`, result)
-          }
-        }).catch(error => {
-          console.error(`savePage(id: ${item.id})`, error)
-        })
-
-        this.details = false
-      }
-    }
   }
 </script>
 
@@ -86,7 +29,7 @@
       <v-layout class="page-details" key="details" v-show="details">
         <PageDetails
           :item="item"
-          @update:item="save($event)"
+          @update:item="Object.assign(item, $event); details = false"
         />
       </v-layout>
     </transition-group>

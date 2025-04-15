@@ -20,6 +20,7 @@ class GraphqlPageTest extends TestAbstract
 	{
         parent::defineEnvironment( $app );
 
+		$app['config']->set( 'lighthouse.debug', 3 ); // debug + trace
 		$app['config']->set( 'lighthouse.schema_path', __DIR__ . '/default-schema.graphql' );
 		$app['config']->set( 'lighthouse.namespaces.models', ['App\Models', 'Aimeos\\Cms\\Models'] );
 		$app['config']->set( 'lighthouse.namespaces.mutations', ['Aimeos\\Cms\\GraphQL\\Mutations'] );
@@ -643,7 +644,7 @@ class GraphqlPageTest extends TestAbstract
         $content = Content::firstOrFail();
         $root = Page::where('tag', 'root')->firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 12 );
+        $this->expectsDatabaseQueryCount( 11 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 savePage(id: "' . $root->id . '", input: {
@@ -704,24 +705,24 @@ class GraphqlPageTest extends TestAbstract
                 'savePage' => [
                     'id' => (string) $root->id,
                     'parent_id' => null,
-                    'lang' => "en",
-                    'slug' => "test",
-                    'domain' => 'test.com',
-                    'name' => "test",
-                    'title' => "Test page",
-                    'to' => "/to/page",
-                    'tag' => "test",
+                    'lang' => '',
+                    'slug' => '',
+                    'domain' => 'mydomain.tld',
+                    'name' => 'Home',
+                    'title' => 'Home | Laravel CMS',
+                    'to' => '',
+                    'tag' => 'root',
                     'meta' => '{"cms::meta":{"type":"cms::meta","text":"Laravel CMS is outstanding"}}',
-                    'config' => '{"key":"test"}',
-                    'status' => 0,
+                    'config' => '{}',
+                    'status' => 1,
                     'cache' => 5,
-                    'editor' => 'Test editor',
-                    'start' => '2023-01-01 00:00:00',
-                    'end' => '2099-01-01 00:00:00',
+                    'editor' => 'seeder',
+                    'start' => NULL,
+                    'end' => NULL,
                     'created_at' => (string) $root->created_at,
                     'updated_at' => (string) $page->updated_at,
                     'latest' => [
-                        'data' => '{"lang":"en","slug":"test","domain":"test.com","name":"test","title":"Test page","to":"\\/to\\/page","tag":"test","meta":{"canonical":"to\\/page"},"config":{"key":"test"},"status":0,"cache":5,"start":"2023-01-01 00:00:00","end":"2099-01-01 00:00:00","contents":["' . $content->id . '"],"files":["' . $file->id . '"]}'
+                        'data' => '{"lang":"en","slug":"test","domain":"test.com","name":"test","title":"Test page","to":"\\/to\\/page","tag":"test","meta":{"canonical":"to\\/page"},"config":{"key":"test"},"status":0,"cache":5,"start":"2023-01-01 00:00:00","end":"2099-01-01 00:00:00"}'
                     ],
                     'published' => [
                         'data' => '{"name":"Home","title":"Home | Laravel CMS","slug":"","tag":"root","domain":"mydomain.tld","meta":{"cms::meta":{"type":"cms::meta","text":"Laravel CMS is outstanding"}},"status":1,"editor":"seeder"}'
@@ -809,7 +810,7 @@ class GraphqlPageTest extends TestAbstract
 
         $page = Page::where('tag', 'root')->firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 5 );
+        $this->expectsDatabaseQueryCount( 7 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 pubPage(id: "' . $page->id . '") {

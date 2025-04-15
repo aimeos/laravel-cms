@@ -18,18 +18,18 @@ final class SavePage
     public function __invoke( $rootValue, array $args ) : Page
     {
         $page = Page::findOrFail( $args['id'] );
-        $key = Page::key( $page );
+        $refs = $args['input']['contents'] ?? [];
+        $data = collect( $args['input'] )->except( ['files', 'contents'] )->all();
 
-        DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( function() use ( $page, $args ) {
+        if( $data != $page->latest?->data || $refs != $page->latest?->refs )
+        {
+            DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( function() use ( $page, $args, $data, $refs ) {
 
-            $editor = Auth::user()?->name ?? request()->ip();
-
-            if( isset( $args['input'] ) && $args['input'] !== $page->latest?->data )
-            {
-                $version = $page->versions()->create( [
-                    'data' => $args['input'],
-                    'editor' => $editor
-                ] );
+                $version = $page->versions()->create([
+                    'editor' => Auth::user()?->name ?? request()->ip(),
+                    'data' => $data,
+                    'refs' => $refs
+                ]);
 
                 $version->files()->sync( $args['input']['files'] ?? [] );
 
@@ -43,19 +43,9 @@ final class SavePage
                     ->pluck( 'id' );
 
                 Version::whereIn( 'id', $ids )->forceDelete();
-            }
 
-            if( isset( $args['input']['contents'] ) ) {
-                $page->contents()->sync( $args['input']['contents'] );
-            }
-
-            $page->fill( $args['input'] ?? [] );
-            $page->editor = $editor;
-            $page->save();
-
-        }, 3 );
-
-        Cache::forget( $key );
+            }, 3 );
+        }
 
         return $page;
     }

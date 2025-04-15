@@ -334,6 +334,9 @@ type Version {
   "Arbitrary versioned content elements"
   data: JSON!
 
+  "Arbitrary versioned content references"
+  refs: JSON!
+
   "List of files used in the meta or data properties"
   files: [File!]
 

@@ -33,6 +33,11 @@
     mounted() {
       this.contents = this.item.versions[0]?.data ? JSON.parse(this.item.versions[0]?.data) : this.item.contents
     },
+    computed: {
+      changed() {
+        return this.contents.some(el => el._changed)
+      }
+    },
     methods: {
       add(item, idx) {
         const entry = Object.assign(item, {data: {}, files: []})
@@ -113,6 +118,11 @@
         })
       },
 
+      update(el, type, value) {
+        el[type] = value
+        el._changed = true
+      },
+
       visibility(isVisible) {
         this.aside.show['type'] = isVisible ? true : false
       }
@@ -170,9 +180,9 @@
       <v-expansion-panels class="list" v-model="panel" elevation="0" multiple>
         <VueDraggable v-model="contents" draggable=".content" group="content">
 
-          <v-expansion-panel v-for="(content, idx) in contents" :key="idx" v-show="show(content)" class="content">
+          <v-expansion-panel v-for="(el, idx) in contents" :key="idx" v-show="shown(el)" class="content" :class="{changed: el._changed}">
             <v-expansion-panel-title expand-icon="mdi-pencil">
-              <v-checkbox-btn v-model="content._checked"></v-checkbox-btn>
+              <v-checkbox-btn v-model="el._checked"></v-checkbox-btn>
 
               <v-menu>
                 <template v-slot:activator="{ props }">
@@ -203,12 +213,18 @@
                 </v-list>
               </v-menu>
 
-              <div class="element-title">{{ title(content) }}</div>
-              <div class="element-type">{{ content.type }}</div>
+              <div class="element-title">{{ title(el) }}</div>
+              <div class="element-type">{{ el.type }}</div>
             </v-expansion-panel-title>
             <v-expansion-panel-text>
 
-              <Fields :fields="content.fields" v-model:data="content.data" v-model:assets="content.files" />
+              <Fields
+                :fields="el.fields"
+                :data="el.data"
+                :assets="el.files"
+                @update:data="update(el, 'data', $event)"
+                @update:assets="update(el, 'files', $event)"
+              />
 
             </v-expansion-panel-text>
           </v-expansion-panel>
@@ -258,7 +274,15 @@
   max-width: 30rem;
 }
 
+.v-expansion-panel {
+  border-inline-start: 3px solid transparent;
+}
+
+.v-expansion-panel.changed {
+  border-inline-start: 3px solid rgb(var(--v-theme-warning));
+}
+
 .v-expansion-panel-title .v-selection-control {
-    flex: none;
-  }
+  flex: none;
+}
 </style>

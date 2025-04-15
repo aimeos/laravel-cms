@@ -7,7 +7,10 @@
     components: {
       Ckeditor
     },
-    props: ['modelValue', 'config'],
+    props: {
+      'modelValue': {type: String, default: ''},
+      'config': {type: Object, default: () => {}},
+    },
     emits: ['update:modelValue'],
     data() {
       return {
@@ -22,6 +25,13 @@
           toolbar: [ 'undo', 'redo', 'removeFormat', '|', 'heading', '|', 'bold', 'italic', 'strikethrough', 'code', 'link', '|', 'blockQuote', 'codeBlock', '|', 'bulletedList', 'numberedList', '|', 'fullscreen' ]
         }
       }
+    },
+    methods: {
+      update(value) {
+        if(this.modelValue != value) {
+          this.$emit('update:modelValue', value);
+        }
+      }
     }
   }
 </script>
@@ -31,7 +41,7 @@
     :config="ckconfig"
     :editor="editor"
     :modelValue="modelValue"
-    @update:modelValue="$emit('update:modelValue', $event)"
+    @update:modelValue="update($event)"
   ></ckeditor>
 </template>
 

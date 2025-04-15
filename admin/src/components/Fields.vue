@@ -8,7 +8,8 @@
     emits: ['update:data', 'update:assets'],
     data() {
       return {
-        files: [...this.assets],
+        entry: this.data,
+        files: this.assets,
       }
     },
     methods: {
@@ -25,6 +26,14 @@
           this.$emit('update:assets', this.files)
         }
       }
+    },
+    watch: {
+      entry: {
+        deep: true,
+        handler() {
+          this.$emit('update:data', this.entry)
+        }
+      }
     }
   }
 </script>
@@ -33,11 +42,12 @@
   <div v-for="(field, code) in fields" :key="code" class="item">
     <v-label>{{ field.label || code }}</v-label>
     <component :is="field.type?.charAt(0)?.toUpperCase() + field.type?.slice(1)"
-      v-model="data[code]"
       :config="field"
       :assets="assets"
+      :modelValue="entry[code]"
       @addAsset="addAsset($event)"
       @removeAsset="removeAsset($event)"
+      @update:modelValue="entry[code] = $event"
     ></component>
   </div>
 </template>

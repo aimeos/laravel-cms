@@ -61,6 +61,7 @@ class GraphqlContentTest extends TestAbstract
         $response = $this->actingAs( $this->user )->graphQL( "{
             content(id: \"{$content->id}\") {
                 id
+                type
                 label
                 lang
                 data
@@ -95,6 +96,7 @@ class GraphqlContentTest extends TestAbstract
             contents(first: 10) {
                 data {
                     id
+                    type
                     label
                     lang
                     data
@@ -132,6 +134,7 @@ class GraphqlContentTest extends TestAbstract
         $response = $this->actingAs( $this->user )->graphQL( '{
             content(id: "' . $content->id . '") {
                 id
+                type
                 versions {
                     data
                     files {
@@ -143,7 +146,8 @@ class GraphqlContentTest extends TestAbstract
         }' )->assertJson( [
             'data' => [
                 'content' => [
-                    'id' => (string) $content->id,
+                    'id' => $content->id,
+                    'type' => $content->type,
                     'versions' => [
                         [
                             'data' => '{"type":"cms::heading","text":"Welcome to Laravel CMS"}',
@@ -167,10 +171,12 @@ class GraphqlContentTest extends TestAbstract
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 addContent(input: {
+                    type: "test"
                     lang: "en"
                     data: "{\\"key\\":\\"value\\"}"
                     files: ["' . $file->id . '"]
                 }) {
+                    type
                     lang
                     data
                     editor
@@ -187,6 +193,7 @@ class GraphqlContentTest extends TestAbstract
         $response->assertJson( [
             'data' => [
                 'addContent' => [
+                    'type' => 'test',
                     'lang' => 'en',
                     'data' => '{}',
                     'editor' => 'Test',
@@ -209,11 +216,13 @@ class GraphqlContentTest extends TestAbstract
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 saveContent(id: "' . $content->id . '", input: {
+                    type: "test"
                     lang: "en"
                     data: "{\\"key\\":\\"value\\"}"
                     files: ["' . $file->id . '"]
                 }) {
                     id
+                    type
                     lang
                     data
                     editor
@@ -233,6 +242,7 @@ class GraphqlContentTest extends TestAbstract
             'data' => [
                 'saveContent' => [
                     'id' => $content->id,
+                    'type' => 'test',
                     'lang' => 'en',
                     'data' => '{"type":"cms::heading","text":"Welcome to Laravel CMS"}',
                     'editor' => 'Test',

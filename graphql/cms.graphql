@@ -273,6 +273,9 @@ type Content {
   "Unique content element ID"
   id: ID!
 
+  "Type of the content element"
+  type: String!
+
   "ISO language code, e.g. 'en', 'en_GB' or empty for default language"
   lang: String
 
@@ -308,6 +311,9 @@ type Content {
 }
 
 input ContentInput {
+  "Type of the content element"
+  type: String!
+
   "ISO language code, e.g. 'en', 'en_GB' or empty for default language"
   lang: String
 

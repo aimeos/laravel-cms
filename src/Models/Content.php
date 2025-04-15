@@ -38,6 +38,7 @@ class Content extends Model
      */
     protected $attributes = [
         'tenant_id' => '',
+        'type' => '',
         'lang' => '',
         'label' => '',
         'data' => '{}',
@@ -68,6 +69,7 @@ class Content extends Model
      * @var array
      */
     protected $fillable = [
+        'type',
         'lang',
         'label',
     ];

@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::connection(config('cms.db', 'sqlite'))->create('cms_contents', function (Blueprint $table) {
             $table->uuid('id');
             $table->string('tenant_id');
+            $table->string('type', 50);
             $table->string('lang', 5)->nullable();
             $table->string('label');
             $table->json('data');

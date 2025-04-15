@@ -54,6 +54,7 @@ class ContentSchema extends Schema
     {
         return [
             ID::make(),
+            Str::make( 'type' )->readOnly(),
             Str::make( 'lang' )->readOnly(),
             ArrayHash::make( 'data' )->readOnly(),
             DateTime::make( 'createdAt' )->readOnly(),

@@ -19,7 +19,7 @@ final class SavePage
     {
         $page = Page::findOrFail( $args['id'] );
         $refs = $args['input']['contents'] ?? [];
-        $data = collect( $args['input'] )->except( ['files', 'contents'] )->all();
+        $data = collect( $args['input'] )->except( ['contents', 'files'] )->all();
 
         if( $data != (array) $page->latest?->data || $refs != $page->latest?->refs )
         {
@@ -33,16 +33,25 @@ final class SavePage
 
                 $version->files()->sync( $args['input']['files'] ?? [] );
 
-                $ids = Version::select( 'id' )
+                $drafts = Version::select( 'id' )
                     ->where( 'versionable_id', $page->id )
                     ->where( 'versionable_type', Page::class )
                     ->where( 'published', false )
-                    ->orderBy( 'id' )
+                    ->orderBy( 'id', 'desc' )
                     ->skip( 10 )
                     ->take( 10 )
                     ->pluck( 'id' );
 
-                Version::whereIn( 'id', $ids )->forceDelete();
+                $published = Version::select( 'id' )
+                    ->where( 'versionable_id', $page->id )
+                    ->where( 'versionable_type', Page::class )
+                    ->where( 'published', true )
+                    ->orderBy( 'id', 'desc' )
+                    ->skip( 10 )
+                    ->take( 10 )
+                    ->pluck( 'id' );
+
+                Version::whereIn( 'id', $published->merge( $drafts ) )->forceDelete();
 
             }, 3 );
         }

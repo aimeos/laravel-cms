@@ -644,7 +644,7 @@ class GraphqlPageTest extends TestAbstract
         $content = Content::firstOrFail();
         $root = Page::where('tag', 'root')->firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 11 );
+        $this->expectsDatabaseQueryCount( 12 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 savePage(id: "' . $root->id . '", input: {

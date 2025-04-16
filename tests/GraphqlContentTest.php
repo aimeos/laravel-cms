@@ -212,7 +212,7 @@ class GraphqlContentTest extends TestAbstract
         $file = File::firstOrFail();
         $content = Content::firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 11 );
+        $this->expectsDatabaseQueryCount( 12 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 saveContent(id: "' . $content->id . '", input: {

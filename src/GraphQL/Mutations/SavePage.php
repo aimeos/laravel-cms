@@ -21,7 +21,7 @@ final class SavePage
         $refs = $args['input']['contents'] ?? [];
         $data = collect( $args['input'] )->except( ['files', 'contents'] )->all();
 
-        if( $data != $page->latest?->data || $refs != $page->latest?->refs )
+        if( $data != (array) $page->latest?->data || $refs != $page->latest?->refs )
         {
             DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( function() use ( $page, $args, $data, $refs ) {
 

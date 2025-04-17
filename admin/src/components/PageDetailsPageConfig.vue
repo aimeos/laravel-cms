@@ -13,15 +13,15 @@
       'item': {type: Object, required: true}
     },
 
-    setup() {
-      const elements = useElementStore()
-      return { elements }
-    },
-
     data: () => ({
       velements: false,
       panel: [],
     }),
+
+    setup() {
+      const elements = useElementStore()
+      return { elements }
+    },
 
     computed: {
       available() {
@@ -53,6 +53,7 @@
         return Object.values(el.data || {}).filter(v => typeof v !== 'object' && !!v).join(' - ').substring(0, 50) || el.label || ''
       }
     },
+
     watch: {
       config: {
         deep: true,

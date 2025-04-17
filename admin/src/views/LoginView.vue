@@ -4,10 +4,23 @@
   import { useAppStore } from '../stores'
 
   export default {
+    data: () => ({
+      creds: {
+        email: '',
+        password: ''
+      },
+      form: null,
+      error: null,
+      loading: false,
+      login: false,
+      show: false
+    }),
+
     setup() {
       const app = useAppStore()
       return { app }
     },
+
     apollo: {
       me: {
         query: gql`query{
@@ -26,17 +39,7 @@
         }
       }
     },
-    data: () => ({
-      creds: {
-        email: '',
-        password: ''
-      },
-      form: null,
-      error: null,
-      loading: false,
-      login: false,
-      show: false
-    }),
+
     methods: {
       cmslogin() {
         if(!this.creds.email || !this.creds.password) {
@@ -66,6 +69,7 @@
           this.loading = false
         });
       },
+
 
       handle(result) {
         if(result) {

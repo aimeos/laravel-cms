@@ -8,6 +8,7 @@
       Navigation,
       PageDetails
     },
+
     data: () => ({
       nav: null,
       aside: null,

@@ -8,6 +8,7 @@
       PageTree,
       PageDetails
     },
+
     data: () => ({
       item: {data: {}},
       details: false,

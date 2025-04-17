@@ -13,15 +13,15 @@
       'item': {type: Object, required: true}
     },
 
-    setup() {
-      const elements = useElementStore()
-      return { elements }
-    },
-
     data: () => ({
       velements: false,
       panel: []
     }),
+
+    setup() {
+      const elements = useElementStore()
+      return { elements }
+    },
 
     computed: {
       available() {

@@ -2,17 +2,23 @@
   import { useSideStore } from '../stores'
 
   export default {
-    setup() {
-      const aside = useSideStore()
-      return { aside }
+    props: {
+      'state': {type: [Boolean, null], required: true}
     },
-    props: ['state'],
+
     emits: ['update:state'],
+
     data: () => ({
       active: {},
       panel: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
       width: window.innerWidth
     }),
+
+    setup() {
+      const aside = useSideStore()
+      return { aside }
+    },
+
     methods: {
       isActive(key, code) {
         if(typeof this.active[key] === 'undefined') {
@@ -25,6 +31,7 @@
 
         return this.active[key][code]
       },
+
       toggle(key, code) {
         this.aside.toggle(key, code)
         this.active[key][code] = !this.active[key][code]

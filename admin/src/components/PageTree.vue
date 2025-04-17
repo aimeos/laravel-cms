@@ -7,17 +7,18 @@
   import Navigation from './Navigation.vue'
 
   export default {
-    setup() {
-      const languages = useLanguageStore()
-      const app = useAppStore()
-      return { app, languages }
-    },
     components: {
       Draggable,
       Navigation
     },
-    props: ['nav', 'item'],
+
+    props: {
+      'item': {type: Object, required: true},
+      'nav': {type: [Boolean, null], required: true}
+    },
+
     emits: ['update:nav', 'update:item'],
+
     data() {
       return {
         clip: null,
@@ -26,11 +27,19 @@
         trash: false,
       }
     },
+
+    setup() {
+      const languages = useLanguageStore()
+      const app = useAppStore()
+      return { app, languages }
+    },
+
     created() {
       this.fetch().then(result => {
         this.pages = result.data
       })
     },
+
     methods: {
       add() {
         const node = this.create()
@@ -55,6 +64,7 @@
           console.error(`addPage(add root)`, error)
         })
       },
+
 
       change() {
         const parent = dragContext.targetInfo.parent
@@ -91,9 +101,11 @@
         })
       },
 
+
       copy(stat, node) {
         this.clip = {type: 'copy', node: node, stat: stat}
       },
+
 
       create(attr = {}) {
         return Object.assign({
@@ -105,9 +117,11 @@
         }, attr)
       },
 
+
       cut(stat, node) {
         this.clip = {type: 'cut', node: node, stat: stat}
       },
+
 
       drop(stat) {
         const list = stat ? [stat] : this.$refs.tree.statsFlat.filter(stat => {
@@ -143,6 +157,7 @@
           })
         })
       },
+
 
       fetch(parent = null, page = 1, limit = 50) {
         return this.$apollo.query({
@@ -203,6 +218,7 @@
         })
       },
 
+
       init(stat) {
         if(stat.data.deleted_at && !this.trash) {
           stat.hidden = true
@@ -210,6 +226,7 @@
 
         return stat
       },
+
 
       insert(stat, idx = null) {
         const siblings = this.$refs.tree.getSiblings(stat)
@@ -254,6 +271,7 @@
         })
       },
 
+
       keep(stat) {
         const stats = stat ? [stat] : this.$refs.tree.statsFlat.filter(stat => {
           return stat.check && stat.data.id && stat.data.deleted_at
@@ -292,6 +310,7 @@
         })
       },
 
+
       load(stat, node) {
         if(!stat.open && !node.children) {
           stat.loading = true
@@ -306,6 +325,7 @@
 
         stat.open = !stat.open
       },
+
 
       move(stat, idx = null) {
         const siblings = this.$refs.tree.getSiblings(stat)
@@ -349,6 +369,7 @@
 
         this.show()
       },
+
 
       paste(stat, idx = null) {
         const siblings = this.$refs.tree.getSiblings(stat)
@@ -396,6 +417,7 @@
         this.show()
       },
 
+
       publish() {
         const list = this.$refs.tree.statsFlat.filter(stat => {
           return stat.check && stat.data.id && !stat.data.published
@@ -425,6 +447,7 @@
           })
         })
       },
+
 
       purge(stat) {
         const list = stat ? [stat] : this.$refs.tree.statsFlat.filter(stat => {
@@ -457,6 +480,7 @@
         })
       },
 
+
       reload(lang) {
         this.loading = true
         this.languages.current = lang
@@ -468,6 +492,7 @@
         })
       },
 
+
       show(what = null) {
         if(what === null) {
           this.menu = {}
@@ -478,6 +503,7 @@
           this.menu[what] = false
         }
       },
+
 
       status(stat, val) {
         const list = stat ? [stat] : this.$refs.tree.statsFlat.filter(stat => {
@@ -509,6 +535,7 @@
         })
       },
 
+
       title(node) {
         const list = []
 
@@ -527,6 +554,7 @@
         return list.join("\n")
       },
 
+
       trashed(val) {
         this.trash = val
 
@@ -534,6 +562,7 @@
           stat.hidden = stat.data.deleted_at && !val
         })
       },
+
 
       update(stat, fcn) {
         if(typeof fcn !== 'function') {
@@ -545,6 +574,7 @@
           fcn(stat, fcn)
         })
       },
+
 
       url(node) {
         return this.app.urlpage

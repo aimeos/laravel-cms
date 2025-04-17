@@ -3,15 +3,18 @@
   import { useAppStore } from '../stores'
 
   export default {
+    props: {
+      'item': {type: Object, required: true}
+    },
+
+    emits: ['update:item'],
+
     setup() {
       const languages = useLanguageStore()
       const app = useAppStore()
       return { app, languages }
     },
-    props: {
-      'item': {type: Object, required: true}
-    },
-    emits: ['update:item'],
+
     computed: {
       langs() {
         const list = [{code: '', name: 'None'}]
@@ -23,6 +26,7 @@
         return list
       }
     },
+
     methods: {
       updateSlug(focused) {
         if(!focused && this.item.data.slug?.at(0) === '_') {
@@ -30,6 +34,7 @@
         }
       }
     },
+
     watch: {
       item: {
         deep: true,

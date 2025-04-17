@@ -2,15 +2,21 @@
   import { useElementStore } from '../stores'
 
   export default {
-    props: ['type'],
+    props: {
+      'type': {type: String, required: true}
+    },
+
     emits: ['add'],
+
     data: () => ({
       tab: ['basic'],
     }),
+
     setup() {
       const elements = useElementStore()
       return { elements }
     },
+
     computed: {
       groups() {
         const map = {}

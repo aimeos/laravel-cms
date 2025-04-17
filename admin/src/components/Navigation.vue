@@ -1,7 +1,11 @@
 <script>
   export default {
-    props: ['state'],
+    props: {
+      'state': {type: Boolean, required: true}
+    },
+
     emits: ['update:state'],
+
     data: () => ({
       width: window.innerWidth
     })

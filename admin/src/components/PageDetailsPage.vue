@@ -11,20 +11,25 @@
       PageDetailsPageProps,
       PageDetailsPageConfig,
     },
+
     props: {
       'item': {type: Object, required: true},
       'versions': {type: Array, default: () => []}
     },
+
     emits: ['update:item'],
+
     data: () => ({
       tab: 'details',
       vhistory: false,
     }),
+
     computed: {
       history() {
         return this.vhistory ? true : false
       }
     },
+
     methods: {
       use(data) {
         this.item.data = data
@@ -74,7 +79,13 @@
 
   <Teleport to="body">
     <v-dialog v-model="vhistory" scrollable width="auto">
-      <History :data="item.data" :versions="versions" @use="use($event)" @hide="vhistory = false" />
+      <History
+        :data="item.data"
+        :versions="versions"
+        @use="use($event)"
+        @revert="use($event)"
+        @hide="vhistory = false"
+      />
     </v-dialog>
   </Teleport>
 </template>

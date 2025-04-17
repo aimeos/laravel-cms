@@ -14,12 +14,6 @@
       VueDraggable
     },
 
-    setup() {
-      const elements = useElementStore()
-      const aside = useSideStore()
-      return { aside, elements }
-    },
-
     props: {
       'item': {type: Object, required: true},
       'contents': {type: Array, required: true}
@@ -40,6 +34,12 @@
       currentPage: 1,
       lastPage: 1,
     }),
+
+    setup() {
+      const elements = useElementStore()
+      const aside = useSideStore()
+      return { aside, elements }
+    },
 
     created() {
       this.$apollo.query({
@@ -115,6 +115,7 @@
         this.velements = false
       },
 
+
       clean() {
         return this.list.map(c => {
           delete c._checked
@@ -123,6 +124,7 @@
         })
       },
 
+
       copy(idx) {
         const entry = JSON.parse(JSON.stringify(this.list[idx]))
         entry['id'] = null
@@ -130,10 +132,12 @@
         this.clip = {type: 'copy', index: idx, content: entry}
       },
 
+
       cut(idx) {
         this.clip = {type: 'cut', index: idx, content: this.list[idx]}
         this.list.splice(idx, 1)
       },
+
 
       fields(type) {
         if(!this.elements.content[type]?.fields) {
@@ -144,15 +148,18 @@
         return this.elements.content[type]?.fields
       },
 
+
       insert(idx) {
         this.index = idx
         this.velements = true
       },
 
+
       paste(idx) {
         this.list.splice(idx, 0, this.clip.content)
         this.clip = null
       },
+
 
       purge() {
         for(let i = this.list.length - 1; i >= 0; i--) {
@@ -161,9 +168,11 @@
         this.checked = false
       },
 
+
       remove(idx) {
         this.list.splice(idx, 1)
       },
+
 
       save() {
         const promises = []
@@ -224,11 +233,13 @@
         })
       },
 
+
       search(term) {
         this.list.forEach(el => {
           el._hide = term !== '' && !JSON.stringify(el).toLocaleLowerCase().includes(term)
         })
       },
+
 
       shown(el) {
         return (
@@ -238,6 +249,7 @@
         )
       },
 
+
       title(el) {
         return Object.keys(el.data)
           .map(key => el.data[key] && typeof el.data[key] !== 'object' ? el.data[key] : null)
@@ -246,6 +258,7 @@
           .substring(0, 50) || el.label || ''
       },
 
+
       toggle() {
         this.list.forEach(el => {
           if(this.shown(el)) {
@@ -253,6 +266,7 @@
           }
         })
       },
+
 
       update(el, type, value) {
         el[type] = value
@@ -263,6 +277,7 @@
         this.aside.show['type'] = type ? true : false
       }
     },
+
     watch: {
       list() {
         const types = {}

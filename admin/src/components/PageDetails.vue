@@ -4,7 +4,6 @@
   import PageDetailsPage from './PageDetailsPage.vue'
   import PageDetailsContent from './PageDetailsContent.vue'
   import PageDetailsPreview from './PageDetailsPreview.vue'
-  import bgUrl from '../assets/bg.jpg'
 
 
   export default {
@@ -28,7 +27,6 @@
       files: [],
       nav: null,
       tab: 'page',
-      bgUrl: bgUrl,
     }),
 
     methods: {
@@ -126,7 +124,7 @@
 </script>
 
 <template>
-  <v-app-bar :elevation="2" density="compact" :image="bgUrl">
+  <v-app-bar :elevation="2" density="compact">
     <v-app-bar-title>
       <div class="app-title" @click="$emit('close'); save()">
         <v-icon icon="mdi-keyboard-backspace"></v-icon>

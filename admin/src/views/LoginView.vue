@@ -120,11 +120,6 @@
 </template>
 
 <style>
-  body {
-    background-image: url('../assets/bg-full.jpg');
-    background-size: cover;
-  }
-
   #app {
     display: flex;
     align-items: center;

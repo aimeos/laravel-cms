@@ -72,6 +72,20 @@ class File extends Model
     ];
 
     /**
+     * Indicates if the model's ID isn't auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
+     * Type of the primary key.
+     *
+     * @var string
+     */
+    protected $keyType = 'string';
+
+    /**
      * The table associated with the model.
      *
      * @var string

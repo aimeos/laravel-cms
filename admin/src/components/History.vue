@@ -3,25 +3,20 @@
 
   export default {
     props: ['data', 'versions'],
+
     emit: ['hide', 'use'],
+
     data: () => ({
       list: [],
+      show: false,
     }),
+
     mounted() {
-      this.versions.forEach(v => {
-        const item = {...v}
-        item.data = JSON.parse(v.data || '{}')
-        this.list.push(item)
-      })
+      this.list = this.versions.map(v => {
+        return {...v, data: JSON.parse(v.data)}
+      }).reverse()
     },
-    computed: {
-      current() {
-        const item = {...this.data}
-        delete item.__typename
-        delete item.versions
-        return item
-      }
-    },
+
     methods: {
       diff(old, str) {
         if(old && str) {
@@ -48,14 +43,19 @@
 
       <v-card-text>
         <v-timeline side="end" align="start">
-          <v-timeline-item v-if="versions[0]?.data != JSON.stringify(data)" size="small" dot-color="blue">
+          <v-timeline-item v-if="JSON.stringify(list[0]?.data) != JSON.stringify(data)" size="small" dot-color="blue">
 
-            <v-card class="elevation-2">
+            <v-card class="elevation-2" @click="show = !show">
               <v-card-title>Current</v-card-title>
-              <v-card-text>
-                <span v-for="part of diff(list[0]?.data || {}, current)"
+              <v-card-text :class="{show: show}">
+                <span v-for="part of diff(list[0]?.data || {}, data)"
                   :class="{added: part.added, removed: part.removed}">{{ part.value || part }}</span>
               </v-card-text>
+              <v-card-actions>
+                <v-btn variant="outlined" @click="$emit('use', list[0]?.data)">
+                  Revert
+                </v-btn>
+              </v-card-actions>
             </v-card>
 
           </v-timeline-item>
@@ -63,12 +63,14 @@
           <v-timeline-item v-for="(version, idx) in list" :key="idx" size="small"
             :dot-color="version.published ? 'success' : 'grey-lighten-1'">
 
-            <v-card class="elevation-2">
+            <v-card class="elevation-2" @click="version._show = !version._show">
               <v-card-title>{{ version.created_at }}</v-card-title>
               <v-card-subtitle>{{ version.editor }}</v-card-subtitle>
-              <v-card-text>
+              <v-card-text :class="{show: version._show}">
                 <span v-for="part of diff(list[idx+1]?.data || version.data, version.data)"
-                  :class="{added: part.added, removed: part.removed}">{{ part.value || part }}</span>
+                  :class="{added: part.added, removed: part.removed}">
+                  {{ part.value || part }}
+                </span>
               </v-card-text>
               <v-card-actions>
                 <v-btn variant="outlined" @click="$emit('use', version.data)">
@@ -92,29 +94,35 @@
 </template>
 
 <style scoped>
-  .v-timeline--vertical.v-timeline.v-timeline--side-end .v-timeline-item .v-timeline-item__body {
-    padding-inline-start: 2.5%;
-  }
-
-  .v-dialog .v-overlay__content > .v-card > .v-card-item + .v-card-text {
-      padding: 1rem 2.5%;
-  }
-
-  .v-timeline--vertical.v-timeline.v-timeline--side-end .v-timeline-item .v-timeline-item__opposite {
-    display: none;
-  }
-
-  .v-timeline--vertical.v-timeline--justify-auto {
+  .v-timeline--vertical {
       grid-template-columns: 0 min-content auto;
   }
 
-  .v-card-text {
+  .v-timeline-item__opposite {
+    display: none;
+  }
+
+  /* todo: Doesn't work when display:contents is used */
+  .v-timeline-item__body {
+    justify-self: auto !important;
+  }
+
+  .v-timeline-item .v-card-text > span {
     white-space: pre;
+    display: none;
   }
-  .added {
-    background-color: #00ff0030
+
+  .v-timeline-item .v-card-text.show > span {
+    display: inline;
   }
-  .removed {
-    background-color: #ff000030
+
+  .v-timeline-item .v-card-text > span.added {
+    background-color: #00ff0030;
+    display: inline;
+  }
+
+  .v-timeline-item .v-card-text > span.removed {
+    background-color: #ff000030;
+    display: inline;
   }
 </style>

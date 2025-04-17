@@ -124,6 +124,52 @@ class GraphqlContentTest extends TestAbstract
     }
 
 
+    public function testContentsId()
+    {
+        $this->seed( CmsSeeder::class );
+
+        $contents = Content::orderBy( 'id' )->limit( 2 )->get();
+        $expected = [];
+
+        foreach( $contents as $content )
+        {
+            $attr = collect($content->getAttributes())->except(['tenant_id'])->all();
+            $expected[] = ['id' => (string) $content->id] + $attr;
+        }
+
+        $this->expectsDatabaseQueryCount( 2 );
+        $response = $this->actingAs( $this->user )->graphQL( '{
+            contents(id: ["' . $contents[0]->id . '","' . $contents[1]->id . '"]) {
+                data {
+                    id
+                    type
+                    label
+                    lang
+                    data
+                    editor
+                    created_at
+                    updated_at
+                    deleted_at
+                }
+                paginatorInfo {
+                    currentPage
+                    lastPage
+                }
+            }
+        }' )->assertJson( [
+            'data' => [
+                'contents' => [
+                    'data' => $expected,
+                    'paginatorInfo' => [
+                        'currentPage' => 1,
+                        'lastPage' => 1,
+                    ]
+                ],
+            ]
+        ] );
+    }
+
+
     public function testContentVersions()
     {
         $this->seed( CmsSeeder::class );

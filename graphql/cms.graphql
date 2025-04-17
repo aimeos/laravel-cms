@@ -31,11 +31,11 @@ extend type Query {
     @softDeletes
     @find
 
-  "Get available content items"
-  contents: [Content!] @orderBy(column: "id", direction: ASC)
-    @can(ability: "view")
+  "Get available content items (optionally limited by a list of IDs)"
+  contents(id: [ID!]): [Content!]
+    @paginate(builder: "\\Aimeos\\Cms\\GraphQL\\Query@contents", defaultCount: 100)
+    @canModel(ability: "view", model: "\\Aimeos\\Cms\\Models\\Content")
     @softDeletes
-    @paginate
 
   "Get file item by ID"
   file(id: ID! @eq): File

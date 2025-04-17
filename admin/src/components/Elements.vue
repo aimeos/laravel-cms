@@ -39,7 +39,7 @@
 
         <v-card>
           <v-btn v-for="item in groups[name]" :key="item.type" variant="text" stacked
-            @click="$emit('add', JSON.parse(JSON.stringify(item)))">
+            @click="$emit('add', item.type)">
             <template v-slot:prepend>
               <span class="icon" v-html="item.icon"></span>
             </template>

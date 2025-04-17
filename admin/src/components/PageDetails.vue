@@ -14,34 +14,46 @@
       PageDetailsContent,
       PageDetailsPreview
     },
-    props: ['item'],
-    emits: ['update:item'],
+
+    props: {
+      'item': {type: Object, required: true}
+    },
+
+    emits: ['close'],
+
     data: () => ({
-      tab: 'page',
+      changed: false,
+      contents: [],
+      versions: [],
+      files: [],
       nav: null,
-      page: {},
+      tab: 'page',
       bgUrl: bgUrl,
     }),
+
     methods: {
       save() {
-        if(!this.page.id) {
+        if(!this.changed) {
           return
         }
 
-        const input = {}
-        const allowed = ['lang','slug','domain','name','title','to','tag','data','config','status','cache','start','end']
-
-        allowed.forEach(key => {
-          if(typeof this.page[key] !== 'undefined') {
-            input[key] = this.page[key]
+        const meta = {}
+        for(const key in (this.item.data?.meta || {})) {
+          meta[key] = {
+            type: this.item.data?.meta[key]?.type || '',
+            data: this.item.data?.meta[key]?.data || {},
+            files: []
           }
-        })
-
-        for(const key of ['start', 'end']) {
-          input[key] = input[key] ? input[key].replace(/T/, ' ') + ':00' : null
         }
 
-        input['contents'] = this.page.contents.map(el => el.id).filter(id => !!id)
+        const config = {}
+        for(const key in (this.item.data?.config || {})) {
+          config[key] = {
+            type: this.item.data?.config[key]?.type || '',
+            data: this.item.data?.config[key]?.data || {},
+            files: []
+          }
+        }
 
         this.$apollo.mutate({
           mutation: gql`mutation ($id: ID!, $input: PageInput!) {
@@ -50,50 +62,37 @@
             }
           }`,
           variables: {
-            id: this.page.id,
-            input: input
+            id: this.item.id,
+            input: {
+              ...this.item.data,
+              meta: JSON.stringify(meta),
+              config: JSON.stringify(config),
+              contents: this.contents,
+              files: []
+            }
           }
         }).then(response => {
           if(response.errors) {
             throw response.errors
           }
+
+          this.item.published = false
+          this.changed = false
         }).catch(error => {
-          console.error(`savePage(id: ${this.page.id})`, error)
+          console.error(`savePage(id: ${this.item.id})`, error)
         })
       }
     },
+
     watch: {
       item() {
-        if(this.page.id && this.item.id === this.page.id) {
-          return
-        }
-
         this.$apollo.query({
           query: gql`query($id: ID!) {
             page(id: $id) {
-              id
-              parent_id
-              domain
-              slug
-              lang
-              name
-              title
-              to
-              tag
-              status
-              cache
-              config
-              meta
-              start
-              end
-              editor
-              created_at
-              updated_at
-              deleted_at
-              has
               versions {
                 published
                 data
+                refs
                 editor
                 created_at
                 files {
@@ -105,35 +104,19 @@
                   updated_at
                 }
               }
-              contents {
-                id
-                type
-                versions {
-                  published
-                  data
-                  editor
-                  created_at
-                  files {
-                    id
-                    mime
-                    path
-                    previews
-                    editor
-                    updated_at
-                  }
-                }
-              }
             }
           }`,
           variables: {
             id: this.item.id
           }
         }).then(result => {
-          if(!result.errors && result.data) {
-            this.page = Object.assign(this.page, result.data.page);
-          } else {
-            console.error(`page(id: ${this.item.id})`, result)
+          if(result.errors) {
+            throw result.errors
           }
+
+          this.contents = JSON.parse(result.data.page.versions?.at(-1)?.refs || '[]')
+          this.versions = result.data.page.versions || []
+          this.changed = false
         }).catch(error => {
           console.error(`page(id: ${this.item.id})`, error)
         })
@@ -145,7 +128,7 @@
 <template>
   <v-app-bar :elevation="2" density="compact" :image="bgUrl">
     <v-app-bar-title>
-      <div class="app-title" @click="save(); $emit('update:item', page)">
+      <div class="app-title" @click="$emit('close'); save()">
         <v-icon icon="mdi-keyboard-backspace"></v-icon>
         Back to pages
       </div>
@@ -170,15 +153,15 @@
     <v-window v-model="tab">
 
       <v-window-item value="page">
-        <PageDetailsPage :item="page" @update:item="page = $event" />
+        <PageDetailsPage :item="item" :versions="versions" @update:item="Object.assign(item, $event); changed = true" />
       </v-window-item>
 
       <v-window-item value="content">
-        <PageDetailsContent :item="page" @update:item="page = $event"  />
+        <PageDetailsContent :item="item" :contents="contents" @update:contents="contents = $event; changed = true" />
       </v-window-item>
 
       <v-window-item value="preview">
-        <PageDetailsPreview :item="page" @update:item="page = $event"  />
+        <PageDetailsPreview :item="item" />
       </v-window-item>
 
     </v-window>

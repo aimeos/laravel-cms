@@ -13,52 +13,6 @@
       const app = useAppStore()
       return { app, languages }
     },
-    apollo: {
-      pages: {
-        query: gql`query($parent: ID, $lang: String!, $limit: Int!, $page: Int!) {
-          pages(parent_id: $parent, lang: $lang, first: $limit, page: $page) {
-            data {
-              id
-              parent_id
-              domain
-              slug
-              lang
-              name
-              title
-              to
-              tag
-              status
-              cache
-              start
-              end
-              editor
-              created_at
-              updated_at
-              deleted_at
-              has
-              latest {
-                published
-              }
-            }
-            paginatorInfo {
-              currentPage
-              lastPage
-            }
-          }
-        }`,
-        variables() {
-          return {
-            lang: this.languages.current,
-            parent: null,
-            limit: 50,
-            page: 1
-          }
-        },
-        update(result) {
-          return JSON.parse(JSON.stringify(result.pages.data || []))
-        }
-      }
-    },
     components: {
       Draggable,
       Navigation
@@ -73,6 +27,11 @@
         trash: false,
         bgUrl: bgUrl,
       }
+    },
+    created() {
+      this.fetch().then(result => {
+        this.pages = result.data
+      })
     },
     methods: {
       add() {
@@ -187,6 +146,65 @@
         })
       },
 
+      fetch(parent = null, page = 1, limit = 50) {
+        return this.$apollo.query({
+          query: gql`query($parent: ID, $lang: String!, $limit: Int!, $page: Int!) {
+            pages(parent_id: $parent, lang: $lang, first: $limit, page: $page) {
+              data {
+                id
+                parent_id
+                deleted_at
+                start
+                end
+                has
+                latest {
+                  published
+                  data
+                  editor
+                  created_at
+                }
+              }
+              paginatorInfo {
+                currentPage
+                lastPage
+              }
+            }
+          }`,
+          variables: {
+            lang: this.languages.current,
+            parent: parent,
+            page: page,
+            limit: limit
+          }
+        }).then(result => {
+          if(result.errors) {
+            throw result.errors
+          }
+
+          const pages = result.data.pages.data.map(node => {
+            return {
+              id: node.id,
+              has: node.has,
+              end: node.end,
+              start: node.start,
+              parent_id: node.parent_id,
+              deleted_at: node.deleted_at,
+              editor: node.latest.editor,
+              published: node.latest.published,
+              data: JSON.parse(node.latest.data)
+            }
+          })
+
+          return {
+            data: pages,
+            currentPage: result.data.pages.paginatorInfo.currentPage,
+            lastPage: result.data.pages.paginatorInfo.lastPage
+          }
+        }).catch(error => {
+          console.error(`pages()`, error, params)
+        })
+      },
+
       init(stat) {
         if(stat.data.deleted_at && !this.trash) {
           stat.hidden = true
@@ -280,53 +298,9 @@
         if(!stat.open && !node.children) {
           stat.loading = true
 
-          this.$apollo.query({
-            query: gql`query($parent: ID, $limit: Int!, $page: Int!) {
-              pages(parent_id: $parent, first: $limit, page: $page) {
-                data {
-                  id
-                  parent_id
-                  domain
-                  slug
-                  lang
-                  name
-                  title
-                  to
-                  tag
-                  status
-                  cache
-                  start
-                  end
-                  editor
-                  created_at
-                  updated_at
-                  deleted_at
-                  has
-                  latest {
-                    published
-                  }
-                }
-                paginatorInfo {
-                  currentPage
-                  lastPage
-                }
-              }
-            }`,
-            variables: { // no lang restriction when fetching children!
-              parent: node.id,
-              page: stat.page ? stat.page + 1 : 1,
-              limit: 50
-            }
-          }).then(result => {
-            if(!result.errors && result.data) {
-              const children = JSON.parse(JSON.stringify(result.data.pages.data || []))
-              this.$refs.tree.addMulti(children, stat, 0)
-              stat.page = result.data.pages.paginatorInfo.currentPage || 1
-            } else {
-              console.error(`pages(id: ${node.id})`, result)
-            }
-          }).catch(error => {
-            console.error(`pages(id: ${node.id})`, error)
+          this.fetch(node.id, stat.page ? stat.page + 1 : 1).then(result => {
+            this.$refs.tree.addMulti(result.data, stat, 0)
+            stat.page = result.currentPage || 1
           }).finally(() => {
             stat.loading = false
           })
@@ -385,9 +359,9 @@
         const node = {...this.clip.node}
         let refid = null
 
-        node.slug = node.slug + '_' + Math.floor(Math.random() * 10000)
+        node.data.slug = node.slug + '_' + Math.floor(Math.random() * 10000)
+        node.data.status = 0
         node.children = null
-        node.status = 0
         node.has = false
         node.id = null
 
@@ -426,7 +400,7 @@
 
       publish() {
         const list = this.$refs.tree.statsFlat.filter(stat => {
-          return stat.check && stat.data.id && stat.data.latest && !stat.data.latest.published
+          return stat.check && stat.data.id && !stat.data.published
         })
 
         list.reverse().forEach(stat => {
@@ -440,12 +414,14 @@
               id: stat.data.id
             }
           }).then(result => {
-            if(!result.errors) {
-              stat.data.latest.published = true
-              stat.check = false
-            } else {
-              console.error(`pubPage(id: ${stat.data.id})`, result)
+            if(result.errors) {
+              throw result.errors
             }
+
+            stat.data.start = stat.data.data.start || null
+            stat.data.end = stat.data.data.end || null
+            stat.data.published = true
+            stat.check = false
           }).catch(error => {
             console.error(`pubPage(id: ${stat.data.id})`, error)
           })
@@ -487,54 +463,8 @@
         this.loading = true
         this.languages.current = lang
 
-        this.$apollo.query({
-          query: gql`query($parent: ID, $lang: String!, $limit: Int!, $page: Int!) {
-            pages(parent_id: $parent, lang: $lang, first: $limit, page: $page) {
-              data {
-                id
-                parent_id
-                domain
-                slug
-                lang
-                name
-                title
-                to
-                tag
-                status
-                cache
-                start
-                end
-                editor
-                created_at
-                updated_at
-                deleted_at
-                has
-                latest {
-                  published
-                }
-              }
-              paginatorInfo {
-                currentPage
-                lastPage
-              }
-            }
-          }`,
-          variables: {
-            parent: null,
-            lang: lang,
-            page: 1,
-            limit: 50
-          }
-        }).then(result => {
-          if(!result.errors && result.data) {
-            this.pages = (result.data.pages.data || []).map(node => {
-              return {...node}
-            })
-          } else {
-            console.error(`pages(parent: null)`, result)
-          }
-        }).catch(error => {
-          console.error(`pages(parent: null)`, error)
+        this.fetch().then(result => {
+          this.pages = result.data
         }).finally(() => {
           this.loading = false
         })
@@ -581,6 +511,24 @@
         })
       },
 
+      title(node) {
+        const list = []
+
+        if(node.start || node.end) {
+          list.push('Timeframe: ' + (node.start || '') + ' → ' + (node.end || ''))
+        }
+
+        if(node.data.tag) {
+          list.push('Tag: ' + node.data.tag)
+        }
+
+        if(node.data.cache) {
+          list.push('Cache: ' + node.data.cache + ' min')
+        }
+
+        return list.join("\n")
+      },
+
       trashed(val) {
         this.trash = val
 
@@ -602,10 +550,10 @@
 
       url(node) {
         return this.app.urlpage
-          .replace(/:domain/, node.domain)
-          .replace(/:slug/, node.slug)
-          .replace(/xx_XX/, node.lang)
-          .replace(/\/+$/g, '')
+          .replace(/:domain/, node.data.domain || '')
+          .replace(/:slug/, node.data.slug || '')
+          .replace(/xx_XX/, node.data.lang || '')
+          .replaceAll('//', '/').replace(':/', '://')
       }
     },
   }
@@ -691,19 +639,19 @@
             <v-icon :class="{hidden: !node.has, load: stat.loading}" size="large" @click="load(stat, node)"
               :icon="stat.loading ? 'mdi-loading' : (stat.open ? 'mdi-menu-down' : 'mdi-menu-right')">
             </v-icon>
-            <v-checkbox-btn v-model="stat.check" :class="{draft: node.latest && !node.latest.published}"></v-checkbox-btn>
+            <v-checkbox-btn v-model="stat.check" :class="{draft: !node.published}"></v-checkbox-btn>
             <v-menu v-if="node.id">
               <template #activator="{ props }">
                 <v-btn icon="mdi-dots-vertical" variant="text" v-bind="props"></v-btn>
               </template>
               <v-list>
-                <v-list-item v-if="node.status !== 0">
+                <v-list-item v-if="node.data.status !== 0">
                   <v-btn prepend-icon="mdi-eye-off" variant="text" @click="status(stat, 0)">Disable</v-btn>
                 </v-list-item>
-                <v-list-item v-if="node.status !== 1">
+                <v-list-item v-if="node.data.status !== 1">
                   <v-btn prepend-icon="mdi-eye" variant="text" @click="status(stat, 1)">Enable</v-btn>
                 </v-list-item>
-                <v-list-item v-if="node.status !== 2">
+                <v-list-item v-if="node.data.status !== 2">
                   <v-btn prepend-icon="mdi-eye-off-outline" variant="text" @click="status(stat, 2)">Hide in menu</v-btn>
                 </v-list-item>
                 <v-list-item>
@@ -778,19 +726,25 @@
               </v-list>
             </v-menu>
             <div class="node-content"
-              :class="{'status-hidden': node.status == 2, 'status-enabled': node.status == 1, 'status-disabled': !node.status, 'trashed': node.deleted_at}"
+              :class="{
+                'status-hidden': node.data.status == 2,
+                'status-enabled': node.data.status == 1,
+                'status-disabled': !node.data.status,
+                'trashed': node.deleted_at
+              }"
+              :title="title(node)"
               @click="$emit('update:item', node)">
               <div class="node-text">
                 <div class="page-name">
                   <v-icon class="page-time" size="x-small" v-if="node.start || node.end">mdi-clock-outline</v-icon>
-                  {{ node.name || 'New' }}
+                  {{ node.data.name || 'New' }}
                 </div>
-                <div v-if="node.title" class="page-title">{{ node.title }}</div>
+                <div v-if="node.data.title" class="page-title">{{ node.data.title }}</div>
               </div>
               <div class="node-url">
-                <div class="page-domain">{{ node.domain }}</div>
+                <div class="page-domain">{{ node.data.domain }}</div>
                 <span class="page-slug">{{ url(node) }}</span>
-                <span v-if="node.to" class="page-to"> ➔ {{ node.to }}</span>
+                <span v-if="node.data.to" class="page-to"> ➔ {{ node.data.to }}</span>
               </div>
             </div>
             <v-btn icon="mdi-arrow-right" variant="text" @click="$emit('update:item', node)"></v-btn>

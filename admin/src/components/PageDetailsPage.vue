@@ -11,7 +11,10 @@
       PageDetailsPageProps,
       PageDetailsPageConfig,
     },
-    props: ['item'],
+    props: {
+      'item': {type: Object, required: true},
+      'versions': {type: Array, default: () => []}
+    },
     emits: ['update:item'],
     data: () => ({
       tab: 'details',
@@ -24,11 +27,8 @@
     },
     methods: {
       use(data) {
-        this.vhistory = null
-        this.$emit('update:item', {
-          ...this.item,
-          ...data
-        })
+        this.item.data = data
+        this.vhistory = false
       }
     },
   }
@@ -46,7 +46,7 @@
 
         <div class="header">
           <v-btn icon="mdi-history"
-            :class="{hidden: !item.versions?.length}"
+            :class="{hidden: !versions.length}"
             @click="vhistory = true"
             variant="outlined"
             elevation="0"
@@ -74,7 +74,7 @@
 
   <Teleport to="body">
     <v-dialog v-model="vhistory" scrollable width="auto">
-      <History :data="item" :versions="item.versions || []" @use="use($event)" @hide="vhistory = false" />
+      <History :data="item.data" :versions="versions" @use="use($event)" @hide="vhistory = false" />
     </v-dialog>
   </Teleport>
 </template>

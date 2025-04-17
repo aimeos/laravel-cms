@@ -9,9 +9,9 @@
       PageDetails
     },
     data: () => ({
+      item: {data: {}},
       details: false,
       nav: null,
-      item: {},
     }),
   }
 </script>
@@ -29,7 +29,7 @@
       <v-layout class="page-details" key="details" v-show="details">
         <PageDetails
           :item="item"
-          @update:item="Object.assign(item, $event); details = false"
+          @close="details = false"
         />
       </v-layout>
     </transition-group>

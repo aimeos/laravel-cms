@@ -8,10 +8,10 @@
       const app = useAppStore()
       return { app, languages }
     },
-    props: ['item'],
+    props: {
+      'item': {type: Object, required: true}
+    },
     emits: ['update:item'],
-    data: () => ({
-    }),
     computed: {
       langs() {
         const list = [{code: '', name: 'None'}]
@@ -25,8 +25,8 @@
     },
     methods: {
       updateSlug(focused) {
-        if(!focused && this.item.slug[0] === '_') {
-          this.item.slug = this.item.name.replace(/[ ]+/g, '-').toLowerCase()
+        if(!focused && this.item.data.slug?.at(0) === '_') {
+          this.item.data.slug = this.item.data.name?.replace(/[ ]+/g, '-')?.toLowerCase()
         }
       }
     },
@@ -45,34 +45,34 @@
   <v-container>
     <v-row>
       <v-col cols="12" md="6">
-        <v-select v-model="item.status" label="Status" :items="[
+        <v-select v-model="item.data.status" label="Status" :items="[
           { key: 0, val: 'Disabled' },
           { key: 1, val: 'Enabled' },
           { key: 2, val: 'Hidden in navigation' }
         ]" item-title="val" item-value="key" variant="underlined" required></v-select>
       </v-col>
       <v-col cols="12" md="6">
-        <v-select v-model="item.lang" label="Language" :items="langs" item-title="name" item-value="code" variant="underlined"></v-select>
+        <v-select v-model="item.data.lang" label="Language" :items="langs" item-title="name" item-value="code" variant="underlined"></v-select>
       </v-col>
     </v-row>
 
     <v-row>
       <v-col cols="12" md="6">
-        <v-text-field v-model="item.name" label="Page name" variant="underlined" counter="30" required @update:focused="updateSlug($event)"></v-text-field>
+        <v-text-field v-model="item.data.name" label="Page name" variant="underlined" counter="30" required @update:focused="updateSlug($event)"></v-text-field>
         <v-text-field v-model="item.title" label="Page title" variant="underlined" counter="70"></v-text-field>
       </v-col>
       <v-col cols="12" md="6">
-        <v-text-field v-model="item.slug" label="URL path" variant="underlined" counter="255" required></v-text-field>
-        <v-text-field v-model="item.domain" label="Domain" variant="underlined"></v-text-field>
+        <v-text-field v-model="item.data.slug" label="URL path" variant="underlined" counter="255" required></v-text-field>
+        <v-text-field v-model="item.data.domain" label="Domain" variant="underlined"></v-text-field>
       </v-col>
     </v-row>
 
     <v-row>
       <v-col cols="12" md="6">
-        <v-text-field v-model="item.tag" label="Page tag" variant="underlined"></v-text-field>
+        <v-text-field v-model="item.data.tag" label="Page tag" variant="underlined"></v-text-field>
       </v-col>
       <v-col cols="12" md="6">
-        <v-select v-model="item.cache" label="Cache time" :items="[
+        <v-select v-model="item.data.cache" label="Cache time" :items="[
           { key: 0, val: 'No cache' },
           { key: 1, val: '1 minute' },
           { key: 5, val: '5 minutes' },
@@ -86,18 +86,28 @@
         ]" item-title="val" item-value="key" variant="underlined"></v-select>
       </v-col>
       <v-col cols="12">
-        <v-text-field v-model="item.to" label="Redirect URL" variant="underlined"></v-text-field>
+        <v-text-field v-model="item.data.to" label="Redirect URL" variant="underlined"></v-text-field>
       </v-col>
     </v-row>
 
     <v-row>
       <v-col cols="12" md="6">
-        <v-text-field type="datetime-local" v-model="item.start" label="Start date"
-          variant="underlined"></v-text-field>
+        <v-text-field
+         :modelValue="item.data.start"
+         @update:modelValue="item.data.start = $event ? $event?.replace(/T/g, ' ') + ':00' : null"
+          type="datetime-local"
+          label="Start date"
+          variant="underlined"
+        ></v-text-field>
       </v-col>
       <v-col cols="12" md="6">
-        <v-text-field type="datetime-local" v-model="item.end" label="End date"
-          variant="underlined"></v-text-field>
+        <v-text-field
+         :modelValue="item.data.end"
+         @update:modelValue="item.data.end = $event ? $event?.replace(/T/g, ' ') + ':00' : null"
+          type="datetime-local"
+          label="End date"
+          variant="underlined"
+        ></v-text-field>
       </v-col>
     </v-row>
   </v-container>

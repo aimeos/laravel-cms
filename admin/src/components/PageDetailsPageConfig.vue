@@ -8,44 +8,49 @@
       Elements,
       Fields,
     },
-    props: ['item'],
-    emits: ['update:item'],
+
+    props: {
+      'item': {type: Object, required: true}
+    },
+
     setup() {
       const elements = useElementStore()
       return { elements }
     },
+
     data: () => ({
-      panel: [],
-      config: {},
       velements: false,
+      panel: [],
     }),
+
     computed: {
       available() {
         return Object.keys(this.elements).length
       }
     },
+
     methods: {
-      add(item) {
-        if(this.config[item.type]) {
+      add(type) {
+        if(!this.item.data.config) {
+          this.item.data.config = {}
+        }
+
+        if(this.item.data.config[type]) {
+          alert('Element is already available')
           return
         }
 
-        this.config[item.type] = Object.assign(item, {data: {}})
-        this.panel.push(Object.keys(this.config).length - 1)
+        this.item.data.config[type] = {type: type, data: {}, files: []}
+        this.panel.push(Object.keys(this.item.data.config).length - 1)
         this.velements = false
       },
 
       remove(code) {
-        delete this.config[code]
+        delete this.item.data.config[code]
       },
 
       title(el) {
         return Object.values(el.data || {}).filter(v => typeof v !== 'object' && !!v).join(' - ').substring(0, 50) || el.label || ''
-      },
-
-      use(data) {
-        this.config = data
-        this.vhistory = null
       }
     },
     watch: {
@@ -64,14 +69,14 @@
 <template>
   <v-expansion-panels class="list" v-model="panel" elevation="0" multiple>
 
-    <v-expansion-panel v-for="(el, code) in config || {}" :key="code">
+    <v-expansion-panel v-for="(el, code) in (item.data?.config || {})" :key="code">
       <v-expansion-panel-title expand-icon="mdi-pencil">
         <v-btn icon="mdi-delete" variant="text" @click="remove(code)"></v-btn>
         <div class="element-title">{{ title(el) }}</div>
         <div class="element-type">{{ el.type }}</div>
       </v-expansion-panel-title>
       <v-expansion-panel-text>
-        <Fields :fields="el.fields" v-model:data="el.data" v-model:assets="el.files" />
+        <Fields :fields="elements.config[code]?.fields || []" v-model:data="el.data" v-model:assets="el.files" />
       </v-expansion-panel-text>
     </v-expansion-panel>
 

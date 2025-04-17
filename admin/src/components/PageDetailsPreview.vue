@@ -2,21 +2,26 @@
   import { useAppStore } from '../stores'
 
   export default {
-    props: ['item'],
+    props: {
+      'item': {type: Object, required: true}
+    },
+
     emits: ['update:item'],
+
     setup() {
       const app = useAppStore()
       return { app }
     },
+
     computed: {
       url() {
         const url = this.app.urlpage
-          .replace(/:domain/, this.item.domain)
-          .replace(/:slug/, this.item.slug)
-          .replace(/xx_XX/, this.item.lang)
-          .replace(/\/+$/g, '')
+          .replace(/:domain/, this.item.data.domain)
+          .replace(/:slug/, this.item.data.slug)
+          .replace(/xx_XX/, this.item.data.lang)
+          .replaceAll('//', '/').replace(':/', '://')
 
-        return url + (url.includes('?') ? '&' : '?') + 'cid=' + this.item.id
+        return url + (url.includes('?') ? '&' : '?') + 'cid=' + this.item.data.id
       }
     }
   }

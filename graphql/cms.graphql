@@ -170,6 +170,9 @@ type Page {
   "Arbitrary configuration settings"
   config: JSON!
 
+  "List of content elements"
+  content: JSON
+
   "Visibility status of the page, 0=inactive, 1=visible, 2=hidden in navigation"
   status: Int!
 
@@ -243,6 +246,9 @@ input PageInput {
 
   "Arbitrary configuration settings"
   config: JSON
+
+  "List of content elements"
+  content: JSON
 
   "Visibility status of the page, 0=inactive, 1=visible, 2=hidden in navigation"
   status: Int

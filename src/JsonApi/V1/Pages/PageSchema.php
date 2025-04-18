@@ -88,6 +88,7 @@ class PageSchema extends Schema
             Number::make( 'cache' )->readOnly(),
             ArrayHash::make( 'meta' )->readOnly(),
             ArrayHash::make( 'config' )->readOnly(),
+            ArrayList::make( 'content' )->readOnly(),
             DateTime::make( 'createdAt' )->readOnly(),
             DateTime::make( 'updatedAt' )->readOnly(),
             HasMany::make( 'contents' )->type( 'contents' )->readOnly()->serializeUsing(

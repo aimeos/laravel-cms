@@ -128,18 +128,14 @@ class GraphqlContentTest extends TestAbstract
     {
         $this->seed( CmsSeeder::class );
 
-        $contents = Content::orderBy( 'id' )->limit( 2 )->get();
-        $expected = [];
+        $content = Content::firstOrFail();
 
-        foreach( $contents as $content )
-        {
-            $attr = collect($content->getAttributes())->except(['tenant_id'])->all();
-            $expected[] = ['id' => (string) $content->id] + $attr;
-        }
+        $attr = collect($content->getAttributes())->except(['tenant_id'])->all();
+        $expected = [['id' => (string) $content->id] + $attr];
 
         $this->expectsDatabaseQueryCount( 2 );
         $response = $this->actingAs( $this->user )->graphQL( '{
-            contents(id: ["' . $contents[0]->id . '","' . $contents[1]->id . '"]) {
+            contents(id: ["' . $content->id . '"]) {
                 data {
                     id
                     type
@@ -196,7 +192,7 @@ class GraphqlContentTest extends TestAbstract
                     'type' => $content->type,
                     'versions' => [
                         [
-                            'data' => '{"type":"cms::heading","text":"Welcome to Laravel CMS"}',
+                            'data' => '{"type":"footer","data":{"text":"Powered by Laravel CMS"}}',
                             'files' => [],
                             'editor' => 'seeder'
                         ],
@@ -290,10 +286,10 @@ class GraphqlContentTest extends TestAbstract
                     'id' => $content->id,
                     'type' => 'test',
                     'lang' => 'en',
-                    'data' => '{"type":"cms::heading","text":"Welcome to Laravel CMS"}',
+                    'data' => '{"type":"footer","data":{"text":"Powered by Laravel CMS"}}',
                     'editor' => 'Test',
                     'latest' => ['data' => '{"key":"value"}'],
-                    'published' => ['data' => '{"type":"cms::heading","text":"Welcome to Laravel CMS"}']
+                    'published' => ['data' => '{"type":"footer","data":{"text":"Powered by Laravel CMS"}}']
                ],
             ]
         ] );

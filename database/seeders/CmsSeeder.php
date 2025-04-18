@@ -12,6 +12,10 @@ use Aimeos\Cms\Models\Page;
 
 class CmsSeeder extends Seeder
 {
+    private string $shared;
+    private array $file;
+
+
     /**
      * Seed the CMS database.
      *
@@ -37,16 +41,49 @@ class CmsSeeder extends Seeder
     }
 
 
-    protected function file() : File
+    protected function file() : array
     {
-        return File::forceCreate([
-            'mime' => 'image/jpeg',
-            'tag' => 'test',
-            'name' => 'Test image',
-            'path' => 'test/path/test-image.jpg',
-            'previews' => ["1000" => "test/path/test-image-1000.jpg", "500" => "test/path/test-image-500.jpg"],
-            'editor' => 'seeder',
-        ]);
+        if( !isset( $this->file ) )
+        {
+            $this->file = [
+                'mime' => 'image/jpeg',
+                'tag' => 'test',
+                'name' => 'Test image',
+                'path' => 'https://picsum.photos/id/0/1500/1000',
+                'previews' => ["1000" => "https://picsum.photos/id/0/1000/666", "500" => "https://picsum.photos/id/0/500/333"],
+                'editor' => 'seeder',
+            ];
+
+            $file = File::forceCreate( $this->file );
+            $this->file['id'] = $file->id;
+        }
+
+        return $this->file;
+    }
+
+
+    protected function shared() : string
+    {
+        if( !isset( $this->shared ) )
+        {
+            $data = ['type' => 'footer', 'data' => ['text' => 'Powered by Laravel CMS']];
+
+            $content = Content::forceCreate([
+                'label' => 'Test shared content',
+                'data' => $data,
+                'editor' => 'seeder',
+            ]);
+
+            $version = $content->versions()->forceCreate([
+                'data' => $data,
+                'published' => true,
+                'editor' => 'seeder',
+            ]);
+
+            $this->shared = $content->id;
+        }
+
+        return $this->shared;
     }
 
 
@@ -69,15 +106,21 @@ class CmsSeeder extends Seeder
 
     protected function home() : Page
     {
+        $sharedId = $this->shared();
+
         $page = Page::forceCreate([
             'name' => 'Home',
             'title' => 'Home | Laravel CMS',
             'slug' => '',
             'tag' => 'root',
             'domain' => 'mydomain.tld',
-            'meta' => ['cms::meta' => ['type' => 'cms::meta', 'text' => 'Laravel CMS is outstanding']],
             'status' => 1,
             'editor' => 'seeder',
+            'meta' => ['meta' => ['type' => 'meta', ['data' => ['text' => 'Laravel CMS is outstanding']]]],
+            'content' => [
+                ['type' => 'heading', 'text' => 'Welcome to Laravel CMS'],
+                ['type' => 'ref', 'id' => $sharedId]
+            ],
         ]);
         $page->versions()->forceCreate([
             'data' => [
@@ -86,23 +129,27 @@ class CmsSeeder extends Seeder
                 'slug' => '',
                 'tag' => 'root',
                 'domain' => 'mydomain.tld',
-                'meta' => ['cms::meta' => ['type' => 'cms::meta', 'text' => 'Laravel CMS is outstanding']],
                 'status' => 1,
                 'editor' => 'seeder',
+                'meta' => ['meta' => ['type' => 'meta', 'text' => 'Laravel CMS is outstanding']],
+                'content' => [
+                    ['type' => 'heading', 'text' => 'Welcome to Laravel CMS'],
+                    ['type' => 'ref', 'id' => $sharedId]
+                ],
             ],
             'published' => true,
             'editor' => 'seeder',
         ]);
-
-        $data = ['type' => 'cms::heading', 'text' => 'Welcome to Laravel CMS'];
-        $page->contents()->attach( $this->content( $data )->id );
+        $page->contents()->attach( $sharedId );
 
         return $page;
     }
 
 
-    protected function addBlog( Page $home)
+    protected function addBlog( Page $home )
     {
+        $sharedId = $this->shared();
+
         $page = Page::forceCreate([
             'name' => 'Blog',
             'title' => 'Blog | Laravel CMS',
@@ -110,14 +157,13 @@ class CmsSeeder extends Seeder
             'tag' => 'blog',
             'status' => 1,
             'editor' => 'seeder',
+            'content' => [
+                ['type' => 'blog', 'data' => ['text' => 'Blog example']],
+                ['type' => 'ref', 'id' => $sharedId]
+            ],
         ]);
         $page->appendToNode( $home )->save();
-
-        $data = [
-            ['type' => 'cms::heading', 'text' => 'Blog example'],
-            ['type' => 'cms::blog']
-        ];
-        $page->contents()->attach( $this->content( $data )->id );
+        $page->contents()->attach( $sharedId );
 
         return $this->addBlogArticle( $page );
     }
@@ -125,30 +171,35 @@ class CmsSeeder extends Seeder
 
     protected function addBlogArticle( Page $blog )
     {
+        $sharedId = $this->shared();
+        $file = $this->file();
+
         $data = [
             [
-                'type' => 'cms::article',
-                'title' => 'Welcome to Laravel CMS',
-                'cover' => [
-                    'type' => 'cms::image',
-                    'name' => 'Welcome to Laravel CMS',
-                    'path' => 'https://aimeos.org/tips/wp-content/uploads/2023/01/ai-ecommerce-2.jpg',
-                    'previews' => [
-                        1000 => 'https://aimeos.org/tips/wp-content/uploads/2023/01/ai-ecommerce-2.jpg'
-                    ],
-                ],
-                'intro' => 'Laravel CMS is lightweight, lighting fast, easy to use, fully customizable and scalable from one-pagers to millions of pages',
+                'type' => 'article',
+                'data' => [
+                    'title' => 'Welcome to Laravel CMS',
+                    'cover' => $file,
+                    'intro' => 'A new light-weight Laravel CMS is here!',
+                    'text' => 'Laravel CMS is lightweight, lighting fast, easy to use, fully customizable and scalable from one-pagers to millions of pages',
+                ]
             ],
-            ['type' => 'cms::heading', 'level' => 2, 'text' => 'Rethink content management!'],
-            ['type' => 'cms::text', 'text' => 'Laravel CMS is exceptional in every way. Headless and API-first!'],
-            ['type' => 'cms::heading', 'level' => 2, 'text' => 'API first!'],
-            ['type' => 'cms::text', 'text' => 'Use GraphQL for editing the pages, contents and files:'],
-            ['type' => 'cms::code', 'language' => 'graphql', 'text' => 'mutation {
+            ['type' => 'heading', 'data' => ['level' => 2, 'text' => 'Rethink content management!']],
+            ['type' => 'paragraph', 'data' => ['text' => 'Laravel CMS is exceptional in every way. Headless and API-first!']],
+            ['type' => 'heading', 'data' => ['level' => 2, 'text' => 'API first!']],
+            ['type' => 'paragraph', 'data' => [
+                'text' => 'Use GraphQL for editing everything after login:
+
+```graphql
+mutation {
   cmsLogin(email: "editor@example.org", password: "secret") {
     name
     email
   }
-}'          ],
+}
+```'            ],
+            ],
+            ['type' => 'ref', 'id' => $sharedId],
         ];
 
         $page = Page::forceCreate([
@@ -158,16 +209,17 @@ class CmsSeeder extends Seeder
             'tag' => 'article',
             'status' => 1,
             'editor' => 'seeder',
+            'content' => $data
         ]);
         $page->appendToNode( $blog )->save();
-        $page->contents()->attach( $this->content( $data )->id );
+        $page->contents()->attach( $sharedId );
 
         $version = $page->versions()->forceCreate([
             'data' => $data,
             'published' => true,
             'editor' => 'seeder',
         ]);
-        $version->files()->attach( $this->file() );
+        $version->files()->attach( $file['id'] );
 
         return $this;
     }
@@ -175,12 +227,7 @@ class CmsSeeder extends Seeder
 
     protected function addDev( Page $home )
     {
-        $data = [[
-            'type' => 'cms::markdown',
-            'text' => '# For Developers
-
-This is content created by GitHub-flavored markdown syntax',
-        ]];
+        $sharedId = $this->shared();
 
         $page = Page::forceCreate([
             'name' => 'Dev',
@@ -188,9 +235,24 @@ This is content created by GitHub-flavored markdown syntax',
             'slug' => 'dev',
             'status' => 1,
             'editor' => 'seeder',
+            'content' => [[
+                'type' => 'paragraph',
+                'data' => ['text' => '# For Developers
+
+This is content created using [markdown syntax](https://www.markdownguide.org/basic-syntax/)'
+                ]
+            ], [
+                'type' => 'image-text',
+                'data' => [
+                    'image' => $this->file(),
+                    'text' => 'Test image'
+                ]
+            ], [
+                'type' => 'ref', 'id' => $sharedId
+            ]]
         ]);
         $page->appendToNode( $home )->save();
-        $page->contents()->attach( $this->content( $data )->id );
+        $page->contents()->attach( $sharedId );
 
         return $this;
     }

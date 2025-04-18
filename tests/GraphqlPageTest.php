@@ -72,6 +72,7 @@ class GraphqlPageTest extends TestAbstract
                 tag
                 meta
                 config
+                content
                 status
                 cache
                 editor
@@ -116,6 +117,7 @@ class GraphqlPageTest extends TestAbstract
                     tag
                     meta
                     config
+                    content
                     status
                     cache
                     editor
@@ -170,6 +172,7 @@ class GraphqlPageTest extends TestAbstract
                     tag
                     meta
                     config
+                    content
                     status
                     cache
                     editor
@@ -291,6 +294,7 @@ class GraphqlPageTest extends TestAbstract
         $this->seed( CmsSeeder::class );
 
         $page = Page::where('tag', 'root')->firstOrFail();
+        $content = $page->contents()->firstOrFail();
 
         $this->expectsDatabaseQueryCount( 2 );
         $response = $this->actingAs( $this->user )->graphQL( "{
@@ -307,7 +311,7 @@ class GraphqlPageTest extends TestAbstract
                     'id' => (string) $page->id,
                     'versions' => [
                         [
-                            'data' => '{"name":"Home","title":"Home | Laravel CMS","slug":"","tag":"root","domain":"mydomain.tld","meta":{"cms::meta":{"type":"cms::meta","text":"Laravel CMS is outstanding"}},"status":1,"editor":"seeder"}',
+                            'data' => '{"name":"Home","title":"Home | Laravel CMS","slug":"","tag":"root","domain":"mydomain.tld","status":1,"editor":"seeder","meta":{"meta":{"type":"meta","text":"Laravel CMS is outstanding"}},"content":[{"type":"heading","text":"Welcome to Laravel CMS"},{"type":"ref","id":"' . $content->id . '"}]}',
                             'editor' => 'seeder'
                         ],
                     ],
@@ -380,7 +384,7 @@ class GraphqlPageTest extends TestAbstract
                         [
                             'lang' => '',
                             'label' => 'Test shared content',
-                            'data' => '{"type":"cms::heading","text":"Welcome to Laravel CMS"}',
+                            'data' => '{"type":"footer","data":{"text":"Powered by Laravel CMS"}}',
                         ],
                     ],
                 ],
@@ -409,6 +413,7 @@ class GraphqlPageTest extends TestAbstract
                     tag: "test"
                     meta: "{\"canonical\":\"to\/page\"}"
                     config: "{\"key\":\"test\"}"
+                    content: "[{\"type\":\"cms::heading\",\"text\":\"Welcome to Laravel CMS\"}]"
                     status: 0
                     cache: 0
                     contents: ["' . $content->id . '"]
@@ -425,6 +430,7 @@ class GraphqlPageTest extends TestAbstract
                     tag
                     meta
                     config
+                    content
                     status
                     cache
                     editor
@@ -472,6 +478,7 @@ class GraphqlPageTest extends TestAbstract
                     tag: "test"
                     meta: "{}"
                     config: "{}"
+                    content: "[]"
                     status: 0
                     cache: 0
                 }, parent: "' . $root->id . '") {
@@ -511,6 +518,7 @@ class GraphqlPageTest extends TestAbstract
                     tag: "test"
                     meta: "{}"
                     config: "{}"
+                    content: "[]"
                     status: 0
                     cache: 0
                 }, parent: "' . $root->id . '", ref: "' . $ref->id .'") {
@@ -634,7 +642,7 @@ class GraphqlPageTest extends TestAbstract
         $content = Content::firstOrFail();
         $root = Page::where('tag', 'root')->firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 12 );
+        $this->expectsDatabaseQueryCount( 13 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 savePage(id: "' . $root->id . '", input: {
@@ -647,6 +655,7 @@ class GraphqlPageTest extends TestAbstract
                     tag: "test"
                     meta: "{\"canonical\":\"to\/page\"}"
                     config: "{\"key\":\"test\"}"
+                    content: "[{\"type\":\"cms::heading\",\"text\":\"Welcome to Laravel CMS\"}]"
                     status: 0
                     cache: 5
                     contents: ["' . $content->id . '"]
@@ -663,6 +672,7 @@ class GraphqlPageTest extends TestAbstract
                     tag
                     meta
                     config
+                    content
                     status
                     cache
                     editor
@@ -685,6 +695,7 @@ class GraphqlPageTest extends TestAbstract
         ' );
 
         $page = Page::where('id', $root->id)->firstOrFail();
+        $content = $page->contents()->firstOrFail();
 
         $response->assertJson( [
             'data' => [
@@ -698,18 +709,19 @@ class GraphqlPageTest extends TestAbstract
                     'title' => 'Home | Laravel CMS',
                     'to' => '',
                     'tag' => 'root',
-                    'meta' => '{"cms::meta":{"type":"cms::meta","text":"Laravel CMS is outstanding"}}',
+                    'meta' => '{"meta":{"type":"meta","0":{"data":{"text":"Laravel CMS is outstanding"}}}}',
                     'config' => '{}',
+                    'content' => '[{"type":"heading","text":"Welcome to Laravel CMS"},{"type":"ref","id":"' . $content->id . '"}]',
                     'status' => 1,
                     'cache' => 5,
                     'editor' => 'seeder',
                     'created_at' => (string) $root->created_at,
                     'updated_at' => (string) $page->updated_at,
                     'latest' => [
-                        'data' => '{"lang":"en","slug":"test","domain":"test.com","name":"test","title":"Test page","to":"\\/to\\/page","tag":"test","meta":{"canonical":"to\\/page"},"config":{"key":"test"},"status":0,"cache":5,"start":"2023-01-01 00:00:00","end":"2099-01-01 00:00:00"}'
+                        'data' => '{"lang":"en","slug":"test","domain":"test.com","name":"test","title":"Test page","to":"\\/to\\/page","tag":"test","meta":{"canonical":"to\\/page"},"config":{"key":"test"},"content":[{"type":"cms::heading","text":"Welcome to Laravel CMS"}],"status":0,"cache":5}'
                     ],
                     'published' => [
-                        'data' => '{"name":"Home","title":"Home | Laravel CMS","slug":"","tag":"root","domain":"mydomain.tld","meta":{"cms::meta":{"type":"cms::meta","text":"Laravel CMS is outstanding"}},"status":1,"editor":"seeder"}'
+                        'data' => '{"name":"Home","title":"Home | Laravel CMS","slug":"","tag":"root","domain":"mydomain.tld","status":1,"editor":"seeder","meta":{"meta":{"type":"meta","text":"Laravel CMS is outstanding"}},"content":[{"type":"heading","text":"Welcome to Laravel CMS"},{"type":"ref","id":"' . $content->id . '"}]}'
                     ]
                 ],
             ]

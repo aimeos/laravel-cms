@@ -176,12 +176,6 @@ type Page {
   "Cache lifetime in minutes"
   cache: Int!
 
-  "Date/time when the page will be shown"
-  start: String
-
-  "Date/time when the page will be hidden"
-  end: String
-
   "Name of the last user who added, updated or deleted the page"
   editor: String!
 
@@ -256,13 +250,7 @@ input PageInput {
   "Cache lifetime in minutes"
   cache: Int
 
-  "Date/time when the page will be shown"
-  start: String
-
-  "Date/time when the page will be hidden"
-  end: String
-
-  "List of content IDs referenced by the page"
+  "List of shared content IDs referenced by the page"
   contents: [ID!]
 
   "List of file IDs used in the meta data"

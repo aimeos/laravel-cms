@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('tenant_id');
             $table->string('versionable_id', 36);
             $table->string('versionable_type', 50);
+            $table->datetime('publish_at')->nullable();
             $table->boolean('published');
             $table->json('data');
             $table->json('refs');
@@ -25,8 +26,8 @@ return new class extends Migration
             $table->timestamps();
 
             $table->primary('id');
-            $table->index(['versionable_id', 'versionable_type', 'published', 'tenant_id'], 'idx_versions_id_type_published_tenantid');
-            $table->index(['updated_at', 'published']);
+            $table->index(['versionable_id', 'versionable_type', 'created_at', 'tenant_id'], 'idx_versions_id_type_created_tenantid');
+            $table->index(['publish_at', 'published']);
         });
     }
 

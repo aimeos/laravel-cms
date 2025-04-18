@@ -52,8 +52,6 @@ class Page extends Model
         'config' => '{}',
         'status' => 0,
         'cache' => 5,
-        'start' => null,
-        'end' => null,
         'editor' => '',
     ];
 
@@ -97,8 +95,6 @@ class Page extends Model
         'config',
         'status',
         'cache',
-        'start',
-        'end',
     ];
 
     /**

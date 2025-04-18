@@ -22,8 +22,8 @@ return new class extends Migration
             $table->string('path');
             $table->json('previews');
             $table->string('editor');
-            $table->timestamps();
             $table->softDeletes();
+            $table->timestamps();
 
             $table->primary('id');
             $table->index(['mime', 'tenant_id']);

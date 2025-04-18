@@ -75,8 +75,6 @@ class GraphqlPageTest extends TestAbstract
                 status
                 cache
                 editor
-                start
-                end
                 has
                 created_at
                 updated_at
@@ -121,8 +119,6 @@ class GraphqlPageTest extends TestAbstract
                     status
                     cache
                     editor
-                    start
-                    end
                     created_at
                     updated_at
                     deleted_at
@@ -177,8 +173,6 @@ class GraphqlPageTest extends TestAbstract
                     status
                     cache
                     editor
-                    start
-                    end
                     created_at
                     updated_at
                     deleted_at
@@ -417,8 +411,6 @@ class GraphqlPageTest extends TestAbstract
                     config: "{\"key\":\"test\"}"
                     status: 0
                     cache: 0
-                    start: "2023-01-01 00:00:00"
-                    end: "2099-01-01 00:00:00"
                     contents: ["' . $content->id . '"]
                     files: ["' . $file->id . '"]
                 }) {
@@ -436,8 +428,6 @@ class GraphqlPageTest extends TestAbstract
                     status
                     cache
                     editor
-                    start
-                    end
                     created_at
                     updated_at
                     deleted_at
@@ -659,8 +649,6 @@ class GraphqlPageTest extends TestAbstract
                     config: "{\"key\":\"test\"}"
                     status: 0
                     cache: 5
-                    start: "2023-01-01 00:00:00"
-                    end: "2099-01-01 00:00:00"
                     contents: ["' . $content->id . '"]
                     files: ["' . $file->id . '"]
                 }) {
@@ -678,8 +666,6 @@ class GraphqlPageTest extends TestAbstract
                     status
                     cache
                     editor
-                    start
-                    end
                     contents {
                         lang
                         data
@@ -717,8 +703,6 @@ class GraphqlPageTest extends TestAbstract
                     'status' => 1,
                     'cache' => 5,
                     'editor' => 'seeder',
-                    'start' => NULL,
-                    'end' => NULL,
                     'created_at' => (string) $root->created_at,
                     'updated_at' => (string) $page->updated_at,
                     'latest' => [

@@ -5,18 +5,21 @@
       'assets': {type: Array, default: () => []},
       'fields': {type: Object, required: true},
     },
+
     emits: ['update:data', 'update:assets'],
+
     data() {
       return {
-        entry: this.data,
         files: this.assets,
       }
     },
+
     methods: {
       addAsset(file) {
         this.files.push(file)
         this.$emit('update:assets', this.files)
       },
+
 
       removeAsset(id) {
         const idx = this.files.findIndex(item => item.id === id)
@@ -24,14 +27,6 @@
         if(idx !== -1) {
           this.files.splice(idx, 1)
           this.$emit('update:assets', this.files)
-        }
-      }
-    },
-    watch: {
-      entry: {
-        deep: true,
-        handler() {
-          this.$emit('update:data', this.entry)
         }
       }
     }
@@ -44,10 +39,10 @@
     <component :is="field.type?.charAt(0)?.toUpperCase() + field.type?.slice(1)"
       :config="field"
       :assets="assets"
-      :modelValue="entry[code]"
+      :modelValue="data[code]"
       @addAsset="addAsset($event)"
       @removeAsset="removeAsset($event)"
-      @update:modelValue="entry[code] = $event"
+      @update:modelValue="data[code] = $event"
     ></component>
   </div>
 </template>

@@ -2,9 +2,12 @@
   import { diffJson } from 'diff'
 
   export default {
-    props: ['data', 'versions'],
+    props: {
+      'data': {type: Object, required: true},
+      'versions': {type: Array, required: true},
+    },
 
-    emit: ['hide', 'use'],
+    emit: ['hide', 'use', 'revert'],
 
     data: () => ({
       list: [],
@@ -52,7 +55,7 @@
                   :class="{added: part.added, removed: part.removed}">{{ part.value || part }}</span>
               </v-card-text>
               <v-card-actions>
-                <v-btn variant="outlined" @click="$emit('use', list[0]?.data)">
+                <v-btn variant="outlined" @click="$emit('revert', list[0]?.data)">
                   Revert
                 </v-btn>
               </v-card-actions>
@@ -60,18 +63,20 @@
 
           </v-timeline-item>
 
-          <v-timeline-item v-for="(version, idx) in list" :key="idx" size="small"
+          <v-timeline-item v-for="(version, idx) in list.slice(1)" :key="idx" size="small"
             :dot-color="version.published ? 'success' : 'grey-lighten-1'">
 
-            <v-card class="elevation-2" @click="version._show = !version._show">
-              <v-card-title>{{ version.created_at }}</v-card-title>
-              <v-card-subtitle>{{ version.editor }}</v-card-subtitle>
-              <v-card-text :class="{show: version._show}">
-                <span v-for="part of diff(list[idx+1]?.data || version.data, version.data)"
-                  :class="{added: part.added, removed: part.removed}">
-                  {{ part.value || part }}
-                </span>
-              </v-card-text>
+            <v-card class="elevation-2">
+              <div @click="version._show = !version._show">
+                <v-card-title>{{ version.created_at }}</v-card-title>
+                <v-card-subtitle>{{ version.editor }}</v-card-subtitle>
+                <v-card-text :class="{show: version._show}">
+                  <span v-for="part of diff(list[idx+2]?.data || version.data, version.data)"
+                    :class="{added: part.added, removed: part.removed}">
+                    {{ part.value || part }}
+                  </span>
+                </v-card-text>
+              </div>
               <v-card-actions>
                 <v-btn variant="outlined" @click="$emit('use', version.data)">
                   Use
@@ -109,6 +114,9 @@
 
   .v-timeline-item .v-card-text > span {
     white-space: pre;
+  }
+
+  .v-timeline-item:not(:last-child) .v-card-text > span {
     display: none;
   }
 

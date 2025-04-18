@@ -28,8 +28,8 @@
       side: {},
       clip: null,
       index: null,
+      history: null,
       checked: false,
-      vhistory: false,
       velements: false,
       currentPage: 1,
       lastPage: 1,
@@ -86,6 +86,7 @@
             type: el.type,
             lang: el.lang,
             data: JSON.parse(latest?.data || '{}'),
+            versions: el.versions || [],
             files: latest?.files || []
           }
         })
@@ -273,6 +274,14 @@
         el._changed = true
       },
 
+
+      use(data, idx, changed = true) {
+        this.list[idx].data = data
+        this.list[idx]._changed = changed
+        this.history = null
+      },
+
+
       visibility(type) {
         this.aside.show['type'] = type ? true : false
       }
@@ -326,12 +335,6 @@
         ></v-text-field>
 
         <div class="actions">
-          <v-btn icon="mdi-history"
-            :class="{hidden: !item.versions?.length}"
-            @click="vhistory = true"
-            variant="outlined"
-            elevation="0"
-          ></v-btn>
           <v-btn
             @click="save()"
             :color="changed ? 'primary' : ''"
@@ -378,6 +381,14 @@
 
               <div class="element-title">{{ title(el) }}</div>
               <div class="element-type">{{ el.type }}</div>
+              <div class="actions">
+                <v-btn v-if="el.versions?.length"
+                  @click.stop="history = {data: el.data, index: idx, versions: el.versions}"
+                  icon="mdi-history"
+                  variant="flat"
+                ></v-btn>
+                <div v-else class="icon placeholder"></div>
+              </div>
             </v-expansion-panel-title>
             <v-expansion-panel-text>
 
@@ -409,8 +420,14 @@
   </Teleport>
 
   <Teleport to="body">
-    <v-dialog v-model="vhistory" scrollable width="auto">
-      <History :data="clean()" :versions="item.versions || []" @use="use($event)" @hide="vhistory = false" />
+    <v-dialog :modelValue="!!history" scrollable width="auto">
+      <History
+        :data="history?.data"
+        :versions="history?.versions || []"
+        @revert="use($event, history?.index, false)"
+        @use="use($event, history?.index)"
+        @hide="history = null"
+      />
     </v-dialog>
   </Teleport>
 
@@ -429,7 +446,13 @@
 }
 
 .actions button {
+  background-color: transparent;
   margin-inline-start: 0.5rem;
+}
+
+.actions .icon.placeholder {
+  height: 48px;
+  width: 48px;
 }
 
 .bulk {
@@ -451,5 +474,12 @@
 
 .v-expansion-panel-title .v-selection-control {
   flex: none;
+}
+
+.element-type {
+  word-wrap: break-word;
+  overflow: hidden;
+  max-height: 48px;
+  min-width: 5rem;
 }
 </style>

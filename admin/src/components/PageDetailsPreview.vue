@@ -16,12 +16,12 @@
     computed: {
       url() {
         const url = this.app.urlpage
-          .replace(/:domain/, this.item.data.domain || '')
-          .replace(/:slug/, this.item.data.slug || '')
-          .replace(/xx_XX/, this.item.data.lang || '')
+          .replace(/:domain/, this.item.domain || '')
+          .replace(/:slug/, this.item.slug || '')
+          .replace(/xx_XX/, this.item.lang || '')
           .replaceAll('//', '/').replace(':/', '://')
 
-        return url + (url.includes('?') ? '&' : '?') + 'cid=' + (this.item.data.id || '')
+        return url + (url.includes('?') ? '&' : '?') + 'cid=' + (this.item.id || '')
       }
     }
   }

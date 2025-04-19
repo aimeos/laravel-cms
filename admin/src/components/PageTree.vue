@@ -575,7 +575,7 @@
         return this.app.urlpage
           .replace(/:domain/, node.domain || '')
           .replace(/:slug/, node.slug || '')
-          .replace(/xx_XX/, node.lang || '')
+          .replace(/xx-XX/, node.lang || '')
           .replaceAll('//', '/').replace(':/', '://')
       }
     },

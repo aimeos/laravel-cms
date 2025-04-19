@@ -18,7 +18,7 @@
         const url = this.app.urlpage
           .replace(/:domain/, this.item.domain || '')
           .replace(/:slug/, this.item.slug || '')
-          .replace(/xx_XX/, this.item.lang || '')
+          .replace(/xx-XX/, this.item.lang || '')
           .replaceAll('//', '/').replace(':/', '://')
 
         return url + (url.includes('?') ? '&' : '?') + 'cid=' + (this.item.id || '')

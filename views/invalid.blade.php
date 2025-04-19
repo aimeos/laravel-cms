@@ -1,1 +1,1 @@
-<!-- Content element "{{ $data['type'] ?? '' }}" has no template -->
+<!-- Invalid content element of type "{{ $type }}" -->

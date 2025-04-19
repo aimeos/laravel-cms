@@ -1,11 +1,11 @@
-@push('css')
-<link type="text/css" rel="stylesheet" href="{{ asset('vendor/cms/prism.css?v=1') }}">
-@endPush
+@pushOnce('css')
+<link type="text/css" rel="stylesheet" href="{{ asset('vendor/cms/prism.css') }}">
+@endPushOnce
 
-@push('js')
-<script defer src="{{ asset('vendor/cms/prism.js?v=1') }}"></script>
-@endPush
+@pushOnce('js')
+<script defer src="{{ asset('vendor/cms/prism.js') }}"></script>
+@endPushOnce
 
-<pre><code class="language-{{ $data['language'] ?? '' }}">
-@includeFirst(['cms::string', 'cms::invalid'], ['data' => $data['text'] ?? []])
+<pre><code class="language-{{ $lang ?? '' }}">
+{{ $text ?? '' }}
 </code></pre>

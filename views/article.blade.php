@@ -1,11 +1,18 @@
 @pushOnce('css')
-<link type="text/css" rel="stylesheet" href="{{ asset('vendor/cms/article.css?v=1') }}">
+<link type="text/css" rel="stylesheet" href="{{ asset('vendor/cms/article.css') }}">
 @endPushOnce
 
 <div class="cms-article">
-	<h1>@includeIf('cms::string', ['data' => $data['title'] ?? ''])</h1>
+	<h1>{{ $title }}</h1>
 
-	@includeFirst([$data['cover']['type'] ?? '', 'cms::invalid'], ['data' => $data['cover'] ?? [], 'main' => true])
+	@includeIf('cms::image', ['main' => true] + ($intro ?? []) ))
 
-	<div class="lead">@includeIf('cms::text', ['data' => $data['intro'] ?? ''])</div>
+	<div class="lead">
+		<?= (new \League\CommonMark\GithubFlavoredMarkdownConverter([
+				'html_input' => 'escape',
+				'allow_unsafe_links' => false,
+				'max_nesting_level' => 25
+			]))->convert($text ?? '')
+		?>
+	</div>
 </div>

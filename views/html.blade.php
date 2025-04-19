@@ -1,1 +1,3 @@
-<div class="cms-html">{!! $data['text'] ?? '' !!}</div>
+<div class="cms-html">
+	{!! $text ?? '' !!}
+</div>

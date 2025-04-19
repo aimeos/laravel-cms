@@ -167,8 +167,6 @@
                 id
                 parent_id
                 deleted_at
-                start
-                end
                 has
                 latest {
                   published
@@ -195,17 +193,14 @@
           }
 
           const pages = result.data.pages.data.map(node => {
-            return {
+            return Object.assign(JSON.parse(node.latest.data) || {},{
               id: node.id,
               has: node.has,
-              end: node.end,
-              start: node.start,
               parent_id: node.parent_id,
               deleted_at: node.deleted_at,
               editor: node.latest.editor,
               published: node.latest.published,
-              data: JSON.parse(node.latest.data)
-            }
+            })
           })
 
           return {
@@ -378,8 +373,8 @@
         const node = {...this.clip.node}
         let refid = null
 
-        node.data.slug = node.slug + '_' + Math.floor(Math.random() * 10000)
-        node.data.status = 0
+        node.slug = node.slug + '_' + Math.floor(Math.random() * 10000)
+        node.status = 0
         node.children = null
         node.has = false
         node.id = null
@@ -543,12 +538,12 @@
           list.push('Timeframe: ' + (node.start || '') + ' → ' + (node.end || ''))
         }
 
-        if(node.data.tag) {
-          list.push('Tag: ' + node.data.tag)
+        if(node.tag) {
+          list.push('Tag: ' + node.tag)
         }
 
-        if(node.data.cache) {
-          list.push('Cache: ' + node.data.cache + ' min')
+        if(node.cache) {
+          list.push('Cache: ' + node.cache + ' min')
         }
 
         return list.join("\n")
@@ -578,9 +573,9 @@
 
       url(node) {
         return this.app.urlpage
-          .replace(/:domain/, node.data.domain || '')
-          .replace(/:slug/, node.data.slug || '')
-          .replace(/xx_XX/, node.data.lang || '')
+          .replace(/:domain/, node.domain || '')
+          .replace(/:slug/, node.slug || '')
+          .replace(/xx_XX/, node.lang || '')
           .replaceAll('//', '/').replace(':/', '://')
       }
     },
@@ -673,13 +668,13 @@
                 <v-btn icon="mdi-dots-vertical" variant="text" v-bind="props"></v-btn>
               </template>
               <v-list>
-                <v-list-item v-if="node.data.status !== 0">
+                <v-list-item v-if="node.status !== 0">
                   <v-btn prepend-icon="mdi-eye-off" variant="text" @click="status(stat, 0)">Disable</v-btn>
                 </v-list-item>
-                <v-list-item v-if="node.data.status !== 1">
+                <v-list-item v-if="node.status !== 1">
                   <v-btn prepend-icon="mdi-eye" variant="text" @click="status(stat, 1)">Enable</v-btn>
                 </v-list-item>
-                <v-list-item v-if="node.data.status !== 2">
+                <v-list-item v-if="node.status !== 2">
                   <v-btn prepend-icon="mdi-eye-off-outline" variant="text" @click="status(stat, 2)">Hide in menu</v-btn>
                 </v-list-item>
                 <v-list-item>
@@ -755,9 +750,9 @@
             </v-menu>
             <div class="node-content"
               :class="{
-                'status-hidden': node.data.status == 2,
-                'status-enabled': node.data.status == 1,
-                'status-disabled': !node.data.status,
+                'status-hidden': node.status == 2,
+                'status-enabled': node.status == 1,
+                'status-disabled': !node.status,
                 'trashed': node.deleted_at
               }"
               :title="title(node)"
@@ -765,14 +760,14 @@
               <div class="node-text">
                 <div class="page-name">
                   <v-icon class="page-time" size="x-small" v-if="node.start || node.end">mdi-clock-outline</v-icon>
-                  {{ node.data.name || 'New' }}
+                  {{ node.name || 'New' }}
                 </div>
-                <div v-if="node.data.title" class="page-title">{{ node.data.title }}</div>
+                <div v-if="node.title" class="page-title">{{ node.title }}</div>
               </div>
               <div class="node-url">
-                <div class="page-domain">{{ node.data.domain }}</div>
+                <div class="page-domain">{{ node.domain }}</div>
                 <span class="page-slug">{{ url(node) }}</span>
-                <span v-if="node.data.to" class="page-to"> ➔ {{ node.data.to }}</span>
+                <span v-if="node.to" class="page-to"> ➔ {{ node.to }}</span>
               </div>
             </div>
             <v-btn icon="mdi-arrow-right" variant="text" @click="$emit('update:item', node)"></v-btn>

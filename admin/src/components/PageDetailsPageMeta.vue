@@ -31,22 +31,22 @@
 
     methods: {
       add(type) {
-        if(!this.item.data.meta) {
-          this.item.data.meta = {}
+        if(!this.item.meta) {
+          this.item.meta = {}
         }
 
-        if(this.item.data.meta[type]) {
+        if(this.item.meta[type]) {
           alert('Element is already available')
           return
         }
 
-        this.item.data.meta[type] = {type: type, data: {}, files: []}
-        this.panel.push(Object.keys(this.item.data.meta).length - 1)
+        this.item.meta[type] = {type: type, data: {}, files: []}
+        this.panel.push(Object.keys(this.item.meta).length - 1)
         this.velements = false
       },
 
       remove(code) {
-        delete this.item.data.meta[code]
+        delete this.item.meta[code]
       },
 
       title(el) {
@@ -59,7 +59,7 @@
 <template>
   <v-expansion-panels class="list" v-model="panel" elevation="0" multiple>
 
-    <v-expansion-panel v-for="(el, code) in item.data?.meta || {}" :key="code">
+    <v-expansion-panel v-for="(el, code) in item?.meta || {}" :key="code">
       <v-expansion-panel-title expand-icon="mdi-pencil">
         <v-btn icon="mdi-delete" variant="text" @click="remove(code)"></v-btn>
         <div class="element-title">{{ title(el) }}</div>

@@ -1,7 +1,7 @@
 <script>
   export default {
     props: {
-      'state': {type: Boolean, required: true}
+      'state': {type: [Boolean, null], required: true}
     },
 
     emits: ['update:state'],

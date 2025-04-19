@@ -31,22 +31,22 @@
 
     methods: {
       add(type) {
-        if(!this.item.data.config) {
-          this.item.data.config = {}
+        if(!this.item.config) {
+          this.item.config = {}
         }
 
-        if(this.item.data.config[type]) {
+        if(this.item.config[type]) {
           alert('Element is already available')
           return
         }
 
-        this.item.data.config[type] = {type: type, data: {}, files: []}
-        this.panel.push(Object.keys(this.item.data.config).length - 1)
+        this.item.config[type] = {type: type, data: {}, files: []}
+        this.panel.push(Object.keys(this.item.config).length - 1)
         this.velements = false
       },
 
       remove(code) {
-        delete this.item.data.config[code]
+        delete this.item.config[code]
       },
 
       title(el) {
@@ -70,7 +70,7 @@
 <template>
   <v-expansion-panels class="list" v-model="panel" elevation="0" multiple>
 
-    <v-expansion-panel v-for="(el, code) in (item.data?.config || {})" :key="code">
+    <v-expansion-panel v-for="(el, code) in (item.config || {})" :key="code">
       <v-expansion-panel-title expand-icon="mdi-pencil">
         <v-btn icon="mdi-delete" variant="text" @click="remove(code)"></v-btn>
         <div class="element-title">{{ title(el) }}</div>

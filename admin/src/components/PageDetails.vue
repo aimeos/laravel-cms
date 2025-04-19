@@ -36,19 +36,19 @@
         }
 
         const meta = {}
-        for(const key in (this.item.data?.meta || {})) {
+        for(const key in (this.item.meta || {})) {
           meta[key] = {
-            type: this.item.data?.meta[key]?.type || '',
-            data: this.item.data?.meta[key]?.data || {},
+            type: this.item.meta[key]?.type || '',
+            data: this.item.meta[key]?.data || {},
             files: []
           }
         }
 
         const config = {}
-        for(const key in (this.item.data?.config || {})) {
+        for(const key in (this.item.config || {})) {
           config[key] = {
-            type: this.item.data?.config[key]?.type || '',
-            data: this.item.data?.config[key]?.data || {},
+            type: this.item.config[key]?.type || '',
+            data: this.item.config[key]?.data || {},
             files: []
           }
         }
@@ -62,7 +62,15 @@
           variables: {
             id: this.item.id,
             input: {
-              ...this.item.data,
+              cache: this.item.cache,
+              domain: this.item.domain,
+              lang: this.item.lang,
+              name: this.item.name,
+              slug: this.item.slug,
+              status: this.item.status,
+              title: this.item.title,
+              tag: this.item.tag,
+              to: this.item.to,
               meta: JSON.stringify(meta),
               config: JSON.stringify(config),
               contents: this.contents,

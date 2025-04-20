@@ -709,7 +709,7 @@ class GraphqlPageTest extends TestAbstract
                     'title' => 'Home | Laravel CMS',
                     'to' => '',
                     'tag' => 'root',
-                    'meta' => '{"meta":{"type":"meta","0":{"data":{"text":"Laravel CMS is outstanding"}}}}',
+                    'meta' => '{"meta":{"type":"meta","data":{"text":"Laravel CMS is outstanding"}}}',
                     'config' => '{}',
                     'content' => '[{"type":"heading","text":"Welcome to Laravel CMS"},{"type":"ref","id":"' . $content->id . '"}]',
                     'status' => 1,

@@ -116,7 +116,7 @@ class CmsSeeder extends Seeder
             'domain' => 'mydomain.tld',
             'status' => 1,
             'editor' => 'seeder',
-            'meta' => ['meta' => ['type' => 'meta', ['data' => ['text' => 'Laravel CMS is outstanding']]]],
+            'meta' => ['meta' => ['type' => 'meta', 'data' => ['text' => 'Laravel CMS is outstanding']]],
             'content' => [
                 ['type' => 'heading', 'text' => 'Welcome to Laravel CMS'],
                 ['type' => 'ref', 'id' => $sharedId]
@@ -237,7 +237,8 @@ mutation {
             'editor' => 'seeder',
             'content' => [[
                 'type' => 'paragraph',
-                'data' => ['text' => '# For Developers
+                'data' => [
+                    'text' => '# For Developers
 
 This is content created using [markdown syntax](https://www.markdownguide.org/basic-syntax/)'
                 ]

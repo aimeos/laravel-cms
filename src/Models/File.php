@@ -132,7 +132,7 @@ class File extends Model
      */
     public function versions() : BelongsToMany
     {
-        return $this->belongsToMany( Version::class, 'cms_version_file' );
+        return $this->belongsToMany( Version::class, 'cms_file_version' );
     }
 
 

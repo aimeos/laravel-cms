@@ -294,7 +294,7 @@ class GraphqlPageTest extends TestAbstract
         $this->seed( CmsSeeder::class );
 
         $page = Page::where('tag', 'root')->firstOrFail();
-        $content = $page->contents()->firstOrFail();
+        $content = $page->refs()->firstOrFail();
 
         $this->expectsDatabaseQueryCount( 2 );
         $response = $this->actingAs( $this->user )->graphQL( "{
@@ -339,7 +339,7 @@ class GraphqlPageTest extends TestAbstract
                         id
                     }
                 }
-                contents {
+                refs {
                     id
                 }
                 versions {
@@ -352,7 +352,7 @@ class GraphqlPageTest extends TestAbstract
                     'id' => (string) $page->id,
                     'ancestors' => [],
                     'children' => [],
-                    'contents' => [],
+                    'refs' => [],
                     'versions' => [],
                 ],
             ]
@@ -370,7 +370,7 @@ class GraphqlPageTest extends TestAbstract
         $response = $this->actingAs( $this->user )->graphQL( "{
             page(id: {$page->id}) {
                 id
-                contents {
+                refs {
                     lang
                     label
                     data
@@ -380,7 +380,7 @@ class GraphqlPageTest extends TestAbstract
             'data' => [
                 'page' => [
                     'id' => (string) $page->id,
-                    'contents' => [
+                    'refs' => [
                         [
                             'lang' => '',
                             'label' => 'Test shared content',
@@ -416,7 +416,7 @@ class GraphqlPageTest extends TestAbstract
                     content: "[{\"type\":\"cms::heading\",\"text\":\"Welcome to Laravel CMS\"}]"
                     status: 0
                     cache: 0
-                    contents: ["' . $content->id . '"]
+                    refs: ["' . $content->id . '"]
                     files: ["' . $file->id . '"]
                 }) {
                     id
@@ -437,7 +437,7 @@ class GraphqlPageTest extends TestAbstract
                     created_at
                     updated_at
                     deleted_at
-                    contents {
+                    refs {
                         lang
                         data
                         label
@@ -658,7 +658,7 @@ class GraphqlPageTest extends TestAbstract
                     content: "[{\"type\":\"cms::heading\",\"text\":\"Welcome to Laravel CMS\"}]"
                     status: 0
                     cache: 5
-                    contents: ["' . $content->id . '"]
+                    refs: ["' . $content->id . '"]
                     files: ["' . $file->id . '"]
                 }) {
                     id
@@ -676,7 +676,7 @@ class GraphqlPageTest extends TestAbstract
                     status
                     cache
                     editor
-                    contents {
+                    refs {
                         lang
                         data
                         label
@@ -695,7 +695,7 @@ class GraphqlPageTest extends TestAbstract
         ' );
 
         $page = Page::where('id', $root->id)->firstOrFail();
-        $content = $page->contents()->firstOrFail();
+        $content = $page->refs()->firstOrFail();
 
         $response->assertJson( [
             'data' => [

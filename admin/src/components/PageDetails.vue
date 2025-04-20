@@ -22,9 +22,10 @@
 
     data: () => ({
       changed: false,
-      contents: [],
       versions: [],
+      content: [],
       files: [],
+      refs: [],
       nav: null,
       tab: 'page',
     }),
@@ -73,7 +74,8 @@
               to: this.item.to,
               meta: JSON.stringify(meta),
               config: JSON.stringify(config),
-              contents: this.contents,
+              content: JSON.stringify(this.content),
+              refs: this.refs,
               files: []
             }
           }
@@ -120,9 +122,10 @@
             throw result.errors
           }
 
-          this.contents = JSON.parse(result.data.page.versions?.at(-1)?.refs || '[]')
-          this.versions = result.data.page.versions || []
           this.changed = false
+          this.versions = result.data.page.versions || []
+          this.refs = JSON.parse(this.versions?.at(-1)?.refs || '[]')
+          this.content = JSON.parse(this.versions?.at(-1)?.content || '[]')
         }).catch(error => {
           console.error(`page(id: ${this.item.id})`, error)
         })

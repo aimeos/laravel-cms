@@ -26,7 +26,7 @@ final class PubPage
                 $latest->published = true;
                 $latest->save();
 
-                $page->contents()->sync( $latest->refs ?? [] );
+                $page->refs()->sync( $latest->refs ?? [] );
 
                 $page->fill( (array) $latest->data );
                 $page->editor = Auth::user()?->name ?? request()->ip();

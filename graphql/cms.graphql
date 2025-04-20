@@ -204,7 +204,7 @@ type Page {
   ancestors: [Page!]!
 
   "List of shared content elements assigned to the page"
-  contents: [Content!]! @belongsToMany
+  refs: [Content!]! @belongsToMany
 
   "List of versions for the page meta data"
   versions: [Version!]! @morphMany
@@ -257,7 +257,7 @@ input PageInput {
   cache: Int
 
   "List of shared content IDs referenced by the page"
-  contents: [ID!]
+  refs: [ID!]
 
   "List of file IDs used in the meta data"
   files: [ID!]
@@ -328,8 +328,8 @@ type Version {
   "Arbitrary versioned content elements"
   data: JSON!
 
-  "Arbitrary versioned content references"
-  refs: JSON!
+  "List of shared content elements assigned to the version"
+  refs: [Content!]! @belongsToMany
 
   "List of files used in the meta or data properties"
   files: [File!]

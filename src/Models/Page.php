@@ -50,6 +50,7 @@ class Page extends Model
         'title' => '',
         'meta' => '{}',
         'config' => '{}',
+        'content' => '[]',
         'status' => 0,
         'cache' => 5,
         'editor' => '',
@@ -70,6 +71,7 @@ class Page extends Model
         'title' => 'string',
         'meta' => 'object',
         'config' => 'object',
+        'content' => 'array',
     ];
 
     /**
@@ -93,6 +95,7 @@ class Page extends Model
         'name',
         'title',
         'config',
+        'content',
         'status',
         'cache',
     ];
@@ -140,15 +143,6 @@ class Page extends Model
         return Attribute::make(
             set: fn($value) => $value === null ? 5 : (int) $value,
         );
-    }
-
-
-    /**
-     * Get the shard content for the page.
-     */
-    public function contents() : BelongsToMany
-    {
-        return $this->belongsToMany( Content::class, 'cms_page_content' );
     }
 
 
@@ -259,6 +253,15 @@ class Page extends Model
             ->where( 'published', true )
             ->orderBy( 'id', 'desc' )
             ->take( 1 );
+    }
+
+
+    /**
+     * Get the shared content for the page.
+     */
+    public function refs() : BelongsToMany
+    {
+        return $this->belongsToMany( Content::class, 'cms_page_content' );
     }
 
 

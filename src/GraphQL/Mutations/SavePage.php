@@ -18,19 +18,21 @@ final class SavePage
     public function __invoke( $rootValue, array $args ) : Page
     {
         $page = Page::findOrFail( $args['id'] );
-        $refs = $args['input']['contents'] ?? [];
-        $data = collect( $args['input'] )->except( ['contents', 'files'] )->all();
+        $latest = $page->latest;
 
-        if( $data != (array) $page->latest?->data || $refs != $page->latest?->refs )
+        $refs = $args['input']['refs'] ?? [];
+        $data = collect( $args['input'] )->except( ['refs', 'files'] )->all();
+
+        if( $data != (array) $latest?->data || $refs != $latest?->refs )
         {
             DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( function() use ( $page, $args, $data, $refs ) {
 
                 $version = $page->versions()->create([
                     'editor' => Auth::user()?->name ?? request()->ip(),
                     'data' => $data,
-                    'refs' => $refs
                 ]);
 
+                $version->refs()->sync( $args['input']['refs'] ?? [] );
                 $version->files()->sync( $args['input']['files'] ?? [] );
 
                 $drafts = Version::select( 'id' )

@@ -140,7 +140,7 @@ class CmsSeeder extends Seeder
             'published' => true,
             'editor' => 'seeder',
         ]);
-        $page->contents()->attach( $sharedId );
+        $page->refs()->attach( $sharedId );
 
         return $page;
     }
@@ -163,7 +163,7 @@ class CmsSeeder extends Seeder
             ],
         ]);
         $page->appendToNode( $home )->save();
-        $page->contents()->attach( $sharedId );
+        $page->refs()->attach( $sharedId );
 
         return $this->addBlogArticle( $page );
     }
@@ -212,7 +212,7 @@ mutation {
             'content' => $data
         ]);
         $page->appendToNode( $blog )->save();
-        $page->contents()->attach( $sharedId );
+        $page->refs()->attach( $sharedId );
 
         $version = $page->versions()->forceCreate([
             'data' => $data,
@@ -252,7 +252,7 @@ This is content created using [markdown syntax](https://www.markdownguide.org/ba
             ]]
         ]);
         $page->appendToNode( $home )->save();
-        $page->contents()->attach( $sharedId );
+        $page->refs()->attach( $sharedId );
 
         return $this;
     }

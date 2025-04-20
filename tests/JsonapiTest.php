@@ -24,7 +24,7 @@ class JsonapiTest extends TestAbstract
         \LaravelJsonApi\Laravel\Facades\JsonApiRoute::server( "cms" )->prefix( "cms" )->resources( function( $server ) {
             $server->resource( "pages", \Aimeos\Cms\JsonApi\V1\Controllers\JsonapiController::class )->readOnly()
                 ->relationships( function( $relationships ) {
-                    $relationships->hasMany( 'contents' )->readOnly();
+                    $relationships->hasMany( 'refs' )->readOnly();
                 });
             });
     }
@@ -81,18 +81,18 @@ class JsonapiTest extends TestAbstract
     }
 
 
-    public function testPageContent()
+    public function testPageRefs()
     {
         $this->seed( \Database\Seeders\CmsSeeder::class );
 
         $page = \Aimeos\Cms\Models\Page::where('tag', 'root')->firstOrFail();
-        $contents = $page->contents;
+        $refs = $page->refs;
 
-        $this->expectsDatabaseQueryCount( 3 ); // page + content + content count
-        $response = $this->jsonApi()->expects( 'contents' )->get( "cms/pages/{$page->id}/contents" );
+        $this->expectsDatabaseQueryCount( 3 ); // page + shared content + content count
+        $response = $this->jsonApi()->expects( 'contents' )->get( "cms/pages/{$page->id}/refs" );
 
-        $response->assertFetchedManyInOrder( $contents );
-        $this->assertGreaterThanOrEqual( 1, count( $contents ) );
+        $response->assertFetchedManyInOrder( $refs );
+        $this->assertGreaterThanOrEqual( 1, count( $refs ) );
         $response->assertJsonPath( 'meta.baseurl', '/storage/' );
     }
 
@@ -160,12 +160,12 @@ class JsonapiTest extends TestAbstract
         $page = \Aimeos\Cms\Models\Page::where('tag', 'root')->firstOrFail();
         $expected = [];
 
-        foreach( $page->contents as $item ){
+        foreach( $page->refs as $item ){
             $expected[] = ['type' => 'contents', 'id' => $item->id];
         }
 
-        $this->expectsDatabaseQueryCount( 2 ); // page + contents
-        $response = $this->jsonApi()->expects( 'pages' )->includePaths( 'contents' )->get( "cms/pages/{$page->id}" );
+        $this->expectsDatabaseQueryCount( 2 ); // page + refs contents
+        $response = $this->jsonApi()->expects( 'pages' )->includePaths( 'refs' )->get( "cms/pages/{$page->id}" );
         $response->assertFetchedOne( $page )->assertIncluded( $expected );
 
         $this->assertGreaterThanOrEqual( 1, count( $expected ) );

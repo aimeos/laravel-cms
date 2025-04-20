@@ -42,11 +42,8 @@ final class AddPage
                     'editor' => $editor
                 ] );
 
+                $version->refs()->attach( $args['input']['refs'] ?? [] );
                 $version->files()->attach( $args['input']['files'] ?? [] );
-            }
-
-            if( isset( $args['input']['contents'] ) ) {
-                $page->contents()->sync( $args['input']['contents'] );
             }
 
         }, 3 );

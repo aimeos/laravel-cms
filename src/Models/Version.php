@@ -34,7 +34,6 @@ class Version extends Model
     protected $attributes = [
         'tenant_id' => '',
         'data' => '{}',
-        'refs' => '[]',
         'published' => false,
         'editor' => '',
     ];
@@ -46,7 +45,6 @@ class Version extends Model
      */
     protected $casts = [
         'data' => 'object',
-        'refs' => 'array',
     ];
 
     /**
@@ -64,7 +62,6 @@ class Version extends Model
     protected $fillable = [
         'editor',
         'data',
-        'refs',
     ];
 
     /**
@@ -135,6 +132,15 @@ class Version extends Model
 
         // pruning is disabled
         return static::withoutTenancy()->where( 'id', '' );
+    }
+
+
+    /**
+     * Get the shared content attached to the version.
+     */
+    public function refs() : BelongsToMany
+    {
+        return $this->belongsToMany( Content::class, 'cms_version_content' );
     }
 
 

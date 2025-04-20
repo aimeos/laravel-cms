@@ -21,7 +21,7 @@
           .replace(/xx-XX/, this.item.lang || '')
           .replaceAll('//', '/').replace(':/', '://')
 
-        return url + (url.includes('?') ? '&' : '?') + 'cid=' + (this.item.id || '')
+        return url + (url.includes('?') ? '&' : '?') + 'preview=true'
       }
     }
   }

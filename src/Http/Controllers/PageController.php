@@ -38,14 +38,19 @@ class PageController extends Controller
      */
     public function index( Request $request, string $slug, string $lang = '', $domain = '' ): string
     {
-        if( ( $cid = $request->input( 'cid' ) ) && Gate::allowIf( fn( $user ) => $user->cmseditor > 0 ) )
+        if( $request->input( 'preview' ) && Gate::allowIf( fn( $user ) => $user->cmseditor > 0 ) )
         {
             $page = Page::where( 'slug', $slug )
                 ->where( 'domain', $domain )
                 ->where( 'lang', $lang )
                 ->firstOrFail();
 
+            $page->fill( $page->latest()->data );
             $page->cache = 0; // don't cache sub-parts in preview requests
+
+            if( $page->to ) {
+                return !str_starts_with( $page->to, 'http' ) ? redirect( $page->to ) : redirect()->away( $page->to );
+            }
 
             return view( config( 'cms.view', 'cms::page' ), ['page' => $page] )->render();
         }
@@ -64,7 +69,7 @@ class PageController extends Controller
             ->firstOrFail();
 
         if( $page->to ) {
-            return str_starts_with( $page->to, 'http' ) ? redirect( $page->to ) : redirect()->away( $page->to );
+            return !str_starts_with( $page->to, 'http' ) ? redirect( $page->to ) : redirect()->away( $page->to );
         }
 
         $html = view( config( 'cms.view', 'cms::page' ), ['page' => $page] )->render();

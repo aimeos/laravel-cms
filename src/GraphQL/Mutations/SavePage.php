@@ -35,25 +35,12 @@ final class SavePage
                 $version->refs()->sync( $args['input']['refs'] ?? [] );
                 $version->files()->sync( $args['input']['files'] ?? [] );
 
-                $drafts = Version::select( 'id' )
-                    ->where( 'versionable_id', $page->id )
+                Version::where( 'versionable_id', $page->id )
                     ->where( 'versionable_type', Page::class )
-                    ->where( 'published', false )
                     ->orderBy( 'id', 'desc' )
                     ->skip( 10 )
                     ->take( 10 )
-                    ->pluck( 'id' );
-
-                $published = Version::select( 'id' )
-                    ->where( 'versionable_id', $page->id )
-                    ->where( 'versionable_type', Page::class )
-                    ->where( 'published', true )
-                    ->orderBy( 'id', 'desc' )
-                    ->skip( 10 )
-                    ->take( 10 )
-                    ->pluck( 'id' );
-
-                Version::whereIn( 'id', $published->merge( $drafts ) )->forceDelete();
+                    ->forceDelete();
 
             }, 3 );
         }

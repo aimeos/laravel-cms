@@ -21,7 +21,6 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Version extends Model
 {
-    use MassPrunable;
     use HasUuids;
     use Tenancy;
 
@@ -80,23 +79,6 @@ class Version extends Model
     public function getConnectionName()
     {
         return config( 'cms.db', 'sqlite' );
-    }
-
-
-    /**
-     * Get the prunable model query.
-     */
-    public function prunable() : Builder
-    {
-        if( is_int( $days = config( 'cms.prune' ) ) )
-        {
-            return static::withoutTenancy()
-                ->where( 'updated_at', '<=', now()->subDays( $days ) )
-                ->where( 'published', false );
-        }
-
-        // pruning is disabled
-        return static::withoutTenancy()->where( 'id', '' );
     }
 
 

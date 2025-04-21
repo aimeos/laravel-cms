@@ -57,13 +57,6 @@ class Content extends Model
     ];
 
     /**
-     * The connection name for the model.
-     *
-     * @var string
-     */
-    protected $connection = 'sqlite';
-
-    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -75,20 +68,6 @@ class Content extends Model
     ];
 
     /**
-     * Indicates if the model's ID isn't auto-incrementing.
-     *
-     * @var bool
-     */
-    public $incrementing = false;
-
-    /**
-     * Type of the primary key.
-     *
-     * @var string
-     */
-    protected $keyType = 'string';
-
-    /**
      * The table associated with the model.
      *
      * @var string
@@ -97,16 +76,11 @@ class Content extends Model
 
 
     /**
-     * Create a new Eloquent model instance.
-     *
-     * @param  array  $attributes
-     * @return void
+     * Get the connection name for the model.
      */
-    public function __construct( array $attributes = [] )
+    public function getConnectionName()
     {
-        $this->connection = config( 'cms.db', 'sqlite' );
-
-        parent::__construct( $attributes );
+        return config( 'cms.db', 'sqlite' );
     }
 
 
@@ -119,15 +93,6 @@ class Content extends Model
             ->where( 'versionable_type', Content::class )
             ->orderBy( 'id', 'desc' )
             ->take( 1 );
-    }
-
-
-    /**
-     * Generate a new UUID for the model.
-     */
-    public function newUniqueId() : string
-    {
-        return (string) new \Symfony\Component\Uid\UuidV7();
     }
 
 

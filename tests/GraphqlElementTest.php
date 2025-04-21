@@ -5,12 +5,12 @@ namespace Tests;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
 use Nuwave\Lighthouse\Testing\RefreshesSchemaCache;
 use Database\Seeders\CmsSeeder;
-use Aimeos\Cms\Models\Content;
+use Aimeos\Cms\Models\Element;
 use Aimeos\Cms\Models\File;
 use Aimeos\Cms\Models\Page;
 
 
-class GraphqlContentTest extends TestAbstract
+class GraphqlElementTest extends TestAbstract
 {
     use MakesGraphQLRequests;
     use RefreshesSchemaCache;
@@ -48,18 +48,18 @@ class GraphqlContentTest extends TestAbstract
     }
 
 
-    public function testContent()
+    public function testElement()
     {
         $this->seed( CmsSeeder::class );
 
-        $content = Content::firstOrFail();
+        $element = Element::firstOrFail();
 
-        $attr = collect($content->getAttributes())->except(['tenant_id'])->all();
-        $expected = ['id' => (string) $content->id] + $attr;
+        $attr = collect($element->getAttributes())->except(['tenant_id'])->all();
+        $expected = ['id' => (string) $element->id] + $attr;
 
         $this->expectsDatabaseQueryCount( 1 );
         $response = $this->actingAs( $this->user )->graphQL( "{
-            content(id: \"{$content->id}\") {
+            element(id: \"{$element->id}\") {
                 id
                 type
                 label
@@ -72,28 +72,28 @@ class GraphqlContentTest extends TestAbstract
             }
         }" )->assertJson( [
             'data' => [
-                'content' => $expected,
+                'element' => $expected,
             ]
         ] );
     }
 
 
-    public function testContents()
+    public function testElements()
     {
         $this->seed( CmsSeeder::class );
 
-        $contents = Content::orderBy( 'id' )->limit( 10 )->get();
+        $elements = Element::orderBy( 'id' )->limit( 10 )->get();
         $expected = [];
 
-        foreach( $contents as $content )
+        foreach( $elements as $element )
         {
-            $attr = collect($content->getAttributes())->except(['tenant_id'])->all();
-            $expected[] = ['id' => (string) $content->id] + $attr;
+            $attr = collect($element->getAttributes())->except(['tenant_id'])->all();
+            $expected[] = ['id' => (string) $element->id] + $attr;
         }
 
         $this->expectsDatabaseQueryCount( 2 );
         $response = $this->actingAs( $this->user )->graphQL( '{
-            contents(first: 10) {
+            elements(first: 10) {
                 data {
                     id
                     type
@@ -112,7 +112,7 @@ class GraphqlContentTest extends TestAbstract
             }
         }' )->assertJson( [
             'data' => [
-                'contents' => [
+                'elements' => [
                     'data' => $expected,
                     'paginatorInfo' => [
                         'currentPage' => 1,
@@ -124,18 +124,18 @@ class GraphqlContentTest extends TestAbstract
     }
 
 
-    public function testContentsId()
+    public function testElementsId()
     {
         $this->seed( CmsSeeder::class );
 
-        $content = Content::firstOrFail();
+        $element = Element::firstOrFail();
 
-        $attr = collect($content->getAttributes())->except(['tenant_id'])->all();
-        $expected = [['id' => (string) $content->id] + $attr];
+        $attr = collect($element->getAttributes())->except(['tenant_id'])->all();
+        $expected = [['id' => (string) $element->id] + $attr];
 
         $this->expectsDatabaseQueryCount( 2 );
         $response = $this->actingAs( $this->user )->graphQL( '{
-            contents(id: ["' . $content->id . '"]) {
+            elements(id: ["' . $element->id . '"]) {
                 data {
                     id
                     type
@@ -154,7 +154,7 @@ class GraphqlContentTest extends TestAbstract
             }
         }' )->assertJson( [
             'data' => [
-                'contents' => [
+                'elements' => [
                     'data' => $expected,
                     'paginatorInfo' => [
                         'currentPage' => 1,
@@ -166,15 +166,15 @@ class GraphqlContentTest extends TestAbstract
     }
 
 
-    public function testContentVersions()
+    public function testElementVersions()
     {
         $this->seed( CmsSeeder::class );
 
-        $content = Content::firstOrFail();
+        $element = Element::firstOrFail();
 
         $this->expectsDatabaseQueryCount( 3 );
         $response = $this->actingAs( $this->user )->graphQL( '{
-            content(id: "' . $content->id . '") {
+            element(id: "' . $element->id . '") {
                 id
                 type
                 versions {
@@ -187,9 +187,9 @@ class GraphqlContentTest extends TestAbstract
             }
         }' )->assertJson( [
             'data' => [
-                'content' => [
-                    'id' => $content->id,
-                    'type' => $content->type,
+                'element' => [
+                    'id' => $element->id,
+                    'type' => $element->type,
                     'versions' => [
                         [
                             'data' => '{"type":"footer","data":{"text":"Powered by Laravel CMS"}}',
@@ -203,7 +203,7 @@ class GraphqlContentTest extends TestAbstract
     }
 
 
-    public function testAddContent()
+    public function testAddElement()
     {
         $this->seed( CmsSeeder::class );
 
@@ -212,7 +212,7 @@ class GraphqlContentTest extends TestAbstract
         $this->expectsDatabaseQueryCount( 6 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
-                addContent(input: {
+                addElement(input: {
                     type: "test"
                     lang: "en"
                     data: "{\\"key\\":\\"value\\"}"
@@ -234,7 +234,7 @@ class GraphqlContentTest extends TestAbstract
 
         $response->assertJson( [
             'data' => [
-                'addContent' => [
+                'addElement' => [
                     'type' => 'test',
                     'lang' => 'en',
                     'data' => '{}',
@@ -247,17 +247,17 @@ class GraphqlContentTest extends TestAbstract
     }
 
 
-    public function testSaveContent()
+    public function testSaveElement()
     {
         $this->seed( CmsSeeder::class );
 
         $file = File::firstOrFail();
-        $content = Content::firstOrFail();
+        $element = Element::firstOrFail();
 
         $this->expectsDatabaseQueryCount( 10 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
-                saveContent(id: "' . $content->id . '", input: {
+                saveElement(id: "' . $element->id . '", input: {
                     type: "test"
                     lang: "en"
                     data: "{\\"key\\":\\"value\\"}"
@@ -278,12 +278,12 @@ class GraphqlContentTest extends TestAbstract
             }
         ' );
 
-        $content = Content::find( $content->id );
+        $element = Element::find( $element->id );
 
         $response->assertJson( [
             'data' => [
-                'saveContent' => [
-                    'id' => $content->id,
+                'saveElement' => [
+                    'id' => $element->id,
                     'type' => 'test',
                     'lang' => 'en',
                     'data' => '{"type":"footer","data":{"text":"Powered by Laravel CMS"}}',
@@ -296,58 +296,58 @@ class GraphqlContentTest extends TestAbstract
     }
 
 
-    public function testDropContent()
+    public function testDropElement()
     {
         $this->seed( CmsSeeder::class );
 
-        $content = Content::firstOrFail();
+        $element = Element::firstOrFail();
 
         $this->expectsDatabaseQueryCount( 3 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
-                dropContent(id: "' . $content->id . '") {
+                dropElement(id: "' . $element->id . '") {
                     id
                     deleted_at
                 }
             }
         ' );
 
-        $content = Content::withTrashed()->find( $content->id );
+        $element = Element::withTrashed()->find( $element->id );
 
         $response->assertJson( [
             'data' => [
-                'dropContent' => [
-                    'id' => $content->id,
-                    'deleted_at' => $content->deleted_at,
+                'dropElement' => [
+                    'id' => $element->id,
+                    'deleted_at' => $element->deleted_at,
                 ],
             ]
         ] );
     }
 
 
-    public function testKeepContent()
+    public function testKeepElement()
     {
         $this->seed( CmsSeeder::class );
 
-        $content = Content::firstOrFail();
-        $content->delete();
+        $element = Element::firstOrFail();
+        $element->delete();
 
         $this->expectsDatabaseQueryCount( 3 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
-                keepContent(id: "' . $content->id . '") {
+                keepElement(id: "' . $element->id . '") {
                     id
                     deleted_at
                 }
             }
         ' );
 
-        $content = Content::find( $content->id );
+        $element = Element::find( $element->id );
 
         $response->assertJson( [
             'data' => [
-                'keepContent' => [
-                    'id' => $content->id,
+                'keepElement' => [
+                    'id' => $element->id,
                     'deleted_at' => null,
                 ],
             ]
@@ -355,48 +355,48 @@ class GraphqlContentTest extends TestAbstract
     }
 
 
-    public function testPubContent()
+    public function testPubElement()
     {
         $this->seed( CmsSeeder::class );
 
-        $content = Content::firstOrFail();
+        $element = Element::firstOrFail();
 
         $this->expectsDatabaseQueryCount( 7 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
-                pubContent(id: "' . $content->id . '") {
+                pubElement(id: "' . $element->id . '") {
                     id
                 }
             }
         ' );
 
-        $content = Content::where('id', $content->id)->firstOrFail();
+        $element = Element::where('id', $element->id)->firstOrFail();
 
         $response->assertJson( [
             'data' => [
-                'pubContent' => [
-                    'id' => (string) $content->id
+                'pubElement' => [
+                    'id' => (string) $element->id
                 ],
             ]
         ] );
     }
 
 
-    public function testPurgeContent()
+    public function testPurgeElement()
     {
         $this->seed( CmsSeeder::class );
 
-        $content = Content::firstOrFail();
+        $element = Element::firstOrFail();
 
         $this->expectsDatabaseQueryCount( 3 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
-                purgeContent(id: "' . $content->id . '") {
+                purgeElement(id: "' . $element->id . '") {
                     id
                 }
             }
         ' );
 
-        $this->assertNull( Content::where('id', $content->id)->first() );
+        $this->assertNull( Element::where('id', $element->id)->first() );
     }
 }

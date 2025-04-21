@@ -197,11 +197,11 @@ class Page extends Model
 
 
     /**
-     * Get the shared content for the page.
+     * Get the shared element for the page.
      */
-    public function refs() : BelongsToMany
+    public function elements() : BelongsToMany
     {
-        return $this->belongsToMany( Content::class, 'cms_page_content' );
+        return $this->belongsToMany( Element::class, 'cms_page_element' );
     }
 
 

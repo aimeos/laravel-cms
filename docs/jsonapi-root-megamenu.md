@@ -9,13 +9,13 @@ excerpt: "How to retrieve the root page with descendents from Laravel CMS using 
 Retrieve the root page with all shared content elements and sub-pages up to three levels to build a mega-menu:
 
 ```
-http://mydomain.tld/api/cms/pages?filter[tag]=root&include=subtree,contents
+http://mydomain.tld/api/cms/pages?filter[tag]=root&include=subtree,elements
 ```
 
 For multi-language sites, the `lang` filter parameter must be added:
 
 ```
-http://mydomain.tld/api/cms/pages?filter[tag]=root&filter[lang]=en&include=subtree,contents
+http://mydomain.tld/api/cms/pages?filter[tag]=root&filter[lang]=en&include=subtree,elements
 ```
 
 Then, the page tree (up to three levels deep) including the shared content elements for the root page will be returned:
@@ -37,8 +37,8 @@ Then, the page tree (up to three levels deep) including the shared content eleme
         "version": "1.0"
     },
     "links": {
-        "first": "http:\/\/mydomain.tld\/cms\/pages?filter%5Btag%5D=root&include=subtree%2Ccontents&page%5Bnumber%5D=1&page%5Bsize%5D=15",
-        "last": "http:\/\/mydomain.tld\/cms\/pages?filter%5Btag%5D=root&include=subtree%2Ccontents&page%5Bnumber%5D=1&page%5Bsize%5D=15"
+        "first": "http:\/\/mydomain.tld\/cms\/pages?filter%5Btag%5D=root&include=subtree%2Celements&page%5Bnumber%5D=1&page%5Bsize%5D=15",
+        "last": "http:\/\/mydomain.tld\/cms\/pages?filter%5Btag%5D=root&include=subtree%2Celements&page%5Bnumber%5D=1&page%5Bsize%5D=15"
     },
     "data": [
         {
@@ -72,10 +72,10 @@ Then, the page tree (up to three levels deep) including the shared content eleme
                 "updatedAt": "2023-05-01T09:36:30.000000Z"
             },
             "relationships": {
-                "contents": {
+                "elements": {
                     "data": [
                         {
-                            "type": "contents",
+                            "type": "elements",
                             "id": "0187d6ab-b76d-75ee-8830-ab00b4259aa5"
                         }
                     ]
@@ -108,7 +108,7 @@ Then, the page tree (up to three levels deep) including the shared content eleme
     ],
     "included": [
         {
-            "type": "contents",
+            "type": "elements",
             "id": "0187d6ab-b76d-75ee-8830-ab00b4259aa5",
             "attributes": {
                 "lang": "",

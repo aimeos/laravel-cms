@@ -20,19 +20,19 @@ final class SavePage
         $page = Page::findOrFail( $args['id'] );
         $latest = $page->latest;
 
-        $refs = $args['input']['refs'] ?? [];
-        $data = collect( $args['input'] )->except( ['refs', 'files'] )->all();
+        $elements = $args['input']['elements'] ?? [];
+        $data = collect( $args['input'] )->except( ['elements', 'files'] )->all();
 
-        if( $data != (array) $latest?->data || $refs != $latest?->refs )
+        if( $data != (array) $latest?->data || $elements != $latest?->elements )
         {
-            DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( function() use ( $page, $args, $data, $refs ) {
+            DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( function() use ( $page, $args, $data, $elements ) {
 
                 $version = $page->versions()->create([
                     'editor' => Auth::user()?->name ?? request()->ip(),
                     'data' => $data,
                 ]);
 
-                $version->refs()->sync( $args['input']['refs'] ?? [] );
+                $version->elements()->sync( $args['input']['elements'] ?? [] );
                 $version->files()->sync( $args['input']['files'] ?? [] );
 
                 Version::where( 'versionable_id', $page->id )

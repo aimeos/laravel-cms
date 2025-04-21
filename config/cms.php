@@ -8,7 +8,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | Use the database connection defined in ./config/database.php to manage
-    | page, content and file records.
+    | page, element and file records.
     |
     */
     'db' => env( 'DB_CONNECTION', 'mysql' ),
@@ -41,7 +41,7 @@ return [
     | Prune deleted records
     |--------------------------------------------------------------------------
     |
-    | Number of days after deleted pages, contents and files will be finally
+    | Number of days after deleted pages, elements and files will be finally
     | removed. Disable pruning with FALSE as value.
     |
     */

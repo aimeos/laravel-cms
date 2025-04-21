@@ -21,9 +21,9 @@ use Illuminate\Database\Eloquent\Model;
 
 
 /**
- * Content model
+ * Element model
  */
-class Content extends Model
+class Element extends Model
 {
     use HasUuids;
     use SoftDeletes;
@@ -72,15 +72,15 @@ class Content extends Model
      *
      * @var string
      */
-    protected $table = 'cms_contents';
+    protected $table = 'cms_elements';
 
 
     /**
-     * Get the files referencedd by the content.
+     * Get the files referencedd by the element.
      */
     public function files() : BelongsToMany
     {
-        return $this->belongsToMany( File::class, 'cms_file_content' );
+        return $this->belongsToMany( File::class, 'cms_file_element' );
     }
 
 
@@ -99,28 +99,28 @@ class Content extends Model
     public function latest() : HasOne
     {
         return $this->hasOne( Version::class, 'versionable_id' )
-            ->where( 'versionable_type', Content::class )
+            ->where( 'versionable_type', Element::class )
             ->orderBy( 'id', 'desc' )
             ->take( 1 );
     }
 
 
     /**
-     * Get the pages the content is referenced by.
+     * Get the pages the element is referenced by.
      */
     public function pages() : BelongsToMany
     {
-        return $this->belongsToMany( Page::class, 'cms_page_content' );
+        return $this->belongsToMany( Page::class, 'cms_page_element' );
     }
 
 
     /**
-     * Get the content's published version.
+     * Get the element's published version.
      */
     public function published() : HasOne
     {
         return $this->hasOne( Version::class, 'versionable_id' )
-            ->where( 'versionable_type', Content::class )
+            ->where( 'versionable_type', Element::class )
             ->where( 'published', true )
             ->orderBy( 'id', 'desc' )
             ->take( 1 );
@@ -142,7 +142,7 @@ class Content extends Model
 
 
     /**
-     * Get all of the content's versions.
+     * Get all of the element's versions.
      */
     public function versions() : MorphMany
     {

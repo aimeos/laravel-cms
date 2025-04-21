@@ -42,9 +42,9 @@ class JsonapiController extends Controller
      * @param Relation Relation type object
      * @return RelatedResponse
      */
-    public function readRelatedRefs( ?Page $page, $data, ResourceQuery $request ) : RelatedResponse
+    public function readRelatedElements( ?Page $page, $data, ResourceQuery $request ) : RelatedResponse
     {
-        return RelatedResponse::make( $page, 'contents', $data )
+        return RelatedResponse::make( $page, 'elements', $data )
             ->withMeta( ['baseurl' => Storage::disk( config( 'cms.disk', 'public' ) )->url( '' )] )
             ->withQueryParameters( $request );
     }

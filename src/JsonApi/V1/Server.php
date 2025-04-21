@@ -41,7 +41,7 @@ class Server extends BaseServer
     protected function allSchemas(): array
     {
         return [
-            Contents\ContentSchema::class,
+            Elements\ElementSchema::class,
             Pages\PageSchema::class,
         ];
     }

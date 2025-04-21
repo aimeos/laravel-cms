@@ -14,7 +14,7 @@ The `pages` endpoint will return items from the page tree as well as related sha
 
 * [Available properties](#available-properties)
   * [Page properties](#page-properties)
-  * [Content properties](#content-properties)
+  * [Element properties](#eleemnt-properties)
 * [URL parameters](#url-parameters)
   * [Filter results](#filter-results)
   * [Include resources](#include-resources)
@@ -119,7 +119,7 @@ The available properties of content shared between pages are:
 
 ```json
 {
-    "type": "contents",
+    "type": "elements",
     "id": "0186d692-be0b-798c-9450-0a676209b7a6",
     "attributes": {
         "lang": "",
@@ -166,7 +166,7 @@ http://mydomain.tld/api/cms/pages?filter[tag]=root&filter[domain]=mydomain.tld&f
 
 When including related resources, you can get all data you need to render the page including the navigation in one request. The available related resources are:
 
-contents
+elements
 : List of shared content elements for the requested page (paginated if more than 50 items)
 
 parent
@@ -184,7 +184,7 @@ subtree
 To get the page tagged with `blog` including its ancestors and shared content elements use:
 
 ```
-http://mydomain.tld/api/cms/pages?filter[tag]=blog&include=ancestors,contents
+http://mydomain.tld/api/cms/pages?filter[tag]=blog&include=ancestors,elements
 ```
 
 There are detailed examples for the most often used requests available:
@@ -201,7 +201,7 @@ number
 : Number of the slice that should be fetched starting from "1" up to the total number of available pages (see the [pagination respone for details](#paged-results))
 
 size
-: Number of items that should be fetched with a minimum value of "1" and a maximum value of "100". The default values are "15" for pages and "50" for contents
+: Number of items that should be fetched with a minimum value of "1" and a maximum value of "100". The default values are "15" for pages and "50" for elements
 
 To get item 25 to 50 from the `pages` endpoint use:
 
@@ -212,7 +212,7 @@ http://mydomain.tld/api/cms/pages?page[number]=2&page[size]=25
 This can be combined with `filter` and `include` parameters too:
 
 ```
-http://mydomain.tld/api/cms/pages?filter[lang]=en&include=contents&page[number]=2&page[size]=25
+http://mydomain.tld/api/cms/pages?filter[lang]=en&include=elements&page[number]=2&page[size]=25
 ```
 
 In the last case, use the [link](#links) instead of constructing the URL yourself!
@@ -224,7 +224,7 @@ Most often, you don't need all page or shared content properties and you can red
 To retrieve the `slug` and `lang` of the root pages only and the `data` property of the shared content elements, use:
 
 ```
-http://mydomain.tld/api/cms/pages?include=contents&fields[pages]=slug,lang&fields[contents]=data
+http://mydomain.tld/api/cms/pages?include=elements&fields[pages]=slug,lang&fields[elements]=data
 ```
 
 Then, the attributes of the returned pages in the [data section](#data) will contain only:
@@ -296,7 +296,7 @@ lastPage
 : Page number of the last page available when using the same `perPage` value. Minimum value is "1", the maximum value is "100"
 
 perPage
-: Maximum number of items returned in one response which is the passed `page[size]` value. The minimum value is "1", the maximum value is "100" and the default values are "15" for pages and "50" for contents
+: Maximum number of items returned in one response which is the passed `page[size]` value. The minimum value is "1", the maximum value is "100" and the default values are "15" for pages and "50" for elements
 
 total
 : Total number of available pages when using the same `size` value
@@ -353,10 +353,10 @@ Using a request which returns a single page, then the response is like:
         "updatedAt": "2023-05-01T09:36:30.000000Z"
     },
     "relationships": {
-        "contents": {
+        "elements": {
             "data": [
                 {
-                    "type": "contents",
+                    "type": "elements",
                     "id": "0187d6ab-b76d-75ee-8830-ab00b4259aa5"
                 }
             ]
@@ -407,10 +407,10 @@ For request returning multiple items, the `data` section will be similar to:
             "updatedAt": "2023-05-01T09:36:30.000000Z"
         },
         "relationships": {
-            "contents": {
+            "elements": {
                 "data": [
                     {
-                        "type": "contents",
+                        "type": "elements",
                         "id": "0187d6ab-b76d-75ee-8830-ab00b4259aa5"
                     }
                 ]
@@ -430,20 +430,20 @@ It's the same like for responses returning single resources but the `data` secti
 
 If you use the [include parameter](#include-resources) to get related resources in the same request there will be a key for each related resource below `relationships`.
 
-For a request which should include the parent page, ancestor pages, child pages, the page subtree and the contents like:
+For a request which should include the parent page, ancestor pages, child pages, the page subtree and the elements like:
 
 ```
-http://mydomain.tld/api/cms/pages/1?include=parent,ancestors,children,subtree,contents
+http://mydomain.tld/api/cms/pages/1?include=parent,ancestors,children,subtree,elements
 ```
 
 Then, the `relationships` section will contain:
 
 ```json
 "relationships": {
-    "contents": {
+    "elements": {
         "data": [
             {
-                "type": "contents",
+                "type": "elements",
                 "id": "0187d6ab-b76d-75ee-8830-ab00b4259aa5"
             }
         ]
@@ -505,7 +505,7 @@ Each key in the `relationships` part will a reference to a single item (like for
 
 ## Included
 
-The `included` section of each JSON API response is only available if you've added the `include` parameter to the URL, e.g. `/api/cms/pages/1?include=contents`. In that case the `relationships/contents/data` part contains the list of references:
+The `included` section of each JSON API response is only available if you've added the `include` parameter to the URL, e.g. `/api/cms/pages/1?include=elements`. In that case the `relationships/elements/data` part contains the list of references:
 
 ```json
 {
@@ -518,10 +518,10 @@ The `included` section of each JSON API response is only available if you've add
         "more keys": "..."
     },
     "relationships": {
-        "contents": {
+        "elements": {
             "data": [
                 {
-                    "type": "contents",
+                    "type": "elements",
                     "id": "0186d692-be0b-798c-9450-0a676209b7a6"
                 }
             ]
@@ -535,7 +535,7 @@ And the `included` section for that response then contains:
 ```json
 "included": [
     {
-        "type": "contents",
+        "type": "elements",
         "id": "0186d692-be0b-798c-9450-0a676209b7a6",
         "attributes": {
             "lang": "",
@@ -549,7 +549,7 @@ And the `included` section for that response then contains:
 ]
 ```
 
-It consists of a flat list of page or shared content items identified by their `type` and `id` values. You must now match the type and ID within the `relationships/contents` section with the type and ID within the `included` section.
+It consists of a flat list of page or shared content items identified by their `type` and `id` values. You must now match the type and ID within the `relationships/elements` section with the type and ID within the `included` section.
 
 ## Error handling
 

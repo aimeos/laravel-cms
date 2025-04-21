@@ -88,10 +88,10 @@ class PageSchema extends Schema
             Number::make( 'cache' )->readOnly(),
             ArrayHash::make( 'meta' )->readOnly(),
             ArrayHash::make( 'config' )->readOnly(),
-            ArrayList::make( 'content' )->readOnly(),
+            ArrayList::make( 'element' )->readOnly(),
             DateTime::make( 'createdAt' )->readOnly(),
             DateTime::make( 'updatedAt' )->readOnly(),
-            HasMany::make( 'refs' )->type( 'contents' )->readOnly()->serializeUsing(
+            HasMany::make( 'elements' )->type( 'elements' )->readOnly()->serializeUsing(
                 static fn($relation) => $relation->withoutLinks()
             ),
             HasOne::make( 'parent' )->type( 'pages' )->readOnly()->serializeUsing( function( $relation ) {

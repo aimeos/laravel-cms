@@ -7,13 +7,13 @@ excerpt: "How to retrieve the root page and children from Laravel CMS using the 
 Retrieve the root page with shared content elements and first level sub-pages to build the navigation:
 
 ```
-http://mydomain.tld/api/cms/pages?filter[tag]=root&include=children,contents
+http://mydomain.tld/api/cms/pages?filter[tag]=root&include=children,elements
 ```
 
 In case the site uses more than one language and sets the `lang` property for each page:
 
 ```
-http://mydomain.tld/api/cms/pages?filter[tag]=root&filter[lang]=en&include=children,contents
+http://mydomain.tld/api/cms/pages?filter[tag]=root&filter[lang]=en&include=children,elements
 ```
 
 The result will be a JSON:API response which looks like:
@@ -35,8 +35,8 @@ The result will be a JSON:API response which looks like:
         "version": "1.0"
     },
     "links": {
-        "first": "http:\/\/mydomain.tld\/cms\/pages?filter%5Btag%5D=root&include=children%2Ccontents&page%5Bnumber%5D=1&page%5Bsize%5D=15",
-        "last": "http:\/\/mydomain.tld\/cms\/pages?filter%5Btag%5D=root&include=children%2Ccontents&page%5Bnumber%5D=1&page%5Bsize%5D=15"
+        "first": "http:\/\/mydomain.tld\/cms\/pages?filter%5Btag%5D=root&include=children%2Celements&page%5Bnumber%5D=1&page%5Bsize%5D=15",
+        "last": "http:\/\/mydomain.tld\/cms\/pages?filter%5Btag%5D=root&include=children%2Celements&page%5Bnumber%5D=1&page%5Bsize%5D=15"
     },
     "data": [
         {
@@ -70,10 +70,10 @@ The result will be a JSON:API response which looks like:
                 "updatedAt": "2023-05-01T09:36:30.000000Z"
             },
             "relationships": {
-                "contents": {
+                "elements": {
                     "data": [
                         {
-                            "type": "contents",
+                            "type": "elements",
                             "id": "0187d6ab-b76d-75ee-8830-ab00b4259aa5"
                         }
                     ]
@@ -102,7 +102,7 @@ The result will be a JSON:API response which looks like:
     ],
     "included": [
         {
-            "type": "contents",
+            "type": "elements",
             "id": "0187d6ab-b76d-75ee-8830-ab00b4259aa5",
             "attributes": {
                 "lang": "",

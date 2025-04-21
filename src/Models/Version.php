@@ -83,16 +83,16 @@ class Version extends Model
 
 
     /**
-     * Get the shared content attached to the version.
+     * Get the shared element attached to the version.
      */
-    public function refs() : BelongsToMany
+    public function elements() : BelongsToMany
     {
-        return $this->belongsToMany( Content::class, 'cms_version_content' );
+        return $this->belongsToMany( Element::class, 'cms_version_element' );
     }
 
 
     /**
-     * Get the parent versionable model (page or content).
+     * Get the parent versionable model (page or element).
      */
     public function versionable() : MorphTo
     {

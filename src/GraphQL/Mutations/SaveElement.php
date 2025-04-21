@@ -5,30 +5,30 @@ namespace Aimeos\Cms\GraphQL\Mutations;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Aimeos\Cms\Models\Version;
-use Aimeos\Cms\Models\Content;
+use Aimeos\Cms\Models\Element;
 
 
-final class SaveContent
+final class SaveElement
 {
     /**
      * @param  null  $rootValue
      * @param  array  $args
      */
-    public function __invoke( $rootValue, array $args ) : Content
+    public function __invoke( $rootValue, array $args ) : Element
     {
-        $content = Content::findOrFail( $args['id'] );
+        $element = Element::findOrFail( $args['id'] );
 
-        DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( function() use ( $content, $args ) {
+        DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( function() use ( $element, $args ) {
 
             $editor = Auth::user()?->name ?? request()->ip();
 
-            $content->fill( $args['input'] ?? [] );
-            $content->editor = $editor;
-            $content->save();
+            $element->fill( $args['input'] ?? [] );
+            $element->editor = $editor;
+            $element->save();
 
-            if( isset( $args['input']['data'] ) && $args['input']['data'] !== $content->latest?->data )
+            if( isset( $args['input']['data'] ) && $args['input']['data'] !== $element->latest?->data )
             {
-                $version = $content->versions()->create( [
+                $version = $element->versions()->create( [
                     'data' => $args['input']['data'],
                     'published' => false,
                     'editor' => $editor
@@ -36,8 +36,8 @@ final class SaveContent
 
                 $version->files()->sync( $args['input']['files'] ?? [] );
 
-                Version::where( 'versionable_id', $content->id )
-                    ->where( 'versionable_type', Content::class )
+                Version::where( 'versionable_id', $element->id )
+                    ->where( 'versionable_type', Element::class )
                     ->orderBy( 'id', 'desc' )
                     ->skip( 10 )
                     ->take( 10 )
@@ -46,6 +46,6 @@ final class SaveContent
 
         }, 3 );
 
-        return $content;
+        return $element;
     }
 }

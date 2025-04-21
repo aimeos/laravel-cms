@@ -166,8 +166,8 @@ class GraphqlFileTest extends TestAbstract
             '2' => UploadedFile::fake()->image('test-preview-2.webp', 10),
         ] );
 
-        $content = json_decode( $response->getContent() );
-        $id = $content?->data?->addFile?->id;
+        $element = json_decode( $response->getContent() );
+        $id = $element?->data?->addFile?->id;
         $file = File::find( $id );
 
         $response->assertJson( [

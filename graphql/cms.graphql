@@ -25,16 +25,16 @@ extend type Query {
     @canModel(ability: "view", model: "\\Aimeos\\Cms\\Models\\Page")
     @softDeletes
 
-  "Get content item by ID"
-  content(id: ID! @eq): Content
-    @canModel(ability: "view", model: "\\Aimeos\\Cms\\Models\\Content")
+  "Get element item by ID"
+  element(id: ID! @eq): Element
+    @canModel(ability: "view", model: "\\Aimeos\\Cms\\Models\\Element")
     @softDeletes
     @find
 
-  "Get available content items (optionally limited by a list of IDs)"
-  contents(id: [ID!]): [Content!]
-    @paginate(builder: "\\Aimeos\\Cms\\GraphQL\\Query@contents", defaultCount: 100)
-    @canModel(ability: "view", model: "\\Aimeos\\Cms\\Models\\Content")
+  "Get available element items (optionally limited by a list of IDs)"
+  elements(id: [ID!]): [Element!]
+    @paginate(builder: "\\Aimeos\\Cms\\GraphQL\\Query@elements", defaultCount: 100)
+    @canModel(ability: "view", model: "\\Aimeos\\Cms\\Models\\Element")
     @softDeletes
 
   "Get file item by ID"
@@ -88,28 +88,28 @@ extend type Mutation {
 
 
   "Add a new shared content element with file references"
-  addContent(input: ContentInput!): Content
-    @canModel(ability: "add", model: "\\Aimeos\\Cms\\Models\\Content")
+  addElement(input: ElementInput!): Element
+    @canModel(ability: "add", model: "\\Aimeos\\Cms\\Models\\Element")
 
   "Update an existing shared content element"
-  saveContent(id: ID!, input: ContentInput!): Content
-    @canModel(ability: "save", model: "\\Aimeos\\Cms\\Models\\Content")
+  saveElement(id: ID!, input: ElementInput!): Element
+    @canModel(ability: "save", model: "\\Aimeos\\Cms\\Models\\Element")
 
   "Delete an existing shared content element"
-  dropContent(id: ID!): Content
-    @canModel(ability: "drop", model: "\\Aimeos\\Cms\\Models\\Content")
+  dropElement(id: ID!): Element
+    @canModel(ability: "drop", model: "\\Aimeos\\Cms\\Models\\Element")
 
   "Restore an existing shared content element"
-  keepContent(id: ID!): Content
-    @canModel(ability: "keep", model: "\\Aimeos\\Cms\\Models\\Content")
+  keepElement(id: ID!): Element
+    @canModel(ability: "keep", model: "\\Aimeos\\Cms\\Models\\Element")
 
   "Purge an existing shared content element"
-  purgeContent(id: ID!): Content
-    @canModel(ability: "purge", model: "\\Aimeos\\Cms\\Models\\Content")
+  purgeElement(id: ID!): Element
+    @canModel(ability: "purge", model: "\\Aimeos\\Cms\\Models\\Element")
 
   "Publish an existing shared content element"
-  pubContent(id: ID!): Content
-    @canModel(ability: "publish", model: "\\Aimeos\\Cms\\Models\\Content")
+  pubElement(id: ID!): Element
+    @canModel(ability: "publish", model: "\\Aimeos\\Cms\\Models\\Element")
 
 
   "Adds a new file upload, optionally with previews and the describing name of the file"
@@ -125,7 +125,7 @@ extend type Mutation {
     @canModel(ability: "drop", model: "\\Aimeos\\Cms\\Models\\File")
 
   "Restore an existing file"
-  keepFile(id: ID!): Content
+  keepFile(id: ID!): Element
     @canModel(ability: "keep", model: "\\Aimeos\\Cms\\Models\\File")
 
   "Purge an existing file"
@@ -161,10 +161,10 @@ type Page {
   "Tag name to identify a page, e.g. for the starting point of a navigation structure"
   tag: String
 
-  "Arbitrary page header elements"
+  "Arbitrary header data"
   meta: JSON!
 
-  "Arbitrary page content elements"
+  "Arbitrary page data"
   data: JSON!
 
   "Arbitrary configuration settings"
@@ -204,7 +204,7 @@ type Page {
   ancestors: [Page!]!
 
   "List of shared content elements assigned to the page"
-  refs: [Content!]! @belongsToMany
+  elements: [Element!]! @belongsToMany
 
   "List of versions for the page meta data"
   versions: [Version!]! @morphMany
@@ -238,16 +238,16 @@ input PageInput {
   "Tag name to identify a page, e.g. for the starting point of a navigation structure"
   tag: String
 
-  "Arbitrary page header elements"
+  "Arbitrary page header"
   meta: JSON
 
-  "Arbitrary page content elements"
+  "Arbitrary page data"
   data: JSON
 
   "Arbitrary configuration settings"
   config: JSON
 
-  "List of content elements"
+  "List of content"
   content: JSON
 
   "Visibility status of the page, 0=inactive, 1=visible, 2=hidden in navigation"
@@ -256,15 +256,15 @@ input PageInput {
   "Cache lifetime in minutes"
   cache: Int
 
-  "List of shared content IDs referenced by the page"
-  refs: [ID!]
+  "List of shared element IDs referenced by the page"
+  elements: [ID!]
 
   "List of file IDs used in the meta data"
   files: [ID!]
 }
 
-type Content {
-  "Unique content element ID"
+type Element {
+  "Unique element ID"
   id: ID!
 
   "Type of the content element"
@@ -273,7 +273,7 @@ type Content {
   "ISO language code, e.g. 'en', 'en_GB' or empty for default language"
   lang: String
 
-  "Arbitrary string which describes the content"
+  "Arbitrary string which describes the content element"
   label: String
 
   "Arbitrary content element"
@@ -297,24 +297,24 @@ type Content {
   "List of versioned data for the content element"
   versions: [Version!]! @morphMany
 
-  "Latest version of the content data"
+  "Latest version of the content element"
   latest: Version @hasOne
 
-  "Published version of the content data"
+  "Published version of the content element"
   published: Version @hasOne
 }
 
-input ContentInput {
+input ElementInput {
   "Type of the content element"
   type: String!
 
   "ISO language code, e.g. 'en', 'en_GB' or empty for default language"
   lang: String
 
-  "Arbitrary string which describes the content"
+  "Arbitrary string which describes the element"
   label: String
 
-  "Arbitrary content element"
+  "Arbitrary content element data"
   data: JSON!
 
   "List of file IDs used in the meta or data properties"
@@ -325,16 +325,16 @@ type Version {
   "Unique version ID"
   id: ID!
 
-  "Arbitrary versioned content elements"
+  "Arbitrary versioned data"
   data: JSON!
 
   "List of shared content elements assigned to the version"
-  refs: [Content!]! @belongsToMany
+  elements: [Element!]! @belongsToMany
 
   "List of files used in the meta or data properties"
   files: [File!]
 
-  "If versioned content is currently published or not"
+  "If versioned is currently published or not"
   published: Boolean!
 
   "Name of the last user who added, updated or deleted the versioned data"

@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
 use Aimeos\Cms\Models\Version;
-use Aimeos\Cms\Models\Content;
+use Aimeos\Cms\Models\Element;
 use Aimeos\Cms\Models\File;
 use Aimeos\Cms\Models\Page;
 
@@ -29,7 +29,7 @@ class CmsSeeder extends Seeder
 
         File::where('tenant_id', 'demo')->forceDelete();
         Version::where('tenant_id', 'demo')->forceDelete();
-        Content::where('tenant_id', 'demo')->forceDelete();
+        Element::where('tenant_id', 'demo')->forceDelete();
         Page::where('tenant_id', 'demo')->forceDelete();
 
         $home = $this->home();
@@ -68,39 +68,22 @@ class CmsSeeder extends Seeder
         {
             $data = ['type' => 'footer', 'data' => ['text' => 'Powered by Laravel CMS']];
 
-            $content = Content::forceCreate([
-                'label' => 'Test shared content',
+            $element = Element::forceCreate([
+                'label' => 'Test shared element',
                 'data' => $data,
                 'editor' => 'seeder',
             ]);
 
-            $version = $content->versions()->forceCreate([
+            $version = $element->versions()->forceCreate([
                 'data' => $data,
                 'published' => true,
                 'editor' => 'seeder',
             ]);
 
-            $this->shared = $content->id;
+            $this->shared = $element->id;
         }
 
         return $this->shared;
-    }
-
-
-    protected function content( array $data ) : Content
-    {
-        $content = Content::forceCreate([
-            'label' => 'Test shared content',
-            'data' => $data,
-            'editor' => 'seeder',
-        ]);
-        $content->versions()->forceCreate([
-            'data' => $data,
-            'published' => true,
-            'editor' => 'seeder',
-        ]);
-
-        return $content;
     }
 
 
@@ -140,7 +123,7 @@ class CmsSeeder extends Seeder
             'published' => true,
             'editor' => 'seeder',
         ]);
-        $page->refs()->attach( $sharedId );
+        $page->elements()->attach( $sharedId );
 
         return $page;
     }
@@ -163,7 +146,7 @@ class CmsSeeder extends Seeder
             ],
         ]);
         $page->appendToNode( $home )->save();
-        $page->refs()->attach( $sharedId );
+        $page->elements()->attach( $sharedId );
 
         return $this->addBlogArticle( $page );
     }
@@ -212,7 +195,7 @@ mutation {
             'content' => $data
         ]);
         $page->appendToNode( $blog )->save();
-        $page->refs()->attach( $sharedId );
+        $page->elements()->attach( $sharedId );
 
         $version = $page->versions()->forceCreate([
             'data' => $data,
@@ -253,7 +236,7 @@ This is content created using [markdown syntax](https://www.markdownguide.org/ba
             ]]
         ]);
         $page->appendToNode( $home )->save();
-        $page->refs()->attach( $sharedId );
+        $page->elements()->attach( $sharedId );
 
         return $this;
     }

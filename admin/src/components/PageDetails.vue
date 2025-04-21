@@ -23,9 +23,10 @@
     data: () => ({
       changed: false,
       versions: [],
+      elements: [],
       content: [],
       files: [],
-      refs: [],
+      elements: [],
       nav: null,
       tab: 'page',
     }),
@@ -75,7 +76,7 @@
               meta: JSON.stringify(meta),
               config: JSON.stringify(config),
               content: JSON.stringify(this.content),
-              refs: this.refs,
+              elements: this.elements,
               files: []
             }
           }
@@ -100,7 +101,7 @@
               versions {
                 published
                 data
-                refs
+                elements
                 editor
                 created_at
                 files {
@@ -124,7 +125,7 @@
 
           this.changed = false
           this.versions = result.data.page.versions || []
-          this.refs = JSON.parse(this.versions?.at(-1)?.refs || '[]')
+          this.elements = JSON.parse(this.versions?.at(-1)?.elements || '[]')
           this.content = JSON.parse(this.versions?.at(-1)?.content || '[]')
         }).catch(error => {
           console.error(`page(id: ${this.item.id})`, error)
@@ -166,7 +167,7 @@
       </v-window-item>
 
       <v-window-item value="content">
-        <PageDetailsContent :item="item" :contents="contents" @update:contents="contents = $event; changed = true" />
+        <PageDetailsContent :item="item" :elements="elements" @update:elements="elements = $event; changed = true" />
       </v-window-item>
 
       <v-window-item value="preview">

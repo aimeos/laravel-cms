@@ -6,7 +6,7 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\DB;
-use Aimeos\Cms\Models\Content;
+use Aimeos\Cms\Models\Element;
 use Aimeos\Cms\Models\Page;
 
 
@@ -16,16 +16,16 @@ use Aimeos\Cms\Models\Page;
 final class Query
 {
     /**
-     * Custom query builder for contents to search items by ID (optional).
+     * Custom query builder for elements to search items by ID (optional).
      *
      * @param  null  $rootValue
      * @param  array  $args
      */
-    public function contents( $rootValue, array $args ) : Builder
+    public function elements( $rootValue, array $args ) : Builder
     {
         $limit = (int) ( $args['first'] ?? 100 );
 
-        $builder = Content::withTrashed()
+        $builder = Element::withTrashed()
             ->skip( max( ( $args['page'] ?? 1 ) - 1, 0 ) * $limit )
             ->take( min( max( $limit, 1 ), 100 ) );
 

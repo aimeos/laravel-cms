@@ -31,7 +31,7 @@ final class PubPage
                 $page->save();
 
                 $page->files()->sync( $latest->files ?? [] );
-                $page->refs()->sync( $latest->refs ?? [] );
+                $page->elements()->sync( $latest->elements ?? [] );
 
             }, 3 );
 

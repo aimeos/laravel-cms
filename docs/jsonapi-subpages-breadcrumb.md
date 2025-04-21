@@ -4,13 +4,13 @@ permalink: /jsonapi/subpages-breadcrumb/
 excerpt: "How to retrieve the sub-pages with content and ancestors from Laravel CMS using the JSON:API to build page with breadcrumb"
 ---
 
-To retrieve a specific page whose URL you've gotten from one of the previous responses (in the `links/self` attribute of the item) with its ancestor pages for the breadcrumb and its shared content elements (add `?include=ancestors,contents` to the page URL):
+To retrieve a specific page whose URL you've gotten from one of the previous responses (in the `links/self` attribute of the item) with its ancestor pages for the breadcrumb and its shared content elements (add `?include=ancestors,elements` to the page URL):
 
 ```
-http://mydomain.tld/api/cms/pages/2?include=ancestors,contents
+http://mydomain.tld/api/cms/pages/2?include=ancestors,elements
 ```
 
-The `included` section contains the list of shared content elements that should be displayed at the page if `include=contents` is added as parameter to the JSON:API URL the anchestor pages if the `include` parameter also contains `ancestors`, e.g.:
+The `included` section contains the list of shared element elements that should be displayed at the page if `include=elements` is added as parameter to the JSON:API URL the anchestor pages if the `include` parameter also contains `ancestors`, e.g.:
 
 ```json
 {
@@ -52,7 +52,7 @@ The `included` section contains the list of shared content elements that should 
             "updatedAt": "2023-05-01T09:36:30.000000Z"
         },
         "relationships": {
-            "contents": {
+            "elements": {
                 "data": []
             },
             "ancestors": {

@@ -62,7 +62,7 @@ http://mydomain.tld/cmsadmin
 
 ### Clean up
 
-To clean up soft-deleted pages, contents and files regularly, add these lines to the `schedule()` method in your `app/Console/Kernel.php` class:
+To clean up soft-deleted pages, elements and files regularly, add these lines to the `schedule()` method in your `app/Console/Kernel.php` class:
 
 ```php
 $schedule->command('model:prune', [
@@ -129,14 +129,14 @@ Available actions which access can be granted to are:
 * page:purge (delete pages permanently)
 * page:publish (publish page meta data)
 * page:move (move pages in the tree)
-* content:view (show content elements)
-* content:save (update existing content elements)
-* content:add (add new content elements)
-* content:drop (soft-delete content elements)
-* content:keep (restore soft-deleted content elements)
-* content:purge (delete content elements permanently)
-* content:publish (publish content elements)
-* content:move (move content elements within a page)
+* element:view (show element elements)
+* element:save (update existing element elements)
+* element:add (add new element elements)
+* element:drop (soft-delete element elements)
+* element:keep (restore soft-deleted element elements)
+* element:purge (delete element elements permanently)
+* element:publish (publish element elements)
+* element:move (move element elements within a page)
 * file:view (show uploaded files)
 * file:save (update existing files)
 * file:add (add new files)

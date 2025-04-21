@@ -16,10 +16,10 @@
 
     props: {
       'item': {type: Object, required: true},
-      'contents': {type: Array, required: true}
+      'elements': {type: Array, required: true}
     },
 
-    emits: ['update:contents'],
+    emits: ['update:elements'],
 
     data: () => ({
       list: [],
@@ -44,7 +44,7 @@
     created() {
       this.$apollo.query({
         query: gql`query($id: [ID!]) {
-          contents(id: $id) {
+          elements(id: $id) {
             data {
               id
               type
@@ -54,7 +54,7 @@
               versions {
                 published
                 data
-                refs
+                elements
                 editor
                 created_at
                 files {
@@ -70,16 +70,16 @@
           }
         }`,
         variables: {
-          id: this.contents
+          id: this.elements
         }
       }).then(result => {
         if(result.errors) {
           throw result.errors
         }
 
-        this.lastPage = result.data.contents?.paginatorInfo?.lastPage || 1
-        this.currentPage = result.data.contents?.paginatorInfo?.currentPage || 1
-        this.list = result.data.contents?.data?.map(el => {
+        this.lastPage = result.data.elements?.paginatorInfo?.lastPage || 1
+        this.currentPage = result.data.elements?.paginatorInfo?.currentPage || 1
+        this.list = result.data.elements?.data?.map(el => {
           const latest = el.versions?.at(-1)
           return {
             id: el.id,
@@ -91,7 +91,7 @@
           }
         })
       }).catch(error => {
-        console.error(`contents()`, error)
+        console.error(`elements()`, error)
       })
     },
 
@@ -197,16 +197,16 @@
           }
 
           if(el.id) {
-            name = 'saveContent'
-            mutation = gql`mutation($id: ID!, $input: ContentInput!) {
-              saveContent(id: $id, input: $input) {
+            name = 'saveElement'
+            mutation = gql`mutation($id: ID!, $input: ElementInput!) {
+              saveElement(id: $id, input: $input) {
                 id
               }
             }`
           } else {
-            name = 'addContent'
-            mutation = gql`mutation($input: ContentInput!) {
-              addContent(input: $input) {
+            name = 'addElement'
+            mutation = gql`mutation($input: ElementInput!) {
+              addElement(input: $input) {
                 id
               }
             }`
@@ -230,7 +230,7 @@
         })
 
         Promise.all(promises).then(() => {
-          this.$emit('update:contents', this.list.map(el => el.id).filter(id => !!id))
+          this.$emit('update:elements', this.list.map(el => el.id).filter(id => !!id))
         })
       },
 
@@ -415,7 +415,7 @@
 
   <Teleport to="body">
     <v-dialog v-model="velements" scrollable width="auto">
-      <Elements type="content" @add="add($event, index)" />
+      <Elements type="element" @add="add($event, index)" />
     </v-dialog>
   </Teleport>
 

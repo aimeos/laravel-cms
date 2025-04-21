@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::connection(config('cms.db', 'sqlite'))->create('cms_version_content', function (Blueprint $table) {
+        Schema::connection(config('cms.db', 'sqlite'))->create('cms_version_element', function (Blueprint $table) {
             $table->foreignUuid('version_id')->constrained('cms_versions')->cascadeOnUpdate()->cascadeOnDelete();
-            $table->foreignUuid('content_id')->constrained('cms_contents')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignUuid('element_id')->constrained('cms_elements')->cascadeOnUpdate()->cascadeOnDelete();
 
-            $table->unique(['version_id', 'content_id']);
+            $table->unique(['version_id', 'element_id']);
         });
     }
 
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::connection(config('cms.db', 'sqlite'))->dropIfExists('cms_version_content');
+        Schema::connection(config('cms.db', 'sqlite'))->dropIfExists('cms_version_element');
     }
 };

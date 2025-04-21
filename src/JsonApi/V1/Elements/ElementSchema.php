@@ -1,6 +1,6 @@
 <?php
 
-namespace Aimeos\Cms\JsonApi\V1\Contents;
+namespace Aimeos\Cms\JsonApi\V1\Elements;
 
 use LaravelJsonApi\Eloquent\Contracts\Paginator;
 use LaravelJsonApi\Eloquent\Pagination\PagePagination;
@@ -11,10 +11,10 @@ use LaravelJsonApi\Eloquent\Fields\DateTime;
 use LaravelJsonApi\Eloquent\Fields\Str;
 use LaravelJsonApi\Eloquent\Fields\ID;
 use LaravelJsonApi\Eloquent\Schema;
-use Aimeos\Cms\Models\Content;
+use Aimeos\Cms\Models\Element;
 
 
-class ContentSchema extends Schema
+class ElementSchema extends Schema
 {
     /**
      * Default page value if no pagination was sent by the client.
@@ -22,7 +22,7 @@ class ContentSchema extends Schema
     protected ?array $defaultPagination = ['number' => 1];
 
     /**
-     * Disables "self" links for content items.
+     * Disables "self" links for element items.
      */
     protected bool $selfLink = false;
 
@@ -31,7 +31,7 @@ class ContentSchema extends Schema
      *
      * @var string
      */
-    public static string $model = Content::class;
+    public static string $model = Element::class;
 
 
     /**

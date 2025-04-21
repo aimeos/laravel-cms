@@ -5,7 +5,7 @@ namespace Tests;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
 use Nuwave\Lighthouse\Testing\RefreshesSchemaCache;
 use Database\Seeders\CmsSeeder;
-use Aimeos\Cms\Models\Content;
+use Aimeos\Cms\Models\Element;
 use Aimeos\Cms\Models\File;
 use Aimeos\Cms\Models\Page;
 
@@ -294,7 +294,7 @@ class GraphqlPageTest extends TestAbstract
         $this->seed( CmsSeeder::class );
 
         $page = Page::where('tag', 'root')->firstOrFail();
-        $content = $page->refs()->firstOrFail();
+        $element = $page->elements()->firstOrFail();
 
         $this->expectsDatabaseQueryCount( 2 );
         $response = $this->actingAs( $this->user )->graphQL( "{
@@ -311,7 +311,7 @@ class GraphqlPageTest extends TestAbstract
                     'id' => (string) $page->id,
                     'versions' => [
                         [
-                            'data' => '{"name":"Home","title":"Home | Laravel CMS","slug":"","tag":"root","domain":"mydomain.tld","status":1,"editor":"seeder","meta":{"meta":{"type":"meta","text":"Laravel CMS is outstanding"}},"content":[{"type":"heading","text":"Welcome to Laravel CMS"},{"type":"ref","id":"' . $content->id . '"}]}',
+                            'data' => '{"name":"Home","title":"Home | Laravel CMS","slug":"","tag":"root","domain":"mydomain.tld","status":1,"editor":"seeder","meta":{"meta":{"type":"meta","text":"Laravel CMS is outstanding"}},"content":[{"type":"heading","text":"Welcome to Laravel CMS"},{"type":"ref","id":"' . $element->id . '"}]}',
                             'editor' => 'seeder'
                         ],
                     ],
@@ -339,7 +339,7 @@ class GraphqlPageTest extends TestAbstract
                         id
                     }
                 }
-                refs {
+                elements {
                     id
                 }
                 versions {
@@ -352,7 +352,7 @@ class GraphqlPageTest extends TestAbstract
                     'id' => (string) $page->id,
                     'ancestors' => [],
                     'children' => [],
-                    'refs' => [],
+                    'elements' => [],
                     'versions' => [],
                 ],
             ]
@@ -360,7 +360,7 @@ class GraphqlPageTest extends TestAbstract
     }
 
 
-    public function testPageContents()
+    public function testPageElements()
     {
         $this->seed( CmsSeeder::class );
 
@@ -370,7 +370,7 @@ class GraphqlPageTest extends TestAbstract
         $response = $this->actingAs( $this->user )->graphQL( "{
             page(id: {$page->id}) {
                 id
-                refs {
+                elements {
                     lang
                     label
                     data
@@ -380,10 +380,10 @@ class GraphqlPageTest extends TestAbstract
             'data' => [
                 'page' => [
                     'id' => (string) $page->id,
-                    'refs' => [
+                    'elements' => [
                         [
                             'lang' => '',
-                            'label' => 'Test shared content',
+                            'label' => 'Test shared element',
                             'data' => '{"type":"footer","data":{"text":"Powered by Laravel CMS"}}',
                         ],
                     ],
@@ -398,7 +398,7 @@ class GraphqlPageTest extends TestAbstract
         $this->seed( CmsSeeder::class );
 
         $file = File::firstOrFail();
-        $content = Content::firstOrFail();
+        $element = Element::firstOrFail();
 
         $this->expectsDatabaseQueryCount( 7 );
         $response = $this->actingAs( $this->user )->graphQL( '
@@ -416,7 +416,7 @@ class GraphqlPageTest extends TestAbstract
                     content: "[{\"type\":\"cms::heading\",\"text\":\"Welcome to Laravel CMS\"}]"
                     status: 0
                     cache: 0
-                    refs: ["' . $content->id . '"]
+                    elements: ["' . $element->id . '"]
                     files: ["' . $file->id . '"]
                 }) {
                     id
@@ -437,7 +437,7 @@ class GraphqlPageTest extends TestAbstract
                     created_at
                     updated_at
                     deleted_at
-                    refs {
+                    elements {
                         lang
                         data
                         label
@@ -639,7 +639,7 @@ class GraphqlPageTest extends TestAbstract
         $this->seed( CmsSeeder::class );
 
         $file = File::firstOrFail();
-        $content = Content::firstOrFail();
+        $element = Element::firstOrFail();
         $root = Page::where('tag', 'root')->firstOrFail();
 
         $this->expectsDatabaseQueryCount( 13 );
@@ -658,7 +658,7 @@ class GraphqlPageTest extends TestAbstract
                     content: "[{\"type\":\"cms::heading\",\"text\":\"Welcome to Laravel CMS\"}]"
                     status: 0
                     cache: 5
-                    refs: ["' . $content->id . '"]
+                    elements: ["' . $element->id . '"]
                     files: ["' . $file->id . '"]
                 }) {
                     id
@@ -676,7 +676,7 @@ class GraphqlPageTest extends TestAbstract
                     status
                     cache
                     editor
-                    refs {
+                    elements {
                         lang
                         data
                         label
@@ -695,7 +695,7 @@ class GraphqlPageTest extends TestAbstract
         ' );
 
         $page = Page::where('id', $root->id)->firstOrFail();
-        $content = $page->refs()->firstOrFail();
+        $element = $page->elements()->firstOrFail();
 
         $response->assertJson( [
             'data' => [
@@ -711,7 +711,7 @@ class GraphqlPageTest extends TestAbstract
                     'tag' => 'root',
                     'meta' => '{"meta":{"type":"meta","data":{"text":"Laravel CMS is outstanding"}}}',
                     'config' => '{}',
-                    'content' => '[{"type":"heading","text":"Welcome to Laravel CMS"},{"type":"ref","id":"' . $content->id . '"}]',
+                    'content' => '[{"type":"heading","text":"Welcome to Laravel CMS"},{"type":"ref","id":"' . $element->id . '"}]',
                     'status' => 1,
                     'cache' => 5,
                     'editor' => 'seeder',
@@ -721,7 +721,7 @@ class GraphqlPageTest extends TestAbstract
                         'data' => '{"lang":"en","slug":"test","domain":"test.com","name":"test","title":"Test page","to":"\\/to\\/page","tag":"test","meta":{"canonical":"to\\/page"},"config":{"key":"test"},"content":[{"type":"cms::heading","text":"Welcome to Laravel CMS"}],"status":0,"cache":5}'
                     ],
                     'published' => [
-                        'data' => '{"name":"Home","title":"Home | Laravel CMS","slug":"","tag":"root","domain":"mydomain.tld","status":1,"editor":"seeder","meta":{"meta":{"type":"meta","text":"Laravel CMS is outstanding"}},"content":[{"type":"heading","text":"Welcome to Laravel CMS"},{"type":"ref","id":"' . $content->id . '"}]}'
+                        'data' => '{"name":"Home","title":"Home | Laravel CMS","slug":"","tag":"root","domain":"mydomain.tld","status":1,"editor":"seeder","meta":{"meta":{"type":"meta","text":"Laravel CMS is outstanding"}},"content":[{"type":"heading","text":"Welcome to Laravel CMS"},{"type":"ref","id":"' . $element->id . '"}]}'
                     ]
                 ],
             ]

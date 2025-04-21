@@ -97,7 +97,7 @@ class File extends Model
     {
         if( is_int( $days = config( 'cms.prune' ) ) ) {
             return static::withoutTenancy()->where( 'deleted_at', '<=', now()->subDays( $days ) )
-                ->doesntHave( 'versions' )->doesntHave( 'pages' )->doesntHave( 'contents' );
+                ->doesntHave( 'versions' )->doesntHave( 'pages' )->doesntHave( 'elements' );
         }
 
         // pruning is disabled

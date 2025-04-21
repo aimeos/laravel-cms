@@ -6,7 +6,7 @@ excerpt: "Available data types for the GraphQL API in Laravel CMS"
 
 * [Entities and relations](#entities-and-relations)
 * [Pages](#page-properties)
-* [Contents](#content-properties)
+* [Elements](#element-properties)
 * [References](#reference-properties)
 * [Versions](#version-properties)
 * [Files](#file-properties)
@@ -117,7 +117,7 @@ latest ([version object](#version-properties), read-only)
 published ([version object](#version-properties), read-only)
 : Published version of the page meta data
 
-## Content properties
+## Element properties
 
 id (string, read-only)
 : Unique content element ID

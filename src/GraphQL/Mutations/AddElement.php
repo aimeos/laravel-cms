@@ -4,31 +4,31 @@ namespace Aimeos\Cms\GraphQL\Mutations;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Aimeos\Cms\Models\Content;
+use Aimeos\Cms\Models\Element;
 
 
-final class AddContent
+final class AddElement
 {
     /**
      * @param  null  $rootValue
      * @param  array  $args
      */
-    public function __invoke( $rootValue, array $args ) : Content
+    public function __invoke( $rootValue, array $args ) : Element
     {
-        $content = new Content();
+        $element = new Element();
 
-        DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( function() use ( $content, $args ) {
+        DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( function() use ( $element, $args ) {
 
             $editor = Auth::user()?->name ?? request()->ip();
 
-            $content->fill( $args['input'] ?? [] );
-            $content->tenant_id = \Aimeos\Cms\Tenancy::value();
-            $content->editor = $editor;
-            $content->save();
+            $element->fill( $args['input'] ?? [] );
+            $element->tenant_id = \Aimeos\Cms\Tenancy::value();
+            $element->editor = $editor;
+            $element->save();
 
             if( isset( $args['input']['data'] ) )
             {
-                $version = $content->versions()->create( [
+                $version = $element->versions()->create( [
                     'data' => $args['input']['data'],
                     'published' => false,
                     'editor' => $editor
@@ -39,6 +39,6 @@ final class AddContent
 
         }, 3 );
 
-        return Content::findOrFail( $content->id );
+        return Element::findOrFail( $element->id );
     }
 }

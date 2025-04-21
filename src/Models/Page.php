@@ -102,41 +102,6 @@ class Page extends Model
 
 
     /**
-     * Apply default ordering to all queries
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope('treeorder', function( Builder $builder ) {
-            $builder->defaultOrder();
-        });
-    }
-
-
-    /**
-     * Interact with the cache property.
-     */
-    protected function cache(): Attribute
-    {
-        return Attribute::make(
-            set: fn($value) => $value === null ? 5 : (int) $value,
-        );
-    }
-
-
-    /**
-     * Interact with the domain property.
-     */
-    protected function domain(): Attribute
-    {
-        return Attribute::make(
-            set: fn($value) => (string) $value,
-        );
-    }
-
-
-    /**
      * Get all files referenced by the versioned data.
      */
     public function files() : BelongsToMany
@@ -184,17 +149,6 @@ class Page extends Model
 
 
     /**
-     * Interact with the lang property.
-     */
-    protected function lang(): Attribute
-    {
-        return Attribute::make(
-            set: fn($value) => (string) $value,
-        );
-    }
-
-
-    /**
      * Get the page's latest head/meta data.
      */
     public function latest() : HasOne
@@ -203,17 +157,6 @@ class Page extends Model
             ->where( 'versionable_type', Page::class )
             ->orderBy( 'id', 'desc' )
             ->take( 1 );
-    }
-
-
-    /**
-     * Interact with the name property.
-     */
-    protected function name(): Attribute
-    {
-        return Attribute::make(
-            set: fn($value) => (string) $value,
-        );
     }
 
 
@@ -263,28 +206,6 @@ class Page extends Model
 
 
     /**
-     * Interact with the slug property.
-     */
-    protected function slug(): Attribute
-    {
-        return Attribute::make(
-            set: fn($value) => (string) $value,
-        );
-    }
-
-
-    /**
-     * Interact with the status property.
-     */
-    protected function status(): Attribute
-    {
-        return Attribute::make(
-            set: fn($value) => (int) $value,
-        );
-    }
-
-
-    /**
      * Get query for the complete sub-tree up to three levels.
      *
      * @return DescendantsRelation
@@ -311,6 +232,94 @@ class Page extends Model
             ->having( 'depth', '<=', ( $this->depth ?? 0 ) + 3 );
 
         return (new DescendantsRelation( $builder, $this ));
+    }
+
+
+    /**
+     * Get all of the page's versions.
+     */
+    public function versions() : MorphMany
+    {
+        return $this->morphMany( Version::class, 'versionable' );
+    }
+
+
+    /**
+     * Apply default ordering to all queries
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('treeorder', function( Builder $builder ) {
+            $builder->defaultOrder();
+        });
+    }
+
+
+    /**
+     * Interact with the cache property.
+     */
+    protected function cache(): Attribute
+    {
+        return Attribute::make(
+            set: fn($value) => $value === null ? 5 : (int) $value,
+        );
+    }
+
+
+    /**
+     * Interact with the domain property.
+     */
+    protected function domain(): Attribute
+    {
+        return Attribute::make(
+            set: fn($value) => (string) $value,
+        );
+    }
+
+
+    /**
+     * Interact with the lang property.
+     */
+    protected function lang(): Attribute
+    {
+        return Attribute::make(
+            set: fn($value) => (string) $value,
+        );
+    }
+
+
+    /**
+     * Interact with the name property.
+     */
+    protected function name(): Attribute
+    {
+        return Attribute::make(
+            set: fn($value) => (string) $value,
+        );
+    }
+
+
+    /**
+     * Interact with the slug property.
+     */
+    protected function slug(): Attribute
+    {
+        return Attribute::make(
+            set: fn($value) => (string) $value,
+        );
+    }
+
+
+    /**
+     * Interact with the status property.
+     */
+    protected function status(): Attribute
+    {
+        return Attribute::make(
+            set: fn($value) => (int) $value,
+        );
     }
 
 
@@ -344,14 +353,5 @@ class Page extends Model
         return Attribute::make(
             set: fn($value) => (string) $value,
         );
-    }
-
-
-    /**
-     * Get all of the page's versions.
-     */
-    public function versions() : MorphMany
-    {
-        return $this->morphMany( Version::class, 'versionable' );
     }
 }

@@ -82,17 +82,6 @@ class File extends Model
 
 
     /**
-     * Interact with the name property.
-     */
-    protected function name(): Attribute
-    {
-        return Attribute::make(
-            set: fn($value) => (string) $value,
-        );
-    }
-
-
-    /**
      * Get all versions referencing the file.
      */
     public function versions() : BelongsToMany
@@ -113,6 +102,17 @@ class File extends Model
 
         // pruning is disabled
         return static::withoutTenancy()->where( 'id', '' );
+    }
+
+
+    /**
+     * Interact with the name property.
+     */
+    protected function name(): Attribute
+    {
+        return Attribute::make(
+            set: fn($value) => (string) $value,
+        );
     }
 
 

@@ -38,7 +38,7 @@ final class AddPage
             {
                 $version = $page->versions()->create( [
                     'data' => $args['input'],
-                    'published' => $page->status > 0 ? true : false,
+                    'published' => $page->status > 0,
                     'editor' => $editor
                 ] );
 

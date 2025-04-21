@@ -137,6 +137,15 @@ class Page extends Model
 
 
     /**
+     * Get all files referenced by the versioned data.
+     */
+    public function files() : BelongsToMany
+    {
+        return $this->belongsToMany( File::class, 'cms_file_version' );
+    }
+
+
+    /**
      * Get the connection name for the model.
      */
     public function getConnectionName()

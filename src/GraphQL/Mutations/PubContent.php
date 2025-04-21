@@ -29,6 +29,8 @@ final class PubContent
                 $content->editor = Auth::user()?->name ?? request()->ip();
                 $content->save();
 
+                $content->files()->sync( $latest->files ?? [] );
+
             }, 3 );
         }
 

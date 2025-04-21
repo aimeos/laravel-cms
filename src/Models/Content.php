@@ -76,6 +76,15 @@ class Content extends Model
 
 
     /**
+     * Get the files referencedd by the content.
+     */
+    public function files() : BelongsToMany
+    {
+        return $this->belongsToMany( File::class, 'cms_file_content' );
+    }
+
+
+    /**
      * Get the connection name for the model.
      */
     public function getConnectionName()

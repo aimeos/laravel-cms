@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Prunable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
@@ -73,6 +74,15 @@ class File extends Model
 
 
     /**
+     * Get all (shared) content elements referencing the file.
+     */
+    public function elements() : BelongsToMany
+    {
+        return $this->belongsToMany( Element::class, 'cms_file_element' );
+    }
+
+
+    /**
      * Get the connection name for the model.
      */
     public function getConnectionName()
@@ -82,11 +92,11 @@ class File extends Model
 
 
     /**
-     * Get all versions referencing the file.
+     * Get all pages referencing the file.
      */
-    public function versions() : BelongsToMany
+    public function pages() : BelongsToMany
     {
-        return $this->belongsToMany( Version::class, 'cms_file_version' );
+        return $this->belongsToMany( Page::class, 'cms_file_page' );
     }
 
 
@@ -95,13 +105,17 @@ class File extends Model
      */
     public function prunable() : Builder
     {
-        if( is_int( $days = config( 'cms.prune' ) ) ) {
-            return static::withoutTenancy()->where( 'deleted_at', '<=', now()->subDays( $days ) )
-                ->doesntHave( 'versions' )->doesntHave( 'pages' )->doesntHave( 'elements' );
-        }
+        return static::withoutTenancy()->where( 'deleted_at', '<=', now()->subDays( config( 'cms.prune', 30 ) ) )
+            ->doesntHave( 'versions' )->doesntHave( 'pages' )->doesntHave( 'elements' );
+    }
 
-        // pruning is disabled
-        return static::withoutTenancy()->where( 'id', '' );
+
+    /**
+     * Get all versions referencing the file.
+     */
+    public function versions() : BelongsToMany
+    {
+        return $this->belongsToMany( Version::class, 'cms_file_version' );
     }
 
 

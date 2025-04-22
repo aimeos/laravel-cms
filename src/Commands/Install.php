@@ -293,7 +293,7 @@ Made with <fg=green>love</> by the Laravel CMS community. Be a part of it!
 \LaravelJsonApi\Laravel\Facades\JsonApiRoute::server('cms')->prefix('cms')->resources(function($server) {
     $server->resource('pages', \Aimeos\Cms\JsonApi\V1\Controllers\JsonapiController::class)->readOnly()
         ->relationships(function (\$relationships) {
-            \$relationships->hasMany('contents')->readOnly();
+            \$relationships->hasMany('elements')->readOnly();
         });
 });";
         }

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::connection(config('cms.db', 'sqlite'))->create('cms_file_element', function (Blueprint $table) {
             $table->foreignUuid('file_id')->constrained('cms_files')->cascadeOnUpdate()->cascadeOnDelete();
-            $table->foreignId('element_id')->constrained('cms_elements')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignUuid('element_id')->constrained('cms_elements')->cascadeOnUpdate()->cascadeOnDelete();
 
             $table->unique(['file_id', 'element_id']);
         });

@@ -53,9 +53,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | The configured Blade template will be used for rendering all CMS pages.
-    | It must extend from a page Blade template which contains the HTML
-    | head/body sections as well as the navigation.
     |
     */
-    'view' => 'cms::content',
+    'view' => 'cms::page',
 ];

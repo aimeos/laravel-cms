@@ -6,9 +6,8 @@ The easy, flexible and scalable API-first Laravel CMS package:
 
 * Manage structured content like in Contentful
 * Define new content elements in seconds
-* Allows nested content elements
+* Assign shared content to multiple pages
 * Save, publish and revert drafts
-* Assign content to multiple pages
 * Extremly fast JSON frontend API
 * Versatile GraphQL admin API
 * Multi-language support
@@ -60,16 +59,23 @@ The CMS admin backend is available at (replace "mydomain.tld" with your own one)
 http://mydomain.tld/cmsadmin
 ```
 
-### Clean up
+### Publishing
 
-To clean up soft-deleted pages, elements and files regularly, add these lines to the `schedule()` method in your `app/Console/Kernel.php` class:
+For scheduled publishing, you need to add this line to the `routes/console.php` class:
 
 ```php
-$schedule->command('model:prune', [
+\Illuminate\Support\Facades\Schedule::command('cms:publish')->daily();
+```
+
+### Clean up
+
+To clean up soft-deleted pages, elements and files regularly, add these lines to the `routes/console.php` class:
+
+```php
+\Illuminate\Support\Facades\Schedule::command('model:prune', [
     '--model' => [
         \Aimeos\Cms\Models\Page::class,
-        \Aimeos\Cms\Models\Version::class,
-        \Aimeos\Cms\Models\Content::class,
+        \Aimeos\Cms\Models\Element::class,
         \Aimeos\Cms\Models\File::class
     ],
 ])->daily();

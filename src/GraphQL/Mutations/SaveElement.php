@@ -34,7 +34,7 @@ final class SaveElement
                     'editor' => $editor
                 ] );
 
-                $version->files()->sync( $args['input']['files'] ?? [] );
+                $version->files()->sync( $args['files'] ?? [] );
 
                 Version::where( 'versionable_id', $element->id )
                     ->where( 'versionable_type', Element::class )

@@ -216,8 +216,7 @@ class GraphqlElementTest extends TestAbstract
                     type: "test"
                     lang: "en"
                     data: "{\\"key\\":\\"value\\"}"
-                    files: ["' . $file->id . '"]
-                }) {
+                }, files: ["' . $file->id . '"]) {
                     type
                     lang
                     data
@@ -261,8 +260,7 @@ class GraphqlElementTest extends TestAbstract
                     type: "test"
                     lang: "en"
                     data: "{\\"key\\":\\"value\\"}"
-                    files: ["' . $file->id . '"]
-                }) {
+                }, files: ["' . $file->id . '"]) {
                     id
                     type
                     lang

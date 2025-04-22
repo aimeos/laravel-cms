@@ -416,9 +416,7 @@ class GraphqlPageTest extends TestAbstract
                     content: "[{\"type\":\"cms::heading\",\"text\":\"Welcome to Laravel CMS\"}]"
                     status: 0
                     cache: 0
-                    elements: ["' . $element->id . '"]
-                    files: ["' . $file->id . '"]
-                }) {
+                }, elements: ["' . $element->id . '"], files: ["' . $file->id . '"]) {
                     id
                     parent_id
                     lang
@@ -658,9 +656,7 @@ class GraphqlPageTest extends TestAbstract
                     content: "[{\"type\":\"cms::heading\",\"text\":\"Welcome to Laravel CMS\"}]"
                     status: 0
                     cache: 5
-                    elements: ["' . $element->id . '"]
-                    files: ["' . $file->id . '"]
-                }) {
+                }, elements: ["' . $element->id . '"], files: ["' . $file->id . '"]) {
                     id
                     parent_id
                     lang

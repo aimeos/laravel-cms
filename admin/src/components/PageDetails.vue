@@ -75,10 +75,10 @@
               to: this.item.to,
               meta: JSON.stringify(meta),
               config: JSON.stringify(config),
-              content: JSON.stringify(this.content),
-              elements: this.elements,
-              files: []
-            }
+              content: JSON.stringify(this.content)
+            },
+            elements: this.elements,
+            files: []
           }
         }).then(response => {
           if(response.errors) {

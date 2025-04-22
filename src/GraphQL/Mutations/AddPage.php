@@ -42,8 +42,8 @@ final class AddPage
                     'editor' => $editor
                 ] );
 
-                $version->elements()->attach( $args['input']['elements'] ?? [] );
-                $version->files()->attach( $args['input']['files'] ?? [] );
+                $version->elements()->attach( $args['elements'] ?? [] );
+                $version->files()->attach( $args['files'] ?? [] );
             }
 
         }, 3 );

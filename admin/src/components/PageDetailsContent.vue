@@ -191,9 +191,9 @@
               type: el.type,
               lang: this.item.lang,
               label: this.title(el),
-              data: JSON.stringify(el.data),
-              files: el.files.map(f => f.id),
-            }
+              data: JSON.stringify(el.data)
+            },
+            files: el.files.map(f => f.id)
           }
 
           if(el.id) {

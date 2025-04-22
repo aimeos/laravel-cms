@@ -20,8 +20,8 @@ final class SavePage
         $page = Page::findOrFail( $args['id'] );
         $latest = $page->latest;
 
-        $elements = $args['input']['elements'] ?? [];
-        $data = collect( $args['input'] )->except( ['elements', 'files'] )->all();
+        $data = $args['input'] ?? [];
+        $elements = $args['elements'] ?? [];
 
         if( $data != (array) $latest?->data || $elements != $latest?->elements )
         {
@@ -32,8 +32,8 @@ final class SavePage
                     'data' => $data,
                 ]);
 
-                $version->elements()->sync( $args['input']['elements'] ?? [] );
-                $version->files()->sync( $args['input']['files'] ?? [] );
+                $version->elements()->sync( $elements );
+                $version->files()->sync( $args['files'] ?? [] );
 
                 Version::where( 'versionable_id', $page->id )
                     ->where( 'versionable_type', Page::class )

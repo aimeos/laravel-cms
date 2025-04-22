@@ -59,7 +59,7 @@ extend type Mutation {
 
 
   "Add a new page below the page referenced by 'parent' and before the page referenced by 'ref' (or append if NULL)"
-  addPage(input: PageInput!, parent: ID, ref: ID): Page
+  addPage(input: PageInput!, parent: ID, ref: ID, elements: [ID!], files: [ID!]): Page
     @canModel(ability: "add", model: "\\Aimeos\\Cms\\Models\\Page")
 
   "Move the page below the page referenced by 'parent' and before the page referenced by 'ref' (or append if NULL)"
@@ -67,7 +67,7 @@ extend type Mutation {
     @canModel(ability: "move", model: "\\Aimeos\\Cms\\Models\\Page")
 
   "Update the values of an existing page"
-  savePage(id: ID!, input: PageInput!): Page
+  savePage(id: ID!, input: PageInput!, elements: [ID!], files: [ID!]): Page
     @canModel(ability: "save", model: "\\Aimeos\\Cms\\Models\\Page")
 
   "Delete an existing page"
@@ -88,11 +88,11 @@ extend type Mutation {
 
 
   "Add a new shared content element with file references"
-  addElement(input: ElementInput!): Element
+  addElement(input: ElementInput!, files: [ID!]): Element
     @canModel(ability: "add", model: "\\Aimeos\\Cms\\Models\\Element")
 
   "Update an existing shared content element"
-  saveElement(id: ID!, input: ElementInput!): Element
+  saveElement(id: ID!, input: ElementInput!, files: [ID!]): Element
     @canModel(ability: "save", model: "\\Aimeos\\Cms\\Models\\Element")
 
   "Delete an existing shared content element"
@@ -206,6 +206,9 @@ type Page {
   "List of shared content elements assigned to the page"
   elements: [Element!]! @belongsToMany
 
+  "List of files assigned to the page"
+  files: [File!]! @belongsToMany
+
   "List of versions for the page meta data"
   versions: [Version!]! @morphMany
 
@@ -255,12 +258,6 @@ input PageInput {
 
   "Cache lifetime in minutes"
   cache: Int
-
-  "List of shared element IDs referenced by the page"
-  elements: [ID!]
-
-  "List of file IDs used in the meta data"
-  files: [ID!]
 }
 
 type Element {
@@ -291,6 +288,9 @@ type Element {
   "Date/time value when the content element was deleted or NULL if it's available"
   deleted_at: String
 
+  "List of files assigned to the content element"
+  files: [File!]! @belongsToMany
+
   "Relation of all pages the content element belongs to"
   pages: [Page!]! @belongsToMany
 
@@ -316,9 +316,6 @@ input ElementInput {
 
   "Arbitrary content element data"
   data: JSON!
-
-  "List of file IDs used in the meta or data properties"
-  files: [ID!]
 }
 
 type Version {

@@ -34,7 +34,7 @@ final class AddElement
                     'editor' => $editor
                 ] );
 
-                $version->files()->attach( $args['input']['files'] ?? [] );
+                $version->files()->attach( $args['files'] ?? [] );
             }
 
         }, 3 );

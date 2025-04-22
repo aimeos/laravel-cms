@@ -32,6 +32,7 @@ class Version extends Model
     protected $attributes = [
         'tenant_id' => '',
         'data' => '{}',
+        'publish_at' => null,
         'published' => false,
         'editor' => '',
     ];
@@ -51,6 +52,7 @@ class Version extends Model
      * @var array
      */
     protected $fillable = [
+        'publish_at',
         'editor',
         'data',
     ];

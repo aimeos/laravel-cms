@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 
 /**
@@ -111,6 +112,23 @@ class Element extends Model
     public function pages() : BelongsToMany
     {
         return $this->belongsToMany( Page::class, 'cms_page_element' );
+    }
+
+
+    /**
+     * Publish the given version of the element.
+     */
+    public function publish( Version $version ) : self
+    {
+        DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( function() use ( $version ) {
+
+            $this->data = $version->data;
+            $this->files()->sync( $version->files ?? [] );
+            $this->save();
+
+        }, 3 );
+
+        return $this;
     }
 
 

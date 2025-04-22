@@ -380,6 +380,33 @@ class GraphqlElementTest extends TestAbstract
     }
 
 
+    public function testPubElementAt()
+    {
+        $this->seed( CmsSeeder::class );
+
+        $element = Element::firstOrFail();
+
+        $this->expectsDatabaseQueryCount( 4 );
+        $response = $this->actingAs( $this->user )->graphQL( '
+            mutation {
+                pubElement(id: "' . $element->id . '", at: "2025-01-01 00:00:00") {
+                    id
+                }
+            }
+        ' );
+
+        $element = Element::where('id', $element->id)->firstOrFail();
+
+        $response->assertJson( [
+            'data' => [
+                'pubElement' => [
+                    'id' => (string) $element->id
+                ],
+            ]
+        ] );
+    }
+
+
     public function testPurgeElement()
     {
         $this->seed( CmsSeeder::class );

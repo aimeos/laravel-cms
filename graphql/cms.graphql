@@ -83,7 +83,7 @@ extend type Mutation {
     @canModel(ability: "purge", model: "\\Aimeos\\Cms\\Models\\Page")
 
   "Publish page data"
-  pubPage(id: ID!): Page
+  pubPage(id: ID!, at: DateTime): Page
     @canModel(ability: "publish", model: "\\Aimeos\\Cms\\Models\\Page")
 
 
@@ -108,7 +108,7 @@ extend type Mutation {
     @canModel(ability: "purge", model: "\\Aimeos\\Cms\\Models\\Element")
 
   "Publish an existing shared content element"
-  pubElement(id: ID!): Element
+  pubElement(id: ID!, at: DateTime): Element
     @canModel(ability: "publish", model: "\\Aimeos\\Cms\\Models\\Element")
 
 

@@ -179,6 +179,25 @@ class Page extends Model
 
 
     /**
+     * Publish the given version of the page.
+     */
+    public function publish( Version $version ) : self
+    {
+        DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( function() use ( $version ) {
+
+            $this->files()->sync( $version->files ?? [] );
+            $this->elements()->sync( $version->elements ?? [] );
+
+            $this->fill( (array) $version->data );
+            $this->save();
+
+        }, 3 );
+
+        return $this;
+    }
+
+
+    /**
      * Get the page's published head/meta data.
      */
     public function published() : HasOne

@@ -16,12 +16,19 @@ final class PubElement
     public function __invoke( $rootValue, array $args ) : Element
     {
         $element = Element::findOrFail( $args['id'] );
+        $latest = $element->latest;
 
-        if( $element->latest )
+        if( $latest )
         {
-            DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( function() use ( $element ) {
+            DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( function() use ( $args, $element, $latest ) {
 
-                $latest = $element->latest;
+                if( $args['at'] ?? null )
+                {
+                    $latest->publish_at = $args['at'];
+                    $latest->save();
+                    return;
+                }
+
                 $latest->published = true;
                 $latest->save();
 

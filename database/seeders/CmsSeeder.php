@@ -69,14 +69,14 @@ class CmsSeeder extends Seeder
             $data = ['type' => 'footer', 'data' => ['text' => 'Powered by Laravel CMS']];
 
             $element = Element::forceCreate([
-                'label' => 'Test shared element',
-                'data' => $data,
+                'label' => 'Shared footer',
+                'data' => ['type' => 'footer', 'data' => ['text' => 'Powered by Laravel CMS']],
                 'editor' => 'seeder',
             ]);
 
             $version = $element->versions()->forceCreate([
-                'data' => $data,
-                'published' => true,
+                'data' => ['type' => 'footer', 'data' => ['text' => 'Powered by Laravel CMS!']],
+                'publish_at' => '2025-01-01 00:00:00',
                 'editor' => 'seeder',
             ]);
 
@@ -275,10 +275,24 @@ This is content created using [markdown syntax](https://www.markdownguide.org/ba
             'title' => 'Hidden page | Laravel CMS',
             'slug' => 'hidden',
             'tag' => 'hidden',
-            'status' => 2,
+            'status' => 0, // disabled until published
             'editor' => 'seeder',
         ]);
         $page->appendToNode( $home )->save();
+
+        $version = $page->versions()->forceCreate([
+            'data' => [
+                'name' => 'Hidden',
+                'title' => 'Hidden page | Laravel CMS',
+                'slug' => 'hidden',
+                'tag' => 'hidden',
+                'status' => 2,
+                'editor' => 'seeder',
+            ],
+            'publish_at' => '2025-01-01 00:00:00',
+            'published' => false,
+            'editor' => 'seeder',
+        ]);
 
         return $this;
     }

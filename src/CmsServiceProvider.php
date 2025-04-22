@@ -40,6 +40,7 @@ class CmsServiceProvider extends ServiceProvider
 		{
 			$this->commands( [
 				\Aimeos\Cms\Commands\Install::class,
+				\Aimeos\Cms\Commands\Publish::class,
 				\Aimeos\Cms\Commands\User::class,
 			] );
 		}

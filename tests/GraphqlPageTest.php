@@ -823,6 +823,33 @@ class GraphqlPageTest extends TestAbstract
     }
 
 
+    public function testPubPageAt()
+    {
+        $this->seed( CmsSeeder::class );
+
+        $page = Page::where('tag', 'root')->firstOrFail();
+
+        $this->expectsDatabaseQueryCount( 4 );
+        $response = $this->actingAs( $this->user )->graphQL( '
+            mutation {
+                pubPage(id: "' . $page->id . '", at: "2025-01-01 00:00:00") {
+                    id
+                }
+            }
+        ' );
+
+        $page = Page::where('id', $page->id)->firstOrFail();
+
+        $response->assertJson( [
+            'data' => [
+                'pubPage' => [
+                    'id' => (string) $page->id
+                ],
+            ]
+        ] );
+    }
+
+
     public function testPurgePage()
     {
         $this->seed( CmsSeeder::class );

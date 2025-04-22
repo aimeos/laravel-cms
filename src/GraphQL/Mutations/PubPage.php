@@ -17,12 +17,19 @@ final class PubPage
     public function __invoke( $rootValue, array $args ) : Page
     {
         $page = Page::findOrFail( $args['id'] );
+        $latest = $page->latest;
 
-        if( $page->latest )
+        if( $latest )
         {
-            DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( function() use ( $page ) {
+            DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( function() use ( $args, $page, $latest ) {
 
-                $latest = $page->latest;
+                if( $args['at'] ?? null )
+                {
+                    $latest->publish_at = $args['at'];
+                    $latest->save();
+                    return;
+                }
+
                 $latest->published = true;
                 $latest->save();
 

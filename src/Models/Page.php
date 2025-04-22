@@ -174,12 +174,7 @@ class Page extends Model
      */
     public function prunable() : Builder
     {
-        if( is_int( $days = config( 'cms.prune' ) ) ) {
-            return static::withoutTenancy()->where( 'deleted_at', '<=', now()->subDays( $days ) );
-        }
-
-        // pruning is disabled
-        return static::withoutTenancy()->where( 'id', -1 );
+        return static::withoutTenancy()->where( 'deleted_at', '<=', now()->subDays( config( 'cms.prune', 30 ) ) );
     }
 
 

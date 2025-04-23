@@ -383,7 +383,7 @@ class GraphqlPageTest extends TestAbstract
                     'elements' => [
                         [
                             'lang' => '',
-                            'label' => 'Test shared element',
+                            'label' => 'Shared footer',
                             'data' => '{"type":"footer","data":{"text":"Powered by Laravel CMS"}}',
                         ],
                     ],
@@ -400,7 +400,7 @@ class GraphqlPageTest extends TestAbstract
         $file = File::firstOrFail();
         $element = Element::firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 7 );
+        $this->expectsDatabaseQueryCount( 6 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 addPage(input: {
@@ -463,7 +463,7 @@ class GraphqlPageTest extends TestAbstract
 
         $root = Page::where('tag', 'root')->firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 7 );
+        $this->expectsDatabaseQueryCount( 6 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 addPage(input: {
@@ -503,7 +503,7 @@ class GraphqlPageTest extends TestAbstract
         $root = Page::where('tag', 'root')->firstOrFail();
         $ref = Page::where('tag', 'blog')->firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 7 );
+        $this->expectsDatabaseQueryCount( 6 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 addPage(input: {

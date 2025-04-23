@@ -275,7 +275,7 @@ This is content created using [markdown syntax](https://www.markdownguide.org/ba
             'title' => 'Hidden page | Laravel CMS',
             'slug' => 'hidden',
             'tag' => 'hidden',
-            'status' => 0, // disabled until published
+            'status' => 2,
             'editor' => 'seeder',
         ]);
         $page->appendToNode( $home )->save();
@@ -286,7 +286,7 @@ This is content created using [markdown syntax](https://www.markdownguide.org/ba
                 'title' => 'Hidden page | Laravel CMS',
                 'slug' => 'hidden',
                 'tag' => 'hidden',
-                'status' => 2,
+                'status' => 1,
                 'editor' => 'seeder',
             ],
             'publish_at' => '2025-01-01 00:00:00',

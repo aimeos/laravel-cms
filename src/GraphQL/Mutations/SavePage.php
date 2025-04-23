@@ -23,7 +23,7 @@ final class SavePage
         $data = $args['input'] ?? [];
         $elements = $args['elements'] ?? [];
 
-        if( $data != (array) $latest?->data || $elements != $latest?->elements )
+        if( $data != (array) $latest?->data || $elements != $latest?->elements?->all() )
         {
             DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( function() use ( $page, $args, $data, $elements ) {
 

@@ -192,7 +192,7 @@ class GraphqlElementTest extends TestAbstract
                     'type' => $element->type,
                     'versions' => [
                         [
-                            'data' => '{"type":"footer","data":{"text":"Powered by Laravel CMS"}}',
+                            'data' => '{"type":"footer","data":{"text":"Powered by Laravel CMS!"}}',
                             'files' => [],
                             'editor' => 'seeder'
                         ],
@@ -209,7 +209,7 @@ class GraphqlElementTest extends TestAbstract
 
         $file = File::firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 6 );
+        $this->expectsDatabaseQueryCount( 4 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 addElement(input: {
@@ -236,10 +236,10 @@ class GraphqlElementTest extends TestAbstract
                 'addElement' => [
                     'type' => 'test',
                     'lang' => 'en',
-                    'data' => '{}',
+                    'data' => '{"key":"value"}',
                     'editor' => 'Test',
                     'pages' => [],
-                    'latest' => ['data' => '{"key":"value"}']
+                    'latest' => null
                 ],
             ]
         ] );
@@ -253,7 +253,7 @@ class GraphqlElementTest extends TestAbstract
         $file = File::firstOrFail();
         $element = Element::firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 10 );
+        $this->expectsDatabaseQueryCount( 9 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 saveElement(id: "' . $element->id . '", input: {
@@ -267,9 +267,6 @@ class GraphqlElementTest extends TestAbstract
                     data
                     editor
                     latest {
-                        data
-                    }
-                    published {
                         data
                     }
                 }
@@ -287,7 +284,6 @@ class GraphqlElementTest extends TestAbstract
                     'data' => '{"type":"footer","data":{"text":"Powered by Laravel CMS"}}',
                     'editor' => 'Test',
                     'latest' => ['data' => '{"key":"value"}'],
-                    'published' => ['data' => '{"type":"footer","data":{"text":"Powered by Laravel CMS"}}']
                ],
             ]
         ] );

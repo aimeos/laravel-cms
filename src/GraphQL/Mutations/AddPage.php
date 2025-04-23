@@ -33,18 +33,8 @@ final class AddPage
             }
 
             $page->save();
-
-            if( isset( $args['input'] ) )
-            {
-                $version = $page->versions()->create( [
-                    'data' => $args['input'],
-                    'published' => $page->status > 0,
-                    'editor' => $editor
-                ] );
-
-                $version->elements()->attach( $args['elements'] ?? [] );
-                $version->files()->attach( $args['files'] ?? [] );
-            }
+            $page->files()->attach( $args['files'] ?? [] );
+            $page->elements()->attach( $args['elements'] ?? [] );
 
         }, 3 );
 

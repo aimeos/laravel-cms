@@ -23,22 +23,14 @@ final class AddElement
 
             $element->fill( $args['input'] ?? [] );
             $element->tenant_id = \Aimeos\Cms\Tenancy::value();
+            $element->data = $args['input']['data'] ?? [];
             $element->editor = $editor;
             $element->save();
 
-            if( isset( $args['input']['data'] ) )
-            {
-                $version = $element->versions()->create( [
-                    'data' => $args['input']['data'],
-                    'published' => false,
-                    'editor' => $editor
-                ] );
-
-                $version->files()->attach( $args['files'] ?? [] );
-            }
+            $element->files()->attach( $args['files'] ?? [] );
 
         }, 3 );
 
-        return Element::findOrFail( $element->id );
+        return $element;
     }
 }

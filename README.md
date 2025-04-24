@@ -39,6 +39,16 @@ php artisan cms:install --seed
 
 If you don't want to add any demo pages, remove the `--seed` option.
 
+Add a line in the "post-update-cmd" section of your `composer.json` file to update the admin backend files after each update:
+
+```json
+"post-update-cmd": [
+    "@php artisan vendor:publish --force --tag=admin",
+    ...
+],
+
+```
+
 ### Authorization
 
 To allow existing users to edit CMS content or to create a new users if they don't exist yet, you can use the `cms:user` command (replace the e-mail address by the users one):

@@ -52,17 +52,6 @@
       title(el) {
         return Object.values(el.data || {}).filter(v => typeof v !== 'object' && !!v).join(' - ').substring(0, 50) || el.label || ''
       }
-    },
-
-    watch: {
-      config: {
-        deep: true,
-        handler() {
-          const item = {...this.item}
-          item.config = this.config
-          this.$emit('update:item', item)
-        }
-      }
     }
   }
 </script>

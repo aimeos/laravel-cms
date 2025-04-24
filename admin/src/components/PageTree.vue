@@ -111,7 +111,6 @@
         return Object.assign({
           slug: '_' + Math.floor(Math.random() * 10000),
           lang: this.languages.current,
-          config: '{}',
           status: 0,
           cache: 5
         }, attr)

@@ -44,7 +44,7 @@
 
     computed: {
       changed() {
-        return this.contents.some(el => el._changed)
+        return this.list.some(el => el._changed)
       }
     },
 
@@ -53,11 +53,11 @@
         const entry = {type: type, data: {}, files: []}
 
         if(idx !== null) {
-          this.contents.splice(idx, 0, entry)
+          this.list.splice(idx, 0, entry)
           this.panel.push(this.panel.includes(idx) ? idx + 1 : idx)
         } else {
-          this.contents.push(entry)
-          this.panel.push(this.contents.length - 1)
+          this.list.push(entry)
+          this.panel.push(this.list.length - 1)
         }
 
         this.velements = false
@@ -65,7 +65,7 @@
 
 
       copy(idx) {
-        const entry = JSON.parse(JSON.stringify(this.contents[idx]))
+        const entry = JSON.parse(JSON.stringify(this.list[idx]))
         entry['id'] = null
 
         this.clip = {type: 'copy', index: idx, content: entry}
@@ -73,8 +73,8 @@
 
 
       cut(idx) {
-        this.clip = {type: 'cut', index: idx, content: this.contents[idx]}
-        this.contents.splice(idx, 1)
+        this.clip = {type: 'cut', index: idx, content: this.list[idx]}
+        this.list.splice(idx, 1)
       },
 
 
@@ -95,26 +95,26 @@
 
 
       paste(idx) {
-        this.contents.splice(idx, 0, this.clip.content)
+        this.list.splice(idx, 0, this.clip.content)
         this.clip = null
       },
 
 
       purge() {
-        for(let i = this.contents.length - 1; i >= 0; i--) {
-          this.contents[i]._checked ? this.remove(i) : null
+        for(let i = this.list.length - 1; i >= 0; i--) {
+          this.list[i]._checked ? this.remove(i) : null
         }
         this.checked = false
       },
 
 
       remove(idx) {
-        this.contents.splice(idx, 1)
+        this.list.splice(idx, 1)
       },
 
 
       search(term) {
-        this.contents.forEach(el => {
+        this.list.forEach(el => {
           el._hide = term !== '' && !JSON.stringify(el).toLocaleLowerCase().includes(term)
         })
       },
@@ -139,7 +139,7 @@
 
 
       toggle() {
-        this.contents.forEach(el => {
+        this.list.forEach(el => {
           if(this.shown(el)) {
             el._checked = !el._checked
           }
@@ -148,8 +148,8 @@
 
 
       use(data, idx, changed = true) {
-        this.contents[idx].data = data
-        this.contents[idx]._changed = changed
+        this.list[idx].data = data
+        this.list[idx]._changed = changed
         this.history = null
       },
 
@@ -160,18 +160,19 @@
     },
 
     watch: {
-      'item.contents': {
-        immediate: true,
+      list: {
+        deep: true,
         handler() {
           const types = {}
 
-          this.contents.forEach(el => {
+          this.list.forEach(el => {
             if(el.type) {
               types[el.type] = (types[el.type] || 0) + 1
             }
           })
 
           this.aside.store['type'] = types
+          this.$emit('update:contents', this.list)
         }
       }
     }
@@ -210,9 +211,9 @@
       </div>
 
       <v-expansion-panels class="list" v-model="panel" elevation="0" multiple>
-        <VueDraggable v-model="item.contents" draggable=".content" group="contents">
+        <VueDraggable v-model="list" draggable=".content" group="contents">
 
-          <v-expansion-panel v-for="(el, idx) in item.contents" :key="idx" v-show="shown(el)" class="content" :class="{changed: el._changed}">
+          <v-expansion-panel v-for="(el, idx) in list" :key="idx" v-show="shown(el)" class="content" :class="{changed: el._changed}">
             <v-expansion-panel-title expand-icon="mdi-pencil">
               <v-checkbox-btn v-model="el._checked"></v-checkbox-btn>
 

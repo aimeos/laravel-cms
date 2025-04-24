@@ -35,13 +35,15 @@ final class SavePage
                 $version->elements()->sync( $elements );
                 $version->files()->sync( $args['files'] ?? [] );
 
-                Version::where( 'versionable_id', $page->id )
+                // MySQL doesn't support offsets for DELETE
+                $ids = Version::where( 'versionable_id', $page->id )
                     ->where( 'versionable_type', Page::class )
                     ->orderBy( 'id', 'desc' )
                     ->skip( 10 )
                     ->take( 10 )
-                    ->forceDelete();
+                    ->pluck( 'id' );
 
+                Version::whereIn( 'id', $ids )->forceDelete();
             }, 3 );
         }
 

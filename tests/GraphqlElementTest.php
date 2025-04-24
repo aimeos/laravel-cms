@@ -253,7 +253,7 @@ class GraphqlElementTest extends TestAbstract
         $file = File::firstOrFail();
         $element = Element::firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 9 );
+        $this->expectsDatabaseQueryCount( 10 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 saveElement(id: "' . $element->id . '", input: {

@@ -100,7 +100,7 @@ class CmsSeeder extends Seeder
             'status' => 1,
             'editor' => 'seeder',
             'meta' => ['meta' => ['type' => 'meta', 'data' => ['text' => 'Laravel CMS is outstanding']]],
-            'content' => [
+            'contents' => [
                 ['type' => 'heading', 'text' => 'Welcome to Laravel CMS'],
                 ['type' => 'ref', 'id' => $sharedId]
             ],
@@ -115,7 +115,7 @@ class CmsSeeder extends Seeder
                 'status' => 1,
                 'editor' => 'seeder',
                 'meta' => ['meta' => ['type' => 'meta', 'text' => 'Laravel CMS is outstanding']],
-                'content' => [
+                'contents' => [
                     ['type' => 'heading', 'text' => 'Welcome to Laravel CMS'],
                     ['type' => 'ref', 'id' => $sharedId]
                 ],
@@ -140,7 +140,7 @@ class CmsSeeder extends Seeder
             'tag' => 'blog',
             'status' => 1,
             'editor' => 'seeder',
-            'content' => [
+            'contents' => [
                 ['type' => 'blog', 'data' => ['text' => 'Blog example']],
                 ['type' => 'ref', 'id' => $sharedId]
             ],
@@ -192,7 +192,7 @@ mutation {
             'tag' => 'article',
             'status' => 1,
             'editor' => 'seeder',
-            'content' => $data
+            'contents' => $data
         ]);
         $page->appendToNode( $blog )->save();
         $page->elements()->attach( $sharedId );
@@ -218,7 +218,7 @@ mutation {
             'slug' => 'dev',
             'status' => 1,
             'editor' => 'seeder',
-            'content' => [[
+            'contents' => [[
                 'type' => 'paragraph',
                 'data' => [
                     'text' => '# For Developers

@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('tag', 30);
             $table->json('meta')->nullable();
             $table->json('config')->nullable();
-            $table->json('content')->nullable();
+            $table->json('contents')->nullable();
             $table->smallInteger('status');
             $table->smallInteger('cache');
             $table->string('editor');

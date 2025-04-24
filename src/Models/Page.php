@@ -50,7 +50,7 @@ class Page extends Model
         'title' => '',
         'meta' => '{}',
         'config' => '{}',
-        'content' => '[]',
+        'contents' => '[]',
         'status' => 0,
         'cache' => 5,
         'editor' => '',
@@ -71,7 +71,7 @@ class Page extends Model
         'title' => 'string',
         'meta' => 'object',
         'config' => 'object',
-        'content' => 'array',
+        'contents' => 'array',
     ];
 
     /**
@@ -88,7 +88,7 @@ class Page extends Model
         'name',
         'title',
         'config',
-        'content',
+        'contents',
         'status',
         'cache',
     ];

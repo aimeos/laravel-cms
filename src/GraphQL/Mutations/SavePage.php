@@ -21,19 +21,23 @@ final class SavePage
         $latest = $page->latest;
 
         $data = $args['input'] ?? [];
+        $files = $args['files'] ?? [];
         $elements = $args['elements'] ?? [];
+        $contents = $data['contents'] ?? null;
+        unset( $data['contents'] );
 
-        if( $data != (array) $latest?->data || $elements != $latest?->elements?->all() )
+        if( $data != (array) $latest?->data || $contents != (array) $latest->contents || $elements != $latest?->elements?->all() )
         {
-            DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( function() use ( $page, $args, $data, $elements ) {
+            DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( function() use ( $page, $data, $contents, $elements, $files ) {
 
                 $version = $page->versions()->create([
                     'editor' => Auth::user()?->name ?? request()->ip(),
+                    'contents' => $contents,
                     'data' => $data,
                 ]);
 
                 $version->elements()->sync( $elements );
-                $version->files()->sync( $args['files'] ?? [] );
+                $version->files()->sync( $files );
 
                 // MySQL doesn't support offsets for DELETE
                 $ids = Version::where( 'versionable_id', $page->id )

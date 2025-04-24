@@ -22,8 +22,9 @@
 
     data: () => ({
       changed: false,
-      versions: [],
+      contents: [],
       elements: [],
+      versions: [],
       nav: null,
       tab: 'page',
     }),
@@ -47,7 +48,7 @@
         }
 
         const files = []
-        for(const entry of (this.item.contents || [])) {
+        for(const entry of (this.contents || [])) {
           files.push(...(entry.files || []))
         }
 
@@ -89,7 +90,7 @@
               to: this.item.to,
               meta: JSON.stringify(meta),
               config: JSON.stringify(config),
-              contents: JSON.stringify(this.clean(this.item.contents))
+              contents: JSON.stringify(this.clean(this.contents))
             },
             elements: this.elements.map(entry => entry.id),
             files: files.map(entry => entry.id),
@@ -112,6 +113,7 @@
         this.$apollo.query({
           query: gql`query($id: ID!) {
             page(id: $id) {
+              contents
               elements {
                 id
                 type
@@ -122,6 +124,7 @@
               versions {
                 published
                 data
+                contents
                 editor
                 created_at
               }
@@ -140,6 +143,7 @@
           this.elements = (latest?.elements || result.data.page.elements || []).map(entry => {
             return {...entry, data: JSON.parse(entry.data || '{}')}
           })
+          this.contents = JSON.parse(latest?.contents || result.data.page.contents || '[]')
           this.versions = result.data.page.versions || []
           this.changed = false
         }).catch(error => {
@@ -184,7 +188,8 @@
       </v-window-item>
 
       <v-window-item value="content">
-        <PageDetailsContent :item="item" :elements="elements"
+        <PageDetailsContent :item="item" :elements="elements" :contents="contents"
+          @update:contents="contents = $event; changed = true"
           @update:elements="elements = $event; changed = true"
           @update:files="files = $event; changed = true"
         />

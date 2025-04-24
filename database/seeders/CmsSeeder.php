@@ -115,10 +115,10 @@ class CmsSeeder extends Seeder
                 'status' => 1,
                 'editor' => 'seeder',
                 'meta' => ['meta' => ['type' => 'meta', 'text' => 'Laravel CMS is outstanding']],
-                'contents' => [
-                    ['type' => 'heading', 'text' => 'Welcome to Laravel CMS'],
-                    ['type' => 'ref', 'id' => $sharedId]
-                ],
+            ],
+            'contents' => [
+                ['type' => 'heading', 'text' => 'Welcome to Laravel CMS'],
+                ['type' => 'ref', 'id' => $sharedId]
             ],
             'published' => true,
             'editor' => 'seeder',
@@ -157,7 +157,7 @@ class CmsSeeder extends Seeder
         $sharedId = $this->shared();
         $file = $this->file();
 
-        $data = [
+        $contents = [
             [
                 'type' => 'article',
                 'data' => [
@@ -185,20 +185,22 @@ mutation {
             ['type' => 'ref', 'id' => $sharedId],
         ];
 
-        $page = Page::forceCreate([
+        $data = [
             'name' => 'Welcome to Laravel CMS',
             'title' => 'Welcome to Laravel CMS | Laravel CMS',
             'slug' => 'welcome-to-laravelcms',
             'tag' => 'article',
             'status' => 1,
-            'editor' => 'seeder',
-            'contents' => $data
-        ]);
+            'editor' => 'seeder'
+        ];
+
+        $page = Page::forceCreate($data + ['contents' => $contents]);
         $page->appendToNode( $blog )->save();
         $page->elements()->attach( $sharedId );
 
         $version = $page->versions()->forceCreate([
             'data' => $data,
+            'contents' => $contents,
             'published' => true,
             'editor' => 'seeder',
         ]);

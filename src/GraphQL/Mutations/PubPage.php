@@ -34,6 +34,7 @@ final class PubPage
                 $latest->save();
 
                 $page->fill( (array) $latest->data );
+                $page->contents = (array) $latest->contents;
                 $page->editor = Auth::user()?->name ?? request()->ip();
                 $page->save();
 

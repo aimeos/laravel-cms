@@ -16,10 +16,11 @@
 
     props: {
       'item': {type: Object, required: true},
+      'contents': {type: Array, required: true},
       'elements': {type: Array, required: true}
     },
 
-    emits: ['update:elements'],
+    emits: ['update:elements', 'update:contents'],
 
     data: () => ({
       list: [],
@@ -43,7 +44,7 @@
 
     computed: {
       changed() {
-        return this.item.contents.some(el => el._changed)
+        return this.contents.some(el => el._changed)
       }
     },
 
@@ -52,11 +53,11 @@
         const entry = {type: type, data: {}, files: []}
 
         if(idx !== null) {
-          this.item.contents.splice(idx, 0, entry)
+          this.contents.splice(idx, 0, entry)
           this.panel.push(this.panel.includes(idx) ? idx + 1 : idx)
         } else {
-          this.item.contents.push(entry)
-          this.panel.push(this.item.contents.length - 1)
+          this.contents.push(entry)
+          this.panel.push(this.contents.length - 1)
         }
 
         this.velements = false
@@ -64,7 +65,7 @@
 
 
       copy(idx) {
-        const entry = JSON.parse(JSON.stringify(this.item.contents[idx]))
+        const entry = JSON.parse(JSON.stringify(this.contents[idx]))
         entry['id'] = null
 
         this.clip = {type: 'copy', index: idx, content: entry}
@@ -72,8 +73,8 @@
 
 
       cut(idx) {
-        this.clip = {type: 'cut', index: idx, content: this.item.contents[idx]}
-        this.item.contents.splice(idx, 1)
+        this.clip = {type: 'cut', index: idx, content: this.contents[idx]}
+        this.contents.splice(idx, 1)
       },
 
 
@@ -94,26 +95,26 @@
 
 
       paste(idx) {
-        this.item.contents.splice(idx, 0, this.clip.content)
+        this.contents.splice(idx, 0, this.clip.content)
         this.clip = null
       },
 
 
       purge() {
-        for(let i = this.item.contents.length - 1; i >= 0; i--) {
-          this.item.contents[i]._checked ? this.remove(i) : null
+        for(let i = this.contents.length - 1; i >= 0; i--) {
+          this.contents[i]._checked ? this.remove(i) : null
         }
         this.checked = false
       },
 
 
       remove(idx) {
-        this.item.contents.splice(idx, 1)
+        this.contents.splice(idx, 1)
       },
 
 
       search(term) {
-        this.item.contents.forEach(el => {
+        this.contents.forEach(el => {
           el._hide = term !== '' && !JSON.stringify(el).toLocaleLowerCase().includes(term)
         })
       },
@@ -138,7 +139,7 @@
 
 
       toggle() {
-        this.item.contents.forEach(el => {
+        this.contents.forEach(el => {
           if(this.shown(el)) {
             el._checked = !el._checked
           }
@@ -147,8 +148,8 @@
 
 
       use(data, idx, changed = true) {
-        this.item.contents[idx].data = data
-        this.item.contents[idx]._changed = changed
+        this.contents[idx].data = data
+        this.contents[idx]._changed = changed
         this.history = null
       },
 
@@ -164,7 +165,7 @@
         handler() {
           const types = {}
 
-          this.item.contents.forEach(el => {
+          this.contents.forEach(el => {
             if(el.type) {
               types[el.type] = (types[el.type] || 0) + 1
             }

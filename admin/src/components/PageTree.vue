@@ -175,7 +175,6 @@
                 tag
                 meta
                 config
-                contents
                 status
                 cache
                 editor
@@ -211,7 +210,6 @@
               ...entry,
               meta: JSON.parse(entry.meta || '{}'),
               config: JSON.parse(entry.config || '{}'),
-              contents: JSON.parse(entry.contents || '[]'),
             }
 
             return Object.assign(item, {

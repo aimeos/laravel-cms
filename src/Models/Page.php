@@ -188,7 +188,7 @@ class Page extends Model
             $this->files()->sync( $version->files ?? [] );
             $this->elements()->sync( $version->elements ?? [] );
 
-            $this->fill( (array) $version->data );
+            $this->fill( (array) $version->data + ['contents' => (array) $version->contents] );
             $this->save();
 
         }, 3 );

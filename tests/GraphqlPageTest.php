@@ -302,6 +302,7 @@ class GraphqlPageTest extends TestAbstract
                 id
                 versions {
                     data
+                    contents
                     editor
                 }
             }
@@ -311,7 +312,8 @@ class GraphqlPageTest extends TestAbstract
                     'id' => (string) $page->id,
                     'versions' => [
                         [
-                            'data' => '{"name":"Home","title":"Home | Laravel CMS","slug":"","tag":"root","domain":"mydomain.tld","status":1,"editor":"seeder","meta":{"meta":{"type":"meta","text":"Laravel CMS is outstanding"}},"contents":[{"type":"heading","text":"Welcome to Laravel CMS"},{"type":"ref","id":"' . $element->id . '"}]}',
+                            'data' => '{"name":"Home","title":"Home | Laravel CMS","slug":"","tag":"root","domain":"mydomain.tld","status":1,"editor":"seeder","meta":{"meta":{"type":"meta","text":"Laravel CMS is outstanding"}}}',
+                            'contents' => '[{"type":"heading","text":"Welcome to Laravel CMS"},{"type":"ref","id":"' . $element->id . '"}]',
                             'editor' => 'seeder'
                         ],
                     ],
@@ -413,7 +415,7 @@ class GraphqlPageTest extends TestAbstract
                     tag: "test"
                     meta: "{\"canonical\":\"to\/page\"}"
                     config: "{\"key\":\"test\"}"
-                    contents: "[{\"type\":\"cms::heading\",\"text\":\"Welcome to Laravel CMS\"}]"
+                    contents: "[{\"type\":\"heading\",\"text\":\"Welcome to Laravel CMS\"}]"
                     status: 0
                     cache: 0
                 }, elements: ["' . $element->id . '"], files: ["' . $file->id . '"]) {
@@ -653,7 +655,7 @@ class GraphqlPageTest extends TestAbstract
                     tag: "test"
                     meta: "{\"canonical\":\"to\/page\"}"
                     config: "{\"key\":\"test\"}"
-                    contents: "[{\"type\":\"cms::heading\",\"text\":\"Welcome to Laravel CMS\"}]"
+                    contents: "[{\"type\":\"heading\",\"text\":\"Welcome to Laravel CMS\"}]"
                     status: 0
                     cache: 5
                 }, elements: ["' . $element->id . '"], files: ["' . $file->id . '"]) {
@@ -682,9 +684,11 @@ class GraphqlPageTest extends TestAbstract
                     deleted_at
                     latest {
                         data
+                        contents
                     }
                     published {
                         data
+                        contents
                     }
                 }
             }
@@ -714,10 +718,12 @@ class GraphqlPageTest extends TestAbstract
                     'created_at' => (string) $root->created_at,
                     'updated_at' => (string) $page->updated_at,
                     'latest' => [
-                        'data' => '{"lang":"en","slug":"test","domain":"test.com","name":"test","title":"Test page","to":"\\/to\\/page","tag":"test","meta":{"canonical":"to\\/page"},"config":{"key":"test"},"contents":[{"type":"cms::heading","text":"Welcome to Laravel CMS"}],"status":0,"cache":5}'
+                        'data' => '{"lang":"en","slug":"test","domain":"test.com","name":"test","title":"Test page","to":"\\/to\\/page","tag":"test","meta":{"canonical":"to\\/page"},"config":{"key":"test"},"status":0,"cache":5}',
+                        'contents' => '[{"type":"heading","text":"Welcome to Laravel CMS"}]',
                     ],
                     'published' => [
-                        'data' => '{"name":"Home","title":"Home | Laravel CMS","slug":"","tag":"root","domain":"mydomain.tld","status":1,"editor":"seeder","meta":{"meta":{"type":"meta","text":"Laravel CMS is outstanding"}},"contents":[{"type":"heading","text":"Welcome to Laravel CMS"},{"type":"ref","id":"' . $element->id . '"}]}'
+                        'data' => '{"name":"Home","title":"Home | Laravel CMS","slug":"","tag":"root","domain":"mydomain.tld","status":1,"editor":"seeder","meta":{"meta":{"type":"meta","text":"Laravel CMS is outstanding"}}}',
+                        'contents' => '[{"type":"heading","text":"Welcome to Laravel CMS"},{"type":"ref","id":"' . $element->id . '"}]',
                     ]
                 ],
             ]

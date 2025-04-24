@@ -9,6 +9,7 @@
   <v-switch
     :modelValue="modelValue"
     @update:modelValue="$emit('update:modelValue', $event)"
+    color="primary"
     inset
   ></v-switch>
 </template>

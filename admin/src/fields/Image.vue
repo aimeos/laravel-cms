@@ -69,9 +69,16 @@
           data.previews = JSON.parse(data.previews) || {}
           delete data.__typename
 
-          this.$emit('addAsset', data)
-          this.image = Object.assign(data, {path: path}) // avoid blank image
-          URL.revokeObjectURL(path)
+          new Promise((resolve, reject) => {
+            const image = new Image()
+            image.onload = resolve
+            image.onerror = reject
+            image.src = this.url(Object.values(data.previews)[0])
+          }).then(() => {
+            this.image = data
+            this.$emit('addAsset', data)
+            URL.revokeObjectURL(path)
+          })
         }).catch(error => {
           console.error(`addFile()`, error)
         })

@@ -6,7 +6,7 @@
       'fields': {type: Object, required: true},
     },
 
-    emits: ['update:data', 'update:assets'],
+    emits: ['change', 'update:data', 'update:assets'],
 
     data() {
       return {
@@ -42,7 +42,7 @@
       :modelValue="data[code]"
       @addAsset="addAsset($event)"
       @removeAsset="removeAsset($event)"
-      @update:modelValue="data[code] = $event"
+      @update:modelValue="data[code] = $event; $emit('change', data[code])"
     ></component>
   </div>
 </template>

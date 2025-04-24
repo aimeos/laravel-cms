@@ -36,68 +36,14 @@
     }),
 
     setup() {
-      const elements = useElementStore()
+      const available = useElementStore()
       const aside = useSideStore()
-      return { aside, elements }
-    },
-
-    created() {
-      this.$apollo.query({
-        query: gql`query($id: [ID!]) {
-          elements(id: $id) {
-            data {
-              id
-              type
-              lang
-              editor
-              updated_at
-              versions {
-                published
-                data
-                elements
-                editor
-                created_at
-                files {
-                  id
-                  mime
-                  path
-                  previews
-                  editor
-                  updated_at
-                }
-              }
-            }
-          }
-        }`,
-        variables: {
-          id: this.elements
-        }
-      }).then(result => {
-        if(result.errors) {
-          throw result.errors
-        }
-
-        this.lastPage = result.data.elements?.paginatorInfo?.lastPage || 1
-        this.currentPage = result.data.elements?.paginatorInfo?.currentPage || 1
-        this.list = result.data.elements?.data?.map(el => {
-          const latest = el.versions?.at(-1)
-          return {
-            id: el.id,
-            type: el.type,
-            lang: el.lang,
-            data: JSON.parse(latest?.data || '{}'),
-            versions: el.versions || [],
-            files: latest?.files || []
-          }
-        })
-      }).catch(error => {
-        console.error(`elements()`, error)
-      })
+      return { aside, available }
     },
 
     computed: {
       changed() {
-        return this.list.some(el => el._changed)
+        return this.item.contents.some(el => el._changed)
       }
     },
 
@@ -106,28 +52,19 @@
         const entry = {type: type, data: {}, files: []}
 
         if(idx !== null) {
-          this.list.splice(idx, 0, entry)
+          this.item.contents.splice(idx, 0, entry)
           this.panel.push(this.panel.includes(idx) ? idx + 1 : idx)
         } else {
-          this.list.push(entry)
-          this.panel.push(this.list.length - 1)
+          this.item.contents.push(entry)
+          this.panel.push(this.item.contents.length - 1)
         }
 
         this.velements = false
       },
 
 
-      clean() {
-        return this.list.map(c => {
-          delete c._checked
-          delete c._hide
-          return c
-        })
-      },
-
-
       copy(idx) {
-        const entry = JSON.parse(JSON.stringify(this.list[idx]))
+        const entry = JSON.parse(JSON.stringify(this.item.contents[idx]))
         entry['id'] = null
 
         this.clip = {type: 'copy', index: idx, content: entry}
@@ -135,18 +72,18 @@
 
 
       cut(idx) {
-        this.clip = {type: 'cut', index: idx, content: this.list[idx]}
-        this.list.splice(idx, 1)
+        this.clip = {type: 'cut', index: idx, content: this.item.contents[idx]}
+        this.item.contents.splice(idx, 1)
       },
 
 
       fields(type) {
-        if(!this.elements.content[type]?.fields) {
+        if(!this.available.content[type]?.fields) {
           console.warn(`No definition of fields for "${type}" available`)
           return []
         }
 
-        return this.elements.content[type]?.fields
+        return this.available.content[type]?.fields
       },
 
 
@@ -157,86 +94,26 @@
 
 
       paste(idx) {
-        this.list.splice(idx, 0, this.clip.content)
+        this.item.contents.splice(idx, 0, this.clip.content)
         this.clip = null
       },
 
 
       purge() {
-        for(let i = this.list.length - 1; i >= 0; i--) {
-          this.list[i]._checked ? this.remove(i) : null
+        for(let i = this.item.contents.length - 1; i >= 0; i--) {
+          this.item.contents[i]._checked ? this.remove(i) : null
         }
         this.checked = false
       },
 
 
       remove(idx) {
-        this.list.splice(idx, 1)
-      },
-
-
-      save() {
-        const promises = []
-
-        this.list.forEach((el, idx) => {
-          if(!el._changed) {
-            return
-          }
-
-          let name
-          let mutation
-          let variables = {
-            id: el.id,
-            input: {
-              type: el.type,
-              lang: this.item.lang,
-              label: this.title(el),
-              data: JSON.stringify(el.data)
-            },
-            files: el.files.map(f => f.id)
-          }
-
-          if(el.id) {
-            name = 'saveElement'
-            mutation = gql`mutation($id: ID!, $input: ElementInput!) {
-              saveElement(id: $id, input: $input) {
-                id
-              }
-            }`
-          } else {
-            name = 'addElement'
-            mutation = gql`mutation($input: ElementInput!) {
-              addElement(input: $input) {
-                id
-              }
-            }`
-          }
-
-          promises.push(this.$apollo.mutate({
-            mutation: mutation,
-            variables: variables
-          }).then(response => {
-            if(response.errors) {
-              throw response.errors
-            }
-
-            if(response.data && response.data[name]?.id) {
-              el.id = response.data[name]?.id
-              el._changed = false
-            }
-          }).catch(error => {
-            console.error(`save()`, el, mutation, variables, error)
-          }))
-        })
-
-        Promise.all(promises).then(() => {
-          this.$emit('update:elements', this.list.map(el => el.id).filter(id => !!id))
-        })
+        this.item.contents.splice(idx, 1)
       },
 
 
       search(term) {
-        this.list.forEach(el => {
+        this.item.contents.forEach(el => {
           el._hide = term !== '' && !JSON.stringify(el).toLocaleLowerCase().includes(term)
         })
       },
@@ -261,7 +138,7 @@
 
 
       toggle() {
-        this.list.forEach(el => {
+        this.item.contents.forEach(el => {
           if(this.shown(el)) {
             el._checked = !el._checked
           }
@@ -269,15 +146,9 @@
       },
 
 
-      update(el, type, value) {
-        el[type] = value
-        el._changed = true
-      },
-
-
       use(data, idx, changed = true) {
-        this.list[idx].data = data
-        this.list[idx]._changed = changed
+        this.item.contents[idx].data = data
+        this.item.contents[idx]._changed = changed
         this.history = null
       },
 
@@ -288,17 +159,19 @@
     },
 
     watch: {
-      list() {
-        const types = {}
-        const status = {draft: 0, published: 0}
+      'item.contents': {
+        immediate: true,
+        handler() {
+          const types = {}
 
-        this.list.forEach(el => {
-          if(el.type) {
-            types[el.type] = (types[el.type] || 0) + 1
-          }
-        })
+          this.item.contents.forEach(el => {
+            if(el.type) {
+              types[el.type] = (types[el.type] || 0) + 1
+            }
+          })
 
-        this.aside.store['type'] = types
+          this.aside.store['type'] = types
+        }
       }
     }
   }
@@ -333,20 +206,12 @@
           @input="search($event.target.value)"
           @click:clear="search('')"
         ></v-text-field>
-
-        <div class="actions">
-          <v-btn
-            @click="save()"
-            :color="changed ? 'primary' : ''"
-            elevation="0"
-          >Save</v-btn>
-        </div>
       </div>
 
       <v-expansion-panels class="list" v-model="panel" elevation="0" multiple>
-        <VueDraggable v-model="list" draggable=".content" group="content">
+        <VueDraggable v-model="item.contents" draggable=".content" group="contents">
 
-          <v-expansion-panel v-for="(el, idx) in list" :key="idx" v-show="shown(el)" class="content" :class="{changed: el._changed}">
+          <v-expansion-panel v-for="(el, idx) in item.contents" :key="idx" v-show="shown(el)" class="content" :class="{changed: el._changed}">
             <v-expansion-panel-title expand-icon="mdi-pencil">
               <v-checkbox-btn v-model="el._checked"></v-checkbox-btn>
 
@@ -396,8 +261,9 @@
                 :data="el.data"
                 :assets="el.files"
                 :fields="fields(el.type)"
-                @update:data="update(el, 'data', $event)"
-                @update:assets="update(el, 'files', $event)"
+                @change="el._changed = true"
+                @update:data="el['data'] = $event"
+                @update:assets="el['files'] = $event"
               />
 
             </v-expansion-panel-text>
@@ -415,7 +281,7 @@
 
   <Teleport to="body">
     <v-dialog v-model="velements" scrollable width="auto">
-      <Elements type="element" @add="add($event, index)" />
+      <Elements type="content" @add="add($event, index)" />
     </v-dialog>
   </Teleport>
 

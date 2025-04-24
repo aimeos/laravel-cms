@@ -24,35 +24,49 @@
       changed: false,
       versions: [],
       elements: [],
-      content: [],
-      files: [],
-      elements: [],
       nav: null,
       tab: 'page',
     }),
 
     methods: {
+      clean(entries) {
+        return entries.map(c => {
+          for(const key in c) {
+            if(key.startsWith('_')) {
+              delete c[key]
+            }
+          }
+          return c
+        })
+      },
+
+
       save() {
         if(!this.changed) {
           return
         }
 
+        const files = []
+        for(const entry of (this.item.contents || [])) {
+          files.push(...(entry.files || []))
+        }
+
         const meta = {}
         for(const key in (this.item.meta || {})) {
           meta[key] = {
-            type: this.item.meta[key]?.type || '',
-            data: this.item.meta[key]?.data || {},
-            files: []
+            type: this.item.meta[key].type || '',
+            data: this.item.meta[key].data || {},
           }
+          files.push(...(this.item.meta[key].files || []))
         }
 
         const config = {}
         for(const key in (this.item.config || {})) {
           config[key] = {
-            type: this.item.config[key]?.type || '',
-            data: this.item.config[key]?.data || {},
-            files: []
+            type: this.item.config[key].type || '',
+            data: this.item.config[key].data || {},
           }
+          files.push(...(this.item.config[key].files || []))
         }
 
         this.$apollo.mutate({
@@ -75,10 +89,10 @@
               to: this.item.to,
               meta: JSON.stringify(meta),
               config: JSON.stringify(config),
-              content: JSON.stringify(this.content)
+              contents: JSON.stringify(this.clean(this.item.contents))
             },
-            elements: this.elements,
-            files: []
+            elements: this.elements.map(entry => entry.id),
+            files: files.map(entry => entry.id),
           }
         }).then(response => {
           if(response.errors) {
@@ -98,20 +112,18 @@
         this.$apollo.query({
           query: gql`query($id: ID!) {
             page(id: $id) {
+              elements {
+                id
+                type
+                data
+                editor
+                updated_at
+              }
               versions {
                 published
                 data
-                elements
                 editor
                 created_at
-                files {
-                  id
-                  mime
-                  path
-                  previews
-                  editor
-                  updated_at
-                }
               }
             }
           }`,
@@ -119,14 +131,17 @@
             id: this.item.id
           }
         }).then(result => {
-          if(result.errors) {
-            throw result.errors
+          if(result.errors || !result.data.page) {
+            throw result
           }
 
-          this.changed = false
+          const latest = result.data.page.versions?.at(-1)
+
+          this.elements = (latest?.elements || result.data.page.elements || []).map(entry => {
+            return {...entry, data: JSON.parse(entry.data || '{}')}
+          })
           this.versions = result.data.page.versions || []
-          this.elements = JSON.parse(this.versions?.at(-1)?.elements || '[]')
-          this.content = JSON.parse(this.versions?.at(-1)?.content || '[]')
+          this.changed = false
         }).catch(error => {
           console.error(`page(id: ${this.item.id})`, error)
         })
@@ -163,11 +178,16 @@
     <v-window v-model="tab">
 
       <v-window-item value="page">
-        <PageDetailsPage :item="item" :versions="versions" @update:item="Object.assign(item, $event); changed = true" />
+        <PageDetailsPage :item="item" :versions="versions"
+          @update:item="Object.assign(item, $event); changed = true"
+        />
       </v-window-item>
 
       <v-window-item value="content">
-        <PageDetailsContent :item="item" :elements="elements" @update:elements="elements = $event; changed = true" />
+        <PageDetailsContent :item="item" :elements="elements"
+          @update:elements="elements = $event; changed = true"
+          @update:files="files = $event; changed = true"
+        />
       </v-window-item>
 
       <v-window-item value="preview">

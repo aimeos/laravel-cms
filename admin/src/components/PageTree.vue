@@ -166,6 +166,20 @@
               data {
                 id
                 parent_id
+                lang
+                slug
+                domain
+                name
+                title
+                to
+                tag
+                meta
+                config
+                contents
+                status
+                cache
+                editor
+                updated_at
                 deleted_at
                 has
                 latest {
@@ -192,14 +206,22 @@
             throw result.errors
           }
 
-          const pages = result.data.pages.data.map(node => {
-            return Object.assign(JSON.parse(node.latest.data) || {},{
-              id: node.id,
-              has: node.has,
-              parent_id: node.parent_id,
-              deleted_at: node.deleted_at,
-              editor: node.latest.editor,
-              published: node.latest.published,
+          const pages = result.data.pages.data.map(entry => {
+            const item = entry.latest?.data ? JSON.parse(entry.latest?.data) : {
+              ...entry,
+              meta: JSON.parse(entry.meta || '{}'),
+              config: JSON.parse(entry.config || '{}'),
+              contents: JSON.parse(entry.contents || '[]'),
+            }
+
+            return Object.assign(item, {
+              id: entry.id,
+              has: entry.has,
+              parent_id: entry.parent_id,
+              deleted_at: entry.deleted_at,
+              updated_at: entry.latest?.created_at || entry.updated_at,
+              editor: entry.latest?.editor || entry.editor,
+              published: entry.latest?.published ?? true,
             })
           })
 
@@ -209,7 +231,7 @@
             lastPage: result.data.pages.paginatorInfo.lastPage
           }
         }).catch(error => {
-          console.error(`pages()`, error, params)
+          console.error(`pages()`, error)
         })
       },
 
@@ -433,8 +455,6 @@
               throw result.errors
             }
 
-            stat.data.start = stat.data.data.start || null
-            stat.data.end = stat.data.data.end || null
             stat.data.published = true
             stat.check = false
           }).catch(error => {

@@ -68,10 +68,32 @@ export const useSideStore = defineStore('side', {
 })
 
 
+/**
+ * Available element types
+ */
 export const useElementStore = defineStore('elements', {
   state: () => ({
     content: {},
     meta: {},
     config: {}
   })
+})
+
+
+/**
+ * Store for queued messages to display to the user
+ */
+export const useMessageStore = defineStore('messages', {
+  state: () => ({
+    queue: [],
+  }),
+  actions: {
+    add(msg, type = 'info') {
+      this.queue.push({
+        text: msg,
+        color: type,
+        timeout: type === 'error' ? 10000 : 3000
+      })
+    }
+  }
 })

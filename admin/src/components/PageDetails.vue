@@ -5,6 +5,7 @@
   import PageDetailsPage from './PageDetailsPage.vue'
   import PageDetailsContent from './PageDetailsContent.vue'
   import PageDetailsPreview from './PageDetailsPreview.vue'
+  import { useMessageStore } from '../stores'
 
 
   export default {
@@ -31,6 +32,11 @@
       tab: 'page',
       vhistory: false,
     }),
+
+    setup() {
+      const messages = useMessageStore()
+      return { messages }
+    },
 
     methods: {
       clean(data) {
@@ -108,7 +114,9 @@
 
           this.item.published = false
           this.changed = false
+          this.messages.add('Page saved successfully', 'success')
         }).catch(error => {
+          this.messages.add('Error saving page data', 'error')
           console.error(`savePage(id: ${this.item.id})`, error)
         })
       },
@@ -160,6 +168,7 @@
           this.versions = result.data.page.versions || []
           this.changed = false
         }).catch(error => {
+          this.messages.add('Error fetching page data', 'error')
           console.error(`page(id: ${this.item.id})`, error)
         })
       }

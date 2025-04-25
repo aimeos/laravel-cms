@@ -2,8 +2,7 @@
   import gql from 'graphql-tag'
   import { Draggable } from '@he-tree/vue'
   import { dragContext } from '@he-tree/vue'
-  import { useLanguageStore } from '../stores'
-  import { useAppStore } from '../stores'
+  import { useAppStore, useLanguageStore, useMessageStore } from '../stores'
   import Navigation from './Navigation.vue'
 
   export default {
@@ -30,8 +29,10 @@
 
     setup() {
       const languages = useLanguageStore()
+      const messages = useMessageStore()
       const app = useAppStore()
-      return { app, languages }
+
+      return { app, languages, messages }
     },
 
     created() {
@@ -68,14 +69,15 @@
             input: node
           }
         }).then(result => {
-          if(!result.errors && result.data && result.data.addPage.id) {
-            node.id = result.data.addPage.id
-            this.$refs.tree.add(node)
-          } else {
-            console.error(`addPage(add root)`, result)
+          if(result.errors) {
+            throw result.errors
           }
+
+          node.id = result.data.addPage.id
+          this.$refs.tree.add(node)
         }).catch(error => {
-          console.error(`addPage(add root)`, error)
+          this.messages.add('Error adding root page', 'error')
+          console.error(`addPage(root)`, error)
         })
       },
 
@@ -97,20 +99,21 @@
             ref: ref ? ref.data.id : null
           }
         }).then(result => {
-          if(!result.errors && result.data && result.data.movePage.id) {
-            const srcparent = dragContext.startInfo.parent
+          if(result.errors) {
+            throw result.errors
+          }
 
-            if(!srcparent?.children.length) {
-              srcparent.data.has = false
-            }
+          const srcparent = dragContext.startInfo.parent
 
-            if(parent) {
-              parent.data.has = true
-            }
-          } else {
-            console.error(`movePage(id: ${dragContext.startInfo.dragNode.data.id})`, result)
+          if(!srcparent?.children.length) {
+            srcparent.data.has = false
+          }
+
+          if(parent) {
+            parent.data.has = true
           }
         }).catch(error => {
+          this.messages.add('Error changing page order', 'error')
           console.error(`movePage(id: ${dragContext.startInfo.dragNode.data.id})`, error)
         })
       },
@@ -152,20 +155,21 @@
               id: stat.data.id
             }
           }).then(result => {
-            if(!result.errors && result.data && result.data.dropPage.id) {
-              this.update(stat, (stat) => {
-                stat.data.deleted_at = (new Date).toISOString().replace(/T/, ' ').substring(0, 19)
-                stat.hidden = !this.trash
-                stat.check = false
-              })
+            if(result.errors) {
+              throw result.errors
+            }
 
-              if(stat.parent && !stat.parent.children?.length) {
-                stat.parent.data.has = false
-              }
-            } else {
-              console.error(`dropPage(id: ${stat.data.id})`, result)
+            this.update(stat, (stat) => {
+              stat.data.deleted_at = (new Date).toISOString().replace(/T/, ' ').substring(0, 19)
+              stat.hidden = !this.trash
+              stat.check = false
+            })
+
+            if(stat.parent && !stat.parent.children?.length) {
+              stat.parent.data.has = false
             }
           }).catch(error => {
+            this.messages.add('Error dropping page', 'error')
             console.error(`dropPage(id: ${stat.data.id})`, error)
           })
         })
@@ -244,6 +248,7 @@
             lastPage: result.data.pages.paginatorInfo.lastPage
           }
         }).catch(error => {
+          this.messages.add('Error fetching pages', 'error')
           console.error(`pages()`, error)
         })
       },
@@ -287,17 +292,20 @@
             ref: refid
           }
         }).then(result => {
-          if(!result.errors && result.data && result.data.addPage.id) {
-            node.id = result.data.addPage.id
-            if(idx !== null || stat.open) {
-              this.$refs.tree.add(node, parent, idx !== null ? pos + idx : 0)
-            }
-            parent.data.has = true
-          } else {
-            console.error(`addPage(insert node)`, result)
+          if(result.errors) {
+            throw result.errors
           }
+
+          node.id = result.data.addPage.id
+
+          if(idx !== null || stat.open) {
+            this.$refs.tree.add(node, parent, idx !== null ? pos + idx : 0)
+          }
+
+          parent.data.has = true
         }).catch(error => {
-          console.error(`addPage(insert node)`, error)
+          this.messages.add('Error inserting page', 'error')
+          console.error(`addPage(insert)`, error)
         })
       },
 
@@ -321,20 +329,21 @@
               id: stat.data.id
             }
           }).then(result => {
-            if(!result.errors) {
-              const deleted_at = stat.data.deleted_at
-
-              this.update(stat, (stat) => {
-                if(deleted_at >= stat.data.deleted_at) {
-                  stat.data.deleted_at = null
-                  stat.hidden = !this.trash
-                  stat.check = false
-                }
-              })
-            } else {
-              console.error(`keepPage(id: ${stat.data.id})`, result)
+            if(result.errors) {
+              throw result.errors
             }
+
+            const deleted_at = stat.data.deleted_at
+
+            this.update(stat, (stat) => {
+              if(deleted_at >= stat.data.deleted_at) {
+                stat.data.deleted_at = null
+                stat.hidden = !this.trash
+                stat.check = false
+              }
+            })
           }).catch(error => {
+            this.messages.add('Error restoring page', 'error')
             console.error(`keepPage(id: ${stat.data.id})`, error)
           })
         })
@@ -381,19 +390,20 @@
             ref: refid
           }
         }).then(result => {
-          if(!result.errors && result.data && result.data.movePage.id) {
-            const index = idx !== null ? (pos < this.$refs.tree.getSiblings(stat).indexOf(this.clip.stat) ? pos + idx : pos) : 0
-
-            this.$refs.tree.move(this.clip.stat, parent, index)
-
-            if(!this.clip.stat.children?.length) {
-              stat.parent.data.has = false
-            }
-            parent.data.has = true
-          } else {
-            console.error(`movePage(id: ${this.clip.node.id})`, result)
+          if(result.errors) {
+            throw result.errors
           }
+
+          const index = idx !== null ? (pos < this.$refs.tree.getSiblings(stat).indexOf(this.clip.stat) ? pos + idx : pos) : 0
+
+          this.$refs.tree.move(this.clip.stat, parent, index)
+
+          if(!this.clip.stat.children?.length) {
+            stat.parent.data.has = false
+          }
+          parent.data.has = true
         }).catch(error => {
+          this.messages.add('Error moving page', 'error')
           console.error(`movePage(id: ${this.clip.node.id})`, error)
         })
 
@@ -432,15 +442,16 @@
             ref: refid
           }
         }).then(result => {
-          if(!result.errors && result.data && result.data.addPage.id) {
-            const index = idx !== null ? this.$refs.tree.getSiblings(stat).indexOf(stat) + idx : 0
-
-            this.$refs.tree.add(node, parent, index)
-            parent.data.has = true
-          } else {
-            console.error(`addPage(id: ${this.clip.node.id})`, result)
+          if(result.errors) {
+            throw result.errors
           }
+
+          const index = idx !== null ? this.$refs.tree.getSiblings(stat).indexOf(stat) + idx : 0
+
+          this.$refs.tree.add(node, parent, index)
+          parent.data.has = true
         }).catch(error => {
+          this.messages.add('Error copying page', 'error')
           console.error(`addPage(id: ${this.clip.node.id})`, error)
         })
 
@@ -481,6 +492,7 @@
             stat.data.published = true
             stat.check = false
           }).catch(error => {
+            this.messages.add('Error publishing page', 'error')
             console.error(`pubPage(id: ${stat.data.id})`, error)
           })
       },
@@ -502,16 +514,15 @@
               id: stat.data.id
             }
           }).then(result => {
-            if(!result.errors) {
+            if(result.errors) {
               this.$refs.tree.remove(stat)
+            }
 
-              if(stat.parent && !stat.parent.children?.length) {
-                stat.parent.data.has = false
-              }
-            } else {
-              console.error(`purgePage(id: ${stat.data.id})`, result)
+            if(stat.parent && !stat.parent.children?.length) {
+              stat.parent.data.has = false
             }
           }).catch(error => {
+            this.messages.add('Error purging page', 'error')
             console.error(`purgePage(id: ${stat.data.id})`, error)
           })
         })
@@ -561,12 +572,13 @@
               }
             }
           }).then(result => {
-            if(!result.errors) {
-              stat.data.status = val
-            } else {
-              console.error(`savePage(id: ${stat.data.id})`, result)
+            if(result.errors) {
+              throw result.errors
             }
+
+            stat.data.status = val
           }).catch(error => {
+            this.messages.add('Error saving page', 'error')
             console.error(`savePage(id: ${stat.data.id})`, error)
           })
         })

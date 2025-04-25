@@ -2,6 +2,7 @@
   import gql from 'graphql-tag'
   import PageTree from '../components/PageTree.vue'
   import PageDetails from '../components/PageDetails.vue'
+  import { useMessageStore } from '../stores'
 
   export default {
     components: {
@@ -14,6 +15,11 @@
       nav: null,
       item: {},
     }),
+
+    setup() {
+      const messages = useMessageStore()
+      return { messages }
+    },
   }
 </script>
 
@@ -35,6 +41,7 @@
       </v-layout>
     </transition-group>
 
+    <v-snackbar-queue v-model="messages.queue"></v-snackbar-queue>
 </template>
 
 <style>

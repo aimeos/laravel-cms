@@ -231,7 +231,7 @@
 
           <v-expansion-panel v-for="(el, idx) in list" :key="idx" v-show="shown(el)" class="content" :class="{changed: el._changed}">
             <v-expansion-panel-title expand-icon="mdi-pencil">
-              <v-checkbox-btn v-model="el._checked"></v-checkbox-btn>
+              <v-checkbox-btn v-model="el._checked" @click.stop=""></v-checkbox-btn>
 
               <v-menu>
                 <template v-slot:activator="{ props }">

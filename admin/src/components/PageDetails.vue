@@ -34,17 +34,15 @@
 
     methods: {
       clean(data) {
-        const entries = JSON.parse(JSON.stringify(data))
-
         for(const key in data) {
-            for(const k in data[key]) {
-              if(k.startsWith('_')) {
-                delete data[key][k]
-              }
+          for(const k in data[key]) {
+            if(k.startsWith('_')) {
+              delete data[key][k]
             }
+          }
         }
 
-        return entries
+        return data
       },
 
 
@@ -119,7 +117,7 @@
         this.vhistory = false
         this.changed = changed
         this.contents = version.contents
-        this.$emit('update:item', version.data)
+        this.$emit('update:item', {...version.data, id: this.item.id})
       }
     },
 
@@ -182,7 +180,6 @@
       <v-btn icon="mdi-history"
         :class="{hidden: !versions.length}"
         @click="vhistory = true"
-        variant="outlined"
         elevation="0"
       ></v-btn>
       <v-btn @click.stop="nav = !nav">

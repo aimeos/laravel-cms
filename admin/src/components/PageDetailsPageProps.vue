@@ -92,6 +92,9 @@
           { key: 1440, val: '24 hours' },
         ]" item-title="val" item-value="key" variant="underlined"></v-select>
       </v-col>
+    </v-row>
+
+    <v-row>
       <v-col cols="12">
         <v-text-field v-model="item.to" label="Redirect URL" variant="underlined"></v-text-field>
       </v-col>

@@ -40,6 +40,20 @@
       })
     },
 
+    computed: {
+      isChecked() {
+        return this.$refs.tree.statsFlat.some(stat => stat.check)
+      },
+
+      canTrash() {
+        return this.$refs.tree.statsFlat.some(stat => stat.check && !stat.data.deleted_at)
+      },
+
+      isTrashed() {
+        return this.$refs.tree.statsFlat.some(stat => stat.check && stat.data.deleted_at)
+      },
+    },
+
     methods: {
       add() {
         const node = this.create()
@@ -629,17 +643,14 @@
               <v-btn append-icon="mdi-menu-down" variant="outlined" v-bind="props">Actions</v-btn>
             </template>
             <v-list>
-              <v-list-item>
+              <v-list-item v-show="isChecked && !isTrashed">
                 <v-btn prepend-icon="mdi-publish" variant="text" @click="publish()">Publish</v-btn>
               </v-list-item>
-              <v-list-item>
-                <v-btn prepend-icon="mdi-eye-off" variant="text" @click="status(null, 0)">Disable</v-btn>
-              </v-list-item>
-              <v-list-item>
+              <v-list-item v-show="isChecked && !isTrashed">
                 <v-btn prepend-icon="mdi-eye" variant="text" @click="status(null, 1)">Enable</v-btn>
               </v-list-item>
-              <v-list-item>
-                <v-btn prepend-icon="mdi-eye-off-outline" variant="text" @click="status(null, 2)">Hide in menu</v-btn>
+              <v-list-item v-show="isChecked && !isTrashed">
+                <v-btn prepend-icon="mdi-eye-off" variant="text" @click="status(null, 0)">Disable</v-btn>
               </v-list-item>
               <v-list-item v-show="!trash">
                 <v-btn prepend-icon="mdi-delete-circle-outline" variant="text" @click="trashed(true)">Show trashed</v-btn>
@@ -647,13 +658,13 @@
               <v-list-item v-show="trash">
                 <v-btn prepend-icon="mdi-delete-off" variant="text" @click="trashed(false)">Hide trashed</v-btn>
               </v-list-item>
-              <v-list-item>
+              <v-list-item v-show="canTrash">
                 <v-btn prepend-icon="mdi-delete" variant="text" @click="drop()">Trash</v-btn>
               </v-list-item>
-              <v-list-item>
+              <v-list-item v-show="isTrashed">
                 <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="keep()">Restore</v-btn>
               </v-list-item>
-              <v-list-item>
+              <v-list-item v-show="isChecked">
                 <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge()">Delete</v-btn>
               </v-list-item>
             </v-list>

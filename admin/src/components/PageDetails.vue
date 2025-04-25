@@ -1,6 +1,7 @@
 <script>
   import gql from 'graphql-tag'
   import Aside from './Aside.vue'
+  import History from './History.vue'
   import PageDetailsPage from './PageDetailsPage.vue'
   import PageDetailsContent from './PageDetailsContent.vue'
   import PageDetailsPreview from './PageDetailsPreview.vue'
@@ -9,6 +10,7 @@
   export default {
     components: {
       Aside,
+      History,
       PageDetailsPage,
       PageDetailsContent,
       PageDetailsPreview
@@ -18,7 +20,7 @@
       'item': {type: Object, required: true}
     },
 
-    emits: ['close'],
+    emits: ['update:item', 'close'],
 
     data: () => ({
       changed: false,
@@ -27,18 +29,22 @@
       versions: [],
       nav: null,
       tab: 'page',
+      vhistory: false,
     }),
 
     methods: {
-      clean(entries) {
-        return entries.map(c => {
-          for(const key in c) {
-            if(key.startsWith('_')) {
-              delete c[key]
+      clean(data) {
+        const entries = JSON.parse(JSON.stringify(data))
+
+        for(const key in data) {
+            for(const k in data[key]) {
+              if(k.startsWith('_')) {
+                delete data[key][k]
+              }
             }
-          }
-          return c
-        })
+        }
+
+        return entries
       },
 
 
@@ -105,6 +111,13 @@
         }).catch(error => {
           console.error(`savePage(id: ${this.item.id})`, error)
         })
+      },
+
+      use(version, changed = true) {
+        this.vhistory = false
+        this.changed = changed
+        this.contents = version.contents
+        this.$emit('update:item', version.data)
       }
     },
 
@@ -164,6 +177,12 @@
     </v-app-bar-title>
 
     <template v-slot:append>
+      <v-btn icon="mdi-history"
+        :class="{hidden: !versions.length}"
+        @click="vhistory = true"
+        variant="outlined"
+        elevation="0"
+      ></v-btn>
       <v-btn @click.stop="nav = !nav">
         <v-icon size="x-large">
           {{ nav ? 'mdi-chevron-right' : 'mdi-chevron-left' }}
@@ -203,6 +222,31 @@
   </v-main>
 
   <Aside v-model:state="nav" />
+
+  <Teleport to="body">
+    <v-dialog v-model="vhistory" scrollable width="auto">
+      <History
+        :data="{
+          cache: item.cache,
+          domain: item.domain,
+          lang: item.lang,
+          name: item.name,
+          slug: item.slug,
+          status: item.status,
+          title: item.title,
+          tag: item.tag,
+          to: item.to,
+          meta: clean(item.meta),
+          config: clean(item.config),
+        }"
+        :contents="clean(contents)"
+        :versions="versions"
+        @use="use($event)"
+        @revert="use($event, false)"
+        @hide="vhistory = false"
+      />
+    </v-dialog>
+  </Teleport>
 </template>
 
 <style scoped>

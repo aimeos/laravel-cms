@@ -160,6 +160,12 @@
     },
 
     watch: {
+      contents: {
+        immediate: true,
+        handler() {
+          this.list = this.contents
+        }
+      },
       list: {
         deep: true,
         handler() {

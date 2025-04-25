@@ -1,12 +1,10 @@
 <script>
-  import History from './History.vue'
   import PageDetailsPageMeta from './PageDetailsPageMeta.vue'
   import PageDetailsPageProps from './PageDetailsPageProps.vue'
   import PageDetailsPageConfig from './PageDetailsPageConfig.vue'
 
   export default {
     components: {
-      History,
       PageDetailsPageMeta,
       PageDetailsPageProps,
       PageDetailsPageConfig,
@@ -21,21 +19,7 @@
 
     data: () => ({
       tab: 'details',
-      vhistory: false,
     }),
-
-    computed: {
-      history() {
-        return this.vhistory ? true : false
-      }
-    },
-
-    methods: {
-      use(data) {
-        this.item.data = data
-        this.vhistory = false
-      }
-    },
   }
 </script>
 
@@ -48,15 +32,6 @@
           <v-tab value="meta">Meta</v-tab>
           <v-tab value="config">Config</v-tab>
         </v-tabs>
-
-        <div class="header">
-          <v-btn icon="mdi-history"
-            :class="{hidden: !versions.length}"
-            @click="vhistory = true"
-            variant="outlined"
-            elevation="0"
-          ></v-btn>
-        </div>
 
         <v-window v-model="tab">
 
@@ -76,18 +51,6 @@
       </v-sheet>
     </v-container>
   </v-form>
-
-  <Teleport to="body">
-    <v-dialog v-model="vhistory" scrollable width="auto">
-      <History
-        :data="item.data"
-        :versions="versions"
-        @use="use($event)"
-        @revert="use($event)"
-        @hide="vhistory = false"
-      />
-    </v-dialog>
-  </Teleport>
 </template>
 
 <style scoped>
@@ -98,10 +61,5 @@
 
   .v-window-item {
     padding: 0 0.25rem;
-  }
-
-  .header {
-    display: flex;
-    justify-content: end;
   }
 </style>

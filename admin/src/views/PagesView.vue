@@ -10,9 +10,9 @@
     },
 
     data: () => ({
-      item: {data: {}},
       details: false,
       nav: null,
+      item: {},
     }),
   }
 </script>
@@ -29,7 +29,7 @@
       </v-layout>
       <v-layout class="page-details" key="details" v-show="details">
         <PageDetails
-          :item="item"
+          v-model:item="item"
           @close="details = false"
         />
       </v-layout>

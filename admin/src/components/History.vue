@@ -4,6 +4,7 @@
   export default {
     props: {
       'data': {type: Object, required: true},
+      'contents': {type: Array, required: true},
       'versions': {type: Array, required: true},
     },
 
@@ -16,7 +17,7 @@
 
     mounted() {
       this.list = this.versions.map(v => {
-        return {...v, data: JSON.parse(v.data)}
+        return {...v, data: JSON.parse(v.data), contents: JSON.parse(v.contents)}
       }).reverse()
     },
 
@@ -46,16 +47,22 @@
 
       <v-card-text>
         <v-timeline side="end" align="start">
-          <v-timeline-item v-if="JSON.stringify(list[0]?.data) != JSON.stringify(data)" size="small" dot-color="blue">
+          <v-timeline-item v-if="JSON.stringify(list[0]?.data) != JSON.stringify(data) || JSON.stringify(list[0]?.contents) != JSON.stringify(contents)" size="small" dot-color="blue">
 
             <v-card class="elevation-2" @click="show = !show">
               <v-card-title>Current</v-card-title>
-              <v-card-text :class="{show: show}">
-                <span v-for="part of diff(list[0]?.data || {}, data)"
-                  :class="{added: part.added, removed: part.removed}">{{ part.value || part }}</span>
+              <v-card-text class="diff" :class="{show: show}">
+                <div class="data">
+                  <span v-for="part of diff(list[0]?.data || {}, data)"
+                    :class="{added: part.added, removed: part.removed}">{{ part.value || part }}</span>
+                </div>
+                <div class="contents">
+                  <span v-for="part of diff(list[0]?.contents || {}, contents)"
+                    :class="{added: part.added, removed: part.removed}">{{ part.value || part }}</span>
+                </div>
               </v-card-text>
               <v-card-actions>
-                <v-btn variant="outlined" @click="$emit('revert', list[0]?.data)">
+                <v-btn variant="outlined" @click="$emit('revert', list[0])">
                   Revert
                 </v-btn>
               </v-card-actions>
@@ -70,15 +77,19 @@
               <div @click="version._show = !version._show">
                 <v-card-title>{{ version.created_at }}</v-card-title>
                 <v-card-subtitle>{{ version.editor }}</v-card-subtitle>
-                <v-card-text :class="{show: version._show}">
-                  <span v-for="part of diff(list[idx+2]?.data || version.data, version.data)"
-                    :class="{added: part.added, removed: part.removed}">
-                    {{ part.value || part }}
-                  </span>
+                <v-card-text class="diff" :class="{show: version._show}">
+                  <div class="data">
+                    <span v-for="part of diff(list[idx+2]?.data || version.data, version.data)"
+                      :class="{added: part.added, removed: part.removed}">{{ part.value || part }}</span>
+                  </div>
+                  <div class="contents">
+                    <span v-for="part of diff(list[idx+2]?.contents?.data || version.contents?.data, version.contents?.data)"
+                      :class="{added: part.added, removed: part.removed}">{{ part.value || part }}</span>
+                  </div>
                 </v-card-text>
               </div>
               <v-card-actions>
-                <v-btn variant="outlined" @click="$emit('use', version.data)">
+                <v-btn variant="outlined" @click="$emit('use', version)">
                   Use
                 </v-btn>
               </v-card-actions>
@@ -112,24 +123,24 @@
     justify-self: auto !important;
   }
 
-  .v-timeline-item .v-card-text > span {
+  .v-timeline-item .v-card-text.diff span {
     white-space: pre;
   }
 
-  .v-timeline-item:not(:last-child) .v-card-text > span {
+  .v-timeline-item:not(:last-child) .v-card-text.diff span {
     display: none;
   }
 
-  .v-timeline-item .v-card-text.show > span {
+  .v-timeline-item .v-card-text.diff.show span {
     display: inline;
   }
 
-  .v-timeline-item .v-card-text > span.added {
+  .v-timeline-item .v-card-text.diff span.added {
     background-color: #00ff0030;
     display: inline;
   }
 
-  .v-timeline-item .v-card-text > span.removed {
+  .v-timeline-item .v-card-text.diff span.removed {
     background-color: #ff000030;
     display: inline;
   }

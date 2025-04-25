@@ -448,13 +448,23 @@
       },
 
 
-      publish() {
+      publishAll() {
         const list = this.$refs.tree.statsFlat.filter(stat => {
           return stat.check && stat.data.id && !stat.data.published
         })
 
         list.reverse().forEach(stat => {
-          this.$apollo.mutate({
+          this.publish(stat)
+        })
+      },
+
+
+      publish(stat) {
+        if(stat.published) {
+          return
+        }
+
+        this.$apollo.mutate({
             mutation: gql`mutation ($id: ID!) {
               pubPage(id: $id) {
                 id
@@ -473,7 +483,6 @@
           }).catch(error => {
             console.error(`pubPage(id: ${stat.data.id})`, error)
           })
-        })
       },
 
 
@@ -644,7 +653,7 @@
             </template>
             <v-list>
               <v-list-item v-show="isChecked && !isTrashed">
-                <v-btn prepend-icon="mdi-publish" variant="text" @click="publish()">Publish</v-btn>
+                <v-btn prepend-icon="mdi-publish" variant="text" @click="publishAll()">Publish</v-btn>
               </v-list-item>
               <v-list-item v-show="isChecked && !isTrashed">
                 <v-btn prepend-icon="mdi-eye" variant="text" @click="status(null, 1)">Enable</v-btn>
@@ -702,6 +711,9 @@
                 <v-btn icon="mdi-dots-vertical" variant="text" v-bind="props"></v-btn>
               </template>
               <v-list>
+                <v-list-item v-show="!node.deleted_at && !node.published">
+                  <v-btn prepend-icon="mdi-publish" variant="text" @click="publish(stat)">Publish</v-btn>
+                </v-list-item>
                 <v-list-item v-if="node.status !== 0">
                   <v-btn prepend-icon="mdi-eye-off" variant="text" @click="status(stat, 0)">Disable</v-btn>
                 </v-list-item>

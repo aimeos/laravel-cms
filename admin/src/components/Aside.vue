@@ -15,8 +15,8 @@
     }),
 
     setup() {
-      const aside = useSideStore()
-      return { aside }
+      const sidestore = useSideStore()
+      return { sidestore }
     },
 
     methods: {
@@ -33,7 +33,7 @@
       },
 
       toggle(key, code) {
-        this.aside.toggle(key, code)
+        this.sidestore.toggle(key, code)
         this.active[key][code] = !this.active[key][code]
       }
     }
@@ -44,7 +44,7 @@
   <v-navigation-drawer location="end" rail-width="220" :modelValue="state" @update:modelValue="$emit('update:state', $event)" :rail="width > 1200 ? false : true" expand-on-hover>
 
     <v-expansion-panels variant="accordion" v-model="panel">
-      <v-expansion-panel v-for="(items, key) in aside.store" :key="key" v-show="aside.show[key]" elevation="0">
+      <v-expansion-panel v-for="(items, key) in sidestore.store" :key="key" v-show="Object.keys(sidestore.store[key]).length" elevation="0">
         <v-expansion-panel-title>
           {{ key }}
         </v-expansion-panel-title>
@@ -80,5 +80,13 @@
 
   .v-navigation-drawer--right .v-list-item__overlay {
     opacity: 0;
+  }
+
+  .v-expansion-panel-text__wrapper {
+    padding: 0 16px 12px;
+  }
+
+  .v-list {
+    padding: 0;
   }
 </style>

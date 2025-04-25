@@ -38,8 +38,8 @@
 
     setup() {
       const available = useElementStore()
-      const aside = useSideStore()
-      return { aside, available }
+      const sidestore = useSideStore()
+      return { sidestore, available }
     },
 
     computed: {
@@ -124,7 +124,8 @@
         return (
           typeof el._hide === 'undefined' || typeof el._hide !== 'undefined' && el._hide !== true
         ) && (
-          this.aside.isUsed('type', el.type)
+          this.sidestore.isUsed('type', el.type) &&
+          this.sidestore.isUsed('changed', el._changed || false)
         )
       },
 
@@ -147,6 +148,22 @@
       },
 
 
+      updateStore() {
+        const types = {}
+        const changed = {}
+
+        this.list.forEach(el => {
+          if(el.type) {
+            types[el.type] = (types[el.type] || 0) + 1
+          }
+          changed[Boolean(el._changed)] = (changed[Boolean(el._changed)] || 0) + 1
+        })
+
+        this.sidestore.store['type'] = types
+        this.sidestore.store['changed'] = changed
+      },
+
+
       use(data, idx, changed = true) {
         this.list[idx].data = data
         this.list[idx]._changed = changed
@@ -155,7 +172,7 @@
 
 
       visibility(type) {
-        this.aside.show['type'] = type ? true : false
+        this.sidestore.show['type'] = type ? true : false
       }
     },
 
@@ -164,20 +181,13 @@
         immediate: true,
         handler() {
           this.list = this.contents
+          this.updateStore()
         }
       },
       list: {
         deep: true,
         handler() {
-          const types = {}
-
-          this.list.forEach(el => {
-            if(el.type) {
-              types[el.type] = (types[el.type] || 0) + 1
-            }
-          })
-
-          this.aside.store['type'] = types
+          this.updateStore()
           this.$emit('update:contents', this.list)
         }
       }

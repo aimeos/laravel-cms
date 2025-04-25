@@ -74,9 +74,11 @@
 
     <v-row>
       <v-col cols="12" md="6">
-        <v-text-field v-model="item.tag" label="Page tag" variant="underlined"></v-text-field>
+        <v-text-field v-model="item.theme" label="Theme" variant="underlined"></v-text-field>
+        <v-text-field v-model="item.type" label="Page type" variant="underlined"></v-text-field>
       </v-col>
       <v-col cols="12" md="6">
+        <v-text-field v-model="item.tag" label="Page tag" variant="underlined"></v-text-field>
         <v-select v-model="item.cache" label="Cache time" :items="[
           { key: 0, val: 'No cache' },
           { key: 1, val: '1 minute' },

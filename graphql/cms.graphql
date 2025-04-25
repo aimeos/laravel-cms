@@ -161,6 +161,12 @@ type Page {
   "Tag name to identify a page, e.g. for the starting point of a navigation structure"
   tag: String
 
+  "Theme name assigned to the page"
+  theme: String
+
+  "Type of the page for using different theme templates"
+  type: String
+
   "Arbitrary header data"
   meta: JSON!
 
@@ -240,6 +246,12 @@ input PageInput {
 
   "Tag name to identify a page, e.g. for the starting point of a navigation structure"
   tag: String
+
+  "Theme name assigned to the page"
+  theme: String
+
+  "Type of the page for using different theme templates"
+  type: String
 
   "Arbitrary page header"
   meta: JSON

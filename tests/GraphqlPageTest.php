@@ -70,6 +70,8 @@ class GraphqlPageTest extends TestAbstract
                 domain
                 to
                 tag
+                type
+                theme
                 meta
                 config
                 contents
@@ -115,6 +117,8 @@ class GraphqlPageTest extends TestAbstract
                     domain
                     to
                     tag
+                    type
+                    theme
                     meta
                     config
                     contents
@@ -170,6 +174,8 @@ class GraphqlPageTest extends TestAbstract
                     domain
                     to
                     tag
+                    type
+                    theme
                     meta
                     config
                     contents
@@ -428,6 +434,8 @@ class GraphqlPageTest extends TestAbstract
                     title
                     to
                     tag
+                    type
+                    theme
                     meta
                     config
                     contents
@@ -668,6 +676,8 @@ class GraphqlPageTest extends TestAbstract
                     title
                     to
                     tag
+                    type
+                    theme
                     meta
                     config
                     contents
@@ -709,6 +719,8 @@ class GraphqlPageTest extends TestAbstract
                     'title' => 'Home | Laravel CMS',
                     'to' => '',
                     'tag' => 'root',
+                    'type' => '',
+                    'theme' => '',
                     'meta' => '{"meta":{"type":"meta","data":{"text":"Laravel CMS is outstanding"}}}',
                     'config' => '{}',
                     'contents' => '[{"type":"heading","text":"Welcome to Laravel CMS"},{"type":"ref","id":"' . $element->id . '"}]',

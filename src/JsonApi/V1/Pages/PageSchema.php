@@ -81,6 +81,8 @@ class PageSchema extends Schema
             Str::make( 'slug' )->readOnly(),
             Str::make( 'name' )->readOnly(),
             Str::make( 'title' )->readOnly(),
+            Str::make( 'theme' )->readOnly(),
+            Str::make( 'type' )->readOnly(),
             Str::make( 'tag' )->readOnly(),
             Str::make( 'to' )->readOnly(),
             Str::make( 'domain' )->readOnly(),

@@ -94,6 +94,8 @@
               title: this.item.title,
               tag: this.item.tag,
               to: this.item.to,
+              type: this.item.type,
+              theme: this.item.theme,
               meta: JSON.stringify(meta),
               config: JSON.stringify(config),
               contents: JSON.stringify(this.clean(this.contents))
@@ -236,6 +238,8 @@
           title: item.title,
           tag: item.tag,
           to: item.to,
+          type: item.type,
+          theme: item.theme,
           meta: clean(item.meta),
           config: clean(item.config),
         }"

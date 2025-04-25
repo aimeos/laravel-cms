@@ -172,6 +172,8 @@
                 title
                 to
                 tag
+                type
+                theme
                 meta
                 config
                 status
@@ -245,8 +247,8 @@
       insert(stat, idx = null) {
         const siblings = this.$refs.tree.getSiblings(stat)
         const parent = idx !== null ? stat.parent : stat
-        const node = this.create({domain: parent?.data.domain})
         const pos = siblings.indexOf(stat)
+        const node = this.create()
         let refid = null
 
         if(idx === null && !stat.open) {
@@ -551,8 +553,12 @@
       title(node) {
         const list = []
 
-        if(node.start || node.end) {
-          list.push('Timeframe: ' + (node.start || '') + ' → ' + (node.end || ''))
+        if(node.theme) {
+          list.push('Theme: ' + node.theme)
+        }
+
+        if(node.type) {
+          list.push('Page type: ' + node.type)
         }
 
         if(node.tag) {
@@ -776,7 +782,7 @@
               @click="$emit('update:item', node)">
               <div class="node-text">
                 <div class="page-name">
-                  <v-icon class="page-time" size="x-small" v-if="node.start || node.end">mdi-clock-outline</v-icon>
+                  <v-icon class="page-time" size="x-small" v-if="node.theme || node.type">mdi-shape</v-icon>
                   {{ node.name || 'New' }}
                 </div>
                 <div v-if="node.title" class="page-title">{{ node.title }}</div>

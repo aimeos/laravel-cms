@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('to');
             $table->string('domain');
             $table->string('tag', 30);
+            $table->string('type', 30);
+            $table->string('theme', 30);
             $table->json('meta')->nullable();
             $table->json('config')->nullable();
             $table->json('contents')->nullable();

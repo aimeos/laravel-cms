@@ -48,6 +48,8 @@ class Page extends Model
         'to' => '',
         'name' => '',
         'title' => '',
+        'type' => '',
+        'theme' => '',
         'meta' => '{}',
         'config' => '{}',
         'contents' => '[]',
@@ -69,6 +71,10 @@ class Page extends Model
         'to' => 'string',
         'name' => 'string',
         'title' => 'string',
+        'type' => 'string',
+        'theme' => 'string',
+        'status' => 'integer',
+        'cache' => 'integer',
         'meta' => 'object',
         'config' => 'object',
         'contents' => 'array',
@@ -87,6 +93,8 @@ class Page extends Model
         'to',
         'name',
         'title',
+        'type',
+        'theme',
         'config',
         'contents',
         'status',
@@ -294,75 +302,9 @@ class Page extends Model
 
 
     /**
-     * Interact with the lang property.
-     */
-    protected function lang(): Attribute
-    {
-        return Attribute::make(
-            set: fn($value) => (string) $value,
-        );
-    }
-
-
-    /**
-     * Interact with the name property.
-     */
-    protected function name(): Attribute
-    {
-        return Attribute::make(
-            set: fn($value) => (string) $value,
-        );
-    }
-
-
-    /**
-     * Interact with the slug property.
-     */
-    protected function slug(): Attribute
-    {
-        return Attribute::make(
-            set: fn($value) => (string) $value,
-        );
-    }
-
-
-    /**
-     * Interact with the status property.
-     */
-    protected function status(): Attribute
-    {
-        return Attribute::make(
-            set: fn($value) => (int) $value,
-        );
-    }
-
-
-    /**
      * Interact with the tag property.
      */
     protected function tag(): Attribute
-    {
-        return Attribute::make(
-            set: fn($value) => (string) $value,
-        );
-    }
-
-
-    /**
-     * Interact with the title property.
-     */
-    protected function title(): Attribute
-    {
-        return Attribute::make(
-            set: fn($value) => (string) $value,
-        );
-    }
-
-
-    /**
-     * Interact with the to property.
-     */
-    protected function to(): Attribute
     {
         return Attribute::make(
             set: fn($value) => (string) $value,

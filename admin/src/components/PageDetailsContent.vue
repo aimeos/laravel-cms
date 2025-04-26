@@ -4,7 +4,7 @@
   import History from './History.vue'
   import Elements from './Elements.vue'
   import { VueDraggable } from 'vue-draggable-plus'
-  import { useElementStore, useSideStore } from '../stores'
+  import { useSchemaStore, useSideStore } from '../stores'
 
   export default {
     components: {
@@ -31,15 +31,15 @@
       index: null,
       history: null,
       checked: false,
-      velements: false,
+      vschemas: false,
       currentPage: 1,
       lastPage: 1,
     }),
 
     setup() {
-      const available = useElementStore()
+      const schemas = useSchemaStore()
       const sidestore = useSideStore()
-      return { sidestore, available }
+      return { sidestore, schemas }
     },
 
     computed: {
@@ -60,7 +60,7 @@
           this.panel.push(this.list.length - 1)
         }
 
-        this.velements = false
+        this.vschemas = false
       },
 
 
@@ -79,18 +79,18 @@
 
 
       fields(type) {
-        if(!this.available.content[type]?.fields) {
-          console.warn(`No definition of fields for "${type}" available`)
+        if(!this.schemas.content[type]?.fields) {
+          console.warn(`No definition of fields for "${type}" schemas`)
           return []
         }
 
-        return this.available.content[type]?.fields
+        return this.schemas.content[type]?.fields
       },
 
 
       insert(idx) {
         this.index = idx
-        this.velements = true
+        this.vschemas = true
       },
 
 
@@ -289,14 +289,14 @@
       </v-expansion-panels>
 
       <div class="btn-group">
-        <v-btn icon="mdi-view-grid-plus" color="primary" @click="velements = true" elevation="0"></v-btn>
+        <v-btn icon="mdi-view-grid-plus" color="primary" @click="vschemas = true" elevation="0"></v-btn>
       </div>
     </v-sheet>
   </v-container>
 
 
   <Teleport to="body">
-    <v-dialog v-model="velements" scrollable width="auto">
+    <v-dialog v-model="vschemas" scrollable width="auto">
       <Elements type="content" @add="add($event, index)" />
     </v-dialog>
   </Teleport>

@@ -1,7 +1,7 @@
 <script>
   import Fields from './Fields.vue'
   import Elements from './Elements.vue'
-  import { useElementStore } from '../stores'
+  import { useSchemaStore } from '../stores'
 
   export default {
     components: {
@@ -14,18 +14,18 @@
     },
 
     data: () => ({
-      velements: false,
+      vschemas: false,
       panel: [],
     }),
 
     setup() {
-      const elements = useElementStore()
-      return { elements }
+      const schemas = useSchemaStore()
+      return { schemas }
     },
 
     computed: {
       available() {
-        return Object.keys(this.elements).length
+        return Object.keys(this.schemas).length
       }
     },
 
@@ -42,17 +42,17 @@
 
         this.item.config[type] = {type: type, data: {}, files: []}
         this.panel.push(Object.keys(this.item.config).length - 1)
-        this.velements = false
+        this.vschemas = false
       },
 
 
       fields(type) {
-        if(!this.elements.config[type]?.fields) {
+        if(!this.schemas.config[type]?.fields) {
           console.warn(`No definition of fields for "${type}" available`)
           return []
         }
 
-        return this.elements.config[type]?.fields
+        return this.schemas.config[type]?.fields
       },
 
 
@@ -96,11 +96,11 @@
   </v-expansion-panels>
 
   <div v-if="available" class="btn-group">
-    <v-btn icon="mdi-view-grid-plus" color="primary" @click="velements = true" elevation="0"></v-btn>
+    <v-btn icon="mdi-view-grid-plus" color="primary" @click="vschemas = true" elevation="0"></v-btn>
   </div>
 
   <Teleport to="body">
-    <v-dialog v-model="velements" scrollable width="auto">
+    <v-dialog v-model="vschemas" scrollable width="auto">
       <Elements type="config" @add="add($event)" />
     </v-dialog>
   </Teleport>

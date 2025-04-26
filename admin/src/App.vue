@@ -1,11 +1,11 @@
 <script>
-  import { useElementStore } from './stores'
+  import { useSchemaStore } from './stores'
 
   export default {
     setup() {
-      const elements = useElementStore()
+      const schemas = useSchemaStore()
 
-      elements.content = {
+      schemas.content = {
         'heading': {
           type: 'heading',
           group: 'basic',
@@ -124,7 +124,7 @@
         },
       }
 
-      elements.meta = {
+      schemas.meta = {
         'meta': {
           type: 'meta',
           group: 'basic',
@@ -156,7 +156,7 @@
         }
       }
 
-      elements.config = {
+      schemas.config = {
         'test': {
           type: 'test',
           label: 'Test string+color',
@@ -174,7 +174,7 @@
         },
       }
 
-      return { elements }
+      return { schemas }
     }
   }
 </script>

@@ -69,9 +69,9 @@ export const useSideStore = defineStore('side', {
 
 
 /**
- * Available element types
+ * Available element schemas
  */
-export const useElementStore = defineStore('elements', {
+export const useSchemaStore = defineStore('schemas', {
   state: () => ({
     content: {},
     meta: {},

@@ -1,5 +1,5 @@
 <script>
-  import { useElementStore } from '../stores'
+  import { useSchemaStore } from '../stores'
 
   export default {
     props: {
@@ -13,19 +13,18 @@
     }),
 
     setup() {
-      const elements = useElementStore()
-      return { elements }
+      const schemas = useSchemaStore()
+      return { schemas }
     },
 
     computed: {
       groups() {
         const map = {}
-        const items = this.elements[this.type] || {}
 
-        for(const code in items) {
-          const name = items[code].group || 'uncategorized'
+        for(const el of Object.values(this.schemas[this.type] || {})) {
+          const name = el.group || 'uncategorized'
           map[name] = map[name] || []
-          map[name].push(items[code])
+          map[name].push(el)
         }
 
         return map

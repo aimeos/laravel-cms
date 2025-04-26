@@ -6,7 +6,7 @@
       'fields': {type: Object, required: true},
     },
 
-    emits: ['change', 'update:data', 'update:assets'],
+    emits: ['change', 'update:assets'],
 
     data() {
       return {

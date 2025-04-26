@@ -45,12 +45,28 @@
         this.velements = false
       },
 
+
+      fields(type) {
+        if(!this.elements.meta[type]?.fields) {
+          console.warn(`No definition of fields for "${type}" available`)
+          return []
+        }
+
+        return this.elements.meta[type]?.fields
+      },
+
+
       remove(code) {
         delete this.item.meta[code]
       },
 
+
       title(el) {
-        return Object.values(el.data || {}).filter(v => typeof v !== 'object' && !!v).join(' - ').substring(0, 50) || el.label || ''
+        return Object.values(el.data || {})
+          .map(v => v && typeof v !== 'object' && typeof v !== 'boolean' ? v : null)
+          .filter(v => !!v)
+          .join(' - ')
+          .substring(0, 50) || el.label || ''
       }
     }
   }
@@ -66,7 +82,14 @@
         <div class="element-type">{{ el.type }}</div>
       </v-expansion-panel-title>
       <v-expansion-panel-text>
-        <Fields :fields="elements.meta[code]?.fields || []" v-model:data="el.data" v-model:assets="el.files" />
+
+        <Fields
+          :fields="fields(el.type)"
+          v-model:data="el.data"
+          v-model:assets="el.files"
+          @change="el._changed = true"
+        />
+
       </v-expansion-panel-text>
     </v-expansion-panel>
 

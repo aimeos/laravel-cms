@@ -131,8 +131,8 @@
 
 
       title(el) {
-        return Object.keys(el.data)
-          .map(key => el.data[key] && typeof el.data[key] !== 'object' ? el.data[key] : null)
+        return Object.values(el.data || {})
+          .map(v => v && typeof v !== 'object' && typeof v !== 'boolean' ? v : null)
           .filter(v => !!v)
           .join(' - ')
           .substring(0, 50) || el.label || ''
@@ -276,12 +276,10 @@
             <v-expansion-panel-text>
 
               <Fields
-                :data="el.data"
-                :assets="el.files"
                 :fields="fields(el.type)"
+                v-model:data="el.data"
+                v-model:assets="el.files"
                 @change="el._changed = true"
-                @update:data="el['data'] = $event"
-                @update:assets="el['files'] = $event"
               />
 
             </v-expansion-panel-text>

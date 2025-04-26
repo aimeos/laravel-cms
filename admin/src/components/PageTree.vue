@@ -24,6 +24,7 @@
         menu: {},
         pages: [],
         trash: false,
+        loading: true,
       }
     },
 
@@ -38,6 +39,7 @@
     created() {
       this.fetch().then(result => {
         this.pages = result.data
+        this.loading = false
       })
     },
 
@@ -714,10 +716,11 @@
 
         <Draggable v-model="pages" ref="tree" :defaultOpen="false" :watermark="false" :statHandler="init" virtualization @change="change()">
           <template #default="{ node, stat }">
-            <v-icon :class="{hidden: !node.has, load: stat.loading}" size="large" @click="load(stat, node)"
-              :icon="stat.loading ? 'mdi-loading' : (stat.open ? 'mdi-menu-down' : 'mdi-menu-right')">
-            </v-icon>
+            <svg v-if="stat.loading" class="spinner" width="24" height="24" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg"><circle class="spin1" cx="4" cy="12" r="3"/><circle class="spin1 spin2" cx="12" cy="12" r="3"/><circle class="spin1 spin3" cx="20" cy="12" r="3"/></svg>
+            <v-icon v-else :class="{hidden: !node.has}" size="large" @click="load(stat, node)" :icon="stat.open ? 'mdi-menu-down' : 'mdi-menu-right'"></v-icon>
+
             <v-checkbox-btn v-model="stat.check" :class="{draft: !node.published}"></v-checkbox-btn>
+
             <v-menu v-if="node.id">
               <template #activator="{ props }">
                 <v-btn icon="mdi-dots-vertical" variant="text" v-bind="props"></v-btn>
@@ -831,8 +834,11 @@
             <v-btn icon="mdi-arrow-right" variant="text" @click="$emit('update:item', node)"></v-btn>
           </template>
         </Draggable>
-        <p v-if="$apollo.loading" class="loading">Loading ...</p>
-        <v-btn v-if="!$apollo.loading && !pages.length" color="primary" icon="mdi-folder-plus" @click="add()"></v-btn>
+        <p v-if="loading" class="loading">
+          Loading
+          <svg class="spinner" width="32" height="32" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle class="spin1" cx="4" cy="12" r="3"/><circle class="spin1 spin2" cx="12" cy="12" r="3"/><circle class="spin1 spin3" cx="20" cy="12" r="3"/></svg>
+        </p>
+        <v-btn v-if="!loading && !pages.length" color="primary" icon="mdi-folder-plus" @click="add()"></v-btn>
       </v-sheet>
     </v-container>
   </v-main>
@@ -870,6 +876,11 @@
     align-items: center;
     border-bottom: 1px solid #103050;
     padding: 0.5rem 0;
+  }
+
+  .tree-node-inner .spinner {
+    margin-inline-end: 5px;
+    width: 28px;
   }
 
   .node-content,
@@ -929,30 +940,14 @@
   }
 
   .loading {
-    animation: blink 1s;
-    animation-direction: alternate;
-    animation-iteration-count: infinite;
+    display: flex;
+    align-items: center;
+    margin-inline-start: 30px;
   }
 
-  @keyframes blink {
-    0% {
-      opacity: 0;
-    }
-
-    100% {
-      opacity: 1;
-    }
-  }
-
-  .load {
-    animation: rotate 2s;
-    animation-iteration-count: infinite;
-  }
-
-  @keyframes rotate {
-    100% {
-      transform: rotate(360deg);
-    }
+  .loading .spinner {
+    margin-inline-start: 16px;
+    color: #808080;
   }
 
   @media (min-width: 500px) {

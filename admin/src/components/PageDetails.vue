@@ -67,6 +67,7 @@
           meta[key] = {
             type: this.item.meta[key].type || '',
             data: this.item.meta[key].data || {},
+            files: this.item.meta[key].files || [],
           }
           files.push(...(this.item.meta[key].files || []))
         }
@@ -76,13 +77,14 @@
           config[key] = {
             type: this.item.config[key].type || '',
             data: this.item.config[key].data || {},
+            files: this.item.config[key].files || [],
           }
           files.push(...(this.item.config[key].files || []))
         }
 
         this.$apollo.mutate({
-          mutation: gql`mutation ($id: ID!, $input: PageInput!) {
-            savePage(id: $id, input: $input) {
+          mutation: gql`mutation ($id: ID!, $input: PageInput!, $elements: [ID!], $files: [ID!]) {
+            savePage(id: $id, input: $input, elements: $elements, files: $files) {
               id
             }
           }`,

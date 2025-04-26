@@ -28,6 +28,8 @@
       contents: [],
       elements: [],
       versions: [],
+      publishAt: null,
+      pubmenu: null,
       nav: null,
       tab: 'page',
       vhistory: false,
@@ -52,7 +54,35 @@
       },
 
 
-      save() {
+      publish(at = null) {
+        this.save(true)
+
+        this.$apollo.mutate({
+          mutation: gql`mutation ($id: ID!, $at: DateTime) {
+            pubPage(id: $id, at: $at) {
+              id
+            }
+          }`,
+          variables: {
+            id: this.item.id,
+            at: at?.toISOString()?.substring(0, 19)?.replace('T', ' ')
+          }
+        }).then(response => {
+          if(response.errors) {
+            throw response.errors
+          }
+
+          this.item.published = true
+          this.changed = false
+          this.messages.add('Page published successfully', 'success')
+        }).catch(error => {
+          this.messages.add('Error publishing page', 'error')
+          console.error(`publishPage(id: ${this.item.id})`, error)
+        })
+      },
+
+
+      save(quite = false) {
         if(!this.changed) {
           return
         }
@@ -116,12 +146,18 @@
 
           this.item.published = false
           this.changed = false
-          this.messages.add('Page saved successfully', 'success')
+
+          if(!quite) {
+            this.messages.add('Page saved successfully', 'success')
+          }
         }).catch(error => {
           this.messages.add('Error saving page data', 'error')
           console.error(`savePage(id: ${this.item.id})`, error)
         })
+
+        this.$emit('close')
       },
+
 
       use(version, changed = true) {
         this.vhistory = false
@@ -180,10 +216,16 @@
 
 <template>
   <v-app-bar :elevation="2" density="compact">
+    <template v-slot:prepend>
+      <v-btn icon="mdi-keyboard-backspace"
+        @click="$emit('close')"
+        elevation="0"
+      ></v-btn>
+    </template>
+
     <v-app-bar-title>
-      <div class="app-title" @click="$emit('close'); save()">
-        <v-icon icon="mdi-keyboard-backspace"></v-icon>
-        Back to pages
+      <div class="app-title">
+        Page: {{ item.name }}
       </div>
     </v-app-bar-title>
 
@@ -193,6 +235,27 @@
         @click="vhistory = true"
         elevation="0"
       ></v-btn>
+
+      <v-btn :disabled="!changed" @click="save()" variant="text">Save</v-btn>
+
+      <v-menu v-model="pubmenu" :close-on-content-click="false">
+        <template #activator="{ props }">
+          <v-btn-group class="menu-publish" variant="text">
+            <v-btn class="button" :disabled="!changed" @click="publish()">Publish</v-btn>
+            <v-btn class="icon" :disabled="!changed" v-bind="props" icon="mdi-menu-down"></v-btn>
+          </v-btn-group>
+        </template>
+        <div class="menu-content">
+          <v-date-picker v-model="publishAt" hide-header show-adjacent-months></v-date-picker>
+          <v-btn
+            :disabled="!publishAt"
+            :color="publishAt ? 'primary' : ''"
+            @click="publish(publishAt); pubmenu = false"
+            variant="flat"
+          >Publish</v-btn>
+        </div>
+      </v-menu>
+
       <v-btn @click.stop="nav = !nav">
         <v-icon size="x-large">
           {{ nav ? 'mdi-chevron-right' : 'mdi-chevron-left' }}
@@ -276,5 +339,22 @@
 
   .v-badge--dot .v-badge__badge {
     margin-inline-start: 0.5rem;
+  }
+
+  .menu-publish {
+    color: rgb(var(--v-theme-surface));
+  }
+
+  .menu-publish .button {
+    padding: 0;
+    padding-inline-start: 16px;
+  }
+
+  .menu-content {
+    background-color: var(--v-theme-background);
+  }
+
+  .menu-content .v-btn {
+    width: 100%;
   }
 </style>

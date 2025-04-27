@@ -4,7 +4,7 @@
   import History from './History.vue'
   import Elements from './Elements.vue'
   import { VueDraggable } from 'vue-draggable-plus'
-  import { useSchemaStore, useSideStore } from '../stores'
+  import { useMessageStore, useSchemaStore, useSideStore } from '../stores'
 
   export default {
     components: {
@@ -37,9 +37,10 @@
     }),
 
     setup() {
+      const messages = useMessageStore()
       const schemas = useSchemaStore()
       const sidestore = useSideStore()
-      return { sidestore, schemas }
+      return { messages, schemas, sidestore }
     },
 
     computed: {
@@ -50,6 +51,11 @@
 
     methods: {
       add(type, idx) {
+        if(!this.schemas.content[type]) {
+          this.messages.add(`No schema definition for element "${type}"`, 'error')
+          return
+        }
+
         const entry = {type: type, data: {}, files: []}
 
         if(idx !== null) {
@@ -135,7 +141,7 @@
           .map(v => v && typeof v !== 'object' && typeof v !== 'boolean' ? v : null)
           .filter(v => !!v)
           .join(' - ')
-          .substring(0, 50) || el.label || ''
+          .substring(0, 50) || el.type || ''
       },
 
 

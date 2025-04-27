@@ -8,31 +8,27 @@
       'config': {type: Object, default: () => {}},
       'assets': {type: Array, default: () => []},
     },
+
     emits: ['update:modelValue', 'addAsset', 'removeAsset'],
+
     setup() {
       const app = useAppStore()
       return { app }
     },
+
     data() {
       return {
         image: {},
         index: Math.floor(Math.random() * 100000),
       }
     },
-    beforeMount() {
-      if(this.modelValue?.id) {
-        const idx = this.assets.findIndex(item => item.id === this.modelValue.id)
 
-        if(idx !== -1) {
-          this.image = this.assets[idx]
-        }
-      }
-    },
     unmounted() {
-      if(this.image.path && this.image.path.startsWith('blob:')) {
+      if(this.image?.path?.startsWith('blob:')) {
         URL.revokeObjectURL(this.image.path)
       }
     },
+
     methods: {
       add(ev) {
         const files = ev.target.files || ev.dataTransfer.files || []
@@ -75,8 +71,8 @@
             image.onerror = reject
             image.src = this.url(Object.values(data.previews)[0])
           }).then(() => {
-            this.image = data
             this.$emit('addAsset', data)
+            this.$emit('update:modelValue', {id: data.id, type: 'file'})
             URL.revokeObjectURL(path)
           })
         }).catch(error => {
@@ -107,7 +103,7 @@
           }
 
           this.$emit('removeAsset', id)
-          this.image = {}
+          this.$emit('update:modelValue', null)
         }).catch(error => {
           console.error(`dropFile(${code})`, error)
         })
@@ -130,12 +126,19 @@
         return this.app.urlfile.replace(/\/+$/g, '') + '/' + path
       }
     },
+
     watch: {
-      image: {
-        deep: true,
-        handler() {
-          if(this.image.id) {
-            this.$emit('update:modelValue', {id: this.image.id, type: 'file'})
+      modelValue: {
+        immediate: true,
+        handler(obj) {
+          if(obj?.id) {
+            const idx = this.assets.findIndex(item => item.id === obj.id)
+
+            if(idx !== -1) {
+              this.image = this.assets[idx]
+            }
+          } else {
+            this.image = {}
           }
         }
       }

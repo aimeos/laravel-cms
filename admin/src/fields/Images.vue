@@ -7,41 +7,39 @@
     components: {
       VueDraggable
     },
+
     props: {
       'modelValue': {type: Array, default: () => []},
       'config': {type: Object, default: () => {}},
       'assets': {type: Array, default: () => []},
     },
+
     emits: ['update:modelValue', 'addAsset', 'removeAsset'],
+
     setup() {
       const app = useAppStore()
       return { app }
     },
+
     data() {
       return {
         images: [],
         index: Math.floor(Math.random() * 100000),
-        value: null
+        selected: null
       }
     },
-    beforeMount() {
-      for(let entry of this.modelValue) {
-        const idx = this.assets.findIndex(item => item.id === entry.id)
 
-        if(idx !== -1) {
-          this.images.push(this.assets[idx])
-        }
-      }
-    },
     unmounted() {
       this.images.forEach(item => {
-        if(item.path && item.path.startsWith('blob:')) {
+        if(item.path?.startsWith('blob:')) {
           URL.revokeObjectURL(item.path)
         }
       })
     },
+
     methods: {
       add(ev) {
+        const promises = []
         const files = ev.target.files || ev.dataTransfer.files || []
 
         if(!files.length) {
@@ -54,7 +52,7 @@
 
           this.images[idx] = {path: path, uploading: true}
 
-          this.$apollo.mutate({
+          const promise = this.$apollo.mutate({
             mutation: gql`mutation($file: Upload!) {
               addFile(file: $file) {
                 id
@@ -79,7 +77,7 @@
             data.previews = JSON.parse(data.previews) || {}
             delete data.__typename
 
-            new Promise((resolve, reject) => {
+            return new Promise((resolve, reject) => {
               const image = new Image()
               image.onload = resolve
               image.onerror = reject
@@ -92,9 +90,20 @@
           }).catch(error => {
             console.error(`add()`, error)
           })
+
+          promises.push(promise)
         })
 
-        this.value = null
+        Promise.all(promises).then(() => {
+          this.$emit('update:modelValue', this.images.map(item => ({id: item.id, type: 'file'})))
+        })
+
+        this.selected = null
+      },
+
+
+      change() {
+        this.$emit('update:modelValue', this.images.map(item => ({id: item.id, type: 'file'})))
       },
 
 
@@ -120,8 +129,9 @@
             throw response.errors
           }
 
-          this.$emit('removeAsset', id)
           this.images.splice(idx, 1)
+          this.$emit('removeAsset', id)
+          this.$emit('update:modelValue', this.images.map(item => ({id: item.id, type: 'file'})))
         }).catch(error => {
           console.error(`dropFile(${code})`, error)
         })
@@ -144,13 +154,22 @@
         return this.app.urlfile.replace(/\/+$/g, '') + '/' + path
       }
     },
+
     watch: {
-      images: {
-        deep: true,
-        handler() {
-          this.$emit('update:modelValue', this.images.filter(item => !!item.id).map(item => {
-            return {id: item.id, type: 'file'}
-          }))
+      modelValue: {
+        immediate: true,
+        handler(list) {
+          const images = []
+
+          for(let entry of (list || [])) {
+            const idx = this.assets.findIndex(item => item.id === entry.id)
+
+            if(idx !== -1) {
+              images.push(this.assets[idx])
+            }
+          }
+
+          this.images = images
         }
       }
     }
@@ -162,7 +181,10 @@
     v-model="images"
     draggable=".image"
     group="images"
-    class="files">
+    class="files"
+    animation="500"
+    @change="change()">
+
     <div v-for="(item, idx) in images" :key="idx" class="image">
       <v-progress-linear v-if="item.uploading"
         color="primary"
@@ -181,11 +203,12 @@
         <v-icon icon="mdi-trash-can" role="img"></v-icon>
       </button>
     </div>
+
     <div class="file-input">
       <input type="file"
         @input="add($event)"
         :id="'images-' + index"
-        :value="value"
+        :value="selected"
         accept="image/*"
         multiple
         hidden>

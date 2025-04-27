@@ -6,37 +6,55 @@
     components: {
       VueDraggable
     },
+
     props: {
       'modelValue': {type: Array, default: () => []},
       'config': {type: Object, default: () => {}},
       'assets': {type: Array, default: () => []},
     },
+
     emits: ['update:modelValue', 'addAsset', 'removeAsset'],
+
     data() {
       return {
-        items: [...this.modelValue],
+        items: [],
         panel: [],
       }
     },
+
     methods: {
       add() {
         this.items.push({})
         this.panel.push(this.items.length - 1)
+        this.$emit('update:modelValue', this.items)
       },
+
+
+      change() {
+        this.$emit('update:modelValue', this.items)
+      },
+
 
       remove(idx) {
         this.items.splice(idx, 1)
+        this.$emit('update:modelValue', this.items)
       },
 
+
       title(item) {
-        return Object.values(item).filter(v => typeof v !== 'object' && !!v).join(' - ').substring(0, 50) || ''
+        return Object.values(item || {})
+          .map(v => v && typeof v !== 'object' && typeof v !== 'boolean' ? v : null)
+          .filter(v => !!v)
+          .join(' - ')
+          .substring(0, 50) || ''
       },
     },
+
     watch: {
-      items: {
-        deep: true,
-        handler() {
-          this.$emit('update:modelValue', this.items)
+      modelValue: {
+        immediate: true,
+        handler(list) {
+          this.items = list
         }
       }
     }
@@ -45,7 +63,7 @@
 
 <template>
   <v-expansion-panels class="items" v-model="panel" elevation="0" multiple>
-    <VueDraggable v-model="items" draggable=".item" group="items">
+    <VueDraggable v-model="items" @change="change()" draggable=".item" group="items" animation="500">
 
       <v-expansion-panel v-for="(item, idx) in items" :key="idx" class="item">
         <v-expansion-panel-title>

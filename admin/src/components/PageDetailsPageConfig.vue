@@ -75,7 +75,7 @@
 <template>
   <v-expansion-panels class="list" v-model="panel" elevation="0" multiple>
 
-    <v-expansion-panel v-for="(el, code) in (item.config || {})" :key="code">
+    <v-expansion-panel v-for="(el, code) in (item.config || {})" :key="code" :class="{changed: el._changed}">
       <v-expansion-panel-title expand-icon="mdi-pencil">
         <v-btn icon="mdi-delete" variant="text" @click="remove(code)"></v-btn>
         <div class="element-title">{{ title(el) }}</div>
@@ -107,4 +107,11 @@
 </template>
 
 <style scoped>
+.v-expansion-panel {
+  border-inline-start: 3px solid transparent;
+}
+
+.v-expansion-panel.changed {
+  border-inline-start: 3px solid rgb(var(--v-theme-warning));
+}
 </style>

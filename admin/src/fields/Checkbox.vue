@@ -9,5 +9,6 @@
   <v-checkbox
     :modelValue="modelValue"
     @update:modelValue="$emit('update:modelValue', $event)"
+    hide-details="auto"
   ></v-checkbox>
 </template>

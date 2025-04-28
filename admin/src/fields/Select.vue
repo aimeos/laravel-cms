@@ -17,6 +17,7 @@
       v => (!config.required || !!v) || `Value is required`,
     ]"
     density="comfortable"
+    hide-details="auto"
     variant="outlined"
     item-title="label"
   ></v-select>

@@ -30,6 +30,7 @@ val;val;val"
     :modelValue="modelValue"
     @update:modelValue="$emit('update:modelValue', $event.replace(/[\r\n]+/g, '\n').replace(/^\n+|\n+$/g, ''))"
     variant="outlined"
+    hide-details="auto"
     density="comfortable"
     clearable
   ></v-textarea>

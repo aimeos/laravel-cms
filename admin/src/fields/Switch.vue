@@ -9,6 +9,7 @@
   <v-switch
     :modelValue="modelValue"
     @update:modelValue="$emit('update:modelValue', $event)"
+    hide-details="auto"
     color="primary"
     inset
   ></v-switch>

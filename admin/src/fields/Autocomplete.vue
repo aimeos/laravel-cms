@@ -12,6 +12,7 @@
     :modelValue="modelValue"
     @update:modelValue="$emit('update:modelValue', $event)"
     density="comfortable"
+    hide-details="auto"
     variant="outlined"
   ></v-autocomplete>
 </template>

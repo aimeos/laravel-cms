@@ -9,5 +9,6 @@
   <v-slider
     :modelValue="modelValue"
     @update:modelValue="$emit('update:modelValue', $event)"
+    hide-details="auto"
   ></v-slider>
 </template>

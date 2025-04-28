@@ -24,7 +24,7 @@
     emits: ['update:item', 'close'],
 
     data: () => ({
-      changed: false,
+      state: {},
       contents: [],
       elements: [],
       versions: [],
@@ -38,6 +38,12 @@
     setup() {
       const messages = useMessageStore()
       return { messages }
+    },
+
+    computed: {
+      changed() {
+        return Object.values(this.state).some(entry => entry)
+      }
     },
 
     methods: {
@@ -73,7 +79,7 @@
           }
 
           this.item.published = true
-          this.changed = false
+          this.state = {}
           this.messages.add('Page published successfully', 'success')
         }).catch(error => {
           this.messages.add('Error publishing page', 'error')
@@ -145,7 +151,7 @@
           }
 
           this.item.published = false
-          this.changed = false
+          this.state = {}
 
           if(!quite) {
             this.messages.add('Page saved successfully', 'success')
@@ -159,9 +165,14 @@
       },
 
 
+      setModified(what) {
+        this.state[what] = true
+      },
+
+
       use(version, changed = true) {
         this.vhistory = false
-        this.changed = changed
+        this.state = {all: changed}
         this.contents = version.contents
         this.$emit('update:item', {...version.data, id: this.item.id})
       }
@@ -204,7 +215,7 @@
           })
           this.contents = JSON.parse(latest?.contents || result.data.page.contents || '[]')
           this.versions = result.data.page.versions || []
-          this.changed = false
+          this.state = {}
         }).catch(error => {
           this.messages.add('Error fetching page data', 'error')
           console.error(`page(id: ${this.item.id})`, error)
@@ -266,8 +277,8 @@
 
   <v-main>
     <v-tabs fixed-tabs v-model="tab">
-      <v-tab value="page">Page</v-tab>
-      <v-tab value="content">Content</v-tab>
+      <v-tab value="page" :class="{changed: state.page}">Page</v-tab>
+      <v-tab value="content" :class="{changed: state.content}">Content</v-tab>
       <v-tab value="preview">Preview</v-tab>
     </v-tabs>
 
@@ -275,15 +286,15 @@
 
       <v-window-item value="page">
         <PageDetailsPage :item="item" :versions="versions"
-          @update:item="Object.assign(item, $event); changed = true"
+          @update:item="Object.assign(item, $event); setModified('page')"
         />
       </v-window-item>
 
       <v-window-item value="content">
         <PageDetailsContent :item="item" :elements="elements" :contents="contents"
-          @update:contents="contents = $event; changed = true"
-          @update:elements="elements = $event; changed = true"
-          @update:files="files = $event; changed = true"
+          @update:contents="contents = $event; setModified('content')"
+          @update:elements="elements = $event; setModified('content')"
+          @update:files="files = $event; setModified('content')"
         />
       </v-window-item>
 

@@ -18,8 +18,16 @@
     emits: ['update:item'],
 
     data: () => ({
+      changed: {},
       tab: 'details',
     }),
+
+    methods: {
+      update(what) {
+        this.changed[what] = true
+        this.$emit('update:item', this.item)
+      },
+    }
   }
 </script>
 
@@ -28,23 +36,23 @@
     <v-container>
       <v-sheet>
         <v-tabs class="subtabs" v-model="tab" align-tabs="center" density="compact">
-          <v-tab value="details">Details</v-tab>
-          <v-tab value="meta">Meta</v-tab>
-          <v-tab value="config">Config</v-tab>
+          <v-tab value="details" :class="{changed: changed.details}">Details</v-tab>
+          <v-tab value="meta" :class="{changed: changed.meta}">Meta</v-tab>
+          <v-tab value="config" :class="{changed: changed.config}">Config</v-tab>
         </v-tabs>
 
         <v-window v-model="tab">
 
           <v-window-item value="details">
-            <PageDetailsPageProps :item="item" @update:item="$emit('update:item', $event)" />
+            <PageDetailsPageProps :item="item" @change="update('details')" />
           </v-window-item>
 
           <v-window-item value="meta">
-            <PageDetailsPageMeta :item="item" @update:item="$emit('update:item', $event)" />
+            <PageDetailsPageMeta :item="item" @change="update('meta')" />
           </v-window-item>
 
           <v-window-item value="config">
-            <PageDetailsPageConfig :item="item" @update:item="$emit('update:item', $event)" />
+            <PageDetailsPageConfig :item="item" @change="update('config')" />
           </v-window-item>
 
         </v-window>

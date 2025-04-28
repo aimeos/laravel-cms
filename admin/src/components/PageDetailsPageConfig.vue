@@ -13,6 +13,8 @@
       'item': {type: Object, required: true}
     },
 
+    emits: ['change'],
+
     data: () => ({
       vschemas: false,
       panel: [],
@@ -87,7 +89,7 @@
           :fields="fields(el.type)"
           v-model:data="el.data"
           v-model:assets="el.files"
-          @change="el._changed = true"
+          @change="el._changed = true; $emit('change', true)"
         />
 
       </v-expansion-panel-text>

@@ -7,7 +7,7 @@
       'item': {type: Object, required: true}
     },
 
-    emits: ['update:item'],
+    emits: ['change'],
 
     setup() {
       const languages = useLanguageStore()
@@ -33,15 +33,6 @@
           this.item.slug = this.item.name?.replace(/[ ]+/g, '-')?.toLowerCase()
         }
       }
-    },
-
-    watch: {
-      item: {
-        deep: true,
-        handler() {
-          this.$emit('update:item', this.item)
-        }
-      }
     }
   }
 </script>
@@ -54,31 +45,31 @@
           { key: 0, val: 'Disabled' },
           { key: 1, val: 'Enabled' },
           { key: 2, val: 'Hidden in navigation' }
-        ]" item-title="val" item-value="key" variant="underlined" required></v-select>
+        ]" item-title="val" item-value="key" variant="underlined" required @update:modelValue="$emit('change', true)"></v-select>
       </v-col>
       <v-col cols="12" md="6">
-        <v-select v-model="item.lang" label="Language" :items="langs" item-title="name" item-value="code" variant="underlined"></v-select>
-      </v-col>
-    </v-row>
-
-    <v-row>
-      <v-col cols="12" md="6">
-        <v-text-field v-model="item.name" label="Page name" variant="underlined" counter="30" required @update:focused="updateSlug($event)"></v-text-field>
-        <v-text-field v-model="item.title" label="Page title" variant="underlined" counter="70"></v-text-field>
-      </v-col>
-      <v-col cols="12" md="6">
-        <v-text-field v-model="item.slug" label="URL path" variant="underlined" counter="255" required></v-text-field>
-        <v-text-field v-model="item.domain" label="Domain" variant="underlined"></v-text-field>
+        <v-select v-model="item.lang" label="Language" :items="langs" item-title="name" item-value="code" variant="underlined" @update:modelValue="$emit('change', true)"></v-select>
       </v-col>
     </v-row>
 
     <v-row>
       <v-col cols="12" md="6">
-        <v-text-field v-model="item.theme" label="Theme" variant="underlined"></v-text-field>
-        <v-text-field v-model="item.type" label="Page type" variant="underlined"></v-text-field>
+        <v-text-field v-model="item.name" label="Page name" variant="underlined" counter="30" required @update:modelValue="$emit('change', true)" @update:focused="updateSlug($event)"></v-text-field>
+        <v-text-field v-model="item.title" label="Page title" variant="underlined" counter="70" @update:modelValue="$emit('change', true)"></v-text-field>
       </v-col>
       <v-col cols="12" md="6">
-        <v-text-field v-model="item.tag" label="Page tag" variant="underlined"></v-text-field>
+        <v-text-field v-model="item.slug" label="URL path" variant="underlined" counter="255" required @update:modelValue="$emit('change', true)"></v-text-field>
+        <v-text-field v-model="item.domain" label="Domain" variant="underlined" @update:modelValue="$emit('change', true)"></v-text-field>
+      </v-col>
+    </v-row>
+
+    <v-row>
+      <v-col cols="12" md="6">
+        <v-text-field v-model="item.theme" label="Theme" variant="underlined" @update:modelValue="$emit('change', true)"></v-text-field>
+        <v-text-field v-model="item.type" label="Page type" variant="underlined" @update:modelValue="$emit('change', true)"></v-text-field>
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-text-field v-model="item.tag" label="Page tag" variant="underlined" @update:modelValue="$emit('change', true)"></v-text-field>
         <v-select v-model="item.cache" label="Cache time" :items="[
           { key: 0, val: 'No cache' },
           { key: 1, val: '1 minute' },
@@ -90,13 +81,13 @@
           { key: 360, val: '6 hours' },
           { key: 720, val: '12 hours' },
           { key: 1440, val: '24 hours' },
-        ]" item-title="val" item-value="key" variant="underlined"></v-select>
+        ]" item-title="val" item-value="key" variant="underlined" @update:modelValue="$emit('change', true)"></v-select>
       </v-col>
     </v-row>
 
     <v-row>
       <v-col cols="12">
-        <v-text-field v-model="item.to" label="Redirect URL" variant="underlined"></v-text-field>
+        <v-text-field v-model="item.to" label="Redirect URL" variant="underlined" @update:modelValue="$emit('change', true)"></v-text-field>
       </v-col>
     </v-row>
   </v-container>

@@ -52,6 +52,12 @@ nav.v-navigation-drawer {
   --v-tabs-height: 48px !important;
 }
 
+.v-tab.changed:before {
+  content: "•";
+  font-size: 200%;
+  color: rgb(var(--v-theme-warning));
+}
+
 .v-dialog > .v-overlay__content {
   max-width: calc(100% - 2.5%) !important;
   margin: 0 !important;

@@ -14,7 +14,7 @@
       'assets': {type: Array, default: () => []},
     },
 
-    emits: ['update:modelValue', 'addAsset', 'removeAsset'],
+    emits: ['update:modelValue', 'addFile', 'removeFile'],
 
     setup() {
       const app = useAppStore()
@@ -84,7 +84,7 @@
               image.src = this.url(Object.values(data.previews)[0])
             }).then(() => {
               this.images[idx] = data
-              this.$emit('addAsset', data)
+              this.$emit('addFile', data)
               URL.revokeObjectURL(path)
             })
           }).catch(error => {
@@ -130,7 +130,7 @@
           }
 
           this.images.splice(idx, 1)
-          this.$emit('removeAsset', id)
+          this.$emit('removeFile', id)
           this.$emit('update:modelValue', this.images.map(item => ({id: item.id, type: 'file'})))
         }).catch(error => {
           console.error(`dropFile(${code})`, error)

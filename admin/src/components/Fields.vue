@@ -15,13 +15,13 @@
     },
 
     methods: {
-      addAsset(file) {
+      addFile(file) {
         this.files.push(file)
         this.$emit('update:assets', this.files)
       },
 
 
-      removeAsset(id) {
+      removeFile(id) {
         const idx = this.files.findIndex(item => item.id === id)
 
         if(idx !== -1) {
@@ -40,8 +40,8 @@
       :config="field"
       :assets="assets"
       :modelValue="data[code]"
-      @addAsset="addAsset($event)"
-      @removeAsset="removeAsset($event)"
+      @addFile="addFile($event)"
+      @removeFile="removeFile($event)"
       @update:modelValue="data[code] = $event; $emit('change', data[code])"
     ></component>
   </div>

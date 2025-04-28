@@ -13,7 +13,7 @@
       'assets': {type: Array, default: () => []},
     },
 
-    emits: ['update:modelValue', 'addAsset', 'removeAsset'],
+    emits: ['update:modelValue', 'addFile', 'removeFile'],
 
     data() {
       return {
@@ -78,8 +78,8 @@
               v-model="items[idx][code]"
               :config="field"
               :assets="assets"
-              @addAsset="$emit('addAsset', $event)"
-              @removeAsset="$emit('removeAsset', $event)"
+              @addFile="$emit('addFile', $event)"
+              @removeFile="$emit('removeFile', $event)"
             ></component>
           </div>
         </v-expansion-panel-text>

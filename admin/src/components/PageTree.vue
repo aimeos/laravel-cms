@@ -13,7 +13,7 @@
 
     props: {
       'item': {type: Object, required: true},
-      'nav': {type: [Boolean, null], required: true}
+      'nav': {type: Boolean, default: false}
     },
 
     emits: ['update:nav', 'update:item'],

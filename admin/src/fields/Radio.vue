@@ -10,9 +10,9 @@
     :modelValue="modelValue"
     @update:modelValue="$emit('update:modelValue', $event)"
     hide-details="auto"
-  ><v-radio v-for="(label, value) in (config.options || [])"
-      :label="label"
-      :value="value">
+  ><v-radio v-for="option in (config.options || [])"
+      :label="option.label"
+      :value="option.value">
     </v-radio>
   </v-radio-group>
 </template>

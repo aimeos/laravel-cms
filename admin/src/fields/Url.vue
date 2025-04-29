@@ -1,11 +1,23 @@
 <script>
+  /**
+   * Configuration:
+   * - `allowed`: array of strings, allowed URL schemas (e.g., ['http', 'https'])
+   * - `placeholder`: string, placeholder text for the input field
+   * - `required`: boolean, if true, the field is required
+   */
   export default {
     props: ['modelValue', 'config'],
     emits: ['update:modelValue'],
     methods: {
       validate(v) {
-        return v && this.config.required
-          ? /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,})([\/\w .-]*)*\/?$/.test(v)
+        const allowed = this.config.allowed || ['http', 'https']
+
+        if(!allowed.every(s => /^[a-z]+/.test(s))) {
+          return 'Invalid URL schema configuration'
+        }
+
+        return v || this.config.required
+          ? (new RegExp(`^(${allowed.join('|')})://([^\\s/:@]+(:[^\\s/:@]+)?@)?([0-9a-z]+(\\.|-))*[0-9a-z]+\\.[a-z]{2,}(:[0-9]{1,5})?(/[^\\s]*)*$`)).test(v)
           : true
       }
     }
@@ -16,7 +28,7 @@
   <v-text-field
     :placeholder="config.placeholder || ''"
     :rules="[
-      v => (config.required && !!v) || `Value is required`,
+      v => (!config.required || config.required && v) || `Value is required`,
       v => validate(v) || `Not a valid URL`,
     ]"
     :modelValue="modelValue"

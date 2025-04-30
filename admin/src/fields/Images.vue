@@ -207,9 +207,9 @@
     <div class="file-input">
       <input type="file"
         @input="add($event)"
+        :accept="config.accept || 'image/*'"
         :id="'images-' + index"
         :value="selected"
-        accept="image/*"
         multiple
         hidden>
       <label :for="'images-' + index">Add files</label>

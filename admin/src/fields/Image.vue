@@ -1,111 +1,27 @@
 <script>
   import gql from 'graphql-tag'
+  import File from './File.vue'
   import { useAppStore } from '../stores'
 
   export default {
-    props: {
-      'modelValue': {type: [Object, null], default: () => null},
-      'config': {type: Object, default: () => {}},
-      'assets': {type: Array, default: () => []},
-    },
-
-    emits: ['update:modelValue', 'addFile', 'removeFile'],
+    extends: File,
 
     setup() {
       const app = useAppStore()
       return { app }
     },
 
-    data() {
-      return {
-        image: {},
-        index: Math.floor(Math.random() * 100000),
-      }
-    },
-
-    unmounted() {
-      if(this.image?.path?.startsWith('blob:')) {
-        URL.revokeObjectURL(this.image.path)
-      }
-    },
-
     methods: {
-      add(ev) {
-        const files = ev.target.files || ev.dataTransfer.files || []
-
-        if(!files.length) {
-          return
-        }
-
-        const path = URL.createObjectURL(files[0])
-        this.image = {path: path, uploading: true}
-
-        this.$apollo.mutate({
-          mutation: gql`mutation($file: Upload!) {
-            addFile(file: $file) {
-              id
-              mime
-              name
-              path
-              previews
-            }
-          }`,
-          variables: {
-            file: files[0]
-          },
-          context: {
-            hasUpload: true
-          }
-        }).then(response => {
-          if(response.errors) {
-            throw response.errors
-          }
-
-          const data = response.data?.addFile || {}
-          data.previews = JSON.parse(data.previews) || {}
-          delete data.__typename
-
-          new Promise((resolve, reject) => {
-            const image = new Image()
-            image.onload = resolve
-            image.onerror = reject
-            image.src = this.url(Object.values(data.previews)[0])
-          }).then(() => {
-            this.$emit('addFile', data)
-            this.$emit('update:modelValue', {id: data.id, type: 'file'})
-            URL.revokeObjectURL(path)
-          })
-        }).catch(error => {
-          console.error(`addFile()`, error)
-        })
-      },
-
-
-      remove() {
-        if(!this.image.id) {
-          return
-        }
-
-        const id = this.image.id
-
-        this.$apollo.mutate({
-          mutation: gql`mutation($id: ID!) {
-            dropFile(id: $id) {
-              id
-            }
-          }`,
-          variables: {
-            id: id
-          }
-        }).then(response => {
-          if(response.errors) {
-            throw response.errors
-          }
-
-          this.$emit('removeFile', id)
-          this.$emit('update:modelValue', null)
-        }).catch(error => {
-          console.error(`dropFile(${code})`, error)
+      handle(data, path) {
+        return new Promise((resolve, reject) => {
+          const image = new Image()
+          image.onload = resolve
+          image.onerror = reject
+          image.src = this.url(Object.values(data.previews)[0] || data.path)
+        }).then(() => {
+          this.$emit('addFile', data)
+          this.$emit('update:modelValue', {id: data.id, type: 'file'})
+          URL.revokeObjectURL(path)
         })
       },
 
@@ -125,31 +41,14 @@
         }
         return this.app.urlfile.replace(/\/+$/g, '') + '/' + path
       }
-    },
-
-    watch: {
-      modelValue: {
-        immediate: true,
-        handler(obj) {
-          if(obj?.id) {
-            const idx = this.assets.findIndex(item => item.id === obj.id)
-
-            if(idx !== -1) {
-              this.image = this.assets[idx]
-            }
-          } else {
-            this.image = {}
-          }
-        }
-      }
     }
   }
 </script>
 
 <template>
   <div class="files">
-    <div v-if="image.path" class="image">
-      <v-progress-linear v-if="image.uploading"
+    <div v-if="file.path" class="file">
+      <v-progress-linear v-if="file.uploading"
         color="primary"
         height="5"
         indeterminate
@@ -157,21 +56,21 @@
       ></v-progress-linear>
       <v-img
         :draggable="false"
-        :src="url(image.path)"
-        :srcset="srcset(image.previews)"
+        :src="url(file.path)"
+        :srcset="srcset(file.previews)"
       ></v-img>
-      <button v-if="image.id" @click="remove()"
+      <button v-if="file.id" @click="remove()"
         title="Remove image"
         type="button">
         <v-icon icon="mdi-trash-can" role="img"></v-icon>
       </button>
     </div>
-    <div v-else class="image file-input">
+    <div v-else class="file file-input">
       <input type="file"
         @input="add($event)"
+        :accept="config.accept || 'image/*'"
         :id="'image-' + index"
-        :value="null"
-        accept="image/*"
+        :value="selected"
         hidden>
       <label :for="'image-' + index">Add file</label>
     </div>
@@ -179,40 +78,4 @@
 </template>
 
 <style scoped>
-  .image {
-    display: flex;
-  }
-
-  .image, .file-input {
-    border: 1px solid #767676;
-    border-radius: 0.5rem;
-    position: relative;
-    height: 178px;
-    width: 178px;
-    margin: 1px;
-  }
-
-  .file-input label {
-    display: flex;
-    flex-wrap: wrap;
-    align-content: center;
-    justify-content: center;
-    height: 176px;
-    width: 176px;
-  }
-
-  .image button {
-    position: absolute;
-    background-color: rgba(var(--v-theme-primary), 0.75);
-    border-radius: 0.5rem;
-    padding: 0.75rem;
-    color: #fff;
-    right: 0;
-    top: 0;
-  }
-
-  .v-progress-linear {
-    position: absolute;
-    z-index: 1;
-  }
 </style>

@@ -46,35 +46,40 @@
 </script>
 
 <template>
-  <div class="files">
-    <div v-if="file.path" class="file">
-      <v-progress-linear v-if="file.uploading"
-        color="primary"
-        height="5"
-        indeterminate
-        rounded
-      ></v-progress-linear>
-      <v-img
-        :draggable="false"
-        :src="url(file.path)"
-        :srcset="srcset(file.previews)"
-      ></v-img>
-      <button v-if="file.id" @click="remove()"
-        title="Remove image"
-        type="button">
-        <v-icon icon="mdi-trash-can" role="img"></v-icon>
-      </button>
-    </div>
-    <div v-else class="file file-input">
-      <input type="file"
-        @input="add($event)"
-        :accept="config.accept || 'image/*'"
-        :id="'image-' + index"
-        :value="selected"
-        hidden>
-      <label :for="'image-' + index">Add file</label>
-    </div>
-  </div>
+  <v-row>
+    <v-col class="files">
+      <div v-if="file.path" class="file">
+        <v-progress-linear v-if="file.uploading"
+          color="primary"
+          height="5"
+          indeterminate
+          rounded
+        ></v-progress-linear>
+        <v-img
+          :draggable="false"
+          :src="url(file.path)"
+          :srcset="srcset(file.previews)"
+        ></v-img>
+        <button v-if="file.path" @click="remove()"
+          title="Remove image"
+          type="button">
+          <v-icon icon="mdi-trash-can" role="img"></v-icon>
+        </button>
+      </div>
+      <div v-else class="file file-input">
+        <input type="file"
+          @input="add($event)"
+          :accept="config.accept || 'image/*'"
+          :id="'image-' + index"
+          :value="selected"
+          hidden>
+        <label :for="'image-' + index">Add image</label>
+      </div>
+    </v-col>
+    <v-col>
+      {{ file.name }}
+    </v-col>
+  </v-row>
 </template>
 
 <style scoped>

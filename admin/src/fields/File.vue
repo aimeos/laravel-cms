@@ -170,7 +170,9 @@
 
   .file, .file.file-input {
     justify-content: center;
+    align-content: center;
     position: relative;
+    flex-wrap: wrap;
     height: 200px;
   }
 

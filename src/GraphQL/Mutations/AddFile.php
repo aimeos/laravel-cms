@@ -32,7 +32,7 @@ final class AddFile
             $ext = preg_replace( '/[[:cntrl:]]|[[:blank]]|\/|\./smu', '', pathinfo( $filename, PATHINFO_EXTENSION ) );
             $path = $dir . '/' . $this->name( $upload ) . '.' . $ext;
 
-            if( !($path = $disk->putFileAs( $dir, $upload, $this->name( $upload ) . '.' . $ext ) ) ) {
+            if( !$disk->putFileAs( $dir, $upload, $this->name( $upload ) . '.' . $ext ) ) {
                 throw new \RuntimeException( sprintf( 'Unable to store file "%s" to "%s"', $filename, $path ) );
             }
 

@@ -193,19 +193,29 @@ class GraphqlFileTest extends TestAbstract
         $file = File::firstOrFail();
 
         $this->expectsDatabaseQueryCount( 3 );
-        $response = $this->actingAs( $this->user )->graphQL( '
-            mutation {
-                saveFile(id: "' . $file->id . '", input: {
-                    name: "test file"
-                    tag: "test"
-                }) {
-                    id
-                    tag
-                    name
-                    editor
+        $response = $this->actingAs( $this->user )->multipartGraphQL( [
+            'query' => '
+                mutation($preview: Upload) {
+                    saveFile(id: "' . $file->id . '", input: {
+                        name: "test file"
+                        tag: "test"
+                    }, preview: $preview) {
+                        id
+                        tag
+                        name
+                        previews
+                        editor
+                    }
                 }
-            }
-        ' );
+            ',
+            'variables' => [
+                'preview' => null,
+            ],
+        ], [
+            '0' => ['variables.preview'],
+        ], [
+            '0' => UploadedFile::fake()->image('test-preview-1.jpg', 20),
+        ] );
 
         $file = File::find( $file->id );
 
@@ -216,6 +226,7 @@ class GraphqlFileTest extends TestAbstract
                     'name' => 'test file',
                     'tag' => 'test',
                     'editor' => 'Test',
+                    'previews' => json_encode( $file->previews ),
                 ],
             ]
         ] );

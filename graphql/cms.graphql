@@ -117,7 +117,7 @@ extend type Mutation {
     @canModel(ability: "add", model: "\\Aimeos\\Cms\\Models\\File")
 
   "Update an existing file"
-  saveFile(id: ID!, input: FileInput!): File
+  saveFile(id: ID!, input: FileInput!, preview: Upload): File
     @canModel(ability: "save", model: "\\Aimeos\\Cms\\Models\\File")
 
   "Delete an existing file"

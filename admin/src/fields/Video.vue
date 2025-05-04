@@ -39,7 +39,7 @@
           indeterminate
           rounded
         ></v-progress-linear>
-        <video controls
+        <video preload="metadata" controls
           :draggable="false"
           :src="url(file.path)"
         ></video>
@@ -66,4 +66,8 @@
 </template>
 
 <style scoped>
+  video {
+    max-width: 100%;
+    max-height: 200px;
+  }
 </style>

@@ -130,7 +130,7 @@
 <template>
   <v-row>
     <v-col class="files">
-      <div v-if="file.path" class="image">
+      <div v-if="file.path" class="file">
         <v-progress-linear v-if="file.uploading"
           color="primary"
           height="5"
@@ -173,7 +173,9 @@
     align-content: center;
     position: relative;
     flex-wrap: wrap;
-    height: 200px;
+    max-width: 100%;
+    max-height: 200px;
+    min-height: 48px;
   }
 
   .file.file-input label {

@@ -8,7 +8,6 @@ use Intervention\Image\ImageManager;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 
 final class AddFile
@@ -36,7 +35,7 @@ final class AddFile
                 throw new \RuntimeException( sprintf( 'Unable to store file "%s" to "%s"', $filename, $path ) );
             }
 
-            $previews = $this->previews( $dir, $upload, $args['previews'] ?? [] );
+            $previews = $this->previews( $dir, $upload, $args['preview'] ?? null );
 
             $file = new File();
             $file->name = $args['input']['name'] ?? pathinfo( $upload->getClientOriginalName(), PATHINFO_BASENAME );
@@ -85,10 +84,10 @@ final class AddFile
      *
      * @param string $dir Relative directory path
      * @param UploadedFile $upload File upload
-     * @param array $previews List of UploadedFile for preview files
+     * @param UploadedFile|null $preview UploadedFile for preview file
      * @return array List of preview image paths with image widths as keys
      */
-    protected function previews( string $dir, UploadedFile $upload, array $previews ) : array
+    protected function previews( string $dir, UploadedFile $upload, ?UploadedFile $preview = null ) : array
     {
         $map = [];
         $sizes = config( 'cms.image.preview-sizes', [[]] );
@@ -98,31 +97,17 @@ final class AddFile
         $manager = ImageManager::withDriver( '\\Intervention\\Image\\Drivers\\' . $driver . '\Driver' );
         $ext = $manager->driver()->supports( 'image/webp' ) ? 'webp' : 'jpg';
 
-        if( count( $previews ) > 1 )
+        if( $preview && str_starts_with( $preview->getClientMimeType(), 'image/' ) )
         {
-            foreach( $previews as $preview )
-            {
-                if( str_starts_with( $preview->getClientMimeType(), 'image/' ) )
-                {
-                    $image = $manager->read( $preview );
-                    $path = $dir . '/' . $this->name( $preview ) . '.' . $ext;
-
-                    if( !isset( $map[$image->width()] ) && $disk->put( $path, $image->encodeByExtension( $ext )->toFilePointer(), 'public' ) ) {
-                        $map[$image->width()] = $path;
-                    }
-                }
-            }
-        }
-        elseif( isset( $previews[0] ) && str_starts_with( $preview[0]->getClientMimeType(), 'image/' ) )
-        {
-            $file = $manager->read( $preview[0] );
+            $file = $manager->read( $preview );
 
             foreach( $sizes as $size )
             {
-                $path = $dir . '/' . $this->name( $preview[0], $size ) . '.' . $ext;
                 $image = ( clone $file )->scaleDown( $size['width'] ?? null, $size['height'] ?? null );
+                $path = $dir . '/' . $this->name( $preview, $size ) . '.' . $ext;
+                $ptr = $image->encodeByExtension( $ext )->toFilePointer();
 
-                if( $disk->put( $path, $image->encodeByExtension( $ext )->toFilePointer(), 'public' ) ) {
+                if( $disk->put( $path, $ptr, 'public' ) ) {
                     $map[$image->width()] = $path;
                 }
             }
@@ -133,10 +118,11 @@ final class AddFile
 
             foreach( $sizes as $size )
             {
-                $path = $dir . '/' . $this->name( $upload, $size ) . '.' . $ext;
                 $image = ( clone $file )->scaleDown( $size['width'] ?? null, $size['height'] ?? null );
+                $path = $dir . '/' . $this->name( $upload, $size ) . '.' . $ext;
+                $ptr = $image->encodeByExtension( $ext )->toFilePointer();
 
-                if( $disk->put( $path, $image->encodeByExtension( $ext )->toFilePointer(), 'public' ) ) {
+                if( $disk->put( $path, $ptr, 'public' ) ) {
                     $map[$image->width()] = $path;
                 }
             }

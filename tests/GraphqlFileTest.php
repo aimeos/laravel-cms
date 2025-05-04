@@ -135,11 +135,11 @@ class GraphqlFileTest extends TestAbstract
         $this->expectsDatabaseQueryCount( 2 );
         $response = $this->actingAs( $this->user )->multipartGraphQL( [
             'query' => '
-                mutation($file: Upload!, $previews: [Upload!]) {
-                    addFile(file: $file, previews: $previews, input: {
+                mutation($file: Upload!, $preview: Upload) {
+                    addFile(file: $file, input: {
                         name: "Test file name"
                         tag: "test tag"
-                    }) {
+                    }, preview: $preview) {
                         id
                         tag
                         mime
@@ -154,16 +154,14 @@ class GraphqlFileTest extends TestAbstract
             ',
             'variables' => [
                 'file' => null,
-                'previews' => [null, null],
+                'preview' => null,
             ],
         ], [
             '0' => ['variables.file'],
-            '1' => ['variables.previews.0'],
-            '2' => ['variables.previews.1'],
+            '1' => ['variables.preview'],
         ], [
             '0' => UploadedFile::fake()->create('test.pdf', 500),
             '1' => UploadedFile::fake()->image('test-preview-1.jpg', 20),
-            '2' => UploadedFile::fake()->image('test-preview-2.webp', 10),
         ] );
 
         $element = json_decode( $response->getContent() );

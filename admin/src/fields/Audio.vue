@@ -31,32 +31,34 @@
 
 <template>
   <v-row>
-    <v-col class="files">
-      <div v-if="file.path" class="file">
-        <v-progress-linear v-if="file.uploading"
-          color="primary"
-          height="5"
-          indeterminate
-          rounded
-        ></v-progress-linear>
-        <audio preload="metadata" controls
-          :draggable="false"
-          :src="url(file.path)"
-        ></audio>
-        <button v-if="file.path" @click="remove()"
-          title="Remove audio"
-          type="button">
-          <v-icon icon="mdi-trash-can" role="img"></v-icon>
-        </button>
-      </div>
-      <div v-else class="file file-input">
-        <input type="file"
-          @input="add($event)"
-          :accept="config.accept || 'audio/*'"
-          :id="'audio-' + index"
-          :value="selected"
-          hidden>
-        <label :for="'audio-' + index">Add audio</label>
+    <v-col>
+      <div class="files">
+        <div v-if="file.path" class="file">
+          <v-progress-linear v-if="file.uploading"
+            color="primary"
+            height="5"
+            indeterminate
+            rounded
+          ></v-progress-linear>
+          <audio preload="metadata" controls
+            :draggable="false"
+            :src="url(file.path)"
+          ></audio>
+          <button class="delete" v-if="file.path" @click="remove()"
+            title="Remove audio"
+            type="button">
+            <v-icon icon="mdi-trash-can" role="img"></v-icon>
+          </button>
+        </div>
+        <div v-else class="file file-input">
+          <input type="file"
+            @input="add($event)"
+            :accept="config.accept || 'audio/*'"
+            :id="'audio-' + index"
+            :value="selected"
+            hidden>
+          <label :for="'audio-' + index">Add audio</label>
+        </div>
       </div>
     </v-col>
     <v-col>

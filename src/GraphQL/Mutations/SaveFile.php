@@ -39,7 +39,7 @@ final class SaveFile
     protected function name( UploadedFile $file, array $size = [] ) : string
     {
         $filename = $file->getClientOriginalName();
-        $name = preg_replace( '/[[:cntrl:]]|[[:blank]]|\/|\./smu', '', pathinfo( $filename, PATHINFO_FILENAME ) );
+        $name = preg_replace( '/[[:cntrl:]]|[[:blank:]]|\/|\./smu', '', pathinfo( $filename, PATHINFO_FILENAME ) );
         $hash = substr( md5( microtime(true) . getmypid() . rand(0, 1000) ), -4 );
 
         return $name . '_' . ( $size['width'] ?? $size['height'] ?? '' ) . '_' . $hash;

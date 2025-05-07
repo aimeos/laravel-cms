@@ -29,10 +29,10 @@ final class AddFile
         {
             $filename = $upload->getClientOriginalName();
             $ext = preg_replace( '/[[:cntrl:]]|[[:blank:]]|\/|\./smu', '', pathinfo( $filename, PATHINFO_EXTENSION ) );
-            $path = $dir . '/' . $this->name( $upload ) . '.' . $ext;
+            $name = $this->name( $upload ) . '.' . $ext;
 
-            if( !$disk->putFileAs( $dir, $upload, $this->name( $upload ) . '.' . $ext ) ) {
-                throw new \RuntimeException( sprintf( 'Unable to store file "%s" to "%s"', $filename, $path ) );
+            if( !$disk->putFileAs( $dir, $upload, $name ) ) {
+                throw new \RuntimeException( sprintf( 'Unable to store file "%s" to "%s"', $filename, $dir . '/' . $name ) );
             }
 
             $previews = $this->previews( $dir, $upload, $args['preview'] ?? null );
@@ -41,7 +41,7 @@ final class AddFile
             $file->name = $args['input']['name'] ?? pathinfo( $upload->getClientOriginalName(), PATHINFO_BASENAME );
             $file->tag = $args['input']['tag'] ?? '';
             $file->mime = $upload->getClientMimeType();
-            $file->path = $path;
+            $file->path = $dir . '/' . $name;
             $file->previews = (object) $previews;
             $file->editor = Auth::user()?->name ?? request()->ip();
             $file->save();

@@ -21,7 +21,9 @@ final class SaveFile
         $file->editor = Auth::user()?->name ?? request()->ip();
 
         if( !empty( $preview = $args['preview'] ) && str_starts_with( $preview->getClientMimeType(), 'image/' ) ) {
-            $file->previews = (object) $this->previews( $preview );
+            $file->previews = (object) $this->create( $preview );
+        } else {
+            $this->remove( $file->previews );
         }
 
         $file->fill( $args['input'] ?? [] )->save();
@@ -52,7 +54,7 @@ final class SaveFile
      * @param UploadedFile $preview Preview file upload
      * @return array List of preview image paths with image widths as keys
      */
-    protected function previews( UploadedFile $preview ) : array
+    protected function create( UploadedFile $preview ) : array
     {
         $map = [];
         $sizes = config( 'cms.image.preview-sizes', [[]] );
@@ -77,5 +79,24 @@ final class SaveFile
         }
 
         return $map;
+    }
+
+
+    /**
+     * Removes the preview images
+     *
+     * @param array $previews List of preview image paths with image widths as keys
+     */
+    protected function remove( array $previews ) : void
+    {
+        $disk = Storage::disk( config( 'cms.disk', 'public' ) );
+        $dir = rtrim( 'cms/' . \Aimeos\Cms\Tenancy::value(), '/' );
+
+        foreach( $previews as $path )
+        {
+            if( str_starts_with( $path, $dir ) ) {
+                $disk->delete( $path );
+            }
+        }
     }
 }

@@ -47,7 +47,6 @@ class Publish extends Command
                     }
                     catch( \Exception $e )
                     {
-error_log( $e->getMessage() );
                         $this->error( "Failed to publish version {$id} of {$type}: {$e->getMessage()}" );
                     }
                 }

@@ -49,6 +49,8 @@
               name
               path
               previews
+              updated_at
+              editor
             }
           }`,
           variables: {
@@ -137,7 +139,7 @@
 
 <template>
   <v-row>
-    <v-col>
+    <v-col class="v-col-md-6">
       <div class="files">
         <div v-if="file.path" class="file">
           <v-progress-linear v-if="file.uploading"
@@ -168,7 +170,11 @@
         </div>
       </div>
     </v-col>
-    <v-col>
+    <v-col class="v-col-md-6" v-if="file.path">
+      Name: {{ file.name }}<br/>
+      Mime: {{ file.mime }}<br/>
+      Editor: {{ file.editor }}<br/>
+      Modified: {{ file.updated_at }}
     </v-col>
   </v-row>
 </template>

@@ -222,6 +222,7 @@
   .files .sortable {
     display: flex;
     flex-wrap: wrap;
+    justify-content: start;
   }
 
   .image, .file-input {

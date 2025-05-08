@@ -16,7 +16,13 @@
 
     methods: {
       addFile(file) {
-        this.files.push(file)
+        const idx = this.files.findIndex(item => item.id === file.id)
+
+        if(idx !== -1) {
+          this.files[idx] = file
+        } else {
+          this.files.push(file)
+        }
         this.$emit('update:assets', this.files)
       },
 

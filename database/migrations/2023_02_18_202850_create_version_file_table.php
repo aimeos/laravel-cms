@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::connection(config('cms.db', 'sqlite'))->create('cms_file_page', function (Blueprint $table) {
+        Schema::connection(config('cms.db', 'sqlite'))->create('cms_version_file', function (Blueprint $table) {
+            $table->foreignUuid('version_id')->constrained('cms_versions')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignUuid('file_id')->constrained('cms_files')->cascadeOnUpdate()->cascadeOnDelete();
-            $table->foreignId('page_id')->constrained('cms_pages')->cascadeOnUpdate()->cascadeOnDelete();
 
-            $table->unique(['file_id', 'page_id']);
+            $table->unique(['version_id', 'file_id']);
         });
     }
 
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::connection(config('cms.db', 'sqlite'))->dropIfExists('cms_file_page');
+        Schema::connection(config('cms.db', 'sqlite'))->dropIfExists('cms_version_file');
     }
 };

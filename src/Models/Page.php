@@ -114,7 +114,7 @@ class Page extends Model
      */
     public function files() : BelongsToMany
     {
-        return $this->belongsToMany( File::class, 'cms_file_page' );
+        return $this->belongsToMany( File::class, 'cms_page_file' );
     }
 
 

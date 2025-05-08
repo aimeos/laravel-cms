@@ -78,7 +78,7 @@ class File extends Model
      */
     public function elements() : BelongsToMany
     {
-        return $this->belongsToMany( Element::class, 'cms_file_element' );
+        return $this->belongsToMany( Element::class, 'cms_element_file' );
     }
 
 
@@ -96,7 +96,7 @@ class File extends Model
      */
     public function pages() : BelongsToMany
     {
-        return $this->belongsToMany( Page::class, 'cms_file_page' );
+        return $this->belongsToMany( Page::class, 'cms_page_file' );
     }
 
 
@@ -115,7 +115,7 @@ class File extends Model
      */
     public function versions() : BelongsToMany
     {
-        return $this->belongsToMany( Version::class, 'cms_file_version' );
+        return $this->belongsToMany( Version::class, 'cms_version_file' );
     }
 
 

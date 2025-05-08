@@ -73,7 +73,7 @@ class Version extends Model
      */
     public function files() : BelongsToMany
     {
-        return $this->belongsToMany( File::class, 'cms_file_version' );
+        return $this->belongsToMany( File::class, 'cms_version_file' );
     }
 
 

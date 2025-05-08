@@ -81,7 +81,7 @@ class Element extends Model
      */
     public function files() : BelongsToMany
     {
-        return $this->belongsToMany( File::class, 'cms_file_element' );
+        return $this->belongsToMany( File::class, 'cms_element_file' );
     }
 
 

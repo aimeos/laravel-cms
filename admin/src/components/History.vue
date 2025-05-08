@@ -18,7 +18,7 @@
     mounted() {
       this.list = this.versions.map(v => {
         return {...v, data: JSON.parse(v.data), contents: JSON.parse(v.contents)}
-      }).reverse()
+      })
     },
 
     methods: {

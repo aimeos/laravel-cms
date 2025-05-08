@@ -208,14 +208,12 @@
             throw result
           }
 
-          const latest = result.data.page.versions?.at(-1)
-
-          this.elements = (latest?.elements || result.data.page.elements || []).map(entry => {
+          this.state = {}
+          this.versions = (result.data.page.versions || []).toReversed() // latest first
+          this.contents = JSON.parse(this.versions.at(0)?.contents || result.data.page.contents || '[]')
+          this.elements = (this.versions.at(0)?.elements || result.data.page.elements || []).map(entry => {
             return {...entry, data: JSON.parse(entry.data || '{}')}
           })
-          this.contents = JSON.parse(latest?.contents || result.data.page.contents || '[]')
-          this.versions = result.data.page.versions || []
-          this.state = {}
         }).catch(error => {
           this.messages.add('Error fetching page data', 'error')
           console.error(`page(id: ${this.item.id})`, error)

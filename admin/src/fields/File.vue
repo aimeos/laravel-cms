@@ -1,5 +1,6 @@
 <script>
   import gql from 'graphql-tag'
+  import { useMessageStore } from '../stores'
 
   export default {
     props: {
@@ -16,6 +17,11 @@
         index: Math.floor(Math.random() * 100000),
         selected: null
       }
+    },
+
+    setup() {
+      const messages = useMessageStore()
+      return { messages }
     },
 
     unmounted() {
@@ -62,6 +68,7 @@
 
           return this.handle(data, path)
         }).catch(error => {
+          this.messages.add('Error uploading file', 'error')
           console.error(`addFile()`, error)
         }).finally(() => {
           this.selected = null
@@ -103,6 +110,7 @@
           this.$emit('removeFile', id)
           this.$emit('update:modelValue', null)
         }).catch(error => {
+          this.messages.add('Error removing file', 'error')
           console.error(`dropFile(${code})`, error)
         })
       }

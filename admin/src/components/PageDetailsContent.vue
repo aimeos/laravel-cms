@@ -20,7 +20,7 @@
       'elements': {type: Array, required: true}
     },
 
-    emits: ['update:elements', 'update:contents'],
+    emits: ['error', 'update:elements', 'update:contents'],
 
     data: () => ({
       list: [],
@@ -46,6 +46,15 @@
     computed: {
       changed() {
         return this.list.some(el => el._changed)
+      },
+
+      isValid() {
+        for(const cmp of (this.$refs.field || [])) {
+          if(!cmp.isValid()) {
+            return false
+          }
+        }
+        return true
       }
     },
 
@@ -154,19 +163,38 @@
       },
 
 
+      update(el, idx) {
+        el._changed = true
+        el._error = false
+
+        this.$refs['field'][idx].validate().then(v => {
+          for(const list of v) {
+            if(list.length > 0) {
+              el._error = true
+            }
+          }
+        })
+      },
+
+
       updateStore() {
         const types = {}
-        const changed = {}
+        const state = {}
 
         this.list.forEach(el => {
           if(el.type) {
             types[el.type] = (types[el.type] || 0) + 1
           }
-          changed[Boolean(el._changed)] = (changed[Boolean(el._changed)] || 0) + 1
+          if(el._changed) {
+            state['changed'] = (state['changed'] || 0) + 1
+          }
+          if(el._error) {
+            state['error'] = (state['error'] || 0) + 1
+          }
         })
 
         this.sidestore.store['type'] = types
-        this.sidestore.store['changed'] = changed
+        this.sidestore.store['state'] = state
       },
 
 
@@ -190,11 +218,13 @@
           this.updateStore()
         }
       },
+
       list: {
         deep: true,
         handler() {
           this.updateStore()
           this.$emit('update:contents', this.list)
+          this.$emit('error', this.list.some(el => el._error))
         }
       }
     }
@@ -235,7 +265,7 @@
       <v-expansion-panels class="list" v-model="panel" elevation="0" multiple>
         <VueDraggable v-model="list" draggable=".content" group="contents">
 
-          <v-expansion-panel v-for="(el, idx) in list" :key="idx" v-show="shown(el)" class="content" :class="{changed: el._changed}">
+          <v-expansion-panel v-for="(el, idx) in list" :key="idx" v-show="shown(el)" class="content" :class="{changed: el._changed, error: el._error}">
             <v-expansion-panel-title expand-icon="mdi-pencil">
               <v-checkbox-btn v-model="el._checked" @click.stop=""></v-checkbox-btn>
 
@@ -281,11 +311,11 @@
             </v-expansion-panel-title>
             <v-expansion-panel-text>
 
-              <Fields
+              <Fields ref="field"
                 :fields="fields(el.type)"
                 v-model:data="el.data"
                 v-model:assets="el.files"
-                @change="el._changed = true"
+                @change="update(el, idx)"
               />
 
             </v-expansion-panel-text>
@@ -358,6 +388,10 @@
 
 .v-expansion-panel.changed {
   border-inline-start: 3px solid rgb(var(--v-theme-warning));
+}
+
+.v-expansion-panel.error .v-expansion-panel-title {
+  color: rgb(var(--v-theme-error));
 }
 
 .v-expansion-panel-title .v-selection-control {

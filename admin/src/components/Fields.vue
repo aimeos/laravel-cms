@@ -27,6 +27,17 @@
       },
 
 
+      validate() {
+        const list = []
+
+        for(const cmp of (this.$refs.field || [])) {
+          list.push(cmp.validate())
+        }
+
+        return Promise.all(list)
+      },
+
+
       removeFile(id) {
         const idx = this.files.findIndex(item => item.id === id)
 
@@ -34,7 +45,13 @@
           this.files.splice(idx, 1)
           this.$emit('update:assets', this.files)
         }
-      }
+      },
+
+
+      update(code, value) {
+        this.data[code] = value
+        this.$emit('change', this.data[code])
+      },
     }
   }
 </script>
@@ -42,13 +59,14 @@
 <template>
   <div v-for="(field, code) in fields" :key="code" class="item">
     <v-label>{{ field.label || code }}</v-label>
-    <component :is="field.type?.charAt(0)?.toUpperCase() + field.type?.slice(1)"
+    <component ref="field"
+      :is="field.type?.charAt(0)?.toUpperCase() + field.type?.slice(1)"
       :config="field"
       :assets="assets"
       :modelValue="data[code]"
       @addFile="addFile($event)"
       @removeFile="removeFile($event)"
-      @update:modelValue="data[code] = $event; $emit('change', data[code])"
+      @update:modelValue="update(code, $event)"
     ></component>
   </div>
 </template>
@@ -58,6 +76,10 @@
     margin: 1.5rem 0;
     padding-inline-start: 1rem;
     border-inline-start: 3px solid #D0D8E0;
+  }
+
+  .item.error {
+    border-inline-start: 3px solid rgb(var(--v-theme-error));
   }
 
   label {

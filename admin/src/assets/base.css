@@ -52,10 +52,18 @@ nav.v-navigation-drawer {
   --v-tabs-height: 48px !important;
 }
 
-.v-tab.changed:before {
+.v-tab.changed:before,
+.v-tab.error:before {
   content: "•";
   font-size: 200%;
+}
+
+.v-tab.changed:before {
   color: rgb(var(--v-theme-warning));
+}
+
+.v-tab.error:before {
+  color: rgb(var(--v-theme-error));
 }
 
 .v-dialog > .v-overlay__content {

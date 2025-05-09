@@ -25,6 +25,7 @@
 
     data: () => ({
       state: {},
+      error: {},
       contents: [],
       elements: [],
       versions: [],
@@ -276,7 +277,7 @@
   <v-main>
     <v-tabs fixed-tabs v-model="tab">
       <v-tab value="page" :class="{changed: state.page}">Page</v-tab>
-      <v-tab value="content" :class="{changed: state.content}">Content</v-tab>
+      <v-tab value="content" :class="{changed: state.content, error: error.content}">Content</v-tab>
       <v-tab value="preview">Preview</v-tab>
     </v-tabs>
 
@@ -293,6 +294,7 @@
           @update:contents="contents = $event; setModified('content')"
           @update:elements="elements = $event; setModified('content')"
           @update:files="files = $event; setModified('content')"
+          @error="error['content'] = $event"
         />
       </v-window-item>
 

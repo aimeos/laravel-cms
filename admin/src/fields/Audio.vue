@@ -31,7 +31,7 @@
 
 <template>
   <v-row>
-    <v-col class="v-col-md-6">
+    <v-col cols="12" md="6">
       <div class="files">
         <div v-if="file.path" class="file">
           <v-progress-linear v-if="file.uploading"
@@ -61,7 +61,7 @@
         </div>
       </div>
     </v-col>
-    <v-col class="v-col-md-6" v-if="file.path">
+    <v-col cols="12" md="6" v-if="file.path">
       Name: {{ file.name }}<br/>
       Mime: {{ file.mime }}<br/>
       Editor: {{ file.editor }}<br/>

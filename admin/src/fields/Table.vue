@@ -1,9 +1,14 @@
 <script>
   export default {
-    props: ['modelValue', 'config'],
+    props: {
+      'modelValue': {type: String, default: ''},
+      'config': {type: Object, default: () => {}},
+    },
+
     emits: ['update:modelValue'],
+
     methods: {
-      validate(value) {
+      check(value) {
         let lines = 0
         let columns = 0
 
@@ -12,21 +17,26 @@
           lines++
         })
 
-        return Number.isInteger(columns / lines)
+        return lines ? Number.isInteger(columns / lines) : true
+      },
+
+
+      validate() {
+        return this.$refs.field.validate()
       }
     }
   }
 </script>
 
 <template>
-  <v-textarea
-    placeholder="val;val;val
-val;val;val"
-    :auto-grow="true"
+  <v-textarea ref="field"
     :rules="[
-      v => !!v || 'This field is required',
-      v => validate(v) || 'Invalid format'
+      v => (!config.required || config.required && !!v) || 'This field is required',
+      v => (!config.min || config.min && v?.split('\n')[0]?.split(';')?.length >= config.min) || `Minimum are ${config.min} columns`,
+      v => check(v) || 'The number of columns is not the same in all rows',
     ]"
+    :auto-grow="true"
+    :placeholder="config.placeholder || `val;val;val\nval;val;val`"
     :modelValue="modelValue"
     @update:modelValue="$emit('update:modelValue', $event.replace(/[\r\n]+/g, '\n').replace(/^\n+|\n+$/g, ''))"
     variant="outlined"

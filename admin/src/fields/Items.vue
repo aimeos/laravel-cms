@@ -1,4 +1,10 @@
 <script>
+  /**
+   * Configuration:
+   * - `max`: int, maximum number of characters allowed in the input field
+   * - `min`: int, minimum number of characters required in the input field
+   * - `required`: boolean, if true, the field is required
+   */
   import gql from 'graphql-tag'
   import { VueDraggable } from 'vue-draggable-plus'
 
@@ -17,6 +23,7 @@
 
     data() {
       return {
+        errors: [],
         items: [],
         panel: [],
       }
@@ -48,6 +55,19 @@
           .join(' - ')
           .substring(0, 50) || ''
       },
+
+
+      validate() {
+        return Promise.resolve([])
+
+        const rules = [
+          v => (!this.config.max || this.config.max && v.length <= this.config.max) || `Maximum is ${this.config.max} items`,
+          v => ((this.config.min ?? 1) && v.length >= (this.config.min ?? 1)) || `Minimum is ${this.config.min ?? 1} items`,
+        ]
+
+        this.errors = rules.map(rule => rule(this.items)).filter(v => v !== true)
+        return Promise.resolve(this.errors)
+      }
     },
 
     watch: {
@@ -88,8 +108,18 @@
     </VueDraggable>
   </v-expansion-panels>
 
+  <div v-if="errors.length" class="v-input--error">
+    <div class="v-input__details" role="alert" aria-live="polite">
+      <div class="v-messages">
+        <div v-for="(msg, idx) in errors" :key="idx" class="v-messages__message">
+          {{ msg }}
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="btn-group">
-    <v-btn icon="mdi-view-grid-plus" @click="add()"></v-btn>
+    <v-btn v-if="config.max && items.length < config.max" icon="mdi-view-grid-plus" @click="add()"></v-btn>
   </div>
 </template>
 

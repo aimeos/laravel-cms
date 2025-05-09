@@ -1,12 +1,22 @@
 <script>
   export default {
-    props: ['modelValue', 'config'],
-    emits: ['update:modelValue']
+    props: {
+      'modelValue': {type: String, default: ''},
+      'config': {type: Object, default: () => {}},
+    },
+
+    emits: ['update:modelValue'],
+
+    methods: {
+      validate() {
+        return this.$refs.field.validate()
+      }
+    }
   }
 </script>
 
 <template>
-  <v-textarea
+  <v-textarea ref="field"
     :placeholder="config.placeholder || ''"
     :modelValue="modelValue"
     @update:modelValue="$emit('update:modelValue', $event)"

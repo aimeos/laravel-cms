@@ -1,7 +1,17 @@
 <script>
   export default {
-    props: ['modelValue', 'config'],
+    props: {
+      'modelValue': {type: Boolean, default: false},
+      'config': {type: Object, default: () => {}},
+    },
+
     emits: ['update:modelValue'],
+
+    methods: {
+      validate() {
+        return Promise.resolve([])
+      }
+    }
   }
 </script>
 

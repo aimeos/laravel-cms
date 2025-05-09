@@ -6,10 +6,15 @@
    * - `required`: boolean, if true, the field is required
    */
   export default {
-    props: ['modelValue', 'config'],
+    props: {
+      'modelValue': {type: String, default: ''},
+      'config': {type: Object, default: () => {}},
+    },
+
     emits: ['update:modelValue'],
+
     methods: {
-      validate(v) {
+      check(v) {
         const allowed = this.config.allowed || ['http', 'https']
 
         if(!allowed.every(s => /^[a-z]+/.test(s))) {
@@ -19,17 +24,22 @@
         return v || this.config.required
           ? (new RegExp(`^(${allowed.join('|')})://([^\\s/:@]+(:[^\\s/:@]+)?@)?([0-9a-z]+(\\.|-))*[0-9a-z]+\\.[a-z]{2,}(:[0-9]{1,5})?(/[^\\s]*)*$`)).test(v)
           : true
+      },
+
+
+      validate() {
+        return this.$refs.field.validate()
       }
     }
   }
 </script>
 
 <template>
-  <v-text-field
+  <v-text-field ref="field"
     :placeholder="config.placeholder || ''"
     :rules="[
       v => (!config.required || config.required && v) || `Value is required`,
-      v => validate(v) || `Not a valid URL`,
+      v => check(v) || `Not a valid URL`,
     ]"
     :modelValue="modelValue"
     @update:modelValue="$emit('update:modelValue', $event)"

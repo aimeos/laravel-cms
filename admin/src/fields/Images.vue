@@ -152,6 +152,11 @@
           return path
         }
         return this.app.urlfile.replace(/\/+$/g, '') + '/' + path
+      },
+
+
+      validate() {
+        return Promise.resolve([])
       }
     },
 

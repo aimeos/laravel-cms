@@ -1,12 +1,22 @@
 <script>
   export default {
-    props: ['modelValue', 'config'],
+    props: {
+      'modelValue': {type: String, default: ''},
+      'config': {type: Object, default: () => {}},
+    },
+
     emits: ['update:modelValue'],
+
+    methods: {
+      validate() {
+        return this.$refs.field.validate()
+      }
+    }
   }
 </script>
 
 <template>
-  <v-select
+  <v-select ref="field"
     :items="config.options || []"
     :placeholder="config.placeholder || ''"
     :multiple="config.multiple"

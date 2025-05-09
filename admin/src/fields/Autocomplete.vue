@@ -1,12 +1,22 @@
 <script>
   export default {
-    props: ['modelValue', 'config'],
+    props: {
+      'modelValue': {type: String, default: ''},
+      'config': {type: Object, default: () => {}},
+    },
+
     emits: ['update:modelValue'],
+
+    methods: {
+      validate() {
+        return this.$refs.field.validate()
+      }
+    }
   }
 </script>
 
 <template>
-  <v-autocomplete
+  <v-autocomplete ref="field"
     :items="config.options || []"
     :placeholder="config.placeholder || ''"
     :modelValue="modelValue"

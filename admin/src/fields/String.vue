@@ -1,12 +1,28 @@
 <script>
-  export default {
-    props: ['modelValue', 'config'],
-    emits: ['update:modelValue']
+  /**
+   * Configuration:
+   * - `max`: int, maximum number of characters allowed in the input field
+   * - `min`: int, minimum number of characters required in the input field
+   * - `placeholder`: string, placeholder text for the input field
+   */
+   export default {
+    props: {
+      'modelValue': {type: String, default: ''},
+      'config': {type: Object, default: () => {}},
+    },
+
+    emits: ['update:modelValue'],
+
+    methods: {
+      validate() {
+        return this.$refs.field.validate()
+      }
+    }
   }
 </script>
 
 <template>
-  <v-text-field
+  <v-text-field ref="field"
     :counter="config.max"
     :placeholder="config.placeholder || ''"
     :rules="[

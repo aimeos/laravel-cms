@@ -115,6 +115,11 @@
           this.messages.add('Error removing file', 'error')
           console.error(`dropFile(${code})`, error)
         })
+      },
+
+
+      validate() {
+        return Promise.resolve([])
       }
     },
 

@@ -7,16 +7,20 @@
     components: {
       Ckeditor
     },
+
     props: {
       'modelValue': {type: String, default: ''},
       'config': {type: Object, default: () => {}},
     },
+
     emits: ['update:modelValue'],
+
     data() {
       return {
         editor: ClassicEditor,
       }
     },
+
     computed: {
       ckconfig() {
         return {
@@ -26,11 +30,17 @@
         }
       }
     },
+
     methods: {
       update(value) {
         if(this.modelValue != value) {
           this.$emit('update:modelValue', value);
         }
+      },
+
+
+      validate() {
+        return Promise.resolve([])
       }
     }
   }

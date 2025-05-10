@@ -229,7 +229,7 @@
 </script>
 
 <template>
-  <v-app-bar :elevation="2" density="compact">
+  <v-app-bar :elevation="1" density="compact">
     <template v-slot:prepend>
       <v-btn icon="mdi-keyboard-backspace"
         @click="$emit('close')"
@@ -343,10 +343,6 @@
 </template>
 
 <style scoped>
-  .v-app-bar-title {
-    cursor: pointer;
-  }
-
   .v-toolbar__content>.v-toolbar-title {
     margin-inline-start: 0;
   }
@@ -355,12 +351,16 @@
     text-align: center;
   }
 
+  main .v-tabs {
+    margin-bottom: -1rem;
+  }
+
   .v-badge--dot .v-badge__badge {
     margin-inline-start: 0.5rem;
   }
 
   .menu-publish {
-    color: rgb(var(--v-theme-surface));
+    margin-inline-start: 4px;
   }
 
   .menu-publish .button {

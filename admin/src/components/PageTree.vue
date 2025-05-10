@@ -643,7 +643,7 @@
 </script>
 
 <template>
-  <v-app-bar :elevation="2" density="compact">
+  <v-app-bar :elevation="1" density="compact">
     <template #prepend>
       <v-btn @click.stop="$emit('update:nav', !nav)">
         <v-icon size="x-large">

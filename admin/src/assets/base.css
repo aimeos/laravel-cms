@@ -27,25 +27,15 @@ body,
   background-color: rgb(var(--v-theme-background));
 }
 
-.v-app-bar.v-toolbar {
-  background-color: rgb(var(--cms-primary-dark)) !important;
-  color: rgb(var(--v-theme-surface)) !important;
-}
-
 .v-navigation-drawer,
 .v-navigation-drawer button,
 .v-navigation-drawer .v-list-item,
 .v-navigation-drawer .v-list-item a {
-  color: rgb(var(--v-theme-surface)) !important;
   text-decoration: none;
 }
 
 .v-app-bar-title {
   text-align: center;
-}
-
-nav.v-navigation-drawer {
-  background: linear-gradient(180deg, rgb(var(--cms-primary-dark)) 0, rgb(var(--cms-primary)) 100%);
 }
 
 .v-tabs--density-compact {
@@ -89,10 +79,10 @@ nav.v-navigation-drawer {
 }
 
 .v-sheet {
-  margin: 0;
+  margin: 1rem 0;
   padding: 1rem;
-  box-shadow: 0px 3px 9px 0px #A8B8C825 !important;
   background-color: rgb(var(--v-theme-surface));
+  box-shadow: 0px 3px 9px 0px #A8B8C825 !important;
 }
 
 .v-selection-control--density-default {
@@ -142,6 +132,12 @@ nav.v-navigation-drawer {
 
 .list .v-expansion-panel-text__wrapper {
   padding: 0 1rem;
+}
+
+.v-toolbar .v-btn.error,
+.v-toolbar .v-btn-group.error {
+  background-color: rgb(var(--v-theme-error)) !important;
+  color: rgb(var(--v-theme-on-error)) !important;
 }
 
 .hidden {

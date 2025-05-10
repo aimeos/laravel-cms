@@ -66,20 +66,8 @@
     min-height: unset;
   }
 
-  .v-navigation-drawer--right .v-expansion-panel {
-    background-color: inherit;
-  }
-
   .v-navigation-drawer--right .v-list-item__content {
-    color: #d0d0d0;
-  }
-
-  .v-navigation-drawer--right .v-list-item--active .v-list-item__content {
-    color: #ffffff
-  }
-
-  .v-navigation-drawer--right .v-list-item__overlay {
-    opacity: 0;
+    color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
   }
 
   .v-expansion-panel-text__wrapper {

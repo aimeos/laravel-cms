@@ -5,11 +5,11 @@
       'config': {type: Object, default: () => {}},
     },
 
-    emits: ['update:modelValue'],
+    emits: ['update:modelValue', 'error'],
 
     methods: {
-      validate() {
-        return Promise.resolve([])
+      update(value) {
+        this.$emit('update:modelValue', value)
       }
     }
   }
@@ -18,6 +18,6 @@
 <template>
   <v-color-picker
     :modelValue="modelValue"
-    @update:modelValue="$emit('update:modelValue', $event)"
+    @update:modelValue="update($event)"
   ></v-color-picker>
 </template>

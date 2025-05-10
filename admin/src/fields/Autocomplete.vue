@@ -5,11 +5,11 @@
       'config': {type: Object, default: () => {}},
     },
 
-    emits: ['update:modelValue'],
+    emits: ['update:modelValue', 'error'],
 
     methods: {
-      validate() {
-        return this.$refs.field.validate()
+      update(value) {
+        this.$emit('update:modelValue', value)
       }
     }
   }
@@ -20,7 +20,7 @@
     :items="config.options || []"
     :placeholder="config.placeholder || ''"
     :modelValue="modelValue"
-    @update:modelValue="$emit('update:modelValue', $event)"
+    @update:modelValue="update($event)"
     density="comfortable"
     hide-details="auto"
     variant="outlined"

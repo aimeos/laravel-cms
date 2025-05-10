@@ -9,7 +9,7 @@
       'assets': {type: Array, default: () => []},
     },
 
-    emits: ['update:modelValue', 'addFile', 'removeFile'],
+    emits: ['update:modelValue', 'error', 'addFile', 'removeFile'],
 
     data() {
       return {
@@ -115,11 +115,6 @@
           this.messages.add('Error removing file', 'error')
           console.error(`dropFile(${code})`, error)
         })
-      },
-
-
-      validate() {
-        return Promise.resolve([])
       }
     },
 

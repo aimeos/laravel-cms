@@ -5,11 +5,14 @@
       'config': {type: Object, default: () => {}},
     },
 
-    emits: ['update:modelValue'],
+    emits: ['update:modelValue', 'error'],
 
     methods: {
-      validate() {
-        return this.$refs.field.validate()
+      update(value) {
+        this.$emit('update:modelValue', value)
+        this.$refs.field.validate().then(errors => {
+          this.$emit('error', errors.length > 0)
+        })
       }
     }
   }
@@ -17,15 +20,15 @@
 
 <template>
   <v-select ref="field"
+    :rules="[
+      v => !config.required || v || `Value is required`,
+    ]"
     :items="config.options || []"
     :placeholder="config.placeholder || ''"
     :multiple="config.multiple"
     :chips="config.multiple"
     :modelValue="modelValue"
-    @update:modelValue="$emit('update:modelValue', $event)"
-    :rules="[
-      v => (!config.required || !!v) || `Value is required`,
-    ]"
+    @update:modelValue="update($event)"
     density="comfortable"
     hide-details="auto"
     variant="outlined"

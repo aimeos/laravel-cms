@@ -19,7 +19,7 @@
       'assets': {type: Array, default: () => []},
     },
 
-    emits: ['update:modelValue', 'addFile', 'removeFile'],
+    emits: ['update:modelValue', 'error', 'addFile', 'removeFile'],
 
     data() {
       return {
@@ -34,6 +34,7 @@
         this.items.push({})
         this.panel.push(this.items.length - 1)
         this.$emit('update:modelValue', this.items)
+        this.validate()
       },
 
 
@@ -45,6 +46,7 @@
       remove(idx) {
         this.items.splice(idx, 1)
         this.$emit('update:modelValue', this.items)
+        this.validate()
       },
 
 
@@ -58,15 +60,13 @@
 
 
       validate() {
-        return Promise.resolve([])
-
         const rules = [
           v => (!this.config.max || this.config.max && v.length <= this.config.max) || `Maximum is ${this.config.max} items`,
           v => ((this.config.min ?? 1) && v.length >= (this.config.min ?? 1)) || `Minimum is ${this.config.min ?? 1} items`,
         ]
 
         this.errors = rules.map(rule => rule(this.items)).filter(v => v !== true)
-        return Promise.resolve(this.errors)
+        this.$emit('error', this.errors.length > 0)
       }
     },
 
@@ -119,7 +119,7 @@
   </div>
 
   <div class="btn-group">
-    <v-btn v-if="config.max && items.length < config.max" icon="mdi-view-grid-plus" @click="add()"></v-btn>
+    <v-btn v-if="config.max && +items.length < +config.max" icon="mdi-view-grid-plus" @click="add()"></v-btn>
   </div>
 </template>
 

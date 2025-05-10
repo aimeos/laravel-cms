@@ -11,7 +11,7 @@
       'config': {type: Object, default: () => {}},
     },
 
-    emits: ['update:modelValue'],
+    emits: ['update:modelValue', 'error'],
 
     methods: {
       check(v) {
@@ -27,8 +27,11 @@
       },
 
 
-      validate() {
-        return this.$refs.field.validate()
+      update(value) {
+        this.$emit('update:modelValue', value)
+        this.$refs.field.validate().then(errors => {
+          this.$emit('error', errors.length > 0)
+        })
       }
     }
   }
@@ -38,11 +41,11 @@
   <v-text-field ref="field"
     :placeholder="config.placeholder || ''"
     :rules="[
-      v => (!config.required || config.required && v) || `Value is required`,
+      v => !config.required || v || `Value is required`,
       v => check(v) || `Not a valid URL`,
     ]"
     :modelValue="modelValue"
-    @update:modelValue="$emit('update:modelValue', $event)"
+    @update:modelValue="update($event)"
     density="comfortable"
     hide-details="auto"
     variant="outlined"

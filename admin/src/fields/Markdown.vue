@@ -13,7 +13,7 @@
       'config': {type: Object, default: () => {}},
     },
 
-    emits: ['update:modelValue'],
+    emits: ['update:modelValue', 'error'],
 
     data() {
       return {
@@ -36,11 +36,6 @@
         if(this.modelValue != value) {
           this.$emit('update:modelValue', value);
         }
-      },
-
-
-      validate() {
-        return Promise.resolve([])
       }
     }
   }

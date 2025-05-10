@@ -11,11 +11,14 @@
       'config': {type: Object, default: () => {}},
     },
 
-    emits: ['update:modelValue'],
+    emits: ['update:modelValue', 'error'],
 
     methods: {
-      validate() {
-        return this.$refs.field.validate()
+      update(value) {
+        this.$emit('update:modelValue', value)
+        this.$refs.field.validate().then(errors => {
+          this.$emit('error', errors.length > 0)
+        })
       }
     }
   }
@@ -24,13 +27,13 @@
 <template>
   <v-textarea ref="field"
     :rules="[
-      v => (!config.max || v && v.length <= config.max) || `Maximum length is ${config.max} characters`,
-      v => (!config.min || v && v.length >= config.min) || `Minimum length is ${config.min} characters`
+      v => !config.min || +v?.length >= +config.min || `Minimum length is ${config.min} characters`,
+      v => !config.max || +v?.length <= +config.max || `Maximum length is ${config.max} characters`
     ]"
     :counter="config.max"
     :placeholder="config.placeholder || ''"
     :modelValue="modelValue"
-    @update:modelValue="$emit('update:modelValue', $event)"
+    @update:modelValue="update($event)"
     density="comfortable"
     hide-details="auto"
     variant="outlined"

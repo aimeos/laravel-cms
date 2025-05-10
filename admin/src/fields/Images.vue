@@ -14,7 +14,7 @@
       'assets': {type: Array, default: () => []},
     },
 
-    emits: ['update:modelValue', 'addFile', 'removeFile'],
+    emits: ['update:modelValue', 'error', 'addFile', 'removeFile'],
 
     setup() {
       const app = useAppStore()

@@ -44,6 +44,10 @@
     computed: {
       changed() {
         return Object.values(this.state).some(entry => entry)
+      },
+
+      hasErrors() {
+        return Object.values(this.errors).some(entry => entry)
       }
     },
 
@@ -246,19 +250,21 @@
         elevation="0"
       ></v-btn>
 
-      <v-btn :disabled="!changed" @click="save()" variant="text">Save</v-btn>
+      <v-btn :class="{error: hasErrors}" :disabled="!changed || hasErrors" @click="save()" variant="text">
+        Save
+      </v-btn>
 
       <v-menu v-model="pubmenu" :close-on-content-click="false">
         <template #activator="{ props }">
           <v-btn-group class="menu-publish" variant="text">
-            <v-btn class="button" :disabled="!changed" @click="publish()">Publish</v-btn>
-            <v-btn class="icon" :disabled="!changed" v-bind="props" icon="mdi-menu-down"></v-btn>
+            <v-btn :class="{error: hasErrors}" class="button" :disabled="!changed || hasErrors" @click="publish()">Publish</v-btn>
+            <v-btn :class="{error: hasErrors}" class="icon" :disabled="!changed || hasErrors" v-bind="props" icon="mdi-menu-down"></v-btn>
           </v-btn-group>
         </template>
         <div class="menu-content">
           <v-date-picker v-model="publishAt" hide-header show-adjacent-months></v-date-picker>
           <v-btn
-            :disabled="!publishAt"
+            :disabled="!publishAt || hasErrors"
             :color="publishAt ? 'primary' : ''"
             @click="publish(publishAt); pubmenu = false"
             variant="flat"

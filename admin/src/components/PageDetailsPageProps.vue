@@ -1,6 +1,5 @@
 <script>
-  import { useLanguageStore } from '../stores'
-  import { useAppStore } from '../stores'
+  import { useAppStore, useLanguageStore } from '../stores'
 
   export default {
     props: {
@@ -8,6 +7,10 @@
     },
 
     emits: ['change', 'error'],
+
+    data: () => ({
+      errors: {}
+    }),
 
     setup() {
       const languages = useLanguageStore()
@@ -28,10 +31,13 @@
     },
 
     methods: {
-      check(what) {
-        this.$refs[what].validate().then(errors => {
-          this.$emit('error', errors.length > 0)
-        })
+      check(what, focused = false) {
+        if(!focused) {
+          this.$refs[what].validate().then(errors => {
+            this.errors[what] = errors.length > 0
+            this.$emit('error', Object.values(this.errors).includes(true))
+          })
+        }
       },
 
 
@@ -90,7 +96,7 @@
           ]"
           :modelValue="item.name"
           @update:modelValue="update('name', $event)"
-          @update:focused="check('name'); updateSlug($event)"
+          @update:focused="check('name', $event); updateSlug($event)"
           variant="underlined"
           label="Page name"
           counter="30"
@@ -110,7 +116,7 @@
           ]"
           :modelValue="item.slug"
           @update:modelValue="update('slug', $event)"
-          @update:focused="check('slug')"
+          @update:focused="check('slug', $event)"
           variant="underlined"
           label="URL path"
           counter="255"
@@ -177,7 +183,7 @@
           ]"
           :modelValue="item.to"
           @update:modelValue="update('to', $event)"
-          @update:focused="check('to')"
+          @update:focused="check('to', $event)"
           variant="underlined"
           label="Redirect URL"
         ></v-text-field>

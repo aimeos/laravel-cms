@@ -1,7 +1,7 @@
 <script>
   export default {
     props: {
-      'modelValue': {type: String, default: ''},
+      'modelValue': {type: Number, default: 0},
       'config': {type: Object, default: () => {}},
     },
 

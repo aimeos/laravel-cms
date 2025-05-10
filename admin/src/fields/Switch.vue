@@ -9,7 +9,7 @@
 
     methods: {
       update(value) {
-        $emit('update:modelValue', value)
+        this.$emit('update:modelValue', value)
       }
     }
   }

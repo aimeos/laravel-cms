@@ -43,7 +43,7 @@
 <template>
   <v-navigation-drawer location="end" rail-width="220" :modelValue="state" @update:modelValue="$emit('update:state', $event)" :rail="width > 1200 ? false : true" expand-on-hover>
 
-    <v-expansion-panels variant="accordion" v-model="panel">
+    <v-expansion-panels variant="accordion" v-model="panel" multiple>
       <v-expansion-panel v-for="(items, key) in sidestore.store" :key="key" v-show="Object.keys(sidestore.store[key]).length" elevation="0">
         <v-expansion-panel-title>
           {{ key }}

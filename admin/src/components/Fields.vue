@@ -6,10 +6,11 @@
       'fields': {type: Object, required: true},
     },
 
-    emits: ['change', 'update:assets'],
+    emits: ['change', 'error', 'update:assets'],
 
     data() {
       return {
+        errors: {},
         files: this.assets,
       }
     },
@@ -27,14 +28,9 @@
       },
 
 
-      validate() {
-        const list = []
-
-        for(const cmp of (this.$refs.field || [])) {
-          list.push(cmp.validate())
-        }
-
-        return Promise.all(list)
+      error(code, value) {
+        this.errors[code] = value
+        this.$emit('error', Object.values(this.errors).includes(true))
       },
 
 
@@ -57,16 +53,16 @@
 </script>
 
 <template>
-  <div v-for="(field, code) in fields" :key="code" class="item">
+  <div v-for="(field, code) in fields" :key="code" class="item" :class="{error: errors[code]}">
     <v-label>{{ field.label || code }}</v-label>
-    <component ref="field"
-      :is="field.type?.charAt(0)?.toUpperCase() + field.type?.slice(1)"
+    <component :is="field.type?.charAt(0)?.toUpperCase() + field.type?.slice(1)"
       :config="field"
       :assets="assets"
       :modelValue="data[code]"
       @addFile="addFile($event)"
       @removeFile="removeFile($event)"
       @update:modelValue="update(code, $event)"
+      @error="error(code, $event)"
     ></component>
   </div>
 </template>

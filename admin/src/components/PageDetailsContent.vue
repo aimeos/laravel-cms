@@ -93,6 +93,12 @@
       },
 
 
+      error(el, value) {
+        el._error = value
+        this.$emit('error', this.list.some(el => el._error))
+      },
+
+
       fields(type) {
         if(!this.schemas.content[type]?.fields) {
           console.warn(`No definition of fields for "${type}" schemas`)
@@ -158,20 +164,6 @@
         this.list.forEach(el => {
           if(this.shown(el)) {
             el._checked = !el._checked
-          }
-        })
-      },
-
-
-      update(el, idx) {
-        el._changed = true
-        el._error = false
-
-        this.$refs['field'][idx].validate().then(v => {
-          for(const list of v) {
-            if(list.length > 0) {
-              el._error = true
-            }
           }
         })
       },
@@ -311,11 +303,12 @@
             </v-expansion-panel-title>
             <v-expansion-panel-text>
 
-              <Fields ref="field"
+              <Fields
                 :fields="fields(el.type)"
                 v-model:data="el.data"
                 v-model:assets="el.files"
-                @change="update(el, idx)"
+                @change="el._changed = true"
+                @error="error(el, $event)"
               />
 
             </v-expansion-panel-text>

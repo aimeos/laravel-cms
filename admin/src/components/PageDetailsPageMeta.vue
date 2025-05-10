@@ -13,7 +13,7 @@
       'item': {type: Object, required: true}
     },
 
-    emits: ['change'],
+    emits: ['change', 'error'],
 
     data: () => ({
       vschemas: false,
@@ -48,6 +48,12 @@
       },
 
 
+      error(el, value) {
+        el._error = value
+        this.$emit('error', Object.values(this.item.meta || {}).some(item => item._error))
+      },
+
+
       fields(type) {
         if(!this.schemas.meta[type]?.fields) {
           console.warn(`No definition of fields for "${type}" available`)
@@ -69,7 +75,13 @@
           .filter(v => !!v)
           .join(' - ')
           .substring(0, 50) || el.label || ''
-      }
+      },
+
+
+      update(el) {
+        el._changed = true
+        this.$emit('change', true)
+      },
     }
   }
 </script>
@@ -77,7 +89,7 @@
 <template>
   <v-expansion-panels class="list" v-model="panel" elevation="0" multiple>
 
-    <v-expansion-panel v-for="(el, code) in item?.meta || {}" :key="code" :class="{changed: el._changed}">
+    <v-expansion-panel v-for="(el, code) in item.meta || {}" :key="code" :class="{changed: el._changed, error: el._error}">
       <v-expansion-panel-title expand-icon="mdi-pencil">
         <v-btn icon="mdi-delete" variant="text" @click="remove(code)"></v-btn>
         <div class="element-title">{{ title(el) }}</div>
@@ -85,11 +97,12 @@
       </v-expansion-panel-title>
       <v-expansion-panel-text>
 
-        <Fields
+        <Fields ref="field"
           :fields="fields(el.type)"
           v-model:data="el.data"
           v-model:assets="el.files"
-          @change="el._changed = true; $emit('change', true)"
+          @change="update(el)"
+          @error="error(el, $event)"
         />
 
       </v-expansion-panel-text>
@@ -115,5 +128,9 @@
 
 .v-expansion-panel.changed {
   border-inline-start: 3px solid rgb(var(--v-theme-warning));
+}
+
+.v-expansion-panel.error .v-expansion-panel-title {
+  color: rgb(var(--v-theme-error));
 }
 </style>

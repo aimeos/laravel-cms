@@ -66,36 +66,40 @@
 
 
       publish(at = null) {
-        this.save(true)
+        this.save(true).then(valid => {
+          if(!valid) {
+            return
+          }
 
-        this.$apollo.mutate({
-          mutation: gql`mutation ($id: ID!, $at: DateTime) {
-            pubPage(id: $id, at: $at) {
-              id
+          this.$apollo.mutate({
+            mutation: gql`mutation ($id: ID!, $at: DateTime) {
+              pubPage(id: $id, at: $at) {
+                id
+              }
+            }`,
+            variables: {
+              id: this.item.id,
+              at: at?.toISOString()?.substring(0, 19)?.replace('T', ' ')
             }
-          }`,
-          variables: {
-            id: this.item.id,
-            at: at?.toISOString()?.substring(0, 19)?.replace('T', ' ')
-          }
-        }).then(response => {
-          if(response.errors) {
-            throw response.errors
-          }
+          }).then(response => {
+            if(response.errors) {
+              throw response.errors
+            }
 
-          this.item.published = true
-          this.state = {}
-          this.messages.add('Page published successfully', 'success')
-        }).catch(error => {
-          this.messages.add('Error publishing page', 'error')
-          console.error(`publishPage(id: ${this.item.id})`, error)
+            this.state = {}
+            this.item.published = true
+            this.messages.add('Page published successfully', 'success')
+          }).catch(error => {
+            this.messages.add('Error publishing page', 'error')
+            console.error(`publishPage(id: ${this.item.id})`, error)
+          })
         })
       },
 
 
       save(quite = false) {
         if(!this.changed) {
-          return
+          return Promise.resolve(true)
         }
 
         const files = []
@@ -123,50 +127,59 @@
           files.push(...(this.item.config[key].files || []))
         }
 
-        this.$apollo.mutate({
-          mutation: gql`mutation ($id: ID!, $input: PageInput!, $elements: [ID!], $files: [ID!]) {
-            savePage(id: $id, input: $input, elements: $elements, files: $files) {
-              id
+        this.validate().then(valid => {
+          if(!valid) {
+            this.messages.add('There are invalid fields, please resolve the errors first', 'error')
+            return valid
+          }
+
+          return this.$apollo.mutate({
+            mutation: gql`mutation ($id: ID!, $input: PageInput!, $elements: [ID!], $files: [ID!]) {
+              savePage(id: $id, input: $input, elements: $elements, files: $files) {
+                id
+              }
+            }`,
+            variables: {
+              id: this.item.id,
+              input: {
+                cache: this.item.cache,
+                domain: this.item.domain,
+                lang: this.item.lang,
+                name: this.item.name,
+                slug: this.item.slug,
+                status: this.item.status,
+                title: this.item.title,
+                tag: this.item.tag,
+                to: this.item.to,
+                type: this.item.type,
+                theme: this.item.theme,
+                meta: JSON.stringify(meta),
+                config: JSON.stringify(config),
+                contents: JSON.stringify(this.clean(this.contents))
+              },
+              elements: this.elements.map(entry => entry.id),
+              files: files.map(entry => entry.id),
             }
-          }`,
-          variables: {
-            id: this.item.id,
-            input: {
-              cache: this.item.cache,
-              domain: this.item.domain,
-              lang: this.item.lang,
-              name: this.item.name,
-              slug: this.item.slug,
-              status: this.item.status,
-              title: this.item.title,
-              tag: this.item.tag,
-              to: this.item.to,
-              type: this.item.type,
-              theme: this.item.theme,
-              meta: JSON.stringify(meta),
-              config: JSON.stringify(config),
-              contents: JSON.stringify(this.clean(this.contents))
-            },
-            elements: this.elements.map(entry => entry.id),
-            files: files.map(entry => entry.id),
-          }
-        }).then(response => {
-          if(response.errors) {
-            throw response.errors
-          }
+          }).then(response => {
+            if(response.errors) {
+              throw response.errors
+            }
 
-          this.item.published = false
-          this.state = {}
+            this.item.published = false
+            this.state = {}
 
-          if(!quite) {
-            this.messages.add('Page saved successfully', 'success')
-          }
-        }).catch(error => {
-          this.messages.add('Error saving page data', 'error')
-          console.error(`savePage(id: ${this.item.id})`, error)
+            if(!quite) {
+              this.messages.add('Page saved successfully', 'success')
+            }
+
+            return true
+          }).catch(error => {
+            this.messages.add('Error saving page data', 'error')
+            console.error(`savePage(id: ${this.item.id})`, error)
+          }).finally(() => {
+            this.$emit('close')
+          })
         })
-
-        this.$emit('close')
       },
 
 
@@ -180,6 +193,16 @@
         this.state = {all: changed}
         this.contents = version.contents
         this.$emit('update:item', {...version.data, id: this.item.id})
+      },
+
+
+      validate() {
+        return Promise.all([
+          this.$refs.page?.validate(),
+          this.$refs.content?.validate()
+        ].filter(v => v)).then(results => {
+          return results.every(result => result)
+        })
       }
     },
 
@@ -290,14 +313,19 @@
     <v-window v-model="tab">
 
       <v-window-item value="page">
-        <PageDetailsPage :item="item" :versions="versions"
+        <PageDetailsPage ref="page"
+          :item="item"
+          :versions="versions"
           @update:item="Object.assign(item, $event); setModified('page')"
           @error="errors.page = $event"
         />
       </v-window-item>
 
       <v-window-item value="content">
-        <PageDetailsContent :item="item" :elements="elements" :contents="contents"
+        <PageDetailsContent ref="content"
+          :item="item"
+          :elements="elements"
+          :contents="contents"
           @update:contents="contents = $event; setModified('content')"
           @update:elements="elements = $event; setModified('content')"
           @update:files="files = $event; setModified('content')"

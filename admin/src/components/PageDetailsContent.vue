@@ -46,15 +46,6 @@
     computed: {
       changed() {
         return this.list.some(el => el._changed)
-      },
-
-      isValid() {
-        for(const cmp of (this.$refs.field || [])) {
-          if(!cmp.isValid()) {
-            return false
-          }
-        }
-        return true
       }
     },
 
@@ -197,6 +188,19 @@
       },
 
 
+      validate() {
+        const list = []
+
+        this.$refs.field.forEach(field => {
+          list.push(field.validate())
+        })
+
+        return Promise.all(list).then(result => {
+          return result.every(r => r)
+        });
+      },
+
+
       visibility(type) {
         this.sidestore.show['type'] = type ? true : false
       }
@@ -303,7 +307,7 @@
             </v-expansion-panel-title>
             <v-expansion-panel-text>
 
-              <Fields
+              <Fields ref="field"
                 :fields="fields(el.type)"
                 v-model:data="el.data"
                 v-model:assets="el.files"

@@ -48,6 +48,19 @@
         this.data[code] = value
         this.$emit('change', this.data[code])
       },
+
+
+      validate() {
+        const list = []
+
+        this.$refs.field?.forEach(field => {
+          list.push(field.validate())
+        })
+
+        return Promise.all(list).then(result => {
+          return result.every(r => r)
+        });
+      }
     }
   }
 </script>
@@ -55,7 +68,8 @@
 <template>
   <div v-for="(field, code) in fields" :key="code" class="item" :class="{error: errors[code]}">
     <v-label>{{ field.label || code }}</v-label>
-    <component :is="field.type?.charAt(0)?.toUpperCase() + field.type?.slice(1)"
+    <component ref="field"
+      :is="field.type?.charAt(0)?.toUpperCase() + field.type?.slice(1)"
       :config="field"
       :assets="assets"
       :modelValue="data[code]"

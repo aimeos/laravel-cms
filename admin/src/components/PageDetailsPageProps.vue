@@ -52,6 +52,19 @@
         if(!focused && this.item.slug?.at(0) === '_') {
           this.item.slug = this.item.name?.replace(/[ ]+/g, '-')?.toLowerCase()
         }
+      },
+
+
+      validate() {
+        const list = []
+
+        Object.values(this.$refs).forEach(field => {
+          list.push(field.validate())
+        })
+
+        return Promise.all(list).then(result => {
+          return result.every(r => !r.length)
+        });
       }
     }
   }

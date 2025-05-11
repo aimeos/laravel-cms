@@ -33,6 +33,17 @@
       update(what) {
         this.changed[what] = true
         this.$emit('update:item', this.item)
+      },
+
+
+      validate() {
+        return Promise.all([
+          this.$refs.props?.validate(),
+          this.$refs.meta?.validate(),
+          this.$refs.config?.validate()
+        ].filter(v => v)).then(results => {
+          return results.every(result => result)
+        })
       }
     }
   }
@@ -51,15 +62,15 @@
         <v-window v-model="tab">
 
           <v-window-item value="details">
-            <PageDetailsPageProps :item="item" @change="update('details')" @error="error('details', $event)" />
+            <PageDetailsPageProps ref="props" :item="item" @change="update('details')" @error="error('details', $event)" />
           </v-window-item>
 
           <v-window-item value="meta">
-            <PageDetailsPageMeta :item="item" @change="update('meta')" @error="error('meta', $event)" />
+            <PageDetailsPageMeta ref="meta" :item="item" @change="update('meta')" @error="error('meta', $event)" />
           </v-window-item>
 
           <v-window-item value="config">
-            <PageDetailsPageConfig :item="item" @change="update('config')" @error="error('config', $event)" />
+            <PageDetailsPageConfig ref="config" :item="item" @change="update('config')" @error="error('config', $event)" />
           </v-window-item>
 
         </v-window>

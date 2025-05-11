@@ -82,6 +82,19 @@
         el._changed = true
         this.$emit('change', true)
       },
+
+
+      validate() {
+        const list = []
+
+        this.$refs.field?.forEach(field => {
+          list.push(field.validate())
+        })
+
+        return Promise.all(list).then(result => {
+          return result.every(r => r)
+        });
+      }
     }
   }
 </script>

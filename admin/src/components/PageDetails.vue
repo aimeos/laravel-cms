@@ -24,7 +24,7 @@
     emits: ['update:item', 'close'],
 
     data: () => ({
-      state: {},
+      changed: {},
       errors: {},
       contents: [],
       elements: [],
@@ -42,11 +42,11 @@
     },
 
     computed: {
-      changed() {
-        return Object.values(this.state).some(entry => entry)
+      hasChanged() {
+        return Object.values(this.changed).some(entry => entry)
       },
 
-      hasErrors() {
+      hasError() {
         return Object.values(this.errors).some(entry => entry)
       }
     },
@@ -86,7 +86,7 @@
               throw response.errors
             }
 
-            this.state = {}
+            this.changed = {}
             this.item.published = true
             this.messages.add('Page published successfully', 'success')
           }).catch(error => {
@@ -98,7 +98,7 @@
 
 
       save(quite = false) {
-        if(!this.changed) {
+        if(!this.hasChanged) {
           return Promise.resolve(true)
         }
 
@@ -166,7 +166,7 @@
             }
 
             this.item.published = false
-            this.state = {}
+            this.changed = {}
 
             if(!quite) {
               this.messages.add('Page saved successfully', 'success')
@@ -184,13 +184,13 @@
 
 
       setModified(what) {
-        this.state[what] = true
+        this.changed[what] = true
       },
 
 
       use(version, changed = true) {
         this.vhistory = false
-        this.state = {all: changed}
+        this.changed = {all: changed}
         this.contents = version.contents
         this.$emit('update:item', {...version.data, id: this.item.id})
       },
@@ -236,7 +236,7 @@
             throw result
           }
 
-          this.state = {}
+          this.changed = {}
           this.versions = (result.data.page.versions || []).toReversed() // latest first
           this.contents = JSON.parse(this.versions.at(0)?.contents || result.data.page.contents || '[]')
           this.elements = (this.versions.at(0)?.elements || result.data.page.elements || []).map(entry => {
@@ -273,21 +273,21 @@
         elevation="0"
       ></v-btn>
 
-      <v-btn :class="{error: hasErrors}" :disabled="!changed || hasErrors" @click="save()" variant="text">
+      <v-btn :class="{error: hasError}" :disabled="!hasChanged || hasError" @click="save()" variant="text">
         Save
       </v-btn>
 
       <v-menu v-model="pubmenu" :close-on-content-click="false">
         <template #activator="{ props }">
           <v-btn-group class="menu-publish" variant="text">
-            <v-btn :class="{error: hasErrors}" class="button" :disabled="!changed || hasErrors" @click="publish()">Publish</v-btn>
-            <v-btn :class="{error: hasErrors}" class="icon" :disabled="!changed || hasErrors" v-bind="props" icon="mdi-menu-down"></v-btn>
+            <v-btn :class="{error: hasError}" class="button" :disabled="!hasChanged || hasError" @click="publish()">Publish</v-btn>
+            <v-btn :class="{error: hasError}" class="icon" :disabled="!hasChanged || hasError" v-bind="props" icon="mdi-menu-down"></v-btn>
           </v-btn-group>
         </template>
         <div class="menu-content">
           <v-date-picker v-model="publishAt" hide-header show-adjacent-months></v-date-picker>
           <v-btn
-            :disabled="!publishAt || hasErrors"
+            :disabled="!publishAt || hasError"
             :color="publishAt ? 'primary' : ''"
             @click="publish(publishAt); pubmenu = false"
             variant="flat"
@@ -305,8 +305,8 @@
 
   <v-main>
     <v-tabs fixed-tabs v-model="tab">
-      <v-tab value="page" :class="{changed: state.page, error: errors.page}">Page</v-tab>
-      <v-tab value="content" :class="{changed: state.content, error: errors.content}">Content</v-tab>
+      <v-tab value="page" :class="{changed: changed.page, error: errors.page}">Page</v-tab>
+      <v-tab value="content" :class="{changed: changed.content, error: errors.content}">Content</v-tab>
       <v-tab value="preview">Preview</v-tab>
     </v-tabs>
 

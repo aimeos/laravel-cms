@@ -41,7 +41,7 @@
   <v-text-field ref="field"
     :placeholder="config.placeholder || ''"
     :rules="[
-      v => !config.required || v || `Value is required`,
+      v => !config.required || !!v || `Value is required`,
       v => check(v) || `Not a valid URL`,
     ]"
     :modelValue="modelValue"

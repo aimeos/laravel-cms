@@ -27,7 +27,7 @@
 <template>
   <v-date-input ref="field"
     :rules="[
-      v => !config.required || v || `Value is required`,
+      v => !config.required || !!v || `Value is required`,
     ]"
     :allowed-dates="config.allowed"
     :clearable="!config.required"

@@ -29,7 +29,7 @@
 <template>
   <v-number-input ref="field"
     :rules="[
-      v => !config.required || v || `Value is required`
+      v => !config.required || !!v || `Value is required`
     ]"
     :clearable="!config.required || true"
     :max="config.max"

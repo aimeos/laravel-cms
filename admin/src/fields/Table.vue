@@ -34,7 +34,7 @@
 <template>
   <v-textarea ref="field"
     :rules="[
-      v => !config.required || v || 'This field is required',
+      v => !config.required || !!v || 'This field is required',
       v => !config.min || +v?.split('\n')[0]?.split(';')?.length >= +config.min || `Minimum are ${config.min} columns`,
       v => check(v) || 'The number of columns is not the same in all rows',
     ]"

@@ -21,7 +21,7 @@
 <template>
   <v-select ref="field"
     :rules="[
-      v => !config.required || v || `Value is required`,
+      v => !config.required || !!v || `Value is required`,
     ]"
     :items="config.options || []"
     :placeholder="config.placeholder || ''"

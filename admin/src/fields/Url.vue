@@ -21,7 +21,7 @@
           return 'Invalid URL schema configuration'
         }
 
-        return v || this.config.required
+        return v
           ? (new RegExp(`^(${allowed.join('|')})://([^\\s/:@]+(:[^\\s/:@]+)?@)?([0-9a-z]+(\\.|-))*[0-9a-z]+\\.[a-z]{2,}(:[0-9]{1,5})?(/[^\\s]*)*$`)).test(v)
           : true
       },
@@ -29,8 +29,14 @@
 
       update(value) {
         this.$emit('update:modelValue', value)
-        this.$refs.field.validate().then(errors => {
+        this.validate()
+      },
+
+
+      validate() {
+        return this.$refs.field.validate().then(errors => {
           this.$emit('error', errors.length > 0)
+          return !errors.length
         })
       }
     }
@@ -46,6 +52,7 @@
     ]"
     :modelValue="modelValue"
     @update:modelValue="update($event)"
+    @update:focused="validate()"
     density="comfortable"
     hide-details="auto"
     variant="outlined"

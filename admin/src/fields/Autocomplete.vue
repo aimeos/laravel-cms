@@ -10,6 +10,15 @@
     methods: {
       update(value) {
         this.$emit('update:modelValue', value)
+        this.validate()
+      },
+
+
+      validate() {
+        return this.$refs.field.validate().then(errors => {
+          this.$emit('error', errors.length > 0)
+          return !errors.length
+        })
       }
     }
   }
@@ -17,10 +26,14 @@
 
 <template>
   <v-autocomplete ref="field"
+    :rules="[
+      v => !config.required || !!v || `Value is required`,
+    ]"
     :items="config.options || []"
     :placeholder="config.placeholder || ''"
     :modelValue="modelValue"
     @update:modelValue="update($event)"
+    @update:focused="validate()"
     density="comfortable"
     hide-details="auto"
     variant="outlined"

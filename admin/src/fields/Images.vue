@@ -156,7 +156,7 @@
 
 
       validate() {
-        return Promise.resolve([])
+        return Promise.resolve(true)
       }
     },
 

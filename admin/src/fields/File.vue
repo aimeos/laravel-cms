@@ -111,10 +111,19 @@
 
           this.$emit('removeFile', id)
           this.$emit('update:modelValue', null)
+          this.validate()
         }).catch(error => {
           this.messages.add('Error removing file', 'error')
           console.error(`dropFile(${code})`, error)
         })
+      },
+
+
+      validate() {
+        const result = !this.config.required || this.file.path ? true : false
+
+        this.$emit('error', result)
+        return Promise.resolve(result)
       }
     },
 

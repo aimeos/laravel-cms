@@ -10,6 +10,11 @@
     methods: {
       update(value) {
         this.$emit('update:modelValue', value)
+      },
+
+
+      validate() {
+        return Promise.resolve(true)
       }
     }
   }

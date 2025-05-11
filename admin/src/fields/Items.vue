@@ -67,6 +67,8 @@
 
         this.errors = rules.map(rule => rule(this.items)).filter(v => v !== true)
         this.$emit('error', this.errors.length > 0)
+
+        return Promise.resolve(!this.errors.length)
       }
     },
 

@@ -183,7 +183,13 @@
       },
 
 
-      setModified(what) {
+      update(what, value) {
+        if(what === 'page') {
+          Object.assign(this.item, value)
+        } else {
+          this[what] = value
+        }
+
         this.changed[what] = true
       },
 
@@ -316,7 +322,7 @@
         <PageDetailsPage ref="page"
           :item="item"
           :versions="versions"
-          @update:item="Object.assign(item, $event); setModified('page')"
+          @update:item="update(page, $event)"
           @error="errors.page = $event"
         />
       </v-window-item>
@@ -326,9 +332,9 @@
           :item="item"
           :elements="elements"
           :contents="contents"
-          @update:contents="contents = $event; setModified('content')"
-          @update:elements="elements = $event; setModified('content')"
-          @update:files="files = $event; setModified('content')"
+          @update:contents="update('contents', $event)"
+          @update:elements="update('elements', $event)"
+          @update:files="update('files', $event)"
           @error="errors.content = $event"
         />
       </v-window-item>

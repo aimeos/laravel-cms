@@ -155,8 +155,8 @@
       },
 
 
-      validate() {
-        return Promise.resolve(true)
+      async validate() {
+        return await true
       }
     },
 

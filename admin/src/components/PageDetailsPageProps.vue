@@ -31,16 +31,6 @@
     },
 
     methods: {
-      check(what, focused = false) {
-        if(!focused) {
-          this.$refs[what].validate().then(errors => {
-            this.errors[what] = errors.length > 0
-            this.$emit('error', Object.values(this.errors).includes(true))
-          })
-        }
-      },
-
-
       reset() {
         this.errors = {}
       },
@@ -49,7 +39,7 @@
       update(what, value) {
         this.item[what] = value
         this.$emit('change', true)
-        this.check(what)
+        this.validate()
       },
 
 
@@ -60,7 +50,8 @@
       },
 
 
-      validate() {
+      async validate() {
+        await this.$nextTick()
         const list = []
 
         Object.values(this.$refs).forEach(field => {
@@ -68,7 +59,9 @@
         })
 
         return Promise.all(list).then(result => {
-          return result.every(r => !r.length)
+          const res = result.every(r => !r.length)
+          this.$emit('error', !res)
+          return res
         });
       }
     }
@@ -110,11 +103,11 @@
       <v-col cols="12" md="6">
         <v-text-field ref="name"
           :rules="[
-            v => +v?.length > 0 || `The field is required`,
+            v => !!v || `The field is required`,
           ]"
           :modelValue="item.name"
           @update:modelValue="update('name', $event)"
-          @update:focused="check('name', $event); updateSlug($event)"
+          @update:focused="updateSlug($event)"
           variant="underlined"
           label="Page name"
           counter="30"
@@ -130,11 +123,10 @@
       <v-col cols="12" md="6">
         <v-text-field ref="slug"
           :rules="[
-            v => +v?.length > 0 || `The field is required`,
+            v => !!v || `The field is required`,
           ]"
           :modelValue="item.slug"
           @update:modelValue="update('slug', $event)"
-          @update:focused="check('slug', $event)"
           variant="underlined"
           label="URL path"
           counter="255"
@@ -201,7 +193,6 @@
           ]"
           :modelValue="item.to"
           @update:modelValue="update('to', $event)"
-          @update:focused="check('to', $event)"
           variant="underlined"
           label="Redirect URL"
         ></v-text-field>

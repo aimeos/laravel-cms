@@ -27,11 +27,12 @@
       },
 
 
-      validate() {
-        return this.$refs.field.validate().then(errors => {
-          this.$emit('error', errors.length > 0)
-          return !errors.length
-        })
+      async validate() {
+        await this.$nextTick()
+        const errors = await this.$refs.field.validate()
+
+        this.$emit('error', errors.length > 0)
+        return !errors.length
       }
     }
   }
@@ -48,7 +49,6 @@
     :placeholder="config.placeholder || `val;val;val\nval;val;val`"
     :modelValue="modelValue"
     @update:modelValue="update($event)"
-    @update:focused="validate()"
     variant="outlined"
     hide-details="auto"
     density="comfortable"

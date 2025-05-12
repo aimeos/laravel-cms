@@ -59,7 +59,7 @@
       },
 
 
-      validate() {
+      async validate() {
         const rules = [
           v => (!this.config.max || this.config.max && v.length <= this.config.max) || `Maximum is ${this.config.max} items`,
           v => ((this.config.min ?? 1) && v.length >= (this.config.min ?? 1)) || `Minimum is ${this.config.min ?? 1} items`,
@@ -68,7 +68,7 @@
         this.errors = rules.map(rule => rule(this.items)).filter(v => v !== true)
         this.$emit('error', this.errors.length > 0)
 
-        return Promise.resolve(!this.errors.length)
+        return await !this.errors.length
       }
     },
 

@@ -20,11 +20,12 @@
       },
 
 
-      validate() {
-        return this.$refs.field.validate().then(errors => {
-          this.$emit('error', errors.length > 0)
-          return !errors.length
-        })
+      async validate() {
+        await this.$nextTick()
+        const errors = await this.$refs.field.validate()
+
+        this.$emit('error', errors.length > 0)
+        return !errors.length
       }
     }
   }
@@ -40,7 +41,6 @@
     ]"
     :modelValue="modelValue"
     @update:modelValue="update($event)"
-    @update:focused="validate()"
     density="comfortable"
     hide-details="auto"
     variant="outlined"

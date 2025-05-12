@@ -119,11 +119,11 @@
       },
 
 
-      validate() {
+      async validate() {
         const result = !this.config.required || this.file.path ? true : false
 
         this.$emit('error', result)
-        return Promise.resolve(result)
+        return await result
       }
     },
 

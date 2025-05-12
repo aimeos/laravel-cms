@@ -110,35 +110,35 @@
           return Promise.resolve(true)
         }
 
-        const files = []
-        for(const entry of (this.contents || [])) {
-          files.push(...(entry.files || []))
-        }
-
-        const meta = {}
-        for(const key in (this.item.meta || {})) {
-          meta[key] = {
-            type: this.item.meta[key].type || '',
-            data: this.item.meta[key].data || {},
-            files: this.item.meta[key].files || [],
-          }
-          files.push(...(this.item.meta[key].files || []))
-        }
-
-        const config = {}
-        for(const key in (this.item.config || {})) {
-          config[key] = {
-            type: this.item.config[key].type || '',
-            data: this.item.config[key].data || {},
-            files: this.item.config[key].files || [],
-          }
-          files.push(...(this.item.config[key].files || []))
-        }
-
         this.validate().then(valid => {
           if(!valid) {
             this.messages.add('There are invalid fields, please resolve the errors first', 'error')
             return valid
+          }
+
+          const files = []
+          for(const entry of (this.contents || [])) {
+            files.push(...(entry.files || []))
+          }
+
+          const meta = {}
+          for(const key in (this.item.meta || {})) {
+            meta[key] = {
+              type: this.item.meta[key].type || '',
+              data: this.item.meta[key].data || {},
+              files: this.item.meta[key].files || [],
+            }
+            files.push(...(this.item.meta[key].files || []))
+          }
+
+          const config = {}
+          for(const key in (this.item.config || {})) {
+            config[key] = {
+              type: this.item.config[key].type || '',
+              data: this.item.config[key].data || {},
+              files: this.item.config[key].files || [],
+            }
+            files.push(...(this.item.config[key].files || []))
           }
 
           return this.$apollo.mutate({
@@ -213,7 +213,7 @@
       validate() {
         return Promise.all([
           this.$refs.page?.validate(),
-          this.$refs.content?.validate()
+          this.$refs.contents?.validate()
         ].filter(v => v)).then(results => {
           return results.every(result => result)
         })
@@ -320,7 +320,7 @@
   <v-main>
     <v-tabs fixed-tabs v-model="tab">
       <v-tab value="page" :class="{changed: changed.page, error: errors.page}">Page</v-tab>
-      <v-tab value="content" :class="{changed: changed.content, error: errors.content}">Content</v-tab>
+      <v-tab value="contents" :class="{changed: changed.contents, error: errors.contents}">Content</v-tab>
       <v-tab value="preview">Preview</v-tab>
     </v-tabs>
 
@@ -330,20 +330,20 @@
         <PageDetailsPage ref="page"
           :item="item"
           :versions="versions"
-          @update:item="update(page, $event)"
+          @update:item="update('page', $event)"
           @error="errors.page = $event"
         />
       </v-window-item>
 
-      <v-window-item value="content">
-        <PageDetailsContent ref="content"
+      <v-window-item value="contents">
+        <PageDetailsContent ref="contents"
           :item="item"
           :elements="elements"
           :contents="contents"
           @update:contents="update('contents', $event)"
           @update:elements="update('elements', $event)"
           @update:files="update('files', $event)"
-          @error="errors.content = $event"
+          @error="errors.contents = $event"
         />
       </v-window-item>
 

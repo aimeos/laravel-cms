@@ -199,7 +199,7 @@
       validate() {
         const list = []
 
-        this.$refs.field.forEach(field => {
+        this.$refs.field?.forEach(field => {
           list.push(field.validate())
         })
 

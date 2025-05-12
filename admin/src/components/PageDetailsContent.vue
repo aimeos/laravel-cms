@@ -125,6 +125,14 @@
       },
 
 
+      reset() {
+        for(const el of this.list) {
+          delete el._changed
+          delete el._error
+        }
+      },
+
+
       search(term) {
         this.list.forEach(el => {
           el._hide = term !== '' && !JSON.stringify(el).toLocaleLowerCase().includes(term)

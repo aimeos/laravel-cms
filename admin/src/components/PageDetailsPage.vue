@@ -30,6 +30,16 @@
       },
 
 
+      reset() {
+        this.changed = {}
+        this.errors = {}
+
+        this.$refs.props?.reset()
+        this.$refs.meta?.reset()
+        this.$refs.config?.reset()
+      },
+
+
       update(what) {
         this.changed[what] = true
         this.$emit('update:item', this.item)

@@ -86,7 +86,6 @@
               throw response.errors
             }
 
-            this.changed = {}
             this.item.published = true
             this.messages.add('Page published successfully', 'success')
           }).catch(error => {
@@ -94,6 +93,15 @@
             console.error(`publishPage(id: ${this.item.id})`, error)
           })
         })
+      },
+
+
+      reset() {
+        this.changed = {}
+        this.errors = {}
+
+        this.$refs.page?.reset()
+        this.$refs.contents?.reset()
       },
 
 
@@ -166,7 +174,7 @@
             }
 
             this.item.published = false
-            this.changed = {}
+            this.reset()
 
             if(!quite) {
               this.messages.add('Page saved successfully', 'success')
@@ -242,7 +250,7 @@
             throw result
           }
 
-          this.changed = {}
+          this.reset()
           this.versions = (result.data.page.versions || []).toReversed() // latest first
           this.contents = JSON.parse(this.versions.at(0)?.contents || result.data.page.contents || '[]')
           this.elements = (this.versions.at(0)?.elements || result.data.page.elements || []).map(entry => {

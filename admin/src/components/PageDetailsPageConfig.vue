@@ -69,6 +69,14 @@
       },
 
 
+      reset() {
+        Object.values(this.item.config || {}).forEach(el => {
+          delete el._changed
+          delete el._error
+        })
+      },
+
+
       title(el) {
         return Object.values(el.data || {})
           .map(v => v && typeof v !== 'object' && typeof v !== 'boolean' ? v : null)

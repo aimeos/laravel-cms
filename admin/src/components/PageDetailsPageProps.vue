@@ -41,6 +41,11 @@
       },
 
 
+      reset() {
+        this.errors = {}
+      },
+
+
       update(what, value) {
         this.item[what] = value
         this.$emit('change', true)

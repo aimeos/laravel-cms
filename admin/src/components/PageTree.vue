@@ -729,7 +729,7 @@
       filter: {
         deep: true,
         handler() {
-          if(this.filter.value && this.filter.value.length > 1) {
+          if(this.filter && this.filter.length > 1) {
             this.pages = []
             this.loading = true
 
@@ -741,7 +741,7 @@
             return
           }
 
-          if(!this.filter.value) {
+          if(!this.filter) {
             this.pages = []
             this.loading = true
 
@@ -959,10 +959,10 @@
           Loading
           <svg class="spinner" width="32" height="32" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle class="spin1" cx="4" cy="12" r="3"/><circle class="spin1 spin2" cx="12" cy="12" r="3"/><circle class="spin1 spin3" cx="20" cy="12" r="3"/></svg>
         </p>
-        <p v-if="!loading && filter.value && !pages.length" class="notfound">
+        <p v-if="!loading && filter && !pages.length" class="notfound">
           No pages found
         </p>
-        <v-btn v-if="!loading && !filter.value && !pages.length" color="primary" icon="mdi-folder-plus" @click="add()"></v-btn>
+        <v-btn v-if="!loading && !filter && !pages.length" color="primary" icon="mdi-folder-plus" @click="add()"></v-btn>
       </v-sheet>
     </v-container>
   </v-main>

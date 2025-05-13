@@ -72,7 +72,7 @@ final class Query
     public function searchPages( $rootValue, array $args ) : \Kalnoy\Nestedset\QueryBuilder
     {
         $value = $args['filter'] ?? '';
-        $fields = ['domain', 'editor', 'name', 'slug', 'tag', 'theme', 'title', 'to', 'type'];
+        $fields = ['config', 'domain', 'editor', 'meta', 'name', 'slug', 'tag', 'theme', 'title', 'to', 'type'];
 
         $limit = (int) ( $args['first'] ?? 100 );
         $builder = Page::withTrashed()

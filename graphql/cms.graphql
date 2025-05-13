@@ -27,6 +27,12 @@ extend type Query {
     @canModel(ability: "view", model: "\\Aimeos\\Cms\\Models\\Page")
     @softDeletes
 
+  "Get pages by filter and language (optional)"
+  pagesearch(field: String!, value: String!, lang: String): [Page!]
+    @paginate(builder: "\\Aimeos\\Cms\\GraphQL\\Query@searchPages", defaultCount: 100)
+    @canModel(ability: "view", model: "\\Aimeos\\Cms\\Models\\Page")
+    @softDeletes
+
   "Get element item by ID"
   element(id: ID! @eq): Element
     @canModel(ability: "view", model: "\\Aimeos\\Cms\\Models\\Element")

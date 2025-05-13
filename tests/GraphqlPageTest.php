@@ -205,6 +205,63 @@ class GraphqlPageTest extends TestAbstract
     }
 
 
+    public function testPageSearch()
+    {
+        $this->seed( CmsSeeder::class );
+
+        $pages = Page::where('tag', 'root')->get();
+        $expected = [];
+
+        foreach( $pages as $page )
+        {
+            $attr = collect($page->getAttributes())->except(['tenant_id', '_lft', '_rgt'])->all();
+            $expected[] = ['id' => (string) $page->id] + $attr;
+        }
+
+        $this->expectsDatabaseQueryCount( 2 );
+        $response = $this->actingAs( $this->user )->graphQL( '{
+            pagesearch(field: "tag", value: "root", first: 10, page: 1) {
+                data {
+                    id
+                    parent_id
+                    lang
+                    slug
+                    name
+                    title
+                    domain
+                    to
+                    tag
+                    type
+                    theme
+                    meta
+                    config
+                    contents
+                    status
+                    cache
+                    editor
+                    created_at
+                    updated_at
+                    deleted_at
+                }
+                paginatorInfo {
+                    currentPage
+                    lastPage
+                }
+            }
+        }' )->assertJson( [
+            'data' => [
+                'pagesearch' => [
+                    'data' => $expected,
+                    'paginatorInfo' => [
+                        'currentPage' => 1,
+                        'lastPage' => 1,
+                    ]
+                ],
+            ]
+        ] );
+    }
+
+
     public function testPageParent()
     {
         $this->seed( CmsSeeder::class );

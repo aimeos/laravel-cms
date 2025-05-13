@@ -20,10 +20,16 @@ final class SaveFile
         $file = File::withTrashed()->findOrFail( $args['id'] );
         $file->editor = Auth::user()?->name ?? request()->ip();
 
-        if( !empty( $preview = $args['preview'] ) && str_starts_with( $preview->getClientMimeType(), 'image/' ) ) {
+        $preview = $args['preview'] ?? null;
+
+        if( $preview === false ) {
+            $file->previews = (object) $this->remove( (array) $file->previews );
+        }
+
+        if( !empty( $preview ) && $preview instanceof UploadedFile && $preview->isValid()
+            && str_starts_with( $preview->getClientMimeType(), 'image/' )
+        ) {
             $file->previews = (object) $this->create( $preview );
-        } else {
-            $this->remove( $file->previews );
         }
 
         $file->fill( $args['input'] ?? [] )->save();
@@ -86,17 +92,21 @@ final class SaveFile
      * Removes the preview images
      *
      * @param array $previews List of preview image paths with image widths as keys
+     * @return array List of preview image paths which haven't been removed
      */
-    protected function remove( array $previews ) : void
+    protected function remove( array $previews ) : array
     {
         $disk = Storage::disk( config( 'cms.disk', 'public' ) );
         $dir = rtrim( 'cms/' . \Aimeos\Cms\Tenancy::value(), '/' );
 
-        foreach( $previews as $path )
+        foreach( $previews as $key => $path )
         {
             if( str_starts_with( $path, $dir ) ) {
                 $disk->delete( $path );
+                unset( $previews[$key] );
             }
         }
+
+        return $previews;
     }
 }

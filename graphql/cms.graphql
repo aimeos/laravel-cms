@@ -4,6 +4,8 @@ scalar Upload @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Upload
 "JSON data type for JSON strings with arbitrary data"
 scalar JSON @scalar(class: "MLL\\GraphQLScalars\\JSON")
 
+union RemoveableUpload = Upload | Boolean
+
 extend type User {
     "CMS editor capability"
     cmseditor: Int!
@@ -117,7 +119,7 @@ extend type Mutation {
     @canModel(ability: "add", model: "\\Aimeos\\Cms\\Models\\File")
 
   "Update an existing file"
-  saveFile(id: ID!, input: FileInput!, preview: Upload): File
+  saveFile(id: ID!, input: FileInput!, preview: RemoveableUpload): File
     @canModel(ability: "save", model: "\\Aimeos\\Cms\\Models\\File")
 
   "Delete an existing file"

@@ -11,8 +11,7 @@
     },
 
     props: {
-      'item': {type: Object, required: true},
-      'versions': {type: Array, default: () => []}
+      'item': {type: Object, required: true}
     },
 
     emits: ['update:item', 'error'],

@@ -28,7 +28,7 @@
       errors: {},
       contents: [],
       elements: [],
-      versions: [],
+      latest: null,
       publishAt: null,
       pubmenu: null,
       nav: null,
@@ -161,8 +161,8 @@
                 to: this.item.to,
                 type: this.item.type,
                 theme: this.item.theme,
-                meta: JSON.stringify(meta),
-                config: JSON.stringify(config),
+                meta: JSON.stringify(this.clean(meta)),
+                config: JSON.stringify(this.clean(config)),
                 contents: JSON.stringify(this.clean(this.contents))
               },
               elements: this.elements.map(entry => entry.id),
@@ -202,11 +202,14 @@
       },
 
 
-      use(version, changed = true) {
-        this.vhistory = false
-        this.changed = {all: changed}
+      use(version) {
+        Object.assign(this.item, version.data)
         this.contents = version.contents
-        this.$emit('update:item', {...version.data, id: this.item.id})
+
+        this.changed['contents'] = true
+        this.changed['page'] = true
+
+        this.vhistory = false
       },
 
 
@@ -217,6 +220,40 @@
         ].filter(v => v)).then(results => {
           return results.every(result => result)
         })
+      },
+
+
+      versions(id) {
+        if(!id) {
+          return Promise.resolve([])
+        }
+
+        return this.$apollo.query({
+          query: gql`query($id: ID!) {
+            page(id: $id) {
+              id
+              versions {
+                published
+                data
+                contents
+                editor
+                created_at
+              }
+            }
+          }`,
+          variables: {
+            id: id
+          }
+        }).then(result => {
+          if(result.errors || !result.data.page) {
+            throw result
+          }
+
+          return result.data.page.versions || []
+        }).catch(error => {
+          this.messages.add('Error fetching page versions', 'error')
+          console.error(`pageversion(id: ${id})`, error)
+        })
       }
     },
 
@@ -225,6 +262,7 @@
         this.$apollo.query({
           query: gql`query($id: ID!) {
             page(id: $id) {
+              id
               contents
               elements {
                 id
@@ -233,12 +271,19 @@
                 editor
                 updated_at
               }
-              versions {
+              latest {
                 published
                 data
                 contents
                 editor
                 created_at
+                elements {
+                  id
+                  type
+                  data
+                  editor
+                  updated_at
+                }
               }
             }
           }`,
@@ -251,9 +296,9 @@
           }
 
           this.reset()
-          this.versions = (result.data.page.versions || []).toReversed() // latest first
-          this.contents = JSON.parse(this.versions.at(0)?.contents || result.data.page.contents || '[]')
-          this.elements = (this.versions.at(0)?.elements || result.data.page.elements || []).map(entry => {
+          this.latest = result.data.page.latest
+          this.contents = JSON.parse(this.latest?.contents || result.data.page.contents || '[]')
+          this.elements = (this.latest?.elements || result.data.page.elements || []).map(entry => {
             return {...entry, data: JSON.parse(entry.data || '{}')}
           })
         }).catch(error => {
@@ -282,7 +327,7 @@
 
     <template v-slot:append>
       <v-btn icon="mdi-history"
-        :class="{hidden: !versions.length}"
+        :class="{hidden: !hasChanged && !latest}"
         @click="vhistory = true"
         elevation="0"
       ></v-btn>
@@ -329,7 +374,6 @@
       <v-window-item value="page">
         <PageDetailsPage ref="page"
           :item="item"
-          :versions="versions"
           @update:item="update('page', $event)"
           @error="errors.page = $event"
         />
@@ -359,26 +403,28 @@
   <Teleport to="body">
     <v-dialog v-model="vhistory" scrollable width="auto">
       <History
-        :data="{
-          cache: item.cache,
-          domain: item.domain,
-          lang: item.lang,
-          name: item.name,
-          slug: item.slug,
-          status: item.status,
-          title: item.title,
-          tag: item.tag,
-          to: item.to,
-          type: item.type,
-          theme: item.theme,
-          meta: clean(item.meta),
-          config: clean(item.config),
+        :current="{
+          data: {
+            cache: item.cache,
+            domain: item.domain,
+            lang: item.lang,
+            name: item.name,
+            slug: item.slug,
+            status: item.status,
+            title: item.title,
+            tag: item.tag,
+            to: item.to,
+            type: item.type,
+            theme: item.theme,
+            meta: clean(item.meta),
+            config: clean(item.config)
+          },
+          contents: clean(contents),
         }"
-        :contents="clean(contents)"
-        :versions="versions"
+        :load="() => versions(item.id)"
         @use="use($event)"
-        @revert="use($event, false)"
-        @hide="vhistory = false"
+        @revert="use($event); reset()"
+        @close="vhistory = false"
       />
     </v-dialog>
   </Teleport>

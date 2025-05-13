@@ -25,6 +25,7 @@
         pages: [],
         trash: false,
         loading: true,
+        filter: '',
       }
     },
 
@@ -37,6 +38,8 @@
     },
 
     created() {
+      this.search = this.debounce(this.search, 500)
+
       this.fetch().then(result => {
         this.pages = result.data
         this.loading = false
@@ -141,6 +144,27 @@
       },
 
 
+      debounce(func, delay) {
+        let timer
+
+        return function(...args) {
+          return new Promise((resolve, reject) => {
+            const context = this
+
+            clearTimeout(timer)
+            timer = setTimeout(() => {
+              try {
+                let output = func.apply(context, args)
+                resolve(output)
+              } catch (error) {
+                reject(error)
+              }
+            }, delay)
+          })
+        }
+      },
+
+
       drop(stat) {
         const list = stat ? [stat] : this.$refs.tree.statsFlat.filter(stat => {
           return stat.check && stat.data.id
@@ -226,29 +250,7 @@
             throw result.errors
           }
 
-          const pages = result.data.pages.data.map(entry => {
-            const item = entry.latest?.data ? JSON.parse(entry.latest?.data) : {
-              ...entry,
-              meta: JSON.parse(entry.meta || '{}'),
-              config: JSON.parse(entry.config || '{}'),
-            }
-
-            return Object.assign(item, {
-              id: entry.id,
-              has: entry.has,
-              parent_id: entry.parent_id,
-              deleted_at: entry.deleted_at,
-              updated_at: entry.latest?.created_at || entry.updated_at,
-              editor: entry.latest?.editor || entry.editor,
-              published: entry.latest?.published ?? true,
-            })
-          })
-
-          return {
-            data: pages,
-            currentPage: result.data.pages.paginatorInfo.currentPage,
-            lastPage: result.data.pages.paginatorInfo.lastPage
-          }
+          return this.transform(result.data.pages)
         }).catch(error => {
           this.messages.add('Error fetching pages', 'error')
           console.error(`pages()`, error)
@@ -543,6 +545,62 @@
       },
 
 
+      search(filter, page = 1, limit = 100) {
+        return this.$apollo.query({
+          query: gql`query($filter: String!, $lang: String, $limit: Int!, $page: Int!) {
+            pagesearch(filter: $filter, lang: $lang, first: $limit, page: $page) {
+              data {
+                id
+                parent_id
+                lang
+                slug
+                domain
+                name
+                title
+                to
+                tag
+                type
+                theme
+                meta
+                config
+                status
+                cache
+                editor
+                updated_at
+                deleted_at
+                has
+                latest {
+                  published
+                  data
+                  editor
+                  created_at
+                }
+              }
+              paginatorInfo {
+                currentPage
+                lastPage
+              }
+            }
+          }`,
+          variables: {
+            lang: this.languages.current,
+            filter: filter,
+            page: page,
+            limit: limit
+          }
+        }).then(result => {
+          if(result.errors) {
+            throw result.errors
+          }
+
+          return this.transform(result.data.pagesearch)
+        }).catch(error => {
+          this.messages.add('Error searching for pages', 'error')
+          console.error(`pagesearch()`, error)
+        })
+      },
+
+
       show(what = null) {
         if(what === null) {
           this.menu = {}
@@ -610,6 +668,33 @@
       },
 
 
+      transform(result) {
+        const pages = result.data.map(entry => {
+          const item = entry.latest?.data ? JSON.parse(entry.latest?.data) : {
+            ...entry,
+            meta: JSON.parse(entry.meta || '{}'),
+            config: JSON.parse(entry.config || '{}'),
+          }
+
+          return Object.assign(item, {
+            id: entry.id,
+            has: entry.has,
+            parent_id: entry.parent_id,
+            deleted_at: entry.deleted_at,
+            updated_at: entry.latest?.created_at || entry.updated_at,
+            editor: entry.latest?.editor || entry.editor,
+            published: entry.latest?.published ?? true,
+          })
+        })
+
+        return {
+          data: pages,
+          currentPage: result.paginatorInfo.currentPage,
+          lastPage: result.paginatorInfo.lastPage
+        }
+      },
+
+
       trashed(val) {
         this.trash = val
 
@@ -639,6 +724,35 @@
           .replaceAll('//', '/').replace(':/', '://')
       }
     },
+
+    watch: {
+      filter: {
+        deep: true,
+        handler() {
+          if(this.filter.value && this.filter.value.length > 1) {
+            this.pages = []
+            this.loading = true
+
+            this.search(this.filter).then(result => {
+              this.pages = result.data
+              this.loading = false
+            })
+
+            return
+          }
+
+          if(!this.filter.value) {
+            this.pages = []
+            this.loading = true
+
+            this.fetch().then(result => {
+              this.pages = result.data
+              this.loading = false
+            })
+          }
+        }
+      }
+    }
   }
 </script>
 
@@ -693,9 +807,16 @@
             </v-list>
           </v-menu>
 
-          <!-- v-text-field prepend-inner-icon="mdi-magnify" label="Search" variant="underlined" class="search"
-            clearable hide-details>
-          </v-text-field -->
+          <div class="search">
+            <v-text-field
+              v-model="filter"
+              prepend-inner-icon="mdi-magnify"
+              variant="underlined"
+              label="Search for"
+              hide-details
+              clearable
+            ></v-text-field>
+          </div>
 
           <v-menu v-if="Object.keys(languages.available).length">
             <template #activator="{ props }">
@@ -838,7 +959,10 @@
           Loading
           <svg class="spinner" width="32" height="32" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle class="spin1" cx="4" cy="12" r="3"/><circle class="spin1 spin2" cx="12" cy="12" r="3"/><circle class="spin1 spin3" cx="20" cy="12" r="3"/></svg>
         </p>
-        <v-btn v-if="!loading && !pages.length" color="primary" icon="mdi-folder-plus" @click="add()"></v-btn>
+        <p v-if="!loading && filter.value && !pages.length" class="notfound">
+          No pages found
+        </p>
+        <v-btn v-if="!loading && !filter.value && !pages.length" color="primary" icon="mdi-folder-plus" @click="add()"></v-btn>
       </v-sheet>
     </v-container>
   </v-main>
@@ -853,9 +977,22 @@
     margin-bottom: 1rem;
   }
 
-  .v-input.search {
+  .search {
+    display: flex;
+    flex-grow: 1;
     width: 100%;
+    margin: auto;
     order: 3;
+  }
+
+  .search .v-select {
+    max-width: 10rem;
+    margin: 0 0.5rem;
+  }
+
+  .search .v-text-field {
+    min-width: 7.5rem;
+    margin: 0 0.5rem;
   }
 
   .draft {
@@ -939,10 +1076,10 @@
     text-decoration: line-through;
   }
 
-  .loading {
+  .loading,
+  .notfound {
     display: flex;
     align-items: center;
-    margin-inline-start: 30px;
   }
 
   .loading .spinner {
@@ -950,12 +1087,11 @@
     color: #808080;
   }
 
-  @media (min-width: 500px) {
-    .v-input.search {
-      max-width: 30rem;
-      margin: 0 1rem;
-      width: unset;
+  @media (min-width: 600px) {
+    .search {
       order: unset;
+      width: unset;
+      max-width: 30rem;
     }
     .tree-node-inner {
       padding: 0.25rem 0;

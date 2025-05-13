@@ -220,7 +220,7 @@ class GraphqlPageTest extends TestAbstract
 
         $this->expectsDatabaseQueryCount( 2 );
         $response = $this->actingAs( $this->user )->graphQL( '{
-            pagesearch(field: "tag", value: "root", first: 10, page: 1) {
+            pagesearch(filter: "root", first: 10, page: 1) {
                 data {
                     id
                     parent_id

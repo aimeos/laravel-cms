@@ -71,16 +71,15 @@ final class Query
      */
     public function searchPages( $rootValue, array $args ) : \Kalnoy\Nestedset\QueryBuilder
     {
-        $field = $args['field'] ?? null;
+        $value = $args['filter'] ?? '';
         $fields = ['domain', 'editor', 'name', 'slug', 'tag', 'theme', 'title', 'to', 'type'];
-
-        if( !in_array( $args['field'] ?? null, $fields ) ) {
-            throw new \InvalidArgumentException( 'Invalid field name' );
-        }
 
         $limit = (int) ( $args['first'] ?? 100 );
         $builder = Page::withTrashed()
-            ->where( $field, 'like', ($args['value'] ?? '') . '%' )
+            ->whereAny( $fields, 'like', '%' . $value . '%' )
+            ->orWhereHas('versions', function (Builder $query) use ( $value ) {
+                $query->where('data', 'like', '%' . $value . '%');
+            })
             ->skip( max( ( $args['page'] ?? 1 ) - 1, 0 ) * $limit )
             ->take( min( max( $limit, 1 ), 100 ) );
 

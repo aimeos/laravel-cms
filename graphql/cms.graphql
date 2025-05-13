@@ -28,7 +28,7 @@ extend type Query {
     @softDeletes
 
   "Get pages by filter and language (optional)"
-  pagesearch(field: String!, value: String!, lang: String): [Page!]
+  pagesearch(filter: String!, lang: String): [Page!]
     @paginate(builder: "\\Aimeos\\Cms\\GraphQL\\Query@searchPages", defaultCount: 100)
     @canModel(ability: "view", model: "\\Aimeos\\Cms\\Models\\Page")
     @softDeletes

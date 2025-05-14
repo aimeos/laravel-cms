@@ -61,7 +61,7 @@
             :src="url(file.path)"
             :srcset="srcset(file.previews)"
           ></v-img>
-          <button class="delete" v-if="file.path" @click="remove()"
+          <button class="delete" v-if="!readonly && file.path" @click="remove()"
             title="Remove image"
             type="button">
             <v-icon icon="mdi-trash-can" role="img"></v-icon>
@@ -72,6 +72,7 @@
             @input="add($event)"
             :accept="config.accept || 'image/*'"
             :id="'image-' + index"
+            :disabled="readonly"
             :value="selected"
             hidden>
           <label :for="'image-' + index">Add image</label>

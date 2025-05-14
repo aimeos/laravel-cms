@@ -3,6 +3,7 @@
     props: {
       'modelValue': {type: String, default: ''},
       'config': {type: Object, default: () => {}},
+      'readonly': {type: Boolean, default: false},
     },
 
     emits: ['update:modelValue', 'error'],
@@ -22,6 +23,7 @@
 
 <template>
   <v-color-picker
+    :disabled="readonly"
     :modelValue="modelValue"
     @update:modelValue="update($event)"
   ></v-color-picker>

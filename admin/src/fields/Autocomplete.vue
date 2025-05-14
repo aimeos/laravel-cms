@@ -3,6 +3,7 @@
     props: {
       'modelValue': {type: String, default: ''},
       'config': {type: Object, default: () => {}},
+      'readonly': {type: Boolean, default: false},
     },
 
     emits: ['update:modelValue', 'error'],
@@ -30,6 +31,7 @@
     :rules="[
       v => !config.required || !!v || `Value is required`,
     ]"
+    :readonly="readonly"
     :items="config.options || []"
     :placeholder="config.placeholder || ''"
     :modelValue="modelValue"

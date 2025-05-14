@@ -11,6 +11,7 @@
     props: {
       'modelValue': {type: String, default: ''},
       'config': {type: Object, default: () => {}},
+      'readonly': {type: Boolean, default: false},
     },
 
     emits: ['update:modelValue', 'error'],
@@ -50,6 +51,7 @@
   <ckeditor
     :config="ckconfig"
     :editor="editor"
+    :disabled="readonly"
     :modelValue="modelValue"
     @update:modelValue="update($event)"
   ></ckeditor>

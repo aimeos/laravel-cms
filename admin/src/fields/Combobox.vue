@@ -3,6 +3,7 @@
     props: {
       'modelValue': {type: Object, default: () => {}},
       'config': {type: Object, default: () => {}},
+      'readonly': {type: Boolean, default: false},
     },
 
     emits: ['update:modelValue', 'error'],
@@ -27,6 +28,11 @@
 
 <template>
   <v-combobox ref="field"
+    :rules="[
+      v => !config.required || !!v || `Value is required`,
+    ]"
+    :readonly="readonly"
+    :clearable="!readonly"
     :items="config.options || []"
     :placeholder="config.placeholder || ''"
     :multiple="config.multiple"
@@ -36,6 +42,5 @@
     density="comfortable"
     hide-details="auto"
     variant="outlined"
-    clearable
   ></v-combobox>
 </template>

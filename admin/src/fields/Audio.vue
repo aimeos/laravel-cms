@@ -44,7 +44,7 @@
             :draggable="false"
             :src="url(file.path)"
           ></audio>
-          <button class="delete" v-if="file.path" @click="remove()"
+          <button class="delete" v-if="!readonly && file.path" @click="remove()"
             title="Remove audio"
             type="button">
             <v-icon icon="mdi-trash-can" role="img"></v-icon>
@@ -55,6 +55,7 @@
             @input="add($event)"
             :accept="config.accept || 'audio/*'"
             :id="'audio-' + index"
+            :disabled="readonly"
             :value="selected"
             hidden>
           <label :for="'audio-' + index">Add audio</label>

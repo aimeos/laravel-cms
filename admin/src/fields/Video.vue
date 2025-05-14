@@ -46,7 +46,7 @@
             :draggable="false"
             :src="url(file.path)"
           ></video>
-          <button class="delete" v-if="file.path" @click="remove()"
+          <button class="delete" v-if="!readonly && file.path" @click="remove()"
             title="Remove video"
             type="button">
             <v-icon icon="mdi-trash-can" role="img"></v-icon>
@@ -57,6 +57,7 @@
             @input="add($event)"
             :accept="config.accept || 'video/*'"
             :id="'video-' + index"
+            :disabled="readonly"
             :value="selected"
             hidden>
           <label :for="'video-' + index">Add video</label>

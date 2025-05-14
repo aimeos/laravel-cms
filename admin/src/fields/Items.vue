@@ -17,6 +17,7 @@
       'modelValue': {type: Array, default: () => []},
       'config': {type: Object, default: () => {}},
       'assets': {type: Array, default: () => []},
+      'readonly': {type: Boolean, default: false},
     },
 
     emits: ['update:modelValue', 'error', 'addFile', 'removeFile'],
@@ -85,11 +86,11 @@
 
 <template>
   <v-expansion-panels class="items" v-model="panel" elevation="0" multiple>
-    <VueDraggable v-model="items" @change="change()" draggable=".item" group="items" animation="500">
+    <VueDraggable v-model="items" :disabled="readonly" @change="change()" draggable=".item" group="items" animation="500">
 
       <v-expansion-panel v-for="(item, idx) in items" :key="idx" class="item">
         <v-expansion-panel-title>
-          <v-btn icon="mdi-trash-can" variant="plain" @click="remove(idx)"></v-btn>
+          <v-btn v-if="!readonly" icon="mdi-trash-can" variant="plain" @click="remove(idx)"></v-btn>
           <div class="element-title">{{ title(item) }}</div>
         </v-expansion-panel-title>
 
@@ -100,6 +101,7 @@
               v-model="items[idx][code]"
               :config="field"
               :assets="assets"
+              :readonly="readonly"
               @addFile="$emit('addFile', $event)"
               @removeFile="$emit('removeFile', $event)"
             ></component>
@@ -121,7 +123,7 @@
   </div>
 
   <div class="btn-group">
-    <v-btn v-if="config.max && +items.length < +config.max" icon="mdi-view-grid-plus" @click="add()"></v-btn>
+    <v-btn v-if="!readonly && config.max && +items.length < +config.max" icon="mdi-view-grid-plus" @click="add()"></v-btn>
   </div>
 </template>
 

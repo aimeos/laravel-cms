@@ -3,6 +3,7 @@
     props: {
       'modelValue': {type: String, default: ''},
       'config': {type: Object, default: () => {}},
+      'readonly': {type: Boolean, default: false},
     },
 
     emits: ['update:modelValue', 'error'],
@@ -27,6 +28,10 @@
 
 <template>
   <v-textarea ref="field"
+    :rules="[
+      v => !!v || `Value is required`,
+    ]"
+    :readonly="readonly"
     :placeholder="config.placeholder || ''"
     :modelValue="modelValue"
     @update:modelValue="update($event)"

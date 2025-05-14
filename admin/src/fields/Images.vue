@@ -12,6 +12,7 @@
       'modelValue': {type: Array, default: () => []},
       'config': {type: Object, default: () => {}},
       'assets': {type: Array, default: () => []},
+      'readonly': {type: Boolean, default: false},
     },
 
     emits: ['update:modelValue', 'error', 'addFile', 'removeFile'],
@@ -182,13 +183,7 @@
 </script>
 
 <template>
-  <VueDraggable
-    v-model="images"
-    draggable=".image"
-    group="images"
-    class="files"
-    animation="500"
-    @change="change()">
+  <VueDraggable v-model="images" :disabled="readonly" @change="change()" draggable=".image" group="images" class="files" animation="500">
 
     <div v-for="(item, idx) in images" :key="idx" class="image">
       <v-progress-linear v-if="item.uploading"
@@ -202,7 +197,7 @@
         :src="url(item.path)"
         draggable="false"
       ></v-img>
-      <button v-if="item.id" @click="remove(idx)"
+      <button v-if="!readonly && item.id" @click="remove(idx)"
         title="Remove image"
         type="button">
         <v-icon icon="mdi-trash-can" role="img"></v-icon>
@@ -214,6 +209,7 @@
         @input="add($event)"
         :accept="config.accept || 'image/*'"
         :id="'images-' + index"
+        :disabled="readonly"
         :value="selected"
         multiple
         hidden>

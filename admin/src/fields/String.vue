@@ -9,6 +9,7 @@
     props: {
       'modelValue': {type: String, default: ''},
       'config': {type: Object, default: () => {}},
+      'readonly': {type: Boolean, default: false},
     },
 
     emits: ['update:modelValue', 'error'],
@@ -33,7 +34,9 @@
 
 <template>
   <v-text-field ref="field"
+    :readonly="readonly"
     :counter="config.max"
+    :clearable="!readonly"
     :placeholder="config.placeholder || ''"
     :rules="[
       v => !config.min || +v?.length >= +config.min || `Minimum length is ${config.min} characters`,
@@ -44,6 +47,5 @@
     density="comfortable"
     hide-details="auto"
     variant="outlined"
-    clearable
   ></v-text-field>
 </template>

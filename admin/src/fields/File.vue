@@ -7,6 +7,7 @@
       'modelValue': {type: [Object, null], default: () => null},
       'config': {type: Object, default: () => {}},
       'assets': {type: Array, default: () => []},
+      'readonly': {type: Boolean, default: false},
     },
 
     emits: ['update:modelValue', 'error', 'addFile', 'removeFile'],
@@ -162,7 +163,7 @@
             <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/>
           </svg>
           {{ file.name }}
-          <button class="delete" v-if="file.path" @click="remove()"
+          <button class="delete" v-if="!readonly && file.path" @click="remove()"
             title="Remove file"
             type="button">
             <v-icon icon="mdi-trash-can" role="img"></v-icon>
@@ -171,6 +172,7 @@
         <div v-else class="file file-input">
           <input type="file"
             @input="add($event)"
+            :disabled="readonly"
             :accept="config.accept || '*'"
             :id="'file-' + index"
             :value="selected"

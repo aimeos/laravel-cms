@@ -11,6 +11,7 @@
     props: {
       'modelValue': {type: Number, default: 0},
       'config': {type: Object, default: () => {}},
+      'readonly': {type: Boolean, default: false},
     },
 
     emits: ['update:modelValue', 'error'],
@@ -38,7 +39,8 @@
     :rules="[
       v => !config.required || !!v || `Value is required`
     ]"
-    :clearable="!config.required || true"
+    :readonly="readonly"
+    :clearable="!readonly && !config.required"
     :max="config.max"
     :min="config.min"
     :placeholder="config.placeholder || ''"

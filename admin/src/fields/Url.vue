@@ -9,6 +9,7 @@
     props: {
       'modelValue': {type: String, default: ''},
       'config': {type: Object, default: () => {}},
+      'readonly': {type: Boolean, default: false},
     },
 
     emits: ['update:modelValue', 'error'],
@@ -51,6 +52,7 @@
       v => !config.required || !!v || `Value is required`,
       v => check(v) || `Not a valid URL`,
     ]"
+    :readonly="readonly"
     :modelValue="modelValue"
     @update:modelValue="update($event)"
     density="comfortable"

@@ -3,6 +3,7 @@
     props: {
       'modelValue': {type: String, default: ''},
       'config': {type: Object, default: () => {}},
+      'readonly': {type: Boolean, default: false},
     },
 
     emits: ['update:modelValue', 'error'],
@@ -46,6 +47,7 @@
       v => check(v) || 'The number of columns is not the same in all rows',
     ]"
     :auto-grow="true"
+    :readonly="readonly"
     :placeholder="config.placeholder || `val;val;val\nval;val;val`"
     :modelValue="modelValue"
     @update:modelValue="update($event)"

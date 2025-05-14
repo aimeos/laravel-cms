@@ -3,6 +3,7 @@
     props: {
       'modelValue': {type: Boolean, default: false},
       'config': {type: Object, default: () => {}},
+      'readonly': {type: Boolean, default: false},
     },
 
     emits: ['update:modelValue', 'error'],
@@ -22,6 +23,7 @@
 
 <template>
   <v-checkbox
+    :readonly="readonly"
     :modelValue="modelValue"
     @update:modelValue="update($event)"
     hide-details="auto"

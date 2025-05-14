@@ -9,6 +9,7 @@
     props: {
       'modelValue': {type: String, default: ''},
       'config': {type: Object, default: () => {}},
+      'readonly': {type: Boolean, default: false},
     },
 
     emits: ['update:modelValue', 'error'],
@@ -36,8 +37,9 @@
     :rules="[
       v => !config.required || !!v || `Value is required`,
     ]"
+    :readonly="readonly"
     :allowed-dates="config.allowed"
-    :clearable="!config.required"
+    :clearable="!readonly && !config.required"
     :max="config.max"
     :min="config.min"
     :multiple="config.multiple"

@@ -9,6 +9,7 @@
     props: {
       'modelValue': {type: String, default: ''},
       'config': {type: Object, default: () => {}},
+      'readonly': {type: Boolean, default: false},
     },
 
     emits: ['update:modelValue', 'error'],
@@ -37,6 +38,7 @@
       v => !config.min || +v?.length >= +config.min || `Minimum length is ${config.min} characters`,
       v => !config.max || +v?.length <= +config.max || `Maximum length is ${config.max} characters`
     ]"
+    :readonly="readonly"
     :counter="config.max"
     :placeholder="config.placeholder || ''"
     :modelValue="modelValue"

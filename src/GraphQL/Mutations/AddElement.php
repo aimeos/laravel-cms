@@ -23,7 +23,6 @@ final class AddElement
 
             $element->fill( $args['input'] ?? [] );
             $element->tenant_id = \Aimeos\Cms\Tenancy::value();
-            $element->data = $args['input']['data'] ?? [];
             $element->editor = $editor;
             $element->save();
 

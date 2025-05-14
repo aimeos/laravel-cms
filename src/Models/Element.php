@@ -66,6 +66,7 @@ class Element extends Model
         'type',
         'lang',
         'label',
+        'data',
     ];
 
     /**

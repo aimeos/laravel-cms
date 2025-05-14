@@ -11,7 +11,7 @@
     props: {
       'modelValue': {type: Array, default: () => []},
       'config': {type: Object, default: () => {}},
-      'assets': {type: Array, default: () => []},
+      'assets': {type: Object, default: () => {}},
       'readonly': {type: Boolean, default: false},
     },
 
@@ -165,17 +165,13 @@
       modelValue: {
         immediate: true,
         handler(list) {
-          const images = []
-
-          for(let entry of (list || [])) {
-            const idx = this.assets.findIndex(item => item.id === entry.id)
-
-            if(idx !== -1) {
-              images.push(this.assets[idx])
+          if(!this.images.length) {
+            for(const entry of (list || [])) {
+              if(this.assets[entry.id]) {
+                this.images.push(this.assets[entry.id])
+              }
             }
           }
-
-          this.images = images
         }
       }
     }

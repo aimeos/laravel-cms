@@ -17,7 +17,8 @@
     props: {
       'item': {type: Object, required: true},
       'contents': {type: Array, required: true},
-      'elements': {type: Object, required: true}
+      'elements': {type: Object, required: true},
+      'files': {type: Object, default: () => ({})}
     },
 
     emits: ['error', 'update:contents',  'update:elements'],
@@ -56,7 +57,7 @@
           return
         }
 
-        const entry = {type: type, data: {}, files: []}
+        const entry = {type: type, data: {}}
 
         if(idx !== null) {
           this.list.splice(idx, 0, entry)
@@ -67,6 +68,17 @@
         }
 
         this.vschemas = false
+      },
+
+
+      clean(data) {
+        for(const k in data) {
+          if(k.startsWith('_')) {
+            delete data[k]
+          }
+        }
+
+        return data
       },
 
 
@@ -166,12 +178,6 @@
                 updated_at
                 files {
                   id
-                  mime
-                  name
-                  path
-                  previews
-                  updated_at
-                  editor
                 }
               }
             }
@@ -181,9 +187,11 @@
               type: entry.type,
               lang: this.item.lang,
               label: this.title(entry),
-              data: JSON.stringify(entry.data),
+              data: JSON.stringify(this.clean(entry)),
             },
-            files: entry.files.map(file => file.id)
+            files: entry.files.filter((fileid, idx, self) => {
+              return self.indexOf(fileid) === idx
+            })
           }
         }).then(result => {
           if(result.errors) {
@@ -192,9 +200,7 @@
 
           const element = result.data.addElement
           element.data = JSON.parse(element.data)
-          element.files = element.files.map(file => {
-            return {...file, previews: JSON.parse(file.previews)}
-          })
+          element.files = element.files.map(file => file.id)
 
           this.$emit('update:elements', Object.assign(this.elements, {[element.id]: element}))
           this.list[idx] = {type: 'reference', refid: element.id}
@@ -241,16 +247,16 @@
 
         const entry = this.list[idx]
 
-        if(entry.type !== 'reference') {
+        if(entry.type !== 'reference' || !this.elements[entry.refid]) {
           this.messages.add('Element is not shared', 'error')
           return
         }
 
-        this.list[idx] = {
-          type: this.elements[entry.refid].type,
-          data: this.elements[entry.refid].data,
-          files: this.elements[entry.refid].files
+        for(const file of this.elements[entry.refid].files || []) {
+          this.files[file.id] = file
         }
+
+        this.list[idx] = this.elements[entry.refid].data || {}
       },
 
 
@@ -343,7 +349,7 @@
         <v-text-field
           prepend-inner-icon="mdi-magnify"
           variant="underlined"
-          label="Search"
+          label="Search for"
           class="search"
           clearable
           hide-details
@@ -410,17 +416,18 @@
             <v-expansion-panel-text>
 
               <Fields v-if="el.type === 'reference'"
+                :data="elements[el.refid]?.data?.data || {}"
                 :fields="fields(elements[el.refid]?.type)"
-                :data="elements[el.refid]?.data"
-                :assets="elements[el.refid]?.files"
+                :files="files"
                 :readonly="true"
               />
               <Fields v-else ref="field"
-                :fields="fields(el.type)"
                 v-model:data="el.data"
-                v-model:assets="el.files"
-                @change="el._changed = true"
+                :fields="fields(el.type)"
+                :files="files"
+                @update:assets="el.files = $event"
                 @error="error(el, $event)"
+                @change="el._changed = true"
               />
 
             </v-expansion-panel-text>

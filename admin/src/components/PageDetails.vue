@@ -26,6 +26,7 @@
     data: () => ({
       changed: {},
       errors: {},
+      files: {},
       elements: {},
       contents: [],
       latest: null,
@@ -110,7 +111,7 @@
           return Promise.resolve(true)
         }
 
-        this.validate().then(valid => {
+        return this.validate().then(valid => {
           if(!valid) {
             this.messages.add('There are invalid fields, please resolve the errors first', 'error')
             return valid
@@ -166,7 +167,9 @@
                 contents: JSON.stringify(this.clean(this.contents))
               },
               elements: Object.keys(this.elements),
-              files: files.map(entry => entry.id),
+              files: files.filter((id, idx, self) => {
+                return self.indexOf(id) === idx
+              }),
             }
           }).then(response => {
             if(response.errors) {
@@ -264,12 +267,30 @@
             page(id: $id) {
               id
               contents
+              files {
+                id
+                mime
+                name
+                path
+                previews
+                updated_at
+                editor
+              }
               elements {
                 id
                 type
                 data
                 editor
                 updated_at
+                files {
+                  id
+                  mime
+                  name
+                  path
+                  previews
+                  updated_at
+                  editor
+                }
               }
               latest {
                 published
@@ -277,6 +298,15 @@
                 contents
                 editor
                 created_at
+                files {
+                  id
+                  mime
+                  name
+                  path
+                  previews
+                  updated_at
+                  editor
+                }
                 elements {
                   id
                   type
@@ -306,6 +336,7 @@
           }
 
           this.reset()
+          this.files = {}
           this.elements = {}
           this.latest = result.data.page.latest
           this.contents = JSON.parse(this.latest?.contents || result.data.page.contents || '[]')
@@ -318,6 +349,10 @@
                 return {...file, previews: JSON.parse(file.previews || '{}')}
               })
             }
+          }
+
+          for(const entry of (this.latest?.files || result.data.page.files || [])) {
+            this.files[entry.id] = {...entry, previews: JSON.parse(entry.previews || '{}')}
           }
         }).catch(error => {
           this.messages.add('Error fetching page data', 'error')
@@ -392,6 +427,7 @@
       <v-window-item value="page">
         <PageDetailsPage ref="page"
           :item="item"
+          :files="files"
           @update:item="update('page', $event)"
           @error="errors.page = $event"
         />
@@ -400,11 +436,11 @@
       <v-window-item value="contents">
         <PageDetailsContent ref="contents"
           :item="item"
+          :files="files"
           :elements="elements"
           :contents="contents"
           @update:contents="update('contents', $event)"
           @update:elements="update('elements', $event)"
-          @update:files="update('files', $event)"
           @error="errors.contents = $event"
         />
       </v-window-item>

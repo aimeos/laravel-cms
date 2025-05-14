@@ -3,6 +3,7 @@
     props: {
       'modelValue': {type: Boolean, default: false},
       'config': {type: Object, default: () => {}},
+      'assets': {type: Object, default: () => {}},
       'readonly': {type: Boolean, default: false},
     },
 

@@ -3,7 +3,8 @@
 
   export default {
     props: {
-      'item': {type: Object, required: true}
+      'item': {type: Object, required: true},
+      'files': {type: Object, default: () => {}},
     },
 
     emits: ['change', 'error'],

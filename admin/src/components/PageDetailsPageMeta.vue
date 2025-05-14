@@ -10,7 +10,8 @@
     },
 
     props: {
-      'item': {type: Object, required: true}
+      'item': {type: Object, required: true},
+      'files': {type: Object, default: () => {}},
     },
 
     emits: ['change', 'error'],
@@ -42,7 +43,7 @@
           return
         }
 
-        this.item.meta[type] = {type: type, data: {}, files: []}
+        this.item.meta[type] = {type: type, data: {}}
         this.panel.push(Object.keys(this.item.meta).length - 1)
         this.vschemas = false
       },
@@ -119,11 +120,12 @@
       <v-expansion-panel-text>
 
         <Fields ref="field"
-          :fields="fields(el.type)"
           v-model:data="el.data"
-          v-model:assets="el.files"
-          @change="update(el)"
+          :fields="fields(el.type)"
+          :files="files"
+          @update:assets="el.files = $event"
           @error="error(el, $event)"
+          @change="update(el)"
         />
 
       </v-expansion-panel-text>

@@ -11,6 +11,7 @@
     props: {
       'modelValue': {type: String, default: ''},
       'config': {type: Object, default: () => {}},
+      'assets': {type: Object, default: () => {}},
       'readonly': {type: Boolean, default: false},
     },
 

@@ -16,7 +16,7 @@
     props: {
       'modelValue': {type: Array, default: () => []},
       'config': {type: Object, default: () => {}},
-      'assets': {type: Array, default: () => []},
+      'assets': {type: Object, default: () => {}},
       'readonly': {type: Boolean, default: false},
     },
 
@@ -99,8 +99,8 @@
             <v-label>{{ field.label || code }}</v-label>
             <component :is="field.type?.charAt(0)?.toUpperCase() + field.type?.slice(1)"
               v-model="items[idx][code]"
-              :config="field"
               :assets="assets"
+              :config="field"
               :readonly="readonly"
               @addFile="$emit('addFile', $event)"
               @removeFile="$emit('removeFile', $event)"

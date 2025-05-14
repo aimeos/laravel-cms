@@ -3,6 +3,7 @@
     props: {
       'modelValue': {type: String, default: ''},
       'config': {type: Object, default: () => {}},
+      'assets': {type: Object, default: () => {}},
       'readonly': {type: Boolean, default: false},
     },
 
@@ -23,6 +24,9 @@
 
 <template>
   <v-color-picker
+    :rules="[
+      v => !config.required || !!v || `Value is required`,
+    ]"
     :disabled="readonly"
     :modelValue="modelValue"
     @update:modelValue="update($event)"

@@ -6,7 +6,7 @@
     props: {
       'modelValue': {type: [Object, null], default: () => null},
       'config': {type: Object, default: () => {}},
-      'assets': {type: Array, default: () => []},
+      'assets': {type: Object, default: () => {}},
       'readonly': {type: Boolean, default: false},
     },
 
@@ -147,15 +147,9 @@
     watch: {
       modelValue: {
         immediate: true,
-        handler(obj) {
-          if(obj?.id) {
-            const idx = this.assets.findIndex(item => item.id === obj.id)
-
-            if(idx !== -1) {
-              this.file = this.assets[idx]
-            }
-          } else {
-            this.file = {}
+        handler(data) {
+          if(!this.file.path && data && this.assets[data.id]) {
+            this.file = this.assets[data.id]
           }
         }
       }

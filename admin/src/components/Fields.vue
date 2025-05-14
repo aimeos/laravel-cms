@@ -4,6 +4,7 @@
       'data': {type: Object, default: () => {}},
       'assets': {type: Array, default: () => []},
       'fields': {type: Object, required: true},
+      'readonly': {type: Boolean, default: false},
     },
 
     emits: ['change', 'error', 'update:assets'],
@@ -72,6 +73,7 @@
       :is="field.type?.charAt(0)?.toUpperCase() + field.type?.slice(1)"
       :config="field"
       :assets="assets"
+      :readonly="readonly"
       :modelValue="data[code]"
       @addFile="addFile($event)"
       @removeFile="removeFile($event)"

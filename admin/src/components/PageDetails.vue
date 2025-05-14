@@ -26,8 +26,8 @@
     data: () => ({
       changed: {},
       errors: {},
+      elements: {},
       contents: [],
-      elements: [],
       latest: null,
       publishAt: null,
       pubmenu: null,
@@ -165,7 +165,7 @@
                 config: JSON.stringify(this.clean(config)),
                 contents: JSON.stringify(this.clean(this.contents))
               },
-              elements: this.elements.map(entry => entry.id),
+              elements: Object.keys(this.elements),
               files: files.map(entry => entry.id),
             }
           }).then(response => {
@@ -281,8 +281,18 @@
                   id
                   type
                   data
+                  label
                   editor
                   updated_at
+                  files {
+                    id
+                    mime
+                    name
+                    path
+                    previews
+                    updated_at
+                    editor
+                  }
                 }
               }
             }
@@ -296,11 +306,19 @@
           }
 
           this.reset()
+          this.elements = {}
           this.latest = result.data.page.latest
           this.contents = JSON.parse(this.latest?.contents || result.data.page.contents || '[]')
-          this.elements = (this.latest?.elements || result.data.page.elements || []).map(entry => {
-            return {...entry, data: JSON.parse(entry.data || '{}')}
-          })
+
+          for(const entry of (this.latest?.elements || result.data.page.elements || [])) {
+            this.elements[entry.id] = {
+              ...entry,
+              data: JSON.parse(entry.data || '{}'),
+              files: (entry.files || []).map(file => {
+                return {...file, previews: JSON.parse(file.previews || '{}')}
+              })
+            }
+          }
         }).catch(error => {
           this.messages.add('Error fetching page data', 'error')
           console.error(`page(id: ${this.item.id})`, error)

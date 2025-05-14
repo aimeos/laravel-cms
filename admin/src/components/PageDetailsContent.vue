@@ -17,10 +17,10 @@
     props: {
       'item': {type: Object, required: true},
       'contents': {type: Array, required: true},
-      'elements': {type: Array, required: true}
+      'elements': {type: Object, required: true}
     },
 
-    emits: ['error', 'update:elements', 'update:contents'],
+    emits: ['error', 'update:contents',  'update:elements'],
 
     data: () => ({
       list: [],
@@ -140,6 +140,71 @@
       },
 
 
+      share(idx) {
+        const entry = this.list[idx]
+
+        if(!entry) {
+          this.messages.add('Element not found', 'error')
+          return
+        }
+
+        if(entry.type === 'reference') {
+          this.messages.add('Element is already shared', 'error')
+          return
+        }
+
+        this.$apollo.mutate({
+          mutation: gql`
+            mutation($input: ElementInput!, $files: [ID!]) {
+              addElement(input: $input, files: $files) {
+                id
+                type
+                lang
+                label
+                data
+                editor
+                updated_at
+                files {
+                  id
+                  mime
+                  name
+                  path
+                  previews
+                  updated_at
+                  editor
+                }
+              }
+            }
+          `,
+          variables: {
+            input: {
+              type: entry.type,
+              lang: this.item.lang,
+              label: this.title(entry),
+              data: JSON.stringify(entry.data),
+            },
+            files: entry.files.map(file => file.id)
+          }
+        }).then(result => {
+          if(result.errors) {
+            throw result.errors
+          }
+
+          const element = result.data.addElement
+          element.data = JSON.parse(element.data)
+          element.files = element.files.map(file => {
+            return {...file, previews: JSON.parse(file.previews)}
+          })
+
+          this.$emit('update:elements', Object.assign(this.elements, {[element.id]: element}))
+          this.list[idx] = {type: 'reference', refid: element.id}
+        }).catch(error => {
+          this.messages.add('Unable to make element shared', 'error')
+          console.error(error)
+        })
+      },
+
+
       shown(el) {
         return (
           typeof el._hide === 'undefined' || typeof el._hide !== 'undefined' && el._hide !== true
@@ -165,6 +230,27 @@
             el._checked = !el._checked
           }
         })
+      },
+
+
+      unshare(idx) {
+        if(!this.list[idx]) {
+          this.messages.add('Content element not found', 'error')
+          return
+        }
+
+        const entry = this.list[idx]
+
+        if(entry.type !== 'reference') {
+          this.messages.add('Element is not shared', 'error')
+          return
+        }
+
+        this.list[idx] = {
+          type: this.elements[entry.refid].type,
+          data: this.elements[entry.refid].data,
+          files: this.elements[entry.refid].files
+        }
       },
 
 
@@ -299,10 +385,18 @@
                   <v-list-item>
                     <v-btn prepend-icon="mdi-delete" variant="text" @click="remove(idx)">Delete</v-btn>
                   </v-list-item>
+                  <v-list-item v-if="el.type !== 'reference'">
+                    <v-btn prepend-icon="mdi-link" variant="text" @click="share(idx)">Make shared</v-btn>
+                  </v-list-item>
+                  <v-list-item v-if="el.type === 'reference'">
+                    <v-btn prepend-icon="mdi-link-off" variant="text" @click="unshare(idx)">Merge copy</v-btn>
+                  </v-list-item>
                 </v-list>
               </v-menu>
 
-              <div class="element-title">{{ title(el) }}</div>
+              <v-icon v-if="el.type === 'reference'" class="icon-shared" icon="mdi-link" title="Shared element"></v-icon>
+
+              <div class="element-title">{{ el.type === 'reference' ? elements[el.refid]?.label : title(el) }}</div>
               <div class="element-type">{{ el.type }}</div>
               <div class="actions">
                 <v-btn v-if="el.versions?.length"
@@ -315,7 +409,13 @@
             </v-expansion-panel-title>
             <v-expansion-panel-text>
 
-              <Fields ref="field"
+              <Fields v-if="el.type === 'reference'"
+                :fields="fields(elements[el.refid]?.type)"
+                :data="elements[el.refid]?.data"
+                :assets="elements[el.refid]?.files"
+                :readonly="true"
+              />
+              <Fields v-else ref="field"
                 :fields="fields(el.type)"
                 v-model:data="el.data"
                 v-model:assets="el.files"
@@ -385,6 +485,13 @@
 
 .v-input.search {
   max-width: 30rem;
+  flex-grow: 1;
+  width: 100%;
+  margin: auto;
+}
+
+.v-input.search > * {
+  width: 100%;
 }
 
 .v-expansion-panel {
@@ -408,5 +515,10 @@
   overflow: hidden;
   max-height: 48px;
   min-width: 5rem;
+}
+
+.icon-shared {
+  color: rgb(var(--v-theme-warning));
+  margin-inline-end: 0.5rem;
 }
 </style>

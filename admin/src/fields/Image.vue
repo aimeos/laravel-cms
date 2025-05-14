@@ -1,14 +1,12 @@
 <script>
   import gql from 'graphql-tag'
   import File from './File.vue'
-  import { useAppStore } from '../stores'
 
   export default {
     extends: File,
 
     setup() {
-      const app = useAppStore()
-      return { app }
+      return { ...File.setup() }
     },
 
     methods: {
@@ -19,9 +17,7 @@
           image.onerror = reject
           image.src = this.url(Object.values(data.previews)[0] || data.path)
         }).then(() => {
-          this.$emit('addFile', data)
-          this.$emit('update:modelValue', {id: data.id, type: 'file'})
-          URL.revokeObjectURL(path)
+          return File.methods.handle.call(this, data, path)
         })
       },
 
@@ -32,14 +28,6 @@
           list.push(`${this.url(map[key])} ${key}w`)
         }
         return list.join(', ')
-      },
-
-
-      url(path) {
-        if(path.startsWith('http') || path.startsWith('blob:')) {
-          return path
-        }
-        return this.app.urlfile.replace(/\/+$/g, '') + '/' + path
       }
     }
   }

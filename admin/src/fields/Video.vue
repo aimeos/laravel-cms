@@ -1,30 +1,12 @@
 <script>
   import gql from 'graphql-tag'
   import { default as FileComp } from './File.vue'
-  import { useAppStore } from '../stores'
 
   export default {
     extends: FileComp,
 
     setup() {
-      const app = useAppStore()
-      return { app }
-    },
-
-    methods: {
-      handle(data, path) {
-        this.$emit('addFile', data)
-        this.$emit('update:modelValue', {id: data.id, type: 'file'})
-        URL.revokeObjectURL(path)
-      },
-
-
-      url(path) {
-        if(path.startsWith('http') || path.startsWith('blob:')) {
-          return path
-        }
-        return this.app.urlfile.replace(/\/+$/g, '') + '/' + path
-      }
+      return { ...FileComp.setup() }
     }
   }
 </script>

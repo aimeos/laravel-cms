@@ -1,6 +1,6 @@
 <script>
   import gql from 'graphql-tag'
-  import { useMessageStore } from '../stores'
+  import { useAppStore, useMessageStore } from '../stores'
 
   export default {
     props: {
@@ -22,7 +22,8 @@
 
     setup() {
       const messages = useMessageStore()
-      return { messages }
+      const app = useAppStore()
+      return { app, messages }
     },
 
     unmounted() {
@@ -80,8 +81,14 @@
 
 
       handle(data, path) {
-        this.$emit('addFile', data)
+        this.file = data
+        this.$emit('addFile', data.id)
         this.$emit('update:modelValue', {id: data.id, type: 'file'})
+        this.validate()
+
+        if(path.startsWith('blob:')) {
+          URL.revokeObjectURL(path)
+        }
 
         return data
       },
@@ -110,20 +117,29 @@
             throw response.errors
           }
 
+          this.file = {}
           this.$emit('removeFile', id)
           this.$emit('update:modelValue', null)
           this.validate()
         }).catch(error => {
           this.messages.add('Error removing file', 'error')
-          console.error(`dropFile(${code})`, error)
+          console.error(`dropFile(${id})`, error)
         })
+      },
+
+
+      url(path) {
+        if(path.startsWith('http') || path.startsWith('blob:')) {
+          return path
+        }
+        return this.app.urlfile.replace(/\/+$/g, '') + '/' + path
       },
 
 
       async validate() {
         const result = !this.config.required || this.file.path ? true : false
 
-        this.$emit('error', result)
+        this.$emit('error', !result)
         return await result
       }
     },

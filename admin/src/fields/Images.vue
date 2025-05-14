@@ -85,7 +85,7 @@
               image.src = this.url(Object.values(data.previews)[0])
             }).then(() => {
               this.images[idx] = data
-              this.$emit('addFile', data)
+              this.$emit('addFile', data.id)
               URL.revokeObjectURL(path)
             })
           }).catch(error => {

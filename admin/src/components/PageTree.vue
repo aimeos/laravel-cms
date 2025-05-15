@@ -820,13 +820,13 @@
 
           <v-menu v-if="Object.keys(languages.available).length">
             <template #activator="{ props }">
-              <v-btn append-icon="mdi-menu-down" variant="outlined" location="bottom right" v-bind="props">
-                {{ languages.available[languages.current] || 'None' }}
+              <v-btn append-icon="mdi-menu-down" prepend-icon="mdi-translate" variant="outlined" location="bottom right" v-bind="props">
+                {{ languages.available[languages.current] || 'All' }}
               </v-btn>
             </template>
             <v-list>
               <v-list-item>
-                <v-btn variant="text" @click="reload('')">None</v-btn>
+                <v-btn variant="text" @click="reload('')">All</v-btn>
               </v-list-item>
               <v-list-item v-for="(name, code) in languages.available" :key="code">
                 <v-btn variant="text" @click="reload(code)">{{ name }}</v-btn>
@@ -940,10 +940,8 @@
               :title="title(node)"
               @click="$emit('update:item', node)">
               <div class="node-text">
-                <div class="page-name">
-                  <v-icon class="page-time" size="x-small" v-if="node.theme || node.type">mdi-shape</v-icon>
-                  {{ node.name || 'New' }}
-                </div>
+                <span class="page-lang" v-if="node.lang">{{ node.lang }}</span>
+                <span class="page-name">{{ node.name || 'New' }}</span>
                 <div v-if="node.title" class="page-title">{{ node.title }}</div>
               </div>
               <div class="node-url">
@@ -1046,15 +1044,29 @@
     align-self: end;
   }
 
-  .page-time {
-    vertical-align: text-top;
+  .page-lang {
+    display: inline-block;
+    margin-inline-end: 0.5rem;
+    text-transform: uppercase;
+    vertical-align: middle;
+    border-radius: 0.625rem;
+    background-color: rgb(var(--v-theme-primary));
+    color: #FFFFFF;
+    font-weight: bold;
+    font-size: 60%;
+    height: 1.25rem;
+    padding: 0.2rem;
+  }
+
+  .page-name {
+    font-size: 110%;
   }
 
   .page-domain {
     color: initial;
   }
 
-  .page-name, .page-title, .page-domain {
+  .page-title, .page-domain {
     display: block;
   }
 

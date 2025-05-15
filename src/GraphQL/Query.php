@@ -55,7 +55,14 @@ final class Query
             ->take( min( max( $limit, 1 ), 100 ) );
 
         if( isset( $args['lang'] ) ) {
-            $builder->where( 'lang', (string) $args['lang'] );
+            $builder->where( function( $query ) use ( $args ) {
+                $query->select( 'lang' )
+                    ->from( 'cms_versions' )
+                    ->where( 'versionable_type', Page::class )
+                    ->whereColumn( 'versionable_id', 'cms_pages.id' )
+                    ->orderBy( 'id', 'desc' )
+                    ->limit( 1 );
+            }, (string) $args['lang'] );
         }
 
         return $builder;
@@ -76,18 +83,24 @@ final class Query
 
         $limit = (int) ( $args['first'] ?? 100 );
         $builder = Page::withTrashed()
-            ->whereAny( $fields, 'like', '%' . $value . '%' )
-            ->orWhereHas('versions', function( Builder $query ) use ( $value ) {
-                $query->where( 'data', 'like', '%' . $value . '%' );
-            })
+            ->where( function( $query ) use ( $fields, $value ) {
+                $query->whereAny( $fields, 'like', '%' . $value . '%' )
+                    ->orWhereHas('versions', function( Builder $query ) use ( $value ) {
+                        $query->where( 'data', 'like', '%' . $value . '%' );
+                    });
+            } )
             ->skip( max( ( $args['page'] ?? 1 ) - 1, 0 ) * $limit )
             ->take( min( max( $limit, 1 ), 100 ) );
 
         if( isset( $args['lang'] ) ) {
-            $builder->where( 'lang', (string) $args['lang'] )
-                ->orWhereHas('versions', function( Builder $query ) use ( $args ) {
-                    $query->where( 'lang', '==', (string) $args['lang'] );
-                });
+            $builder->where( function( $query ) use ( $args ) {
+                $query->select( 'lang' )
+                    ->from( 'cms_versions' )
+                    ->where( 'versionable_type', Page::class )
+                    ->whereColumn( 'versionable_id', 'cms_pages.id' )
+                    ->orderBy( 'id', 'desc' )
+                    ->limit( 1 );
+            }, (string) $args['lang'] );
         }
 
         return $builder;

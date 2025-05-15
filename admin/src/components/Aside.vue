@@ -19,6 +19,19 @@
       return { sidestore }
     },
 
+    computed: {
+      stores() {
+        const keys = Object.keys(this.sidestore.store).sort()
+        const map = {}
+
+        for(const key of keys) {
+          map[key] = this.sidestore.store[key]
+        }
+
+        return map
+      }
+    },
+
     methods: {
       isActive(key, code) {
         if(typeof this.active[key] === 'undefined') {
@@ -32,6 +45,19 @@
         return this.active[key][code]
       },
 
+
+      sort(items) {
+        const keys = Object.keys(items).sort()
+        const map = {}
+
+        for(const key of keys) {
+          map[key] = items[key]
+        }
+
+        return map
+      },
+
+
       toggle(key, code) {
         this.sidestore.toggle(key, code)
         this.active[key][code] = !this.active[key][code]
@@ -44,13 +70,13 @@
   <v-navigation-drawer location="end" rail-width="220" :modelValue="state" @update:modelValue="$emit('update:state', $event)" :rail="width > 1200 ? false : true" expand-on-hover>
 
     <v-expansion-panels variant="accordion" v-model="panel" multiple>
-      <v-expansion-panel v-for="(items, key) in sidestore.store" :key="key" v-show="Object.keys(sidestore.store[key]).length" elevation="0">
+      <v-expansion-panel v-for="(items, key) in stores" :key="key" v-show="Object.keys(items).length" elevation="0">
         <v-expansion-panel-title>
           {{ key }}
         </v-expansion-panel-title>
         <v-expansion-panel-text>
           <v-list density="compact">
-            <v-list-item v-for="(count, code) in items" :key="code" :active="isActive(key, code)" @click="toggle(key, code)">
+            <v-list-item v-for="(count, code) in sort(items)" :key="code" :active="isActive(key, code)" @click="toggle(key, code)">
               {{ code }} ({{ count }})
             </v-list-item>
           </v-list>

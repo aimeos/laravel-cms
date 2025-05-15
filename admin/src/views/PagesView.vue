@@ -12,7 +12,7 @@
 
     data: () => ({
       details: false,
-      nav: false,
+      nav: null,
       item: {},
     }),
 

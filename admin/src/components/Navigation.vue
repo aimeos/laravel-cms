@@ -13,7 +13,7 @@
 </script>
 
 <template>
-  <v-navigation-drawer width="220" :modelValue="state" @update:modelValue="$emit('update:state', $event)" :rail="width > 1200 ? false : true" expand-on-hover>
+  <v-navigation-drawer location="start" rail-width="220" :modelValue="state" @update:modelValue="$emit('update:state', $event)" :rail="width > 1200 ? false : true" expand-on-hover>
     <v-list>
       <v-list-item prepend-icon="mdi-file-tree" value="pages">
         <router-link to="/pages">Pages</router-link>

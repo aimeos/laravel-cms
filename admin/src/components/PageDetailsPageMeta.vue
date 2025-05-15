@@ -1,7 +1,7 @@
 <script>
   import Fields from './Fields.vue'
   import Elements from './Elements.vue'
-  import { useSchemaStore } from '../stores'
+  import { useSchemaStore, useSideStore } from '../stores'
 
   export default {
     components: {
@@ -23,7 +23,8 @@
 
     setup() {
       const schemas = useSchemaStore()
-      return { schemas }
+      const aside = useSideStore()
+      return { aside, schemas }
     },
 
     computed: {
@@ -52,6 +53,7 @@
       error(el, value) {
         el._error = value
         this.$emit('error', Object.values(this.item.meta || {}).some(item => item._error))
+        this.store()
       },
 
 
@@ -78,6 +80,41 @@
       },
 
 
+      shown(el) {
+        const error = this.aside.isUsed('state', 'error')
+        const changed = this.aside.isUsed('state', 'changed')
+
+        return this.aside.isUsed('type', el.type) && (
+          error && el._error || error && !el._error || !error && !el._error ||
+          changed && el._changed || changed && !el._changed || !changed && !el._changed
+        )
+      },
+
+
+      store(isVisible = true) {
+        if(!isVisible) {
+          return
+        }
+
+        const types = {}
+        const state = {}
+
+        for(const el of Object.values(this.item.meta || {})) {
+          if(el.type) {
+            types[el.type] = (types[el.type] || 0) + 1
+          }
+          if(el._changed) {
+            state['changed'] = (state['changed'] || 0) + 1
+          }
+          if(el._error) {
+            state['error'] = (state['error'] || 0) + 1
+          }
+        }
+
+        this.aside.store = {type: types, state: state}
+      },
+
+
       title(el) {
         return Object.values(el.data || {})
           .map(v => v && typeof v !== 'object' && typeof v !== 'boolean' ? v : null)
@@ -90,6 +127,7 @@
       update(el) {
         el._changed = true
         this.$emit('change', true)
+        this.store()
       },
 
 
@@ -109,33 +147,38 @@
 </script>
 
 <template>
-  <v-expansion-panels class="list" v-model="panel" elevation="0" multiple>
+  <v-container v-observe-visibility="store">
+    <v-sheet>
+      <v-expansion-panels class="list" v-model="panel" elevation="0" multiple>
 
-    <v-expansion-panel v-for="(el, code) in item.meta || {}" :key="code" :class="{changed: el._changed, error: el._error}">
-      <v-expansion-panel-title expand-icon="mdi-pencil">
-        <v-btn icon="mdi-delete" variant="text" @click="remove(code)"></v-btn>
-        <div class="element-title">{{ title(el) }}</div>
-        <div class="element-type">{{ el.type }}</div>
-      </v-expansion-panel-title>
-      <v-expansion-panel-text>
+        <v-expansion-panel v-for="(el, code) in item.meta || {}" :key="code" :class="{changed: el._changed, error: el._error}" v-show="shown(el)">
+          <v-expansion-panel-title expand-icon="mdi-pencil">
+            <v-btn icon="mdi-delete" variant="text" @click="remove(code)"></v-btn>
+            <div class="element-title">{{ title(el) }}</div>
+            <div class="element-type">{{ el.type }}</div>
+          </v-expansion-panel-title>
+          <v-expansion-panel-text>
 
-        <Fields ref="field"
-          v-model:data="el.data"
-          :fields="fields(el.type)"
-          :files="files"
-          @update:assets="el.files = $event"
-          @error="error(el, $event)"
-          @change="update(el)"
-        />
+            <Fields ref="field"
+              v-model:data="el.data"
+              :fields="fields(el.type)"
+              :files="files"
+              @update:assets="el.files = $event"
+              @error="error(el, $event)"
+              @change="update(el)"
+            />
 
-      </v-expansion-panel-text>
-    </v-expansion-panel>
+          </v-expansion-panel-text>
+        </v-expansion-panel>
 
-  </v-expansion-panels>
+      </v-expansion-panels>
 
-  <div v-if="available" class="btn-group">
-    <v-btn icon="mdi-view-grid-plus" color="primary" @click="vschemas = true" elevation="0"></v-btn>
-  </div>
+      <div v-if="available" class="btn-group">
+        <v-btn icon="mdi-view-grid-plus" color="primary" @click="vschemas = true" elevation="0"></v-btn>
+      </div>
+
+    </v-sheet>
+  </v-container>
 
   <Teleport to="body">
     <v-dialog v-model="vschemas" scrollable width="auto">

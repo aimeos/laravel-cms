@@ -40,8 +40,8 @@
     setup() {
       const messages = useMessageStore()
       const schemas = useSchemaStore()
-      const sidestore = useSideStore()
-      return { messages, schemas, sidestore }
+      const aside = useSideStore()
+      return { aside, messages, schemas }
     },
 
     computed: {
@@ -99,6 +99,7 @@
       error(el, value) {
         el._error = value
         this.$emit('error', this.list.some(el => el._error))
+        this.store()
       },
 
 
@@ -212,12 +213,41 @@
 
 
       shown(el) {
+        const error = this.aside.isUsed('state', 'error')
+        const changed = this.aside.isUsed('state', 'changed')
+
         return (
           typeof el._hide === 'undefined' || typeof el._hide !== 'undefined' && el._hide !== true
         ) && (
-          this.sidestore.isUsed('type', el.type) &&
-          this.sidestore.isUsed('changed', el._changed || false)
+          this.aside.isUsed('type', el.type) && (
+            error && el._error || error && !el._error || !error && !el._error ||
+            changed && el._changed || changed && !el._changed || !changed && !el._changed
+          )
         )
+      },
+
+
+      store(isVisible = true) {
+        if(!isVisible) {
+          return
+        }
+
+        const types = {}
+        const state = {}
+
+        this.list.forEach(el => {
+          if(el.type) {
+            types[el.type] = (types[el.type] || 0) + 1
+          }
+          if(el._changed) {
+            state['changed'] = (state['changed'] || 0) + 1
+          }
+          if(el._error) {
+            state['error'] = (state['error'] || 0) + 1
+          }
+        })
+
+        this.aside.store = {type: types, state: state}
       },
 
 
@@ -260,24 +290,9 @@
       },
 
 
-      updateStore() {
-        const types = {}
-        const state = {}
-
-        this.list.forEach(el => {
-          if(el.type) {
-            types[el.type] = (types[el.type] || 0) + 1
-          }
-          if(el._changed) {
-            state['changed'] = (state['changed'] || 0) + 1
-          }
-          if(el._error) {
-            state['error'] = (state['error'] || 0) + 1
-          }
-        })
-
-        this.sidestore.store['type'] = types
-        this.sidestore.store['state'] = state
+      update(el) {
+        el._changed = true
+        this.store()
       },
 
 
@@ -302,7 +317,7 @@
 
 
       visibility(type) {
-        this.sidestore.show['type'] = type ? true : false
+        this.aside.show['type'] = type ? true : false
       }
     },
 
@@ -311,14 +326,14 @@
         immediate: true,
         handler() {
           this.list = this.contents
-          this.updateStore()
+          this.store()
         }
       },
 
       list: {
         deep: true,
         handler() {
-          this.updateStore()
+          this.store()
           this.$emit('update:contents', this.list)
           this.$emit('error', this.list.some(el => el._error))
         }
@@ -328,7 +343,7 @@
 </script>
 
 <template>
-  <v-container v-observe-visibility="visibility">
+  <v-container v-observe-visibility="store">
     <v-sheet>
 
       <div class="header">
@@ -427,7 +442,7 @@
                 :files="files"
                 @update:assets="el.files = $event"
                 @error="error(el, $event)"
-                @change="el._changed = true"
+                @change="update(el)"
               />
 
             </v-expansion-panel-text>

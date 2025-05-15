@@ -38,8 +38,8 @@ final class PubPage
                 $page->editor = Auth::user()?->name ?? request()->ip();
                 $page->save();
 
-                $page->files()->sync( $latest->files ?? [] );
                 $page->elements()->sync( $latest->elements ?? [] );
+                $page->files()->sync( $latest->files ?? [] );
 
             }, 3 );
 

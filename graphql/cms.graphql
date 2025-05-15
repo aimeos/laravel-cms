@@ -148,7 +148,7 @@ type Page {
   "ID of the parent page or NULL if it's a root page"
   parent_id: String
 
-  "ISO language code, e.g. 'en', 'en_GB' or empty for default language"
+  "ISO language code, e.g. 'en', 'en-GB' or empty for default language"
   lang: String
 
   "URL segment of the page, unique in combination with the language"
@@ -234,7 +234,7 @@ type Page {
 }
 
 input PageInput {
-  "ISO language code, e.g. 'en', 'en_GB' or empty for default language"
+  "ISO language code, e.g. 'en', 'en-GB' or empty for default language"
   lang: String
 
   "URL segment of the page, unique in combination with the language"
@@ -287,7 +287,7 @@ type Element {
   "Type of the content element"
   type: String!
 
-  "ISO language code, e.g. 'en', 'en_GB' or empty for default language"
+  "ISO language code, e.g. 'en', 'en-GB' or empty for default language"
   lang: String
 
   "Arbitrary string which describes the content element"
@@ -328,7 +328,7 @@ input ElementInput {
   "Type of the content element"
   type: String!
 
-  "ISO language code, e.g. 'en', 'en_GB' or empty for default language"
+  "ISO language code, e.g. 'en', 'en-GB' or empty for default language"
   lang: String
 
   "Arbitrary string which describes the element"
@@ -341,6 +341,9 @@ input ElementInput {
 type Version {
   "Unique version ID"
   id: ID!
+
+  "ISO language code, e.g. 'en', 'en-GB' or empty for default language"
+  lang: String
 
   "Arbitrary versioned data"
   data: JSON!

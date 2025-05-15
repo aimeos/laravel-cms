@@ -29,6 +29,7 @@ final class SaveElement
             if( isset( $args['input']['data'] ) && $args['input']['data'] != (array) $element->latest?->data )
             {
                 $version = $element->versions()->create( [
+                    'lang' => $args['input']['lang'] ?? '',
                     'data' => $args['input']['data'],
                     'published' => false,
                     'editor' => $editor

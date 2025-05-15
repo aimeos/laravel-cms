@@ -18,10 +18,11 @@ return new class extends Migration
             $table->string('tenant_id');
             $table->string('versionable_id', 36);
             $table->string('versionable_type', 50);
-            $table->datetime('publish_at')->nullable();
             $table->boolean('published');
-            $table->json('data');
+            $table->datetime('publish_at')->nullable();
+            $table->string('lang', 5)->nullable();
             $table->json('contents')->nullable();
+            $table->json('data');
             $table->string('editor');
             $table->timestamps();
 

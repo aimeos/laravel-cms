@@ -77,14 +77,17 @@ final class Query
         $limit = (int) ( $args['first'] ?? 100 );
         $builder = Page::withTrashed()
             ->whereAny( $fields, 'like', '%' . $value . '%' )
-            ->orWhereHas('versions', function (Builder $query) use ( $value ) {
-                $query->where('data', 'like', '%' . $value . '%');
+            ->orWhereHas('versions', function( Builder $query ) use ( $value ) {
+                $query->where( 'data', 'like', '%' . $value . '%' );
             })
             ->skip( max( ( $args['page'] ?? 1 ) - 1, 0 ) * $limit )
             ->take( min( max( $limit, 1 ), 100 ) );
 
         if( isset( $args['lang'] ) ) {
-            $builder->where( 'lang', (string) $args['lang'] );
+            $builder->where( 'lang', (string) $args['lang'] )
+                ->orWhereHas('versions', function( Builder $query ) use ( $args ) {
+                    $query->where( 'lang', '==', (string) $args['lang'] );
+                });
         }
 
         return $builder;

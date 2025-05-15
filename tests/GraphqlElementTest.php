@@ -178,6 +178,7 @@ class GraphqlElementTest extends TestAbstract
                 id
                 type
                 versions {
+                    lang
                     data
                     files {
                         path
@@ -192,6 +193,7 @@ class GraphqlElementTest extends TestAbstract
                     'type' => $element->type,
                     'versions' => [
                         [
+                            'lang' => $element->lang,
                             'data' => '{"type":"footer","data":{"text":"Powered by Laravel CMS!"}}',
                             'files' => [],
                             'editor' => 'seeder'

@@ -364,6 +364,7 @@ class GraphqlPageTest extends TestAbstract
             page(id: {$page->id}) {
                 id
                 versions {
+                    lang
                     data
                     contents
                     editor
@@ -375,6 +376,7 @@ class GraphqlPageTest extends TestAbstract
                     'id' => (string) $page->id,
                     'versions' => [
                         [
+                            'lang' => $page->lang,
                             'data' => '{"name":"Home","title":"Home | Laravel CMS","slug":"","tag":"root","domain":"mydomain.tld","status":1,"editor":"seeder","meta":{"meta":{"type":"meta","text":"Laravel CMS is outstanding"}}}',
                             'contents' => '[{"type":"heading","text":"Welcome to Laravel CMS"},{"type":"ref","id":"' . $element->id . '"}]',
                             'editor' => 'seeder'

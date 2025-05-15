@@ -32,6 +32,7 @@ final class SavePage
 
                 $version = $page->versions()->create([
                     'editor' => Auth::user()?->name ?? request()->ip(),
+                    'lang' => $data['lang'] ?? '',
                     'contents' => $contents,
                     'data' => $data,
                 ]);

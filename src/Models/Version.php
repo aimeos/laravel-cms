@@ -31,6 +31,7 @@ class Version extends Model
      */
     protected $attributes = [
         'tenant_id' => '',
+        'lang' => '',
         'data' => '{}',
         'contents' => null,
         'publish_at' => null,
@@ -44,6 +45,7 @@ class Version extends Model
      * @var array
      */
     protected $casts = [
+        'lang' => 'string',
         'data' => 'object',
         'contents' => 'array',
     ];
@@ -58,6 +60,7 @@ class Version extends Model
         'contents',
         'editor',
         'data',
+        'lang',
     ];
 
     /**

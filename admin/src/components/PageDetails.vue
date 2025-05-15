@@ -416,40 +416,42 @@
   </v-app-bar>
 
   <v-main>
-    <v-tabs fixed-tabs v-model="tab">
-      <v-tab value="page" :class="{changed: changed.page, error: errors.page}">Page</v-tab>
-      <v-tab value="contents" :class="{changed: changed.contents, error: errors.contents}">Content</v-tab>
-      <v-tab value="preview">Preview</v-tab>
-    </v-tabs>
+    <v-form @submit.prevent>
+      <v-tabs fixed-tabs v-model="tab">
+        <v-tab value="page" :class="{changed: changed.page, error: errors.page}">Page</v-tab>
+        <v-tab value="contents" :class="{changed: changed.contents, error: errors.contents}">Content</v-tab>
+        <v-tab value="preview">Preview</v-tab>
+      </v-tabs>
 
-    <v-window v-model="tab">
+      <v-window v-model="tab">
 
-      <v-window-item value="page">
-        <PageDetailsPage ref="page"
-          :item="item"
-          :files="files"
-          @update:item="update('page', $event)"
-          @error="errors.page = $event"
-        />
-      </v-window-item>
+        <v-window-item value="page">
+          <PageDetailsPage ref="page"
+            :item="item"
+            :files="files"
+            @update:item="update('page', $event)"
+            @error="errors.page = $event"
+          />
+        </v-window-item>
 
-      <v-window-item value="contents">
-        <PageDetailsContent ref="contents"
-          :item="item"
-          :files="files"
-          :elements="elements"
-          :contents="contents"
-          @update:contents="update('contents', $event)"
-          @update:elements="update('elements', $event)"
-          @error="errors.contents = $event"
-        />
-      </v-window-item>
+        <v-window-item value="contents">
+          <PageDetailsContent ref="contents"
+            :item="item"
+            :files="files"
+            :elements="elements"
+            :contents="contents"
+            @update:contents="update('contents', $event)"
+            @update:elements="update('elements', $event)"
+            @error="errors.contents = $event"
+          />
+        </v-window-item>
 
-      <v-window-item value="preview">
-        <PageDetailsPreview :item="item" />
-      </v-window-item>
+        <v-window-item value="preview">
+          <PageDetailsPreview :item="item" />
+        </v-window-item>
 
-    </v-window>
+      </v-window>
+    </v-form>
   </v-main>
 
   <Aside v-model:state="nav" />

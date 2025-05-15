@@ -60,33 +60,31 @@
 </script>
 
 <template>
-  <v-form @submit.prevent>
-    <v-container>
-      <v-sheet>
-        <v-tabs class="subtabs" v-model="tab" align-tabs="center" density="compact">
-          <v-tab value="details" :class="{changed: changed.details, error: errors.details}">Details</v-tab>
-          <v-tab value="meta" :class="{changed: changed.meta, error: errors.meta}">Meta</v-tab>
-          <v-tab value="config" :class="{changed: changed.config, error: errors.config}">Config</v-tab>
-        </v-tabs>
+  <v-container>
+    <v-sheet>
+      <v-tabs class="subtabs" v-model="tab" align-tabs="center" density="compact">
+        <v-tab value="details" :class="{changed: changed.details, error: errors.details}">Details</v-tab>
+        <v-tab value="meta" :class="{changed: changed.meta, error: errors.meta}">Meta</v-tab>
+        <v-tab value="config" :class="{changed: changed.config, error: errors.config}">Config</v-tab>
+      </v-tabs>
+    </v-sheet>
+  </v-container>
 
-        <v-window v-model="tab">
+  <v-window v-model="tab">
 
-          <v-window-item value="details">
-            <PageDetailsPageProps ref="props" :item="item" :files="files" @change="update('details')" @error="error('details', $event)" />
-          </v-window-item>
+    <v-window-item value="details">
+      <PageDetailsPageProps ref="props" :item="item" :files="files" @change="update('details')" @error="error('details', $event)" />
+    </v-window-item>
 
-          <v-window-item value="meta">
-            <PageDetailsPageMeta ref="meta" :item="item" :files="files" @change="update('meta')" @error="error('meta', $event)" />
-          </v-window-item>
+    <v-window-item value="meta">
+      <PageDetailsPageMeta ref="meta" :item="item" :files="files" @change="update('meta')" @error="error('meta', $event)" />
+    </v-window-item>
 
-          <v-window-item value="config">
-            <PageDetailsPageConfig ref="config" :item="item" :files="files" @change="update('config')" @error="error('config', $event)" />
-          </v-window-item>
+    <v-window-item value="config">
+      <PageDetailsPageConfig ref="config" :item="item" :files="files" @change="update('config')" @error="error('config', $event)" />
+    </v-window-item>
 
-        </v-window>
-      </v-sheet>
-    </v-container>
-  </v-form>
+  </v-window>
 </template>
 
 <style scoped>

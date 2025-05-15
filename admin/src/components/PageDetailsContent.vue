@@ -213,6 +213,7 @@
 
 
       shown(el) {
+        const valid = this.aside.isUsed('state', 'valid')
         const error = this.aside.isUsed('state', 'error')
         const changed = this.aside.isUsed('state', 'changed')
 
@@ -220,8 +221,7 @@
           typeof el._hide === 'undefined' || typeof el._hide !== 'undefined' && el._hide !== true
         ) && (
           this.aside.isUsed('type', el.type) && (
-            error && el._error || error && !el._error || !error && !el._error ||
-            changed && el._changed || changed && !el._changed || !changed && !el._changed
+            error && el._error || changed && el._changed || valid && !el._error && !el._changed
           )
         )
       },
@@ -292,6 +292,8 @@
 
       update(el) {
         el._changed = true
+        this.$emit('update:contents', this.list)
+        this.$emit('error', this.list.some(el => el._error))
         this.store()
       },
 
@@ -313,11 +315,6 @@
         return Promise.all(list).then(result => {
           return result.every(r => r)
         });
-      },
-
-
-      visibility(type) {
-        this.aside.show['type'] = type ? true : false
       }
     },
 
@@ -331,11 +328,9 @@
       },
 
       list: {
-        deep: true,
         handler() {
-          this.store()
+          // after drag and drop
           this.$emit('update:contents', this.list)
-          this.$emit('error', this.list.some(el => el._error))
         }
       }
     }

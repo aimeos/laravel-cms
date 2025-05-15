@@ -98,11 +98,11 @@
 
 
       reset() {
-        this.changed = {}
-        this.errors = {}
-
         this.$refs.page?.reset()
         this.$refs.contents?.reset()
+
+        this.changed = {}
+        this.errors = {}
       },
 
 
@@ -151,17 +151,17 @@
             variables: {
               id: this.item.id,
               input: {
-                cache: this.item.cache,
-                domain: this.item.domain,
-                lang: this.item.lang,
-                name: this.item.name,
-                slug: this.item.slug,
-                status: this.item.status,
-                title: this.item.title,
-                tag: this.item.tag,
-                to: this.item.to,
-                type: this.item.type,
-                theme: this.item.theme,
+                cache: this.item.cache || 0,
+                domain: this.item.domain || '',
+                lang: this.item.lang || '',
+                name: this.item.name || '',
+                slug: this.item.slug || '',
+                status: this.item.status || 0,
+                title: this.item.title || '',
+                tag: this.item.tag || '',
+                to: this.item.to || '',
+                type: this.item.type || '',
+                theme: this.item.theme || '',
                 meta: JSON.stringify(this.clean(meta)),
                 config: JSON.stringify(this.clean(config)),
                 contents: JSON.stringify(this.clean(this.contents))

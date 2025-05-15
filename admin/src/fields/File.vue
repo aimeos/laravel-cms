@@ -151,6 +151,7 @@
           if(!this.file.path && data && this.assets[data.id]) {
             this.file = this.assets[data.id]
           }
+          this.validate()
         }
       }
     }

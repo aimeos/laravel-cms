@@ -76,8 +76,9 @@
     watch: {
       modelValue: {
         immediate: true,
-        handler(list) {
-          this.items = list
+        handler(val) {
+          this.items = val
+          this.validate()
         }
       }
     }

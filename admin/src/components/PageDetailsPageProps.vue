@@ -84,6 +84,16 @@
           return res || true
         });
       }
+    },
+
+    watch: {
+      item: {
+        deep: true,
+        immediate: true,
+        handler(val) {
+          this.validate()
+        }
+      }
     }
   }
 </script>

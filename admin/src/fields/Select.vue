@@ -23,6 +23,15 @@
         this.$emit('error', errors.length > 0)
         return !errors.length
       }
+    },
+
+    watch: {
+      modelValue: {
+        immediate: true,
+        handler(val) {
+          this.validate()
+        }
+      }
     }
   }
 </script>

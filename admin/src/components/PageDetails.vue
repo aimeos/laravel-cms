@@ -495,10 +495,6 @@
     text-align: center;
   }
 
-  main .v-tabs {
-    margin-bottom: -1rem;
-  }
-
   .v-badge--dot .v-badge__badge {
     margin-inline-start: 0.5rem;
   }

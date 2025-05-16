@@ -1,5 +1,5 @@
 <script>
-  import { useAppStore, useLanguageStore, useSideStore } from '../stores'
+  import { useAppStore, useConfigStore, useLanguageStore, useSideStore } from '../stores'
 
   export default {
     props: {
@@ -15,9 +15,11 @@
 
     setup() {
       const languages = useLanguageStore()
+      const config = useConfigStore()
       const aside = useSideStore()
       const app = useAppStore()
-      return { app, aside, languages }
+
+      return { app, aside, config, languages }
     },
 
     computed: {
@@ -174,18 +176,20 @@
 
       <v-row>
         <v-col cols="12" md="6">
-          <v-text-field ref="theme"
+          <v-select ref="theme"
+            :items="Object.keys(config.get('themes', {'default': null}))"
             :modelValue="item.theme"
-            @update:modelValue="update('theme', $event)"
+            @update:modelValue="update('theme', $event); item.type = null"
             variant="underlined"
             label="Theme"
-          ></v-text-field>
-          <v-text-field ref="type"
+          ></v-select>
+          <v-select ref="type"
+            :items="Object.keys(config.get(`themes.${item.theme || 'default'}.types`, {'default': null}))"
             :modelValue="item.type"
             @update:modelValue="update('type', $event)"
             variant="underlined"
             label="Page type"
-          ></v-text-field>
+          ></v-select>
         </v-col>
         <v-col cols="12" md="6">
           <v-text-field ref="tag"

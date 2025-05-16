@@ -11,7 +11,29 @@ export const useAppStore = defineStore('app', {
   })
 })
 
-export const useLanguageStore = defineStore('languages', {
+
+export const useConfigStore = defineStore('config', {
+  state: () => ({
+    data: {}
+  }),
+
+  actions: {
+    get(key, defval = null) {
+      if(typeof key !== 'string') {
+        return defval
+      }
+
+      const val = key.split('.').reduce((part, key) => {
+        return typeof part === 'object' && part !== null ? part[key] : part
+      }, this.data)
+
+      return typeof val === 'undefined' ? defval : val
+    }
+  }
+})
+
+
+export const useLanguageStore = defineStore('language', {
   state: () => ({
     available: JSON.parse(app?.dataset.languages || '{}'),
     current: app?.dataset.language || ''
@@ -22,10 +44,11 @@ export const useLanguageStore = defineStore('languages', {
 /**
  * Store for queued messages to display to the user
  */
-export const useMessageStore = defineStore('messages', {
+export const useMessageStore = defineStore('message', {
   state: () => ({
     queue: [],
   }),
+
   actions: {
     add(msg, type = 'info') {
       this.queue.push({
@@ -41,7 +64,7 @@ export const useMessageStore = defineStore('messages', {
 /**
  * Available element schemas
  */
-export const useSchemaStore = defineStore('schemas', {
+export const useSchemaStore = defineStore('schema', {
   state: () => ({
     content: {},
     meta: {},
@@ -72,6 +95,7 @@ export const useSideStore = defineStore('side', {
     store: {},
     show: {}
   }),
+
   actions: {
     shown(key, what) {
       if(typeof this.show[key] === 'undefined') {
@@ -84,6 +108,7 @@ export const useSideStore = defineStore('side', {
 
       return this.show[key][what]
     },
+
 
     toggle(key, what) {
       if(!this.show[key]) {

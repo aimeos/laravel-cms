@@ -1,8 +1,32 @@
 <script>
-  import { useSchemaStore } from './stores'
+  import { useConfigStore, useSchemaStore } from './stores'
 
   export default {
     setup() {
+      const config = useConfigStore()
+
+      config.data = {
+        themes: {
+          'default': {
+            types: {
+              'default': {
+                sections: [
+                  'main',
+                  'header',
+                  'sidebar',
+                  'footer',
+                ]
+              },
+              blog: {
+              }
+            }
+          },
+          fashion: {
+          },
+        }
+      }
+
+
       const schemas = useSchemaStore()
 
       schemas.content = {
@@ -12,12 +36,12 @@
           icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3,4H5V10H9V4H11V18H9V12H5V18H3V4M13,8H15.31L15.63,5H17.63L17.31,8H19.31L19.63,5H21.63L21.31,8H23V10H21.1L20.9,12H23V14H20.69L20.37,17H18.37L18.69,14H16.69L16.37,17H14.37L14.69,14H13V12H14.9L15.1,10H13V8M17.1,10L16.9,12H18.9L19.1,10H17.1Z" /></svg>',
           fields: {
             'level': {type: 'select', required: true, options: [
-              {value: 1, label: 'H1'},
-              {value: 2, label: 'H2'},
-              {value: 3, label: 'H3'},
-              {value: 4, label: 'H4'},
-              {value: 5, label: 'H5'},
-              {value: 6, label: 'H6'}
+              {value: '1', label: 'H1'},
+              {value: '2', label: 'H2'},
+              {value: '3', label: 'H3'},
+              {value: '4', label: 'H4'},
+              {value: '5', label: 'H5'},
+              {value: '6', label: 'H6'}
             ]},
             'text': {type: 'string', min: 1, max: 255},
           }
@@ -141,8 +165,8 @@
           label: 'Social media related data',
           icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2.04C6.5 2.04 2 6.53 2 12.06C2 17.06 5.66 21.21 10.44 21.96V14.96H7.9V12.06H10.44V9.85C10.44 7.34 11.93 5.96 14.22 5.96C15.31 5.96 16.45 6.15 16.45 6.15V8.62H15.19C13.95 8.62 13.56 9.39 13.56 10.18V12.06H16.34L15.89 14.96H13.56V21.96A10 10 0 0 0 22 12.06C22 6.53 17.5 2.04 12 2.04Z" /></svg>',
           fields: {
-            'title': {type: 'string'},
-            'image': {type: 'image'},
+            'title': {type: 'string', min: 1, max: 255},
+            'image': {type: 'image', required: true},
           },
         },
         'canonical': {
@@ -161,7 +185,7 @@
           type: 'test',
           label: 'Test string+color',
           fields: {
-            'test/key': {type: 'string', label: 'Test string config'},
+            'test/key': {type: 'url', label: 'Test string config', min: 1},
             'test/color': {type: 'color', label: 'Test color selector'}
           }
         },
@@ -169,12 +193,13 @@
           type: 'test2',
           label: 'Test config',
           fields: {
-            'test2/key': {type: 'string', label: 'Second string value'}
+            'test2/key': {type: 'string', label: 'Second string value', min: 1},
+            'file': {type: 'file', label: 'File upload'},
           }
         },
       }
 
-      return { schemas }
+      return { config, schemas }
     }
   }
 </script>

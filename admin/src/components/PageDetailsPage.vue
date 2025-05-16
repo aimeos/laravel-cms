@@ -47,11 +47,9 @@
 
 
       validate() {
-        return Promise.all([
-          this.$refs.props?.validate(),
-          this.$refs.meta?.validate(),
-          this.$refs.config?.validate()
-        ].filter(v => v)).then(results => {
+        const promises = Object.values(this.$refs).map(ref => ref.validate())
+
+        return Promise.all(promises).then(results => {
           return results.every(result => result)
         })
       }

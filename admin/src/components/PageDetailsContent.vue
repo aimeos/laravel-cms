@@ -213,14 +213,14 @@
 
 
       shown(el) {
-        const valid = this.aside.isUsed('state', 'valid')
-        const error = this.aside.isUsed('state', 'error')
-        const changed = this.aside.isUsed('state', 'changed')
+        const valid = this.aside.shown('state', 'valid')
+        const error = this.aside.shown('state', 'error')
+        const changed = this.aside.shown('state', 'changed')
 
         return (
           typeof el._hide === 'undefined' || typeof el._hide !== 'undefined' && el._hide !== true
         ) && (
-          this.aside.isUsed('type', el.type) && (
+          this.aside.shown('type', el.type) && (
             error && el._error || changed && el._changed || valid && !el._error && !el._changed
           )
         )
@@ -238,6 +238,9 @@
         this.list.forEach(el => {
           if(el.type) {
             types[el.type] = (types[el.type] || 0) + 1
+          }
+          if(!el._changed && !el._error) {
+            state['valid'] = (state['valid'] || 0) + 1
           }
           if(el._changed) {
             state['changed'] = (state['changed'] || 0) + 1

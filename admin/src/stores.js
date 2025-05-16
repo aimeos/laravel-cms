@@ -18,51 +18,21 @@ export const useLanguageStore = defineStore('languages', {
   })
 })
 
+
 /**
- * Side store with contextual information
- *
- * store {
- *   type {
- *     "heading": 3,
- *     "text": 8,
- *     "article": 1
- *   }
- * },
- * show {
- *   type: false
- * },
- * used {
- *   type {
- *     "heading": true,
- *     "text": false,
- *     "artice": true
- *   }
- * }
+ * Store for queued messages to display to the user
  */
-export const useSideStore = defineStore('side', {
+export const useMessageStore = defineStore('messages', {
   state: () => ({
-    store: {},
-    show: {},
-    used: {}
+    queue: [],
   }),
   actions: {
-    isUsed(key, what) {
-      if(typeof this.used[key] === 'undefined') {
-        this.used[key] = {}
-      }
-
-      if(typeof this.used[key][what] === 'undefined') {
-        this.used[key][what] = true
-      }
-
-      return this.used[key][what]
-    },
-
-    toggle(key, what) {
-      if(!this.used[key]) {
-        this.used[key] = {}
-      }
-      this.used[key][what] = !this.used[key][what]
+    add(msg, type = 'info') {
+      this.queue.push({
+        text: msg,
+        color: type,
+        timeout: type === 'error' ? 10000 : 3000
+      })
     }
   }
 })
@@ -81,19 +51,45 @@ export const useSchemaStore = defineStore('schemas', {
 
 
 /**
- * Store for queued messages to display to the user
+ * Side store with contextual information
+ *
+ * store: {
+ *   type: {
+ *     "heading": 3,
+ *     "text": 8,
+ *     "article": 1
+ *   }
+ * },
+ * show: {
+ *   type: {
+ *     "heading": false,
+ *     "text": true,
+ *   }
+ * }
  */
-export const useMessageStore = defineStore('messages', {
+export const useSideStore = defineStore('side', {
   state: () => ({
-    queue: [],
+    store: {},
+    show: {}
   }),
   actions: {
-    add(msg, type = 'info') {
-      this.queue.push({
-        text: msg,
-        color: type,
-        timeout: type === 'error' ? 10000 : 3000
-      })
+    shown(key, what) {
+      if(typeof this.show[key] === 'undefined') {
+        this.show[key] = {}
+      }
+
+      if(typeof this.show[key][what] === 'undefined') {
+        this.show[key][what] = true
+      }
+
+      return this.show[key][what]
+    },
+
+    toggle(key, what) {
+      if(!this.show[key]) {
+        this.show[key] = {}
+      }
+      this.show[key][what] = !this.show[key][what]
     }
   }
 })

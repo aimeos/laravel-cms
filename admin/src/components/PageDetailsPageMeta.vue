@@ -81,11 +81,11 @@
 
 
       shown(el) {
-        const valid = this.aside.isUsed('state', 'valid')
-        const error = this.aside.isUsed('state', 'error')
-        const changed = this.aside.isUsed('state', 'changed')
+        const valid = this.aside.shown('state', 'valid')
+        const error = this.aside.shown('state', 'error')
+        const changed = this.aside.shown('state', 'changed')
 
-        return this.aside.isUsed('type', el.type) && (
+        return this.aside.shown('type', el.type) && (
           error && el._error || changed && el._changed || valid && !el._error && !el._changed
         )
       },

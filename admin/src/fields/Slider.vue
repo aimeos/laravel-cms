@@ -24,9 +24,20 @@
 
 <template>
   <v-slider
+    :thumb-label="true"
+    :step="config.step ?? 1"
+    :max="config.max ?? 100"
+    :min="config.min ?? 0"
     :readonly="readonly"
     :modelValue="modelValue"
     @update:modelValue="update($event)"
     hide-details="auto"
-  ></v-slider>
+  >
+    <template #prepend>
+      <span></span>
+    </template>
+    <template #append>
+      <span>{{ modelValue }}</span>
+    </template>
+  </v-slider>
 </template>

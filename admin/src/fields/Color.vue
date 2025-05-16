@@ -1,5 +1,11 @@
 <script>
+  import { VColorInput } from 'vuetify/labs/VColorInput'
+
   export default {
+    components: {
+      VColorInput,
+    },
+
     props: {
       'modelValue': {type: String, default: ''},
       'config': {type: Object, default: () => {}},
@@ -23,12 +29,14 @@
 </script>
 
 <template>
-  <v-color-picker
+  <v-color-input
     :rules="[
       v => !config.required || !!v || `Value is required`,
+      v => !v || /^#[0-9A-F]{6,8}$/i.test(v) || `Value must be a hex color code`,
     ]"
+    :clearable="!readonly"
     :disabled="readonly"
     :modelValue="modelValue"
     @update:modelValue="update($event)"
-  ></v-color-picker>
+  ></v-color-input>
 </template>

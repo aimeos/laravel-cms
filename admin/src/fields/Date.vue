@@ -7,7 +7,7 @@
     },
 
     props: {
-      'modelValue': {type: String, default: ''},
+      'modelValue': {type: [Array, Date, String, null], default: null},
       'config': {type: Object, default: () => {}},
       'assets': {type: Object, default: () => {}},
       'readonly': {type: Boolean, default: false},

@@ -24,6 +24,8 @@
 
 <template>
   <v-switch
+    :false-value="config.off ?? false"
+    :true-value="config.on ?? true"
     :readonly="readonly"
     :modelValue="modelValue"
     @update:modelValue="update($event)"

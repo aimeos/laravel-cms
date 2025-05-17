@@ -207,31 +207,7 @@
           query: gql`query($parent: ID, $lang: String!, $limit: Int!, $page: Int!) {
             pages(parent_id: $parent, lang: $lang, first: $limit, page: $page) {
               data {
-                id
-                parent_id
-                lang
-                slug
-                domain
-                name
-                title
-                to
-                tag
-                type
-                theme
-                meta
-                config
-                status
-                cache
-                editor
-                updated_at
-                deleted_at
-                has
-                latest {
-                  published
-                  data
-                  editor
-                  created_at
-                }
+                ${this.fields()}
               }
               paginatorInfo {
                 currentPage
@@ -255,6 +231,35 @@
           this.messages.add('Error fetching pages', 'error')
           console.error(`pages()`, error)
         })
+      },
+
+
+      fields() {
+        return `id
+          parent_id
+          lang
+          slug
+          domain
+          name
+          title
+          to
+          tag
+          type
+          theme
+          meta
+          config
+          status
+          cache
+          editor
+          updated_at
+          deleted_at
+          has
+          latest {
+            published
+            data
+            editor
+            created_at
+          }`
       },
 
 
@@ -550,31 +555,7 @@
           query: gql`query($filter: String!, $lang: String, $limit: Int!, $page: Int!) {
             pagesearch(filter: $filter, lang: $lang, first: $limit, page: $page) {
               data {
-                id
-                parent_id
-                lang
-                slug
-                domain
-                name
-                title
-                to
-                tag
-                type
-                theme
-                meta
-                config
-                status
-                cache
-                editor
-                updated_at
-                deleted_at
-                has
-                latest {
-                  published
-                  data
-                  editor
-                  created_at
-                }
+                ${this.fields()}
               }
               paginatorInfo {
                 currentPage

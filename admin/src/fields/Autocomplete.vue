@@ -1,7 +1,9 @@
 <script>
+  import gql from 'graphql-tag'
+
   export default {
     props: {
-      'modelValue': {type: String, default: ''},
+      'modelValue': {type: [Array, String, Number], default: ''},
       'config': {type: Object, default: () => {}},
       'assets': {type: Object, default: () => {}},
       'readonly': {type: Boolean, default: false},
@@ -9,7 +11,100 @@
 
     emits: ['update:modelValue', 'error'],
 
+    data() {
+      return {
+        list: this.config.options || [],
+        loading: false,
+      }
+    },
+
     methods: {
+      items(data) {
+        if(!data) {
+          return []
+        }
+
+        const flabel = this.config['item-title']
+        const fvalue = this.config['item-value']
+
+        return data.map(item => {
+          if(typeof item === 'object' && item !== null) {
+            if(flabel) {
+              return {label: item[flabel] ?? '', value: item[fvalue] ?? ''}
+            } else {
+              return item[fvalue] ?? ''
+            }
+          } else {
+            return item
+          }
+        })
+      },
+
+
+      graphql(value) {
+        if(!this.config.endpoint.url || !this.config.endpoint.query) {
+          return
+        }
+
+        const query = this.config.endpoint.query.replace(/_term_/g, value ? JSON.stringify(value) : '""')
+
+        this.loading = true
+        this.$apollo.query({
+          query: gql`${query}`,
+        }).then(result => {
+          this.list = this.items(this.toList(result.data))
+          this.loading = false
+        }).catch(error => {
+          console.error('Error fetching data:', error)
+        })
+      },
+
+
+      rest(value) {
+        if(!this.config.endpoint.url) {
+          return
+        }
+
+        this.loading = true
+        fetch(this.config.endpoint.url.replace(/_term_/g, value ? value : ''), {
+          mode: 'cors',
+        }).then(response => {
+          if(!response.ok) {
+            throw response
+          }
+          return response.json()
+        }).then(result => {
+          this.list = this.items(this.toList(result))
+          this.loading = false
+        }).catch(error => {
+          console.error('Error fetching data:', error)
+        })
+      },
+
+
+      search(value) {
+        if(!this.config.endpoint) {
+          return
+        }
+
+        switch(this.config.endpoint.type) {
+          case 'GQL': this.graphql(value); break
+          case 'REST': this.rest(value); break
+        }
+      },
+
+
+      toList(result) {
+        if(this.config['list-key']) {
+          return this.config['list-key'].split('/').reduce((part, key) => {
+            return typeof part === 'object' && part !== null ? part[key] : part
+          }, result)
+        }
+
+        return result
+      },
+
+
       update(value) {
         this.$emit('update:modelValue', value)
         this.validate()
@@ -41,13 +136,22 @@
     :rules="[
       v => !config.required || !!v || `Value is required`,
     ]"
+    :loading="loading"
     :readonly="readonly"
-    :items="config.options || []"
+    :clearable="!readonly"
+    :items="list || []"
+    :no-data-text="config['empty-text'] || 'No data available'"
     :placeholder="config.placeholder || ''"
+    :return-object="!!config['item-title']"
+    :multiple="config.multiple"
+    :chips="config.multiple"
     :modelValue="modelValue"
     @update:modelValue="update($event)"
+    @update:search="search($event)"
     density="comfortable"
     hide-details="auto"
     variant="outlined"
+    item-title="label"
+    item-value="value"
   ></v-autocomplete>
 </template>

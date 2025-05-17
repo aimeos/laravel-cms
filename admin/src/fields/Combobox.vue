@@ -1,38 +1,8 @@
 <script>
+  import Autocomplete from './Autocomplete.vue'
+
   export default {
-    props: {
-      'modelValue': {type: Object, default: () => {}},
-      'config': {type: Object, default: () => {}},
-      'assets': {type: Object, default: () => {}},
-      'readonly': {type: Boolean, default: false},
-    },
-
-    emits: ['update:modelValue', 'error'],
-
-    methods: {
-      update(value) {
-        this.$emit('update:modelValue', value)
-        this.validate()
-      },
-
-
-      async validate() {
-        await this.$nextTick()
-        const errors = await this.$refs.field.validate()
-
-        this.$emit('error', errors.length > 0)
-        return !errors.length
-      }
-    },
-
-    watch: {
-      modelValue: {
-        immediate: true,
-        handler(val) {
-          this.validate()
-        }
-      }
-    }
+    extends: Autocomplete,
   }
 </script>
 
@@ -41,16 +11,20 @@
     :rules="[
       v => !config.required || !!v || `Value is required`,
     ]"
+    :loading="loading"
     :readonly="readonly"
     :clearable="!readonly"
-    :items="config.options || []"
+    :items="list || []"
+    :no-data-text="config['empty-text'] || 'No data available'"
     :placeholder="config.placeholder || ''"
     :multiple="config.multiple"
     :chips="config.multiple"
     :modelValue="modelValue"
     @update:modelValue="update($event)"
+    @update:search="search($event)"
     density="comfortable"
     hide-details="auto"
     variant="outlined"
+    item-value="value"
   ></v-combobox>
 </template>

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\DB;
 use Aimeos\Cms\Models\Element;
+use Aimeos\Cms\Models\File;
 use Aimeos\Cms\Models\Page;
 
 
@@ -32,6 +33,45 @@ final class Query
 
         if( !empty( $args['id'] ) ) {
             $builder->whereIn( 'id', $args['id'] );
+        }
+
+        return $builder;
+    }
+
+
+    /**
+     * Custom query builder for files to search for.
+     *
+     * @param  null  $rootValue
+     * @param  array  $args
+     * @return \Kalnoy\Nestedset\QueryBuilder
+     */
+    public function files( $rootValue, array $args ) : Builder
+    {
+        $limit = (int) ( $args['first'] ?? 100 );
+
+        $builder = File::withTrashed()
+            ->skip( max( ( $args['page'] ?? 1 ) - 1, 0 ) * $limit )
+            ->take( min( max( $limit, 1 ), 100 ) );
+
+        if( !empty( $value = $args['filter']['id'] ?? null ) ) {
+            $builder->whereIn( 'id', $value );
+        }
+
+        if( !empty( $value = $args['filter']['mime'] ?? null ) ) {
+            $builder->where( 'mime', 'like', $value . '%' );
+        }
+
+        if( !empty( $value = $args['filter']['tag'] ?? null ) ) {
+            $builder->where( 'tag', 'like', $value . '%' );
+        }
+
+        if( !empty( $value = $args['filter']['name'] ?? null ) ) {
+            $builder->where( 'name', 'like', $value . '%' );
+        }
+
+        if( !empty( $value = $args['filter']['editor'] ?? null ) ) {
+            $builder->where( 'editor', 'like', $value . '%' );
         }
 
         return $builder;

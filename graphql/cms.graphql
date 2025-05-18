@@ -52,10 +52,11 @@ extend type Query {
     @find
 
   "Get available files"
-  files: [File!] @orderBy(column: "id", direction: DESC)
+  files(filter: FileFilter, sort: _ @orderBy(columns: ["id", "name", "mime", "tag", "editor"])): [File!]
     @canModel(ability: "view", model: "\\Aimeos\\Cms\\Models\\File")
+    @orderBy(column: "id", direction: DESC)
+    @paginate(defaultCount: 100)
     @softDeletes
-    @paginate
 }
 
 extend type Mutation {
@@ -398,8 +399,31 @@ type File {
   "Date/time value when the file was deleted or NULL if it's available"
   deleted_at: String
 
+  "List of elements using the file"
+  elements: [Element!]! @belongsToMany
+
+  "List of pages using the file"
+  pages: [Page!]! @belongsToMany
+
   "List of versions using the file"
   versions: [Version!]! @belongsToMany
+}
+
+input FileFilter {
+  "IDs of the stored files"
+  id: [ID!]
+
+  "Mime type of the stored files"
+  mime: String
+
+  "Tag to categorize the files"
+  tag: String
+
+  "Descriptive name of the stored files"
+  name: String
+
+  "Name of the last user who added, updated or deleted the files"
+  editor: String
 }
 
 input FileInput {

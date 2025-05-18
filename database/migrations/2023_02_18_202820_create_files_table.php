@@ -29,6 +29,7 @@ return new class extends Migration
             $table->index(['mime', 'tenant_id']);
             $table->index(['tag', 'tenant_id']);
             $table->index(['name', 'tenant_id']);
+            $table->index(['editor', 'tenant_id']);
             $table->index('deleted_at');
         });
     }

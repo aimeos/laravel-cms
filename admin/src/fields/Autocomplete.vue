@@ -18,26 +18,29 @@
       }
     },
 
+    created() {
+      this.graphql = this.debounce(this.graphql, 500)
+      this.rest = this.debounce(this.rest, 500)
+    },
+
     methods: {
-      items(data) {
-        if(!data) {
-          return []
+      debounce(func, delay) {
+        let timer
+
+        return function(...args) {
+          return new Promise((resolve, reject) => {
+            const context = this
+
+            clearTimeout(timer)
+            timer = setTimeout(() => {
+              try {
+                resolve(func.apply(context, args))
+              } catch (error) {
+                reject(error)
+              }
+            }, delay)
+          })
         }
-
-        const flabel = this.config['item-title']
-        const fvalue = this.config['item-value']
-
-        return data.map(item => {
-          if(typeof item === 'object' && item !== null) {
-            if(flabel) {
-              return {label: item[flabel] ?? '', value: item[fvalue] ?? ''}
-            } else {
-              return item[fvalue] ?? ''
-            }
-          } else {
-            return item
-          }
-        })
       },
 
 
@@ -56,6 +59,28 @@
           this.loading = false
         }).catch(error => {
           console.error('Error fetching data:', error)
+        })
+      },
+
+
+      items(data) {
+        if(!data) {
+          return []
+        }
+
+        const flabel = this.config['item-title']
+        const fvalue = this.config['item-value']
+
+        return data.map(item => {
+          if(typeof item === 'object' && item !== null) {
+            if(flabel) {
+              return {label: item[flabel] ?? '', value: item[fvalue] ?? ''}
+            } else {
+              return item[fvalue] ?? ''
+            }
+          } else {
+            return item
+          }
         })
       },
 

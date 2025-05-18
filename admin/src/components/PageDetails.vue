@@ -415,7 +415,7 @@
     </template>
   </v-app-bar>
 
-  <v-main>
+  <v-main class="page-details">
     <v-form @submit.prevent>
       <v-tabs fixed-tabs v-model="tab">
         <v-tab value="page" :class="{changed: changed.page, error: errors.page}">Page</v-tab>
@@ -487,7 +487,7 @@
 </template>
 
 <style scoped>
-  .v-toolbar__content>.v-toolbar-title {
+  .v-toolbar__content > .v-toolbar-title {
     margin-inline-start: 0;
   }
 

@@ -154,8 +154,7 @@
             clearTimeout(timer)
             timer = setTimeout(() => {
               try {
-                let output = func.apply(context, args)
-                resolve(output)
+                resolve(func.apply(context, args))
               } catch (error) {
                 reject(error)
               }
@@ -752,9 +751,9 @@
 
   <Navigation :state="nav" @update:state="$emit('update:nav', $event)" />
 
-  <v-main>
+  <v-main class="page-tree">
     <v-container>
-      <v-sheet>
+      <v-sheet class="box">
         <div class="header">
           <v-menu>
             <template #activator="{ props }">
@@ -948,6 +947,10 @@
 </template>
 
 <style>
+  .page-tree .box {
+    margin: 1rem 0;
+  }
+
   .header {
     display: flex;
     flex-wrap: wrap;

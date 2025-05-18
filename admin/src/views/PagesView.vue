@@ -1,5 +1,4 @@
 <script>
-  import gql from 'graphql-tag'
   import PageTree from '../components/PageTree.vue'
   import PageDetails from '../components/PageDetails.vue'
   import { useMessageStore } from '../stores'
@@ -24,7 +23,6 @@
 </script>
 
 <template>
-
     <transition-group name="slide">
       <v-layout class="page-tree" key="tree">
         <PageTree
@@ -44,7 +42,7 @@
     <v-snackbar-queue v-model="messages.queue"></v-snackbar-queue>
 </template>
 
-<style>
+<style scoped>
   .page-tree, .page-details {
     position: absolute;
     min-height: 100vh;

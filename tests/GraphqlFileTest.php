@@ -91,65 +91,20 @@ class GraphqlFileTest extends TestAbstract
     {
         $this->seed( CmsSeeder::class );
 
-        $files = File::limit( 10 )->get();
-        $expected = [];
+        $file = File::where( 'tag', 'test' )->get()->first();
 
-        foreach( $files as $file )
-        {
-            $attr = collect($file->getAttributes())->except(['tenant_id'])->all();
-            $expected[] = ['id' => (string) $file->id] + $attr;
-        }
+        $attr = collect($file->getAttributes())->except(['tenant_id'])->all();
+        $expected = [['id' => (string) $file->id] + $attr];
 
         $this->expectsDatabaseQueryCount( 2 );
         $response = $this->actingAs( $this->user )->graphQL( '{
-            files(first: 10, page: 1) {
-                data {
-                    id
-                    tag
-                    mime
-                    name
-                    path
-                    previews
-                    editor
-                    created_at
-                    updated_at
-                    deleted_at
-                }
-                paginatorInfo {
-                    currentPage
-                    lastPage
-                }
-            }
-        }' )->assertJson( [
-            'data' => [
-                'files' => [
-                    'data' => $expected,
-                    'paginatorInfo' => [
-                        'currentPage' => 1,
-                        'lastPage' => 1,
-                    ]
-                ],
-            ]
-        ] );
-    }
-
-
-    public function testFilesFilter()
-    {
-        $this->seed( CmsSeeder::class );
-
-        $files = File::where( 'name', 'like', 'Test%' )->orderBy( 'name', )->limit( 10 )->get();
-        $expected = [];
-
-        foreach( $files as $file )
-        {
-            $attr = collect($file->getAttributes())->except(['tenant_id'])->all();
-            $expected[] = ['id' => (string) $file->id] + $attr;
-        }
-
-        $this->expectsDatabaseQueryCount( 2 );
-        $response = $this->actingAs( $this->user )->graphQL( '{
-            files(filter: {name: "Test"}, sort: [{column: NAME, order: ASC}] first: 10, page: 1) {
+            files(filter: {
+                id: ["' . $file->id . '"]
+                tag: "test"
+                mime: "image/"
+                name: "Test"
+                editor: "seeder"
+            }, sort: [{column: MIME, order: ASC}], first: 10) {
                 data {
                     id
                     tag

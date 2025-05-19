@@ -292,7 +292,7 @@ type Element {
   lang: String
 
   "Arbitrary string which describes the content element"
-  label: String
+  name: String
 
   "Arbitrary content element"
   data: JSON!
@@ -333,39 +333,10 @@ input ElementInput {
   lang: String
 
   "Arbitrary string which describes the element"
-  label: String
+  name: String
 
   "Arbitrary content element data"
   data: JSON!
-}
-
-type Version {
-  "Unique version ID"
-  id: ID!
-
-  "ISO language code, e.g. 'en', 'en-GB' or empty for default language"
-  lang: String
-
-  "Arbitrary versioned data"
-  data: JSON!
-
-  "Arbitrary versioned page contents"
-  contents: JSON
-
-  "List of shared content elements assigned to the version"
-  elements: [Element!]! @belongsToMany
-
-  "List of files used in the meta or data properties"
-  files: [File!]
-
-  "If versioned is currently published or not"
-  published: Boolean!
-
-  "Name of the last user who added, updated or deleted the versioned data"
-  editor: String!
-
-  "Date/time value when the versioned data was created"
-  created_at: String!
 }
 
 type File {
@@ -432,4 +403,33 @@ input FileInput {
 
   "Descriptive name of the stored file"
   name: String
+}
+
+type Version {
+  "Unique version ID"
+  id: ID!
+
+  "ISO language code, e.g. 'en', 'en-GB' or empty for default language"
+  lang: String
+
+  "Arbitrary versioned data"
+  data: JSON!
+
+  "Arbitrary versioned page contents"
+  contents: JSON
+
+  "List of shared content elements assigned to the version"
+  elements: [Element!]! @belongsToMany
+
+  "List of files used in the meta or data properties"
+  files: [File!]
+
+  "If versioned is currently published or not"
+  published: Boolean!
+
+  "Name of the last user who added, updated or deleted the versioned data"
+  editor: String!
+
+  "Date/time value when the versioned data was created"
+  created_at: String!
 }

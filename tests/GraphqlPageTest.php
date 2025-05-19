@@ -439,7 +439,7 @@ class GraphqlPageTest extends TestAbstract
                 id
                 elements {
                     lang
-                    label
+                    name
                     data
                 }
             }
@@ -450,7 +450,7 @@ class GraphqlPageTest extends TestAbstract
                     'elements' => [
                         [
                             'lang' => '',
-                            'label' => 'Shared footer',
+                            'name' => 'Shared footer',
                             'data' => '{"type":"footer","data":{"text":"Powered by Laravel CMS"}}',
                         ],
                     ],
@@ -507,7 +507,7 @@ class GraphqlPageTest extends TestAbstract
                     elements {
                         lang
                         data
-                        label
+                        name
                     }
                 }
             }
@@ -746,7 +746,7 @@ class GraphqlPageTest extends TestAbstract
                     elements {
                         lang
                         data
-                        label
+                        name
                     }
                     created_at
                     updated_at

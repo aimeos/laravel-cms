@@ -16,6 +16,6 @@ class CommandTest extends TestAbstract
         $this->artisan('cms:publish')->assertExitCode (0 );
 
         $this->assertEquals( 1, Page::where( 'slug', 'hidden' )->firstOrFail()?->status );
-        $this->assertEquals( 'Powered by Laravel CMS!', Element::where( 'label', 'Shared footer' )->firstOrFail()?->data->data->text );
+        $this->assertEquals( 'Powered by Laravel CMS!', Element::where( 'name', 'Shared footer' )->firstOrFail()?->data->data->text );
     }
 }

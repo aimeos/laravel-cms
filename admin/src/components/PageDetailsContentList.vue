@@ -174,7 +174,7 @@
                 id
                 type
                 lang
-                label
+                name
                 data
                 editor
                 updated_at
@@ -188,7 +188,7 @@
             input: {
               type: entry.type,
               lang: this.item.lang,
-              label: this.title(entry),
+              name: this.title(entry),
               data: JSON.stringify(this.clean(entry)),
             },
             files: entry.files.filter((fileid, idx, self) => {
@@ -433,7 +433,7 @@
 
               <v-icon v-if="el.type === 'reference'" class="icon-shared" icon="mdi-link" title="Shared element"></v-icon>
 
-              <div class="element-title">{{ el.type === 'reference' ? elements[el.refid]?.label : title(el) }}</div>
+              <div class="element-title">{{ el.type === 'reference' ? elements[el.refid]?.name : title(el) }}</div>
               <div class="element-type">{{ el.type }}</div>
               <div class="actions">
                 <v-btn v-if="el.versions?.length"

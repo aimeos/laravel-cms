@@ -18,14 +18,17 @@ return new class extends Migration
             $table->string('tenant_id');
             $table->string('type', 50);
             $table->string('lang', 5)->nullable();
-            $table->string('label')->nullable();
+            $table->string('name')->nullable();
             $table->json('data');
             $table->string('editor');
             $table->timestamps();
             $table->softDeletes();
 
             $table->primary('id');
+            $table->index(['type', 'tenant_id']);
             $table->index(['lang', 'tenant_id']);
+            $table->index(['name', 'tenant_id']);
+            $table->index(['editor', 'tenant_id']);
             $table->index('deleted_at');
         });
     }

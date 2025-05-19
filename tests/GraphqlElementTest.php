@@ -62,7 +62,7 @@ class GraphqlElementTest extends TestAbstract
             element(id: \"{$element->id}\") {
                 id
                 type
-                label
+                name
                 lang
                 data
                 editor
@@ -139,7 +139,7 @@ class GraphqlElementTest extends TestAbstract
                 data {
                     id
                     type
-                    label
+                    name
                     lang
                     data
                     editor

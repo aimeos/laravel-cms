@@ -311,7 +311,7 @@
                   id
                   type
                   data
-                  label
+                  name
                   editor
                   updated_at
                   files {

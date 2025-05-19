@@ -123,7 +123,7 @@
           .map(v => v && typeof v !== 'object' && typeof v !== 'boolean' ? v : null)
           .filter(v => !!v)
           .join(' - ')
-          .substring(0, 50) || el.label || ''
+          .substring(0, 50) || ''
       },
 
 

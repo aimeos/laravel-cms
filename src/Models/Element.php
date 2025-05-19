@@ -41,7 +41,7 @@ class Element extends Model
         'tenant_id' => '',
         'type' => '',
         'lang' => '',
-        'label' => '',
+        'name' => '',
         'data' => '{}',
         'editor' => '',
     ];
@@ -54,7 +54,7 @@ class Element extends Model
     protected $casts = [
         'data' => 'object',
         'lang' => 'string',
-        'label' => 'string',
+        'name' => 'string',
     ];
 
     /**
@@ -65,7 +65,7 @@ class Element extends Model
     protected $fillable = [
         'type',
         'lang',
-        'label',
+        'name',
     ];
 
     /**

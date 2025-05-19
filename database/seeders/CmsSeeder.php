@@ -69,7 +69,8 @@ class CmsSeeder extends Seeder
             $data = ['type' => 'footer', 'data' => ['text' => 'Powered by Laravel CMS']];
 
             $element = Element::forceCreate([
-                'label' => 'Shared footer',
+                'type' => 'footer',
+                'name' => 'Shared footer',
                 'data' => ['type' => 'footer', 'data' => ['text' => 'Powered by Laravel CMS']],
                 'editor' => 'seeder',
             ]);

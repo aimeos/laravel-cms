@@ -25,39 +25,74 @@ final class Query
      */
     public function elements( $rootValue, array $args ) : Builder
     {
+        $filter = $args['filter'] ?? [];
         $limit = (int) ( $args['first'] ?? 100 );
 
         $builder = Element::withTrashed()
             ->skip( max( ( $args['page'] ?? 1 ) - 1, 0 ) * $limit )
             ->take( min( max( $limit, 1 ), 100 ) );
 
-        if( !empty( $value = $args['filter']['id'] ?? null ) ) {
+        if( !empty( $value = $filter['id'] ?? null ) ) {
             $builder->whereIn( 'id', $value );
         }
 
-        if( !empty( $value = $args['filter']['type'] ?? null ) ) {
-            $builder->where( 'type', 'like', $value . '%' );
-        }
+        unset( $filter['id'] );
 
-        if( !empty( $value = $args['filter']['name'] ?? null ) ) {
-            $builder->where( 'name', 'like', $value . '%' );
-        }
+        if( !empty( $filter ) )
+        {
+            $builder->where( function( $query ) use ( $filter ) {
 
-        if( !empty( $value = $args['filter']['lang'] ?? null ) ) {
-            $builder->where( 'lang', 'like', $value . '%' );
-        }
+                if( !empty( $value = $filter['lang'] ?? null ) ) {
+                    $query->where( 'lang', $value );
+                }
 
-        if( !empty( $value = $args['filter']['editor'] ?? null ) ) {
-            $builder->where( 'editor', 'like', $value . '%' );
-        }
+                if( !empty( $value = $filter['editor'] ?? null ) ) {
+                    $query->where( 'editor', 'like', $value . '%' );
+                }
 
-        if( !empty( $value = $args['filter']['data'] ?? null ) ) {
-            $builder->where( function( $query ) use ( $value ) {
-                $query->where( 'data', 'like', '%' . $value . '%' )
-                    ->orWhereHas('versions', function( Builder $query ) use ( $value ) {
-                        $query->where( 'data', 'like', '%' . $value . '%' );
-                    });
+                if( !empty( $value = $filter['type'] ?? null ) ) {
+                    $query->where( 'type', 'like', $value . '%' );
+                }
+
+                if( !empty( $value = $filter['name'] ?? null ) ) {
+                    $query->where( 'name', 'like', $value . '%' );
+                }
+
+                if( !empty( $value = $filter['data'] ?? null ) ) {
+                    $query->where( 'data', 'like', '%' . $value . '%' );
+                }
+
+                if( !empty( $value = $filter['any'] ?? null ) ) {
+                    $query->whereAny( ['name', 'data'], 'like', '%' . $value . '%' );
+                }
             } );
+
+            $builder->orWhereHas('versions', function( $query ) use ( $filter ) {
+
+                if( !empty( $value = $filter['lang'] ?? null ) ) {
+                    $query->where( 'lang', $value );
+                }
+
+                if( !empty( $value = $filter['editor'] ?? null ) ) {
+                    $query->where( 'editor', 'like', $value . '%' );
+                }
+
+                if( !empty( $value = $filter['type'] ?? null ) ) {
+                    $query->where( 'data', 'like', '%"type": "' . $value . '%' );
+                }
+
+                if( !empty( $value = $filter['name'] ?? null ) ) {
+                    $query->where( 'data', 'like', '%"name": "' . $value . '%' );
+                }
+
+                if( !empty( $value = $filter['data'] ?? null ) ) {
+                    $query->where( 'data', 'like', '%' . $value . '%' );
+                }
+
+                if( !empty( $value = $filter['any'] ?? null ) ) {
+                    $query->whereAny( ['name', 'data'], 'like', '%' . $value . '%' );
+                }
+            });
         }
 
         return $builder;
@@ -73,30 +108,35 @@ final class Query
      */
     public function files( $rootValue, array $args ) : Builder
     {
+        $filter = $args['filter'] ?? [];
         $limit = (int) ( $args['first'] ?? 100 );
 
         $builder = File::withTrashed()
             ->skip( max( ( $args['page'] ?? 1 ) - 1, 0 ) * $limit )
             ->take( min( max( $limit, 1 ), 100 ) );
 
-        if( !empty( $value = $args['filter']['id'] ?? null ) ) {
+        if( !empty( $value = $filter['id'] ?? null ) ) {
             $builder->whereIn( 'id', $value );
         }
 
-        if( !empty( $value = $args['filter']['mime'] ?? null ) ) {
+        if( !empty( $value = $filter['mime'] ?? null ) ) {
             $builder->where( 'mime', 'like', $value . '%' );
         }
 
-        if( !empty( $value = $args['filter']['tag'] ?? null ) ) {
+        if( !empty( $value = $filter['tag'] ?? null ) ) {
             $builder->where( 'tag', 'like', $value . '%' );
         }
 
-        if( !empty( $value = $args['filter']['name'] ?? null ) ) {
+        if( !empty( $value = $filter['name'] ?? null ) ) {
             $builder->where( 'name', 'like', $value . '%' );
         }
 
-        if( !empty( $value = $args['filter']['editor'] ?? null ) ) {
+        if( !empty( $value = $filter['editor'] ?? null ) ) {
             $builder->where( 'editor', 'like', $value . '%' );
+        }
+
+        if( !empty( $value = $filter['any'] ?? null ) ) {
+            $builder->whereAny( ['name', 'tag'], 'like', '%' . $value . '%' );
         }
 
         return $builder;

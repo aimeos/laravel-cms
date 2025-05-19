@@ -104,6 +104,7 @@ class GraphqlFileTest extends TestAbstract
                 mime: "image/"
                 name: "Test"
                 editor: "seeder"
+                any: "test"
             }, sort: [{column: MIME, order: ASC}], first: 10) {
                 data {
                     id

@@ -61,6 +61,7 @@ class GraphqlElementTest extends TestAbstract
         $response = $this->actingAs( $this->user )->graphQL( "{
             element(id: \"{$element->id}\") {
                 id
+                lang
                 type
                 name
                 lang
@@ -91,13 +92,16 @@ class GraphqlElementTest extends TestAbstract
         $response = $this->actingAs( $this->user )->graphQL( '{
             elements(filter: {
                 id: ["' . $element->id . '"]
+                lang: "en"
                 type: "footer"
                 name: "Shared"
                 editor: "seeder"
                 data: "Powered by Laravel"
+                any: "Laravel"
             }, sort: [{column: TYPE, order: ASC}], first: 10) {
                 data {
                     id
+                    lang
                     type
                     name
                     lang

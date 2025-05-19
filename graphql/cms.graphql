@@ -344,6 +344,9 @@ input ElementFilter {
 
   "Name of the last user who added, updated or deleted the content elements"
   editor: String
+
+  "Search for this string in any text field"
+  any: String
 }
 
 input ElementInput {
@@ -416,6 +419,9 @@ input FileFilter {
 
   "Name of the last user who added, updated or deleted the files"
   editor: String
+
+  "Search for this string in any text field"
+  any: String
 }
 
 input FileInput {

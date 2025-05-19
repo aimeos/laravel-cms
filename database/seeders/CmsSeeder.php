@@ -69,6 +69,7 @@ class CmsSeeder extends Seeder
             $data = ['type' => 'footer', 'data' => ['text' => 'Powered by Laravel CMS']];
 
             $element = Element::forceCreate([
+                'lang' => 'en',
                 'type' => 'footer',
                 'name' => 'Shared footer',
                 'data' => ['type' => 'footer', 'data' => ['text' => 'Powered by Laravel CMS']],
@@ -76,6 +77,7 @@ class CmsSeeder extends Seeder
             ]);
 
             $version = $element->versions()->forceCreate([
+                'lang' => 'en',
                 'data' => ['type' => 'footer', 'data' => ['text' => 'Powered by Laravel CMS!']],
                 'publish_at' => '2025-01-01 00:00:00',
                 'editor' => 'seeder',

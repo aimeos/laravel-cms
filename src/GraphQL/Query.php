@@ -293,7 +293,7 @@ final class Query
                 }
 
                 if( !empty( $value = $filter['any'] ?? null ) ) {
-                    $query->whereAny( ['contents', 'name', 'title'], 'like', '%' . $value . '%' );
+                    $query->whereAny( ['contents', 'data'], 'like', '%' . $value . '%' );
                 }
             } );
         }

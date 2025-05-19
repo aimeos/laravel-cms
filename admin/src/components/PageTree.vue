@@ -579,7 +579,7 @@
             throw result.errors
           }
 
-          return this.transform(result.data.pagesearch)
+          return this.transform(result.data.pages)
         }).catch(error => {
           this.messages.add('Error searching for pages', 'error')
           console.error(`pagesearch()`, error)

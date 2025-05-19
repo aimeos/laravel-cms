@@ -54,9 +54,9 @@ extend type Query {
 
   "Get available files"
   files(filter: FileFilter, sort: _ @orderBy(columns: ["id", "name", "mime", "tag", "editor"])): [File!]
+    @paginate(builder: "\\Aimeos\\Cms\\GraphQL\\Query@files", defaultCount: 100)
     @canModel(ability: "view", model: "\\Aimeos\\Cms\\Models\\File")
     @orderBy(column: "id", direction: DESC)
-    @paginate(defaultCount: 100)
     @softDeletes
 }
 

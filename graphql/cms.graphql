@@ -39,10 +39,11 @@ extend type Query {
     @softDeletes
     @find
 
-  "Get available element items (optionally limited by a list of IDs)"
-  elements(id: [ID!]): [Element!]
+  "Get available element items"
+  elements(filter: ElementFilter, sort: _ @orderBy(columns: ["id", "lang", "name", "type", "editor"])): [Element!]
     @paginate(builder: "\\Aimeos\\Cms\\GraphQL\\Query@elements", defaultCount: 100)
     @canModel(ability: "view", model: "\\Aimeos\\Cms\\Models\\Element")
+    @orderBy(column: "id", direction: DESC)
     @softDeletes
 
   "Get file item by ID"
@@ -323,6 +324,26 @@ type Element {
 
   "Published version of the content element"
   published: Version @hasOne
+}
+
+input ElementFilter {
+  "Unique element IDs"
+  id: [ID!]
+
+  "Type of the content elements"
+  type: String
+
+  "ISO language code, e.g. 'en', 'en-GB' or empty for default language"
+  lang: String
+
+  "Arbitrary string which describes the content elements"
+  name: String
+
+  "Arbitrary content elements"
+  data: String
+
+  "Name of the last user who added, updated or deleted the content elements"
+  editor: String
 }
 
 input ElementInput {

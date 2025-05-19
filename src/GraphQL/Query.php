@@ -31,8 +31,28 @@ final class Query
             ->skip( max( ( $args['page'] ?? 1 ) - 1, 0 ) * $limit )
             ->take( min( max( $limit, 1 ), 100 ) );
 
-        if( !empty( $args['id'] ) ) {
-            $builder->whereIn( 'id', $args['id'] );
+        if( !empty( $value = $args['filter']['id'] ?? null ) ) {
+            $builder->whereIn( 'id', $value );
+        }
+
+        if( !empty( $value = $args['filter']['type'] ?? null ) ) {
+            $builder->where( 'type', 'like', $value . '%' );
+        }
+
+        if( !empty( $value = $args['filter']['name'] ?? null ) ) {
+            $builder->where( 'name', 'like', $value . '%' );
+        }
+
+        if( !empty( $value = $args['filter']['lang'] ?? null ) ) {
+            $builder->where( 'lang', 'like', $value . '%' );
+        }
+
+        if( !empty( $value = $args['filter']['editor'] ?? null ) ) {
+            $builder->where( 'editor', 'like', $value . '%' );
+        }
+
+        if( !empty( $value = $args['filter']['data'] ?? null ) ) {
+            $builder->where( 'data', 'like', '%' . $value . '%' );
         }
 
         return $builder;

@@ -203,8 +203,8 @@
 
       fetch(parent = null, page = 1, limit = 50) {
         return this.$apollo.query({
-          query: gql`query($parent: ID, $lang: String!, $limit: Int!, $page: Int!) {
-            pages(parent_id: $parent, lang: $lang, first: $limit, page: $page) {
+          query: gql`query($filter: PageFilter, $limit: Int!, $page: Int!) {
+            pages(filter: $filter, first: $limit, page: $page) {
               data {
                 ${this.fields()}
               }
@@ -215,8 +215,10 @@
             }
           }`,
           variables: {
-            lang: this.languages.current,
-            parent: parent,
+            filter: {
+              parent_id: parent,
+              lang: this.languages.current,
+            },
             page: page,
             limit: limit
           }
@@ -523,8 +525,10 @@
             }
           }).then(result => {
             if(result.errors) {
-              this.$refs.tree.remove(stat)
+              throw result.errors
             }
+
+            this.$refs.tree.remove(stat)
 
             if(stat.parent && !stat.parent.children?.length) {
               stat.parent.data.has = false
@@ -551,8 +555,8 @@
 
       search(filter, page = 1, limit = 100) {
         return this.$apollo.query({
-          query: gql`query($filter: String!, $lang: String, $limit: Int!, $page: Int!) {
-            pagesearch(filter: $filter, lang: $lang, first: $limit, page: $page) {
+          query: gql`query($filter: PageFilter, $limit: Int!, $page: Int!) {
+            pages(filter: $filter, first: $limit, page: $page) {
               data {
                 ${this.fields()}
               }
@@ -563,8 +567,10 @@
             }
           }`,
           variables: {
-            lang: this.languages.current,
-            filter: filter,
+            filter: {
+              lang: this.languages.current,
+              any: filter
+            },
             page: page,
             limit: limit
           }

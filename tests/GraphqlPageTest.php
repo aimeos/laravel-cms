@@ -95,18 +95,32 @@ class GraphqlPageTest extends TestAbstract
     {
         $this->seed( CmsSeeder::class );
 
-        $pages = Page::where('tag', 'root')->get();
-        $expected = [];
+        $page = Page::where('tag', 'root')->firstOrFail();
 
-        foreach( $pages as $page )
-        {
-            $attr = collect($page->getAttributes())->except(['tenant_id', '_lft', '_rgt'])->all();
-            $expected[] = ['id' => (string) $page->id] + $attr;
-        }
+        $attr = collect($page->getAttributes())->except(['tenant_id', '_lft', '_rgt'])->all();
+        $expected = [['id' => (string) $page->id] + $attr];
 
         $this->expectsDatabaseQueryCount( 2 );
         $response = $this->actingAs( $this->user )->graphQL( '{
-            pages {
+            pages(filter: {
+                id: [' . $page->id . ']
+                parent_id: null
+                name: "Home"
+                slug: ""
+                to: ""
+                title: "Home"
+                domain: "mydomain"
+                lang: "en"
+                tag: "root"
+                type: ""
+                theme: ""
+                cache: 5
+                status: 1
+                meta: "Laravel"
+                config: "value"
+                contents: "Welcome"
+                any: "Laravel"
+            }, first: 10, page: 1) {
                 data {
                     id
                     parent_id
@@ -163,7 +177,9 @@ class GraphqlPageTest extends TestAbstract
 
         $this->expectsDatabaseQueryCount( 2 );
         $response = $this->actingAs( $this->user )->graphQL( '{
-            pages(parent_id: "' . $root->id . '", first: 10, page: 1) {
+            pages(filter: {
+                parent_id: "' . $root->id . '"
+            }, first: 10, page: 1) {
                 data {
                     id
                     parent_id
@@ -194,63 +210,6 @@ class GraphqlPageTest extends TestAbstract
         }' )->assertJson( [
             'data' => [
                 'pages' => [
-                    'data' => $expected,
-                    'paginatorInfo' => [
-                        'currentPage' => 1,
-                        'lastPage' => 1,
-                    ]
-                ],
-            ]
-        ] );
-    }
-
-
-    public function testPageSearch()
-    {
-        $this->seed( CmsSeeder::class );
-
-        $pages = Page::where('tag', 'root')->get();
-        $expected = [];
-
-        foreach( $pages as $page )
-        {
-            $attr = collect($page->getAttributes())->except(['tenant_id', '_lft', '_rgt'])->all();
-            $expected[] = ['id' => (string) $page->id] + $attr;
-        }
-
-        $this->expectsDatabaseQueryCount( 2 );
-        $response = $this->actingAs( $this->user )->graphQL( '{
-            pagesearch(filter: "root", first: 10, page: 1) {
-                data {
-                    id
-                    parent_id
-                    lang
-                    slug
-                    name
-                    title
-                    domain
-                    to
-                    tag
-                    type
-                    theme
-                    meta
-                    config
-                    contents
-                    status
-                    cache
-                    editor
-                    created_at
-                    updated_at
-                    deleted_at
-                }
-                paginatorInfo {
-                    currentPage
-                    lastPage
-                }
-            }
-        }' )->assertJson( [
-            'data' => [
-                'pagesearch' => [
                     'data' => $expected,
                     'paginatorInfo' => [
                         'currentPage' => 1,
@@ -377,7 +336,7 @@ class GraphqlPageTest extends TestAbstract
                     'versions' => [
                         [
                             'lang' => $page->lang,
-                            'data' => '{"name":"Home","title":"Home | Laravel CMS","slug":"","tag":"root","domain":"mydomain.tld","status":1,"editor":"seeder","meta":{"meta":{"type":"meta","text":"Laravel CMS is outstanding"}}}',
+                            'data' => '{"name":"Home","title":"Home | Laravel CMS","slug":"","tag":"root","domain":"mydomain.tld","status":1,"cache":5,"editor":"seeder","meta":{"meta":{"type":"meta","text":"Laravel CMS is outstanding"}},"config":{"test":{"type":"test","data":{"key":"value"}}}}',
                             'contents' => '[{"type":"heading","text":"Welcome to Laravel CMS"},{"type":"ref","id":"' . $element->id . '"}]',
                             'editor' => 'seeder'
                         ],
@@ -449,7 +408,7 @@ class GraphqlPageTest extends TestAbstract
                     'id' => (string) $page->id,
                     'elements' => [
                         [
-                            'lang' => '',
+                            'lang' => 'en',
                             'name' => 'Shared footer',
                             'data' => '{"type":"footer","data":{"text":"Powered by Laravel CMS"}}',
                         ],
@@ -771,7 +730,7 @@ class GraphqlPageTest extends TestAbstract
                 'savePage' => [
                     'id' => (string) $root->id,
                     'parent_id' => null,
-                    'lang' => '',
+                    'lang' => 'en',
                     'slug' => '',
                     'domain' => 'mydomain.tld',
                     'name' => 'Home',
@@ -781,7 +740,7 @@ class GraphqlPageTest extends TestAbstract
                     'type' => '',
                     'theme' => '',
                     'meta' => '{"meta":{"type":"meta","data":{"text":"Laravel CMS is outstanding"}}}',
-                    'config' => '{}',
+                    'config' => '{"test":{"type":"test","data":{"key":"value"}}}',
                     'contents' => '[{"type":"heading","text":"Welcome to Laravel CMS"},{"type":"ref","id":"' . $element->id . '"}]',
                     'status' => 1,
                     'cache' => 5,
@@ -793,7 +752,7 @@ class GraphqlPageTest extends TestAbstract
                         'contents' => '[{"type":"heading","text":"Welcome to Laravel CMS"}]',
                     ],
                     'published' => [
-                        'data' => '{"name":"Home","title":"Home | Laravel CMS","slug":"","tag":"root","domain":"mydomain.tld","status":1,"editor":"seeder","meta":{"meta":{"type":"meta","text":"Laravel CMS is outstanding"}}}',
+                        'data' => '{"name":"Home","title":"Home | Laravel CMS","slug":"","tag":"root","domain":"mydomain.tld","status":1,"cache":5,"editor":"seeder","meta":{"meta":{"type":"meta","text":"Laravel CMS is outstanding"}},"config":{"test":{"type":"test","data":{"key":"value"}}}}',
                         'contents' => '[{"type":"heading","text":"Welcome to Laravel CMS"},{"type":"ref","id":"' . $element->id . '"}]',
                     ]
                 ],

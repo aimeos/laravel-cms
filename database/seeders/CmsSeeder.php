@@ -95,20 +95,24 @@ class CmsSeeder extends Seeder
         $sharedId = $this->shared();
 
         $page = Page::forceCreate([
+            'lang' => 'en',
             'name' => 'Home',
             'title' => 'Home | Laravel CMS',
             'slug' => '',
             'tag' => 'root',
             'domain' => 'mydomain.tld',
             'status' => 1,
+            'cache' => 5,
             'editor' => 'seeder',
             'meta' => ['meta' => ['type' => 'meta', 'data' => ['text' => 'Laravel CMS is outstanding']]],
+            'config' => ['test' => ['type' => 'test', 'data' => ['key' => 'value']]],
             'contents' => [
                 ['type' => 'heading', 'text' => 'Welcome to Laravel CMS'],
                 ['type' => 'ref', 'id' => $sharedId]
             ],
         ]);
         $page->versions()->forceCreate([
+            'lang' => 'en',
             'data' => [
                 'name' => 'Home',
                 'title' => 'Home | Laravel CMS',
@@ -116,8 +120,10 @@ class CmsSeeder extends Seeder
                 'tag' => 'root',
                 'domain' => 'mydomain.tld',
                 'status' => 1,
+                'cache' => 5,
                 'editor' => 'seeder',
                 'meta' => ['meta' => ['type' => 'meta', 'text' => 'Laravel CMS is outstanding']],
+                'config' => ['test' => ['type' => 'test', 'data' => ['key' => 'value']]],
             ],
             'contents' => [
                 ['type' => 'heading', 'text' => 'Welcome to Laravel CMS'],

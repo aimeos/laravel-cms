@@ -40,6 +40,14 @@ return new class extends Migration
             $table->index(['tag', 'lang', 'tenant_id', 'status']);
             $table->index(['lang', 'tenant_id', 'status']);
             $table->index(['parent_id', 'tenant_id']);
+            $table->index(['domain', 'tenant_id']);
+            $table->index(['to', 'tenant_id']);
+            $table->index(['name', 'tenant_id']);
+            $table->index(['title', 'tenant_id']);
+            $table->index(['type', 'tenant_id']);
+            $table->index(['theme', 'tenant_id']);
+            $table->index(['cache', 'tenant_id']);
+            $table->index(['editor', 'tenant_id']);
             $table->index(['deleted_at']);
         });
     }

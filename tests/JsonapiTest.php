@@ -60,7 +60,7 @@ class JsonapiTest extends TestAbstract
 
         $this->expectsDatabaseQueryCount( 2 ); // pages + page count
         $response = $this->jsonApi()->expects( 'pages' )
-            ->filter( ['domain' => 'mydomain.tld', 'tag' => 'root', 'lang' => ''] )
+            ->filter( ['domain' => 'mydomain.tld', 'tag' => 'root', 'lang' => 'en'] )
             ->get( "cms/pages" );
 
         $response->assertFetchedMany( $pages );
@@ -185,7 +185,7 @@ class JsonapiTest extends TestAbstract
 
         $this->expectsDatabaseQueryCount( 3 ); // page + count + page subtree
         $response = $this->jsonApi()->expects( 'pages' )
-            ->filter( ['domain' => 'mydomain.tld', 'tag' => 'root', 'lang' => ''] )
+            ->filter( ['domain' => 'mydomain.tld', 'tag' => 'root', 'lang' => 'en'] )
             ->includePaths( 'subtree' )->get( "cms/pages" );
 
         $response->assertFetchedMany( $pages )->assertIncluded( $expected );

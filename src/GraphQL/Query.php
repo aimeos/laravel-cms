@@ -152,60 +152,150 @@ final class Query
      */
     public function pages( $rootValue, array $args ) : \Kalnoy\Nestedset\QueryBuilder
     {
+        $filter = $args['filter'] ?? [];
         $limit = (int) ( $args['first'] ?? 100 );
 
         $builder = Page::withTrashed()
-            ->where( 'parent_id', $args['parent_id'] ?? null )
             ->skip( max( ( $args['page'] ?? 1 ) - 1, 0 ) * $limit )
             ->take( min( max( $limit, 1 ), 100 ) );
 
-        if( isset( $args['lang'] ) ) {
-            $builder->where( function( $query ) use ( $args ) {
-                $query->select( 'lang' )
-                    ->from( 'cms_versions' )
-                    ->where( 'versionable_type', Page::class )
-                    ->whereColumn( 'versionable_id', 'cms_pages.id' )
-                    ->orderBy( 'id', 'desc' )
-                    ->limit( 1 );
-            }, (string) $args['lang'] );
+        if( !empty( $value = $filter['id'] ?? null ) ) {
+            $builder->whereIn( 'id', $value );
         }
 
-        return $builder;
-    }
+        if( !empty( $value = $filter['parent_id'] ?? null ) ) {
+            $builder->where( 'parent_id', $value );
+        }
 
+        unset( $filter['id'], $filter['parent_id'] );
 
-    /**
-     * Custom query builder to search for pages.
-     *
-     * @param  null  $rootValue
-     * @param  array  $args
-     * @return \Kalnoy\Nestedset\QueryBuilder
-     */
-    public function searchPages( $rootValue, array $args ) : \Kalnoy\Nestedset\QueryBuilder
-    {
-        $value = $args['filter'] ?? '';
-        $fields = ['config', 'domain', 'editor', 'meta', 'name', 'slug', 'tag', 'theme', 'title', 'to', 'type'];
+        if( !empty( $filter ) )
+        {
+            $builder->where( function( $query ) use ( $filter ) {
 
-        $limit = (int) ( $args['first'] ?? 100 );
-        $builder = Page::withTrashed()
-            ->where( function( $query ) use ( $fields, $value ) {
-                $query->whereAny( $fields, 'like', '%' . $value . '%' )
-                    ->orWhereHas('versions', function( Builder $query ) use ( $value ) {
-                        $query->where( 'data', 'like', '%' . $value . '%' );
-                    });
-            } )
-            ->skip( max( ( $args['page'] ?? 1 ) - 1, 0 ) * $limit )
-            ->take( min( max( $limit, 1 ), 100 ) );
+                if( !empty( $value = $filter['lang'] ?? null ) ) {
+                    $query->where( 'lang', $value );
+                }
 
-        if( isset( $args['lang'] ) ) {
-            $builder->where( function( $query ) use ( $args ) {
-                $query->select( 'lang' )
-                    ->from( 'cms_versions' )
-                    ->where( 'versionable_type', Page::class )
-                    ->whereColumn( 'versionable_id', 'cms_pages.id' )
-                    ->orderBy( 'id', 'desc' )
-                    ->limit( 1 );
-            }, (string) $args['lang'] );
+                if( !empty( $value = $filter['to'] ?? null ) ) {
+                    $query->where( 'to', 'like', $value . '%' );
+                }
+
+                if( !empty( $value = $filter['slug'] ?? null ) ) {
+                    $query->where( 'slug', 'like', $value . '%' );
+                }
+
+                if( !empty( $value = $filter['domain'] ?? null ) ) {
+                    $query->where( 'domain', 'like', $value . '%' );
+                }
+
+                if( !empty( $value = $filter['name'] ?? null ) ) {
+                    $query->where( 'name', 'like', $value . '%' );
+                }
+
+                if( !empty( $value = $filter['title'] ?? null ) ) {
+                    $query->where( 'title', 'like', $value . '%' );
+                }
+
+                if( !empty( $value = $filter['theme'] ?? null ) ) {
+                    $query->where( 'theme', 'like', $value . '%' );
+                }
+
+                if( !empty( $value = $filter['tag'] ?? null ) ) {
+                    $query->where( 'tag', 'like', $value . '%' );
+                }
+
+                if( !empty( $value = $filter['editor'] ?? null ) ) {
+                    $query->where( 'editor', 'like', $value . '%' );
+                }
+
+                if( !empty( $value = $filter['status'] ?? null ) ) {
+                    $query->where( 'status', $value );
+                }
+
+                if( !empty( $value = $filter['cache'] ?? null ) ) {
+                    $query->where( 'cache', $value );
+                }
+
+                if( !empty( $value = $filter['meta'] ?? null ) ) {
+                    $query->where( 'meta', 'like', '%' . $value . '%' );
+                }
+
+                if( !empty( $value = $filter['config'] ?? null ) ) {
+                    $query->where( 'config', 'like', '%' . $value . '%' );
+                }
+
+                if( !empty( $value = $filter['contents'] ?? null ) ) {
+                    $query->where( 'contents', 'like', '%' . $value . '%' );
+                }
+
+                if( !empty( $value = $filter['any'] ?? null ) ) {
+                    $query->whereAny( ['config', 'contents', 'meta', 'name', 'title'], 'like', '%' . $value . '%' );
+                }
+            } );
+
+            $builder->orWhereHas('versions', function( $query ) use ( $filter ) {
+
+                if( !empty( $value = $filter['lang'] ?? null ) ) {
+                    $query->where( 'lang', $value );
+                }
+
+                if( !empty( $value = $filter['to'] ?? null ) ) {
+                    $query->where( 'data', 'like', '%"to": "' . $value . '%' );
+                }
+
+                if( !empty( $value = $filter['slug'] ?? null ) ) {
+                    $query->where( 'data', 'like', '%"slug": "' . $value . '%' );
+                }
+
+                if( !empty( $value = $filter['domain'] ?? null ) ) {
+                    $query->where( 'data', 'like', '%"domain": "' . $value . '%' );
+                }
+
+                if( !empty( $value = $filter['name'] ?? null ) ) {
+                    $query->where( 'data', 'like', '%"name": "' . $value . '%' );
+                }
+
+                if( !empty( $value = $filter['title'] ?? null ) ) {
+                    $query->where( 'data', 'like', '%"title": "' . $value . '%' );
+                }
+
+                if( !empty( $value = $filter['theme'] ?? null ) ) {
+                    $query->where( 'data', 'like', '%"theme": "' . $value . '%' );
+                }
+
+                if( !empty( $value = $filter['tag'] ?? null ) ) {
+                    $query->where( 'data', 'like', '%"tag": "' . $value . '%' );
+                }
+
+                if( !empty( $value = $filter['editor'] ?? null ) ) {
+                    $query->where( 'data', 'like', $value . '%' );
+                }
+
+                if( !empty( $value = $filter['status'] ?? null ) ) {
+                    $query->where( 'data', 'like', '%"status": ' . $value );
+                }
+
+                if( !empty( $value = $filter['cache'] ?? null ) ) {
+                    $query->where( 'data', 'like', '%"cache": ' . $value );
+                }
+
+                if( !empty( $value = $filter['meta'] ?? null ) ) {
+                    $query->where( 'data', 'like', '%' . $value . '%' );
+                }
+
+                if( !empty( $value = $filter['config'] ?? null ) ) {
+                    $query->where( 'data', 'like', '%' . $value . '%' );
+                }
+
+                if( !empty( $value = $filter['contents'] ?? null ) ) {
+                    $query->where( 'contents', 'like', '%' . $value . '%' );
+                }
+
+                if( !empty( $value = $filter['any'] ?? null ) ) {
+                    $query->whereAny( ['contents', 'name', 'title'], 'like', '%' . $value . '%' );
+                }
+            } );
         }
 
         return $builder;

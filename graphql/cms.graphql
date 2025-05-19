@@ -21,16 +21,11 @@ extend type Query {
     @softDeletes
     @find
 
-  "Get pages by parent ID and language (both optional)"
-  pages(parent_id: ID, lang: String): [Page!]
+  "Get the available pages"
+  pages(filter: PageFilter): [Page!]
     @paginate(builder: "\\Aimeos\\Cms\\GraphQL\\Query@pages", defaultCount: 100)
     @canModel(ability: "view", model: "\\Aimeos\\Cms\\Models\\Page")
-    @softDeletes
-
-  "Get pages by filter and language (optional)"
-  pagesearch(filter: String!, lang: String): [Page!]
-    @paginate(builder: "\\Aimeos\\Cms\\GraphQL\\Query@searchPages", defaultCount: 100)
-    @canModel(ability: "view", model: "\\Aimeos\\Cms\\Models\\Page")
+    @orderBy(column: "_lft", direction: ASC)
     @softDeletes
 
   "Get element item by ID"
@@ -148,7 +143,7 @@ type Page {
   id: ID!
 
   "ID of the parent page or NULL if it's a root page"
-  parent_id: String
+  parent_id: ID
 
   "ISO language code, e.g. 'en', 'en-GB' or empty for default language"
   lang: String
@@ -233,6 +228,62 @@ type Page {
 
   "Published version of the page meta data"
   published: Version @hasOne
+}
+
+input PageFilter {
+  "Unique page IDs"
+  id: [ID!]
+
+  "ID of the parent page or NULL if it's a root page"
+  parent_id: ID
+
+  "ISO language code, e.g. 'en', 'en-GB' or empty for default language"
+  lang: String
+
+  "URL segment of the page, unique in combination with the language"
+  slug: String
+
+  "Domain name the root page (!) is responsible for"
+  domain: String
+
+  "Short page name for menus"
+  name: String
+
+  "Descriptive page title"
+  title: String
+
+  "If not empty, the path or URL the browser is redirected to"
+  to: String
+
+  "Tag name to identify a page, e.g. for the starting point of a navigation structure"
+  tag: String
+
+  "Theme name assigned to the page"
+  theme: String
+
+  "Type of the page for using different theme templates"
+  type: String
+
+  "Arbitrary header data"
+  meta: String
+
+  "Arbitrary configuration settings"
+  config: String
+
+  "List of content"
+  contents: String
+
+  "Visibility status of the page, 0=inactive, 1=visible, 2=hidden in navigation"
+  status: Int
+
+  "Cache lifetime in minutes"
+  cache: Int
+
+  "Name of the last user who added, updated or deleted the page"
+  editor: String
+
+  "Search for this string in any text field"
+  any: String
 }
 
 input PageInput {

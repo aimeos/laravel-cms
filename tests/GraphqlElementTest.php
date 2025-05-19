@@ -82,60 +82,20 @@ class GraphqlElementTest extends TestAbstract
     {
         $this->seed( CmsSeeder::class );
 
-        $elements = Element::orderBy( 'id' )->limit( 10 )->get();
-        $expected = [];
-
-        foreach( $elements as $element )
-        {
-            $attr = collect($element->getAttributes())->except(['tenant_id'])->all();
-            $expected[] = ['id' => (string) $element->id] + $attr;
-        }
-
-        $this->expectsDatabaseQueryCount( 2 );
-        $response = $this->actingAs( $this->user )->graphQL( '{
-            elements(first: 10) {
-                data {
-                    id
-                    type
-                    label
-                    lang
-                    data
-                    editor
-                    created_at
-                    updated_at
-                    deleted_at
-                }
-                paginatorInfo {
-                    currentPage
-                    lastPage
-                }
-            }
-        }' )->assertJson( [
-            'data' => [
-                'elements' => [
-                    'data' => $expected,
-                    'paginatorInfo' => [
-                        'currentPage' => 1,
-                        'lastPage' => 1,
-                    ]
-                ],
-            ]
-        ] );
-    }
-
-
-    public function testElementsId()
-    {
-        $this->seed( CmsSeeder::class );
-
-        $element = Element::firstOrFail();
+        $element = Element::where( 'type', 'footer' )->get()->first();
 
         $attr = collect($element->getAttributes())->except(['tenant_id'])->all();
         $expected = [['id' => (string) $element->id] + $attr];
 
         $this->expectsDatabaseQueryCount( 2 );
         $response = $this->actingAs( $this->user )->graphQL( '{
-            elements(id: ["' . $element->id . '"]) {
+            elements(filter: {
+                id: ["' . $element->id . '"]
+                type: "footer"
+                name: "Shared"
+                editor: "seeder"
+                data: "Powered by Laravel"
+            }, sort: [{column: TYPE, order: ASC}], first: 10) {
                 data {
                     id
                     type

@@ -3,7 +3,7 @@
 
   export default {
     props: {
-      'modelValue': {type: [Array, String, Number], default: ''},
+      'modelValue': {type: [Array, String, Number, null], default: null},
       'config': {type: Object, default: () => {}},
       'assets': {type: Object, default: () => {}},
       'readonly': {type: Boolean, default: false},

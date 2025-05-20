@@ -36,7 +36,7 @@ export const useConfigStore = defineStore('config', {
 export const useLanguageStore = defineStore('language', {
   state: () => ({
     available: JSON.parse(app?.dataset.languages || '{}'),
-    current: app?.dataset.language || ''
+    current: app?.dataset.language || null
   })
 })
 

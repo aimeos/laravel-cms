@@ -538,7 +538,7 @@
       },
 
 
-      reload(lang) {
+      reload(lang = null) {
         this.loading = true
         this.languages.current = lang
 
@@ -806,7 +806,7 @@
             </template>
             <v-list>
               <v-list-item>
-                <v-btn variant="text" @click="reload('')">All</v-btn>
+                <v-btn variant="text" @click="reload()">All</v-btn>
               </v-list-item>
               <v-list-item v-for="(name, code) in languages.available" :key="code">
                 <v-btn variant="text" @click="reload(code)">{{ name }}</v-btn>

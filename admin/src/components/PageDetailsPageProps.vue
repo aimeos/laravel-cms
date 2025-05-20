@@ -24,7 +24,7 @@
 
     computed: {
       langs() {
-        const list = [{code: '', name: 'None'}]
+        const list = [{code: null, name: 'None'}]
 
         Object.entries(this.languages.available).forEach(pair => {
           list.push({code: pair[0], name: pair[1]})

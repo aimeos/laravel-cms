@@ -40,38 +40,37 @@ final class Query
             $builder->whereIn( 'id', $value );
         }
 
-        unset( $filter['id'] );
+        if( !empty( $value = $filter['lang'] ?? null ) ) {
+            $builder->where( 'lang', $value );
+        }
+
+        if( !empty( $value = $filter['editor'] ?? null ) ) {
+            $builder->where( 'editor', 'like', $value . '%' );
+        }
+
+        if( !empty( $value = $filter['type'] ?? null ) ) {
+            $builder->where( 'type', 'like', $value . '%' );
+        }
+
+        if( !empty( $value = $filter['name'] ?? null ) ) {
+            $builder->where( 'name', 'like', $value . '%' );
+        }
+
+        if( !empty( $value = $filter['data'] ?? null ) ) {
+            $builder->where( 'data', 'like', '%' . $value . '%' );
+        }
+
+        if( !empty( $value = $filter['any'] ?? null ) ) {
+            $builder->whereAny( ['name', 'data'], 'like', '%' . $value . '%' );
+        }
 
         if( !empty( $filter ) )
         {
-            $builder->where( function( $query ) use ( $filter ) {
-
-                if( !empty( $value = $filter['lang'] ?? null ) ) {
-                    $query->where( 'lang', $value );
-                }
-
-                if( !empty( $value = $filter['editor'] ?? null ) ) {
-                    $query->where( 'editor', 'like', $value . '%' );
-                }
-
-                if( !empty( $value = $filter['type'] ?? null ) ) {
-                    $query->where( 'type', 'like', $value . '%' );
-                }
-
-                if( !empty( $value = $filter['name'] ?? null ) ) {
-                    $query->where( 'name', 'like', $value . '%' );
-                }
-
-                if( !empty( $value = $filter['data'] ?? null ) ) {
-                    $query->where( 'data', 'like', '%' . $value . '%' );
-                }
-
-                if( !empty( $value = $filter['any'] ?? null ) ) {
-                    $query->whereAny( ['name', 'data'], 'like', '%' . $value . '%' );
-                }
-            } );
-
             $builder->orWhereHas('versions', function( $query ) use ( $filter ) {
+
+                if( !empty( $value = $filter['id'] ?? null ) ) {
+                    $query->whereIn( 'versionable_id', $value );
+                }
 
                 if( !empty( $value = $filter['lang'] ?? null ) ) {
                     $query->where( 'lang', $value );
@@ -179,74 +178,77 @@ final class Query
             $builder->where( 'parent_id', $value );
         }
 
-        unset( $filter['id'], $filter['parent_id'] );
+        if( !empty( $value = $filter['lang'] ?? null ) ) {
+            $builder->where( 'lang', $value );
+        }
+
+        if( !empty( $value = $filter['to'] ?? null ) ) {
+            $builder->where( 'to', 'like', $value . '%' );
+        }
+
+        if( !empty( $value = $filter['slug'] ?? null ) ) {
+            $builder->where( 'slug', 'like', $value . '%' );
+        }
+
+        if( !empty( $value = $filter['domain'] ?? null ) ) {
+            $builder->where( 'domain', 'like', $value . '%' );
+        }
+
+        if( !empty( $value = $filter['name'] ?? null ) ) {
+            $builder->where( 'name', 'like', $value . '%' );
+        }
+
+        if( !empty( $value = $filter['title'] ?? null ) ) {
+            $builder->where( 'title', 'like', $value . '%' );
+        }
+
+        if( !empty( $value = $filter['theme'] ?? null ) ) {
+            $builder->where( 'theme', 'like', $value . '%' );
+        }
+
+        if( !empty( $value = $filter['tag'] ?? null ) ) {
+            $builder->where( 'tag', 'like', $value . '%' );
+        }
+
+        if( !empty( $value = $filter['editor'] ?? null ) ) {
+            $builder->where( 'editor', 'like', $value . '%' );
+        }
+
+        if( !empty( $value = $filter['status'] ?? null ) ) {
+            $builder->where( 'status', $value );
+        }
+
+        if( !empty( $value = $filter['cache'] ?? null ) ) {
+            $builder->where( 'cache', $value );
+        }
+
+        if( !empty( $value = $filter['meta'] ?? null ) ) {
+            $builder->where( 'meta', 'like', '%' . $value . '%' );
+        }
+
+        if( !empty( $value = $filter['config'] ?? null ) ) {
+            $builder->where( 'config', 'like', '%' . $value . '%' );
+        }
+
+        if( !empty( $value = $filter['contents'] ?? null ) ) {
+            $builder->where( 'contents', 'like', '%' . $value . '%' );
+        }
+
+        if( !empty( $value = $filter['any'] ?? null ) ) {
+            $builder->whereAny( ['config', 'contents', 'meta', 'name', 'title'], 'like', '%' . $value . '%' );
+        }
 
         if( !empty( $filter ) )
         {
-            $builder->where( function( $query ) use ( $filter ) {
-
-                if( !empty( $value = $filter['lang'] ?? null ) ) {
-                    $query->where( 'lang', $value );
-                }
-
-                if( !empty( $value = $filter['to'] ?? null ) ) {
-                    $query->where( 'to', 'like', $value . '%' );
-                }
-
-                if( !empty( $value = $filter['slug'] ?? null ) ) {
-                    $query->where( 'slug', 'like', $value . '%' );
-                }
-
-                if( !empty( $value = $filter['domain'] ?? null ) ) {
-                    $query->where( 'domain', 'like', $value . '%' );
-                }
-
-                if( !empty( $value = $filter['name'] ?? null ) ) {
-                    $query->where( 'name', 'like', $value . '%' );
-                }
-
-                if( !empty( $value = $filter['title'] ?? null ) ) {
-                    $query->where( 'title', 'like', $value . '%' );
-                }
-
-                if( !empty( $value = $filter['theme'] ?? null ) ) {
-                    $query->where( 'theme', 'like', $value . '%' );
-                }
-
-                if( !empty( $value = $filter['tag'] ?? null ) ) {
-                    $query->where( 'tag', 'like', $value . '%' );
-                }
-
-                if( !empty( $value = $filter['editor'] ?? null ) ) {
-                    $query->where( 'editor', 'like', $value . '%' );
-                }
-
-                if( !empty( $value = $filter['status'] ?? null ) ) {
-                    $query->where( 'status', $value );
-                }
-
-                if( !empty( $value = $filter['cache'] ?? null ) ) {
-                    $query->where( 'cache', $value );
-                }
-
-                if( !empty( $value = $filter['meta'] ?? null ) ) {
-                    $query->where( 'meta', 'like', '%' . $value . '%' );
-                }
-
-                if( !empty( $value = $filter['config'] ?? null ) ) {
-                    $query->where( 'config', 'like', '%' . $value . '%' );
-                }
-
-                if( !empty( $value = $filter['contents'] ?? null ) ) {
-                    $query->where( 'contents', 'like', '%' . $value . '%' );
-                }
-
-                if( !empty( $value = $filter['any'] ?? null ) ) {
-                    $query->whereAny( ['config', 'contents', 'meta', 'name', 'title'], 'like', '%' . $value . '%' );
-                }
-            } );
-
             $builder->orWhereHas('versions', function( $query ) use ( $filter ) {
+
+                if( !empty( $value = $filter['id'] ?? null ) ) {
+                    $query->whereIn( 'versionable_id', $value );
+                }
+
+                if( !empty( $value = $filter['parent_id'] ?? null ) ) {
+                    $query->where( 'cms_pages.parent_id', $value );
+                }
 
                 if( !empty( $value = $filter['lang'] ?? null ) ) {
                     $query->where( 'lang', $value );

@@ -161,21 +161,22 @@ final class Query
     {
         $filter = $args['filter'] ?? [];
         $limit = (int) ( $args['first'] ?? 100 );
+        $trashed = $args['trashed'] ?? null;
 
         $builder = Page::skip( max( ( $args['page'] ?? 1 ) - 1, 0 ) * $limit )
             ->take( min( max( $limit, 1 ), 100 ) );
 
-        switch( $args['trashed'] ?? null ) {
+        switch( $trashed ) {
             case 'with': $builder->withTrashed(); break;
             case 'only': $builder->onlyTrashed(); break;
         }
 
-        if( !empty( $value = $filter['id'] ?? null ) ) {
-            $builder->whereIn( 'id', $value );
+        if( $trashed !== 'only' ) {
+            $builder->where( 'parent_id', $filter['parent_id'] ?? null );
         }
 
-        if( !empty( $value = $filter['parent_id'] ?? null ) ) {
-            $builder->where( 'parent_id', $value );
+        if( !empty( $value = $filter['id'] ?? null ) ) {
+            $builder->whereIn( 'id', $value );
         }
 
         if( !empty( $value = $filter['lang'] ?? null ) ) {
@@ -240,14 +241,14 @@ final class Query
 
         if( !empty( $filter ) )
         {
-            $builder->orWhereHas('versions', function( $query ) use ( $filter ) {
+            $builder->orWhereHas('versions', function( $query ) use ( $filter, $trashed ) {
+
+                if( $trashed !== 'only' ) {
+                    $query->where( 'cms_pages.parent_id', $filter['parent_id'] ?? null );
+                }
 
                 if( !empty( $value = $filter['id'] ?? null ) ) {
                     $query->whereIn( 'versionable_id', $value );
-                }
-
-                if( !empty( $value = $filter['parent_id'] ?? null ) ) {
-                    $query->where( 'cms_pages.parent_id', $value );
                 }
 
                 if( !empty( $value = $filter['lang'] ?? null ) ) {

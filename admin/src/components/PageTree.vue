@@ -38,8 +38,6 @@
     },
 
     created() {
-      this.search = this.debounce(this.search, 500)
-
       this.fetch().then(result => {
         this.pages = result.data
         this.loading = false
@@ -186,7 +184,6 @@
 
             this.update(stat, (stat) => {
               stat.data.deleted_at = (new Date).toISOString().replace(/T/, ' ').substring(0, 19)
-              stat.hidden = !this.trash
               stat.check = false
             })
 
@@ -201,10 +198,10 @@
       },
 
 
-      fetch(parent = null, page = 1, limit = 50) {
+      fetch(parent = null, page = 1, limit = 100) {
         return this.$apollo.query({
-          query: gql`query($filter: PageFilter, $limit: Int!, $page: Int!) {
-            pages(filter: $filter, first: $limit, page: $page) {
+          query: gql`query($filter: PageFilter, $limit: Int!, $page: Int!, $trashed: Trashed) {
+            pages(filter: $filter, first: $limit, page: $page, trashed: $trashed) {
               data {
                 ${this.fields()}
               }
@@ -220,7 +217,8 @@
               lang: this.languages.current,
             },
             page: page,
-            limit: limit
+            limit: limit,
+            trashed: this.trash === null ? 'WITH' : (this.trash ? 'ONLY' : 'WITHOUT')
           }
         }).then(result => {
           if(result.errors) {
@@ -265,7 +263,7 @@
 
 
       init(stat) {
-        if(stat.data.deleted_at && !this.trash) {
+        if(stat.data.deleted_at && this.trash === false ) {
           stat.hidden = true
         }
 
@@ -348,7 +346,6 @@
             this.update(stat, (stat) => {
               if(deleted_at >= stat.data.deleted_at) {
                 stat.data.deleted_at = null
-                stat.hidden = !this.trash
                 stat.check = false
               }
             })
@@ -555,8 +552,8 @@
 
       search(filter, page = 1, limit = 100) {
         return this.$apollo.query({
-          query: gql`query($filter: PageFilter, $limit: Int!, $page: Int!) {
-            pages(filter: $filter, first: $limit, page: $page) {
+          query: gql`query($filter: PageFilter, $limit: Int!, $page: Int!, $trashed: Trashed) {
+            pages(filter: $filter, first: $limit, page: $page, trashed: $trashed) {
               data {
                 ${this.fields()}
               }
@@ -572,7 +569,8 @@
               any: filter
             },
             page: page,
-            limit: limit
+            limit: limit,
+            trashed: this.trash === null ? 'WITH' : (this.trash ? 'ONLY' : 'WITHOUT')
           }
         }).then(result => {
           if(result.errors) {
@@ -582,7 +580,7 @@
           return this.transform(result.data.pages)
         }).catch(error => {
           this.messages.add('Error searching for pages', 'error')
-          console.error(`pagesearch()`, error)
+          console.error(`pages()`, error)
         })
       },
 
@@ -683,9 +681,13 @@
 
       trashed(val) {
         this.trash = val
+        this.loading = true
 
-        this.$refs.tree.statsFlat.forEach(stat => {
-          stat.hidden = stat.data.deleted_at && !val
+        const promise = this.filter || this.trash === true ? this.search(this.filter) : this.fetch()
+
+        promise.then(result => {
+          this.pages = result.data
+          this.loading = false
         })
       },
 
@@ -715,27 +717,16 @@
       filter: {
         deep: true,
         handler() {
-          if(this.filter && this.filter.length > 1) {
-            this.pages = []
-            this.loading = true
+          this.pages = []
+          this.loading = true
 
-            this.search(this.filter).then(result => {
-              this.pages = result.data
-              this.loading = false
-            })
+          const search = this.debounce(this.search, 500)
+          const promise = this.filter ? search(this.filter) : this.fetch()
 
-            return
-          }
-
-          if(!this.filter) {
-            this.pages = []
-            this.loading = true
-
-            this.fetch().then(result => {
-              this.pages = result.data
-              this.loading = false
-            })
-          }
+          promise.then(result => {
+            this.pages = result.data
+            this.loading = false
+          })
         }
       }
     }
@@ -775,11 +766,14 @@
               <v-list-item v-show="isChecked && !isTrashed">
                 <v-btn prepend-icon="mdi-eye-off" variant="text" @click="status(null, 0)">Disable</v-btn>
               </v-list-item>
-              <v-list-item v-show="!trash">
-                <v-btn prepend-icon="mdi-delete-circle-outline" variant="text" @click="trashed(true)">Show trashed</v-btn>
+              <v-list-item v-show="trash !== false">
+                <v-btn prepend-icon="mdi-delete-off" variant="text" @click="trashed(false)">Only non-trashed</v-btn>
               </v-list-item>
-              <v-list-item v-show="trash">
-                <v-btn prepend-icon="mdi-delete-off" variant="text" @click="trashed(false)">Hide trashed</v-btn>
+              <v-list-item v-show="trash !== null">
+                <v-btn prepend-icon="mdi-delete-circle-outline" variant="text" @click="trashed(null)">Include trashed</v-btn>
+              </v-list-item>
+              <v-list-item v-show="trash !== true">
+                <v-btn prepend-icon="mdi-delete-circle" variant="text" @click="trashed(true)">Only trashed</v-btn>
               </v-list-item>
               <v-list-item v-show="canTrash">
                 <v-btn prepend-icon="mdi-delete" variant="text" @click="drop()">Trash</v-btn>

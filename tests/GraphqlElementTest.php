@@ -98,7 +98,7 @@ class GraphqlElementTest extends TestAbstract
                 editor: "seeder"
                 data: "Powered by Laravel"
                 any: "Laravel"
-            }, sort: [{column: TYPE, order: ASC}], first: 10) {
+            }, sort: [{column: TYPE, order: ASC}], first: 10, trashed: WITH) {
                 data {
                     id
                     lang

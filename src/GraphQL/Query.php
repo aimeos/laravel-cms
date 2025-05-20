@@ -28,9 +28,13 @@ final class Query
         $filter = $args['filter'] ?? [];
         $limit = (int) ( $args['first'] ?? 100 );
 
-        $builder = Element::withTrashed()
-            ->skip( max( ( $args['page'] ?? 1 ) - 1, 0 ) * $limit )
+        $builder = Element::skip( max( ( $args['page'] ?? 1 ) - 1, 0 ) * $limit )
             ->take( min( max( $limit, 1 ), 100 ) );
+
+        switch( $args['trashed'] ?? null ) {
+            case 'with': $builder->withTrashed(); break;
+            case 'only': $builder->onlyTrashed(); break;
+        }
 
         if( !empty( $value = $filter['id'] ?? null ) ) {
             $builder->whereIn( 'id', $value );
@@ -111,9 +115,13 @@ final class Query
         $filter = $args['filter'] ?? [];
         $limit = (int) ( $args['first'] ?? 100 );
 
-        $builder = File::withTrashed()
-            ->skip( max( ( $args['page'] ?? 1 ) - 1, 0 ) * $limit )
+        $builder = File::skip( max( ( $args['page'] ?? 1 ) - 1, 0 ) * $limit )
             ->take( min( max( $limit, 1 ), 100 ) );
+
+        switch( $args['trashed'] ?? null ) {
+            case 'with': $builder->withTrashed(); break;
+            case 'only': $builder->onlyTrashed(); break;
+        }
 
         if( !empty( $value = $filter['id'] ?? null ) ) {
             $builder->whereIn( 'id', $value );
@@ -155,9 +163,13 @@ final class Query
         $filter = $args['filter'] ?? [];
         $limit = (int) ( $args['first'] ?? 100 );
 
-        $builder = Page::withTrashed()
-            ->skip( max( ( $args['page'] ?? 1 ) - 1, 0 ) * $limit )
+        $builder = Page::skip( max( ( $args['page'] ?? 1 ) - 1, 0 ) * $limit )
             ->take( min( max( $limit, 1 ), 100 ) );
+
+        switch( $args['trashed'] ?? null ) {
+            case 'with': $builder->withTrashed(); break;
+            case 'only': $builder->onlyTrashed(); break;
+        }
 
         if( !empty( $value = $filter['id'] ?? null ) ) {
             $builder->whereIn( 'id', $value );

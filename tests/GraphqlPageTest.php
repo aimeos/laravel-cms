@@ -120,7 +120,7 @@ class GraphqlPageTest extends TestAbstract
                 config: "value"
                 contents: "Welcome"
                 any: "Laravel"
-            }, first: 10, page: 1) {
+            }, first: 10, page: 1, trashed: WITH) {
                 data {
                     id
                     parent_id

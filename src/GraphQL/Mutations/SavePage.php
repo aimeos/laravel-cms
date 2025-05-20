@@ -17,7 +17,7 @@ final class SavePage
      */
     public function __invoke( $rootValue, array $args ) : Page
     {
-        $page = Page::findOrFail( $args['id'] );
+        $page = Page::withTrashed()->findOrFail( $args['id'] );
         $latest = $page->latest;
 
         $data = $args['input'] ?? [];

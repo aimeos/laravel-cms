@@ -26,10 +26,10 @@ final class AddPage
             $page->editor = $editor;
 
             if( isset( $args['ref'] ) ) {
-                $page->beforeNode( Page::findOrFail( $args['ref'] ) );
+                $page->beforeNode( Page::withTrashed()->findOrFail( $args['ref'] ) );
             }
             elseif( isset( $args['parent'] ) ) {
-                $page->appendToNode( Page::findOrFail( $args['parent'] ) );
+                $page->appendToNode( Page::withTrashed()->findOrFail( $args['parent'] ) );
             }
 
             $page->save();

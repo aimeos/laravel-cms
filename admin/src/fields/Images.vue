@@ -227,8 +227,8 @@
     border: 1px solid #767676;
     border-radius: 0.5rem;
     position: relative;
-    height: 178px;
-    width: 178px;
+    height: 180px;
+    width: 100%;
     margin: 1px;
   }
 
@@ -237,8 +237,8 @@
     flex-wrap: wrap;
     align-content: center;
     justify-content: center;
-    height: 176px;
-    width: 176px;
+    height: 180px;
+    width: 100%;
   }
 
   .image button {

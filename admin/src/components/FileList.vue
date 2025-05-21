@@ -378,16 +378,16 @@
                 <v-btn variant="text" @click="sort = 'ID'">ID</v-btn>
               </v-list-item>
               <v-list-item>
-                <v-btn variant="text" @click="sort = 'NAME'">Name</v-btn>
+                <v-btn variant="text" @click="sort = 'NAME'">NAME</v-btn>
               </v-list-item>
               <v-list-item>
-                <v-btn variant="text" @click="sort = 'MIME'">Mime type</v-btn>
+                <v-btn variant="text" @click="sort = 'MIME'">MIME</v-btn>
               </v-list-item>
               <v-list-item>
-                <v-btn variant="text" @click="sort = 'TAG'">Tag</v-btn>
+                <v-btn variant="text" @click="sort = 'TAG'">TAG</v-btn>
               </v-list-item>
               <v-list-item>
-                <v-btn variant="text" @click="sort = 'EDITOR'">Editor</v-btn>
+                <v-btn variant="text" @click="sort = 'EDITOR'">EDITOR</v-btn>
               </v-list-item>
             </v-list>
           </v-menu>
@@ -422,11 +422,17 @@
               ></v-img>
             </div>
 
-            <div class="item-data" @click="$emit('update:item', item)">
-              <v-list-item-title>{{ item.name }}</v-list-item-title>
-              <v-list-item-subtitle>{{ item.mime }}</v-list-item-subtitle>
-            </div>
+            <div class="item-data">
+              <div class="item-title" @click="$emit('update:item', item)">
+                <v-list-item-title>{{ item.name }}</v-list-item-title>
+                <v-list-item-subtitle>{{ item.mime }}</v-list-item-subtitle>
+              </div>
 
+              <div class="item-meta" @click="$emit('update:item', item)">
+                <div class="item-editor">{{ item.editor }}</div>
+                <v-list-item-subtitle class="item-modified">{{ item.updated_at }}</v-list-item-subtitle>
+              </div>
+            </div>
             <v-btn icon="mdi-arrow-right" variant="text" @click="$emit('update:item', item)"></v-btn>
           </v-list-item>
         </v-list>
@@ -469,8 +475,8 @@
     display: flex;
     flex-grow: 1;
     width: 100%;
-    max-width: 30rem;
     margin: auto;
+    order: 3;
 }
 
   .search .v-select {
@@ -515,6 +521,7 @@
   .items .item-preview .v-img {
     margin-inline-start: 8px;
     margin-inline-end: 16px;
+    display: none;
     height: 48px;
     width: 72px
   }
@@ -522,5 +529,19 @@
   .items .item-data {
     flex-grow: 1;
     cursor: pointer;
+  }
+
+  @media (min-width: 500px) {
+    .items .item-preview .v-img {
+      display: block;
+    }
+  }
+
+  @media (min-width: 600px) {
+    .search {
+      order: unset;
+      width: unset;
+      max-width: 30rem;
+    }
   }
 </style>

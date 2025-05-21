@@ -48,7 +48,7 @@
       Name: {{ file.name }}<br/>
       Mime: {{ file.mime }}<br/>
       Editor: {{ file.editor }}<br/>
-      Modified: {{ file.updated_at }}
+      Updated: {{ file.updated_at }}
     </v-col>
   </v-row>
 </template>

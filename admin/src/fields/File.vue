@@ -196,7 +196,7 @@
       Name: {{ file.name }}<br/>
       Mime: {{ file.mime }}<br/>
       Editor: {{ file.editor }}<br/>
-      Modified: {{ file.updated_at }}
+      Updated: {{ file.updated_at }}
     </v-col>
   </v-row>
 </template>
@@ -209,8 +209,12 @@
     display: flex;
     flex-wrap: wrap;
     min-height: 48px;
-    max-height: 200px;
+    max-width: 100%;
     width: 100%;
+  }
+
+  .files .file, .files .file.file-input {
+    max-height: 200px;
   }
 
   .files .file.file-input label {

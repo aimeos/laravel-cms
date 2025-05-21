@@ -26,13 +26,9 @@
 </template>
 
 <style scoped>
-.v-navigation-drawer {
-  z-index: 0 !important;
-}
-
-.v-list-item:has(.router-link-active),
-.v-list-item:has(.router-link-active) a {
-  background-color: rgb(var(--v-theme-primary));
-  color: rgb(var(--v-theme-on-primary));
-}
+  .v-list-item:has(.router-link-active),
+  .v-list-item:has(.router-link-active) a {
+    background-color: rgb(var(--v-theme-primary));
+    color: rgb(var(--v-theme-on-primary));
+  }
 </style>

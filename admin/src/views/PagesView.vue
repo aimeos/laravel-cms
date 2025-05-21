@@ -44,9 +44,11 @@
 
 <style scoped>
   .page-tree, .page-details {
-    position: absolute;
-    min-height: 100vh;
-    right: 0;
+    background: rgb(var(--v-theme-background));
+    overflow-y: auto;
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
     left: 0;
     top: 0;
   }

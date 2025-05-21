@@ -71,7 +71,7 @@
       Name: {{ file.name }}<br/>
       Mime: {{ file.mime }}<br/>
       Editor: {{ file.editor }}<br/>
-      Modified: {{ file.updated_at }}
+      Updated: {{ file.updated_at }}
     </v-col>
   </v-row>
 </template>
@@ -79,6 +79,7 @@
 <style scoped>
   .v-responsive.v-img, img {
     max-width: 100%;
-    height: 200px;
+    height: 180px;
+    width: 270px;
   }
 </style>

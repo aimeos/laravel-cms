@@ -435,14 +435,6 @@
 
               <div class="element-title">{{ el.type === 'reference' ? elements[el.refid]?.name : title(el) }}</div>
               <div class="element-type">{{ el.type }}</div>
-              <div class="actions">
-                <v-btn v-if="el.versions?.length"
-                  @click.stop="history = {data: el.data, index: idx, versions: el.versions}"
-                  icon="mdi-history"
-                  variant="flat"
-                ></v-btn>
-                <div v-else class="icon placeholder"></div>
-              </div>
             </v-expansion-panel-title>
             <v-expansion-panel-text>
 
@@ -549,10 +541,9 @@
 }
 
 .element-type {
-  word-wrap: break-word;
-  overflow: hidden;
   max-height: 48px;
-  min-width: 5rem;
+  max-width: 5rem;
+  text-align: end;
 }
 
 .icon-shared {

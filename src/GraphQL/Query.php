@@ -31,6 +31,10 @@ final class Query
         $builder = Element::skip( max( ( $args['page'] ?? 1 ) - 1, 0 ) * $limit )
             ->take( min( max( $limit, 1 ), 100 ) );
 
+        foreach( $args['sort'] ?? [] as $sort ) {
+            $builder->orderBy( $sort['column'] ?? 'id', $sort['order'] ?? 'ASC' );
+        }
+
         switch( $args['trashed'] ?? null ) {
             case 'with': $builder->withTrashed(); break;
             case 'only': $builder->onlyTrashed(); break;
@@ -116,6 +120,10 @@ final class Query
 
         $builder = File::skip( max( ( $args['page'] ?? 1 ) - 1, 0 ) * $limit )
             ->take( min( max( $limit, 1 ), 100 ) );
+
+        foreach( $args['sort'] ?? [] as $sort ) {
+            $builder->orderBy( $sort['column'] ?? 'id', $sort['order'] ?? 'ASC' );
+        }
 
         switch( $args['trashed'] ?? null ) {
             case 'with': $builder->withTrashed(); break;

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::connection(config('cms.db', 'sqlite'))->create('cms_pages', function (Blueprint $table) {
             $table->id();
             $table->string('tenant_id', 250);
-            $table->string('name', 100);
+            $table->string('name');
             $table->string('slug');
             $table->string('to')->nullable();
             $table->string('title')->nullable();

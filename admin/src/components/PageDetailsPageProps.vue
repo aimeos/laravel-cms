@@ -144,14 +144,16 @@
             @update:focused="updateSlug($event)"
             variant="underlined"
             label="Page name"
-            counter="30"
+            counter="255"
+            maxlength="255"
           ></v-text-field>
           <v-text-field ref="title"
             :modelValue="item.title"
             @update:modelValue="update('title', $event)"
             variant="underlined"
             label="Page title"
-            counter="70"
+            counter="255"
+            maxlength="255"
           ></v-text-field>
         </v-col>
         <v-col cols="12" md="6">
@@ -164,12 +166,15 @@
             variant="underlined"
             label="URL path"
             counter="255"
+            maxlength="255"
           ></v-text-field>
           <v-text-field ref="domain"
             :modelValue="item.domain"
             @update:modelValue="update('domain', $event)"
             variant="underlined"
             label="Domain"
+            counter="255"
+            maxlength="255"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -197,6 +202,8 @@
             label="Page tag"
             variant="underlined"
             @update:modelValue="update()"
+            counter="30"
+            maxlength="30"
           ></v-text-field>
           <v-select ref="cache"
             :items="[
@@ -231,6 +238,8 @@
             @update:modelValue="update('to', $event)"
             variant="underlined"
             label="Redirect URL"
+            counter="255"
+            maxlength="255"
           ></v-text-field>
         </v-col>
       </v-row>

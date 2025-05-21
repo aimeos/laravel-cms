@@ -45,12 +45,12 @@
     },
 
     computed: {
-      isChecked() {
-        return this.$refs.tree.statsFlat.some(stat => stat.check)
-      },
-
       canTrash() {
         return this.$refs.tree.statsFlat.some(stat => stat.check && !stat.data.deleted_at)
+      },
+
+      isChecked() {
+        return this.$refs.tree.statsFlat.some(stat => stat.check)
       },
 
       isTrashed() {
@@ -116,7 +116,7 @@
             parent.data.has = true
           }
         }).catch(error => {
-          this.messages.add('Error changing page order', 'error')
+          this.messages.add('Error moving page', 'error')
           console.error(`movePage(id: ${dragContext.startInfo.dragNode.data.id})`, error)
         })
       },
@@ -191,7 +191,7 @@
               stat.parent.data.has = false
             }
           }).catch(error => {
-            this.messages.add('Error dropping page', 'error')
+            this.messages.add('Error trashing page', 'error')
             console.error(`dropPage(id: ${stat.data.id})`, error)
           })
         })
@@ -782,7 +782,7 @@
                 <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="keep()">Restore</v-btn>
               </v-list-item>
               <v-list-item v-show="isChecked">
-                <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge()">Delete</v-btn>
+                <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge()">Purge</v-btn>
               </v-list-item>
             </v-list>
           </v-menu>
@@ -906,7 +906,7 @@
                   <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="keep(stat)">Restore</v-btn>
                 </v-list-item>
                 <v-list-item>
-                  <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge(stat)">Delete</v-btn>
+                  <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge(stat)">Purge</v-btn>
                 </v-list-item>
               </v-list>
             </v-menu>
@@ -993,7 +993,7 @@
   .tree-node-inner {
     display: flex;
     align-items: center;
-    border-bottom: 1px solid #103050;
+    border-bottom: 1px solid rgb(var(--v-theme-primary));
     padding: 0.5rem 0;
   }
 
@@ -1068,7 +1068,7 @@
     color: #808080;
   }
 
-  .trashed {
+  .page-tree .trashed {
     text-decoration: line-through;
   }
 

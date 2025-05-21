@@ -23,7 +23,7 @@
 
 
       update(value) {
-        this.$emit('update:modelValue', value.replace(/[\r\n]+/g, '\n').replace(/^\n+|\n+$/g, ''))
+        this.$emit('update:modelValue', value.replace(/(\r)+/g, '').replace(/^\n+/, '').replace(/\n{2,}$/g, "\n"))
         this.validate()
       },
 

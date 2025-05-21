@@ -4,11 +4,14 @@
   import { dragContext } from '@he-tree/vue'
   import { useAppStore, useLanguageStore, useMessageStore } from '../stores'
   import Navigation from './Navigation.vue'
+  import User from './User.vue'
+
 
   export default {
     components: {
       Draggable,
-      Navigation
+      Navigation,
+      User
     },
 
     props: {
@@ -744,6 +747,10 @@
     </template>
 
     <v-app-bar-title>Pages</v-app-bar-title>
+
+    <template #append>
+      <User />
+    </template>
   </v-app-bar>
 
   <Navigation :state="nav" @update:state="$emit('update:nav', $event)" />

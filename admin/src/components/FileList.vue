@@ -1,11 +1,13 @@
 <script>
   import gql from 'graphql-tag'
+  import User from './User.vue'
   import Navigation from './Navigation.vue'
   import { useAppStore, useMessageStore } from '../stores'
 
   export default {
     components: {
-      Navigation
+      Navigation,
+      User
     },
 
     props: {
@@ -313,6 +315,10 @@
     </template>
 
     <v-app-bar-title>Files</v-app-bar-title>
+
+    <template #append>
+      <User />
+    </template>
   </v-app-bar>
 
   <Navigation :state="nav" @update:state="$emit('update:nav', $event)" />

@@ -1,7 +1,6 @@
 <script>
-  import gql from 'graphql-tag'
-  import router from '../routes';
-  import { useAppStore } from '../stores'
+  import router from '../routes'
+  import { useAuthStore } from '../stores'
 
   export default {
     data: () => ({
@@ -17,27 +16,20 @@
     }),
 
     setup() {
-      const app = useAppStore()
-      return { app }
+      const auth = useAuthStore()
+      return { auth }
     },
 
-    apollo: {
-      me: {
-        query: gql`query{
-          me {
-            cmseditor
-            name
-          }
-        }`,
-        error(error) {
-          console.dir(error)
-          this.message = error.message
-          this.failure = true
-        },
-        update(data) {
-          this.handle(data.me)
+    created() {
+      this.auth.isAuthenticated().then(result => {
+        if(!result) {
+          throw result
         }
-      }
+
+        router.replace(this.auth.intended())
+      }).catch(err => {
+        this.login = true
+      })
     },
 
     methods: {
@@ -49,44 +41,17 @@
         this.error = null
         this.loading = true
 
-        this.$apollo.mutate({
-          mutation: gql`mutation ($email: String!, $password: String!) {
-            cmsLogin(email: $email, password: $password) {
-              cmseditor
-              name
-            }
-          }`,
-          variables: {
-            email: this.creds.email,
-            password: this.creds.password
+        this.auth.login(this.creds.email, this.creds.password).then(user => {
+          if(user.cmseditor) {
+            router.replace(this.auth.intended())
+          } else {
+            this.error = 'Not a CMS editor'
           }
-        }).then(r => {
-          this.handle(r.data.cmsLogin || null)
-        }).catch(err => {
-          console.error(`cmsLogin(email: ${this.creds.email})`, err)
-          this.error = err.message
+        }).catch(error => {
+          this.error = error.message
         }).finally(() => {
           this.loading = false
         });
-      },
-
-
-      handle(result) {
-        if(result) {
-          if(result.name) {
-            if(result.cmseditor) {
-              this.app.me = result.name
-              this.error = null
-              router.push('/pages')
-            } else {
-              this.error = 'Not a CMS editor'
-            }
-          } else {
-            this.error = error.message
-          }
-        } else {
-          this.login = true
-        }
       }
     }
   }

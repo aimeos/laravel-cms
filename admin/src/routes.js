@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { useAppStore } from './stores'
+import { useAuthStore } from './stores'
 
 const router = createRouter({
   history: createWebHistory(document.querySelector('#app')?.dataset?.urlbase || ''),
@@ -28,9 +28,13 @@ const router = createRouter({
   ]
 })
 
-router.beforeEach((to, from, next) => {
-  if(to.matched.some(record => record.meta.auth) && !useAppStore().me) {
-      next({ name: 'login' })
+router.beforeEach(async (to, from, next) => {
+  const store = useAuthStore()
+  const authenticated = await store.isAuthenticated()
+
+  if(to.matched.some(record => record.meta.auth) && !authenticated) {
+    store.intended(to.fullPath)
+    next({name: 'login'})
   } else {
     next()
   }

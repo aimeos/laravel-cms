@@ -1,14 +1,114 @@
+import gql from 'graphql-tag'
 import { defineStore } from 'pinia'
+import { apolloClient } from './graphql'
+
 
 const app = document.querySelector('#app');
 
 export const useAppStore = defineStore('app', {
   state: () => ({
-    me: null,
     urlbase: app?.dataset.urlbase || '/admin',
     urlpage: app?.dataset.urlpage || '/:slug/xx-XX',
     urlfile: app?.dataset.urlfile || '/storage',
   })
+})
+
+
+export const useAuthStore = defineStore('auth', {
+  state: () => ({
+    me: null,
+    urlintended: null,
+  }),
+
+  actions: {
+    intended(url) {
+      return url ? this.urlintended = url : (this.urlintended || '/pages')
+    },
+
+
+    async isAuthenticated() {
+      if(this.me !== null) {
+        return !!this.me
+      }
+
+      await apolloClient.query({
+        query: gql`query{
+          me {
+            cmseditor
+            email
+            name
+          }
+        }`,
+      }).then(response => {
+        if(response.errors || !response.data.me) {
+          throw response
+        }
+
+        this.me = response.data.me || null
+        return !!this.me
+      }).catch(() => {
+        this.me = null
+      })
+
+      return !!this.me
+    },
+
+
+    login(email, password) {
+      return apolloClient.mutate({
+        mutation: gql`mutation ($email: String!, $password: String!) {
+          cmsLogin(email: $email, password: $password) {
+            cmseditor
+            email
+            name
+          }
+        }`,
+        variables: {
+          email: email,
+          password: password
+        }
+      }).then(response => {
+        if(response.errors) {
+          throw response.errors
+        }
+
+        return this.me = response.data.cmsLogin || false
+      }).catch(error => {
+        this.me = false
+        throw error
+      });
+    },
+
+
+    logout() {
+      return apolloClient.mutate({
+        mutation: gql`mutation {
+          cmsLogout {
+            cmseditor
+            email
+            name
+          }
+        }`,
+      }).then(response => {
+        if(response.errors) {
+          throw response.errors
+        }
+
+        return response.data.cmsLogout || false
+      }).finally(() => {
+        this.me = null
+      });
+    },
+
+
+    async user() {
+      if(await this.isAuthenticated()) {
+        return this.me
+      }
+
+      return null
+    }
+  }
 })
 
 

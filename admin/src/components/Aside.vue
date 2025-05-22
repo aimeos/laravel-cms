@@ -70,14 +70,15 @@
   <v-navigation-drawer location="end" rail-width="220" :modelValue="state" @update:modelValue="$emit('update:state', $event)" :rail="width > 1200 ? false : true" expand-on-hover>
 
     <v-expansion-panels variant="accordion" v-model="panel" multiple>
-      <v-expansion-panel v-for="(items, key) in stores" :key="key" v-show="Object.keys(items).length" elevation="0">
+      <v-expansion-panel v-for="(items, key) in stores" :key="key" v-show="Object.keys(items).length" :class="key" elevation="0">
         <v-expansion-panel-title>
           {{ key }}
         </v-expansion-panel-title>
         <v-expansion-panel-text>
           <v-list density="compact">
-            <v-list-item v-for="(count, code) in sort(items)" :key="code" :active="isActive(key, code)" @click="toggle(key, code)">
-              {{ code }} ({{ count }})
+            <v-list-item v-for="(value, code) in items" :key="code" :active="isActive(key, code)" @click="toggle(key, code)">
+              <span class="name">{{ code }}</span>
+              <span class="value">{{ value }}</span>
             </v-list-item>
           </v-list>
         </v-expansion-panel-text>
@@ -87,20 +88,35 @@
   </v-navigation-drawer>
 </template>
 
-<style>
-  .v-navigation-drawer--right .v-expansion-panel--active>.v-expansion-panel-title {
-    min-height: unset;
-  }
-
-  .v-navigation-drawer--right .v-list-item__content {
-    color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
-  }
-
-  .v-expansion-panel-text__wrapper {
-    padding: 0 16px 12px;
+<style scoped>
+  .v-expansion-panel-title {
+    text-transform: capitalize;
+    min-height: 48px !important;
   }
 
   .v-list {
     padding: 0;
+  }
+
+  .meta .v-list-item .name {
+    text-transform: capitalize;
+  }
+
+  .meta .v-list-item .name::after {
+    content: ':';
+  }
+
+  .meta .v-list-item .value {
+    display: block;
+  }
+
+  .state .v-list-item .value::before,
+  .type .v-list-item .value::before {
+    content: ' (';
+  }
+
+  .state .v-list-item .value::after,
+  .type .v-list-item .value::after {
+    content: ')';
   }
 </style>

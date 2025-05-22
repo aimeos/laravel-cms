@@ -498,16 +498,6 @@
   margin: 0.5rem 0;
 }
 
-.actions button {
-  background-color: transparent;
-  margin-inline-start: 0.5rem;
-}
-
-.actions .icon.placeholder {
-  height: 48px;
-  width: 48px;
-}
-
 .bulk {
   display: flex;
   align-items: center;

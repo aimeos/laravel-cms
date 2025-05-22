@@ -487,16 +487,8 @@
 </template>
 
 <style scoped>
-  .v-toolbar__content > .v-toolbar-title {
+  .v-toolbar-title {
     margin-inline-start: 0;
-  }
-
-  .v-toolbar-title__placeholder {
-    text-align: center;
-  }
-
-  .v-badge--dot .v-badge__badge {
-    margin-inline-start: 0.5rem;
   }
 
   .menu-publish {

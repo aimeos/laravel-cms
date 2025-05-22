@@ -89,7 +89,7 @@
               URL.revokeObjectURL(path)
             })
           }).catch(error => {
-            console.error(`add()`, error)
+            console.error(`addFile()`, error)
           })
 
           promises.push(promise)

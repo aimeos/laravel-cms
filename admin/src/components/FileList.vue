@@ -12,6 +12,8 @@
 
     props: {
       'item': {type: Object, required: true},
+      'grid': {type: Boolean, default: false},
+      'mime': {type: [String, null], default: null},
       'nav': {type: Boolean, default: false}
     },
 
@@ -27,6 +29,7 @@
         limit: 100,
         loading: true,
         trash: false,
+        vgrid: false,
       }
     },
 
@@ -40,6 +43,7 @@
     created() {
       this.search()
       this.search = this.debounce(this.search, 500)
+      this.vgrid = this.grid
     },
 
     computed: {
@@ -235,6 +239,7 @@
           `,
           variables: {
             filter: {
+              mime: this.mime,
               any: filter,
             },
             page: this.page,
@@ -332,6 +337,12 @@
               <v-btn append-icon="mdi-menu-down" variant="outlined" v-bind="props">Actions</v-btn>
             </template>
             <v-list>
+              <v-list-item v-if="!vgrid">
+                <v-btn prepend-icon="mdi-view-grid" variant="text" @click="vgrid = true">Grid view</v-btn>
+              </v-list-item>
+              <v-list-item v-if="vgrid">
+                <v-btn prepend-icon="mdi-view-list" variant="text" @click="vgrid = false">List view</v-btn>
+              </v-list-item>
               <v-list-item>
                 <v-btn prepend-icon="mdi-folder-plus" variant="text" @click="add()">Add file</v-btn>
               </v-list-item>
@@ -393,13 +404,13 @@
           </v-menu>
         </div>
 
-        <v-list class="items">
+        <v-list class="items" :class="{grid: vgrid}">
           <v-list-item v-for="(item, idx) in items" :key="idx" :class="{trashed: item.deleted_at}">
-            <v-checkbox-btn v-model="item._checked" @click.stop=""></v-checkbox-btn>
+            <v-checkbox-btn v-model="item._checked" @click.stop="" class="item-check"></v-checkbox-btn>
 
             <v-menu>
               <template v-slot:activator="{ props }">
-                <v-btn icon="mdi-dots-vertical" variant="text" v-bind="props"></v-btn>
+                <v-btn class="item-menu" icon="mdi-dots-vertical" variant="text" v-bind="props"></v-btn>
               </template>
               <v-list>
                 <v-list-item v-if="!item.deleted_at">
@@ -414,7 +425,7 @@
               </v-list>
             </v-menu>
 
-            <div class="item-preview">
+            <div class="item-preview" @click="$emit('update:item', item)">
               <v-img v-if="item.previews"
                 :src="url(item.path)"
                 :srcset="srcset(item.previews)"
@@ -422,18 +433,19 @@
               ></v-img>
             </div>
 
-            <div class="item-data">
-              <div class="item-title" @click="$emit('update:item', item)">
+            <div class="item-data" @click="$emit('update:item', item)">
+              <div class="item-title">
                 <v-list-item-title>{{ item.name }}</v-list-item-title>
                 <v-list-item-subtitle>{{ item.mime }}</v-list-item-subtitle>
               </div>
 
-              <div class="item-meta" @click="$emit('update:item', item)">
+              <div class="item-meta">
                 <div class="item-editor">{{ item.editor }}</div>
                 <v-list-item-subtitle class="item-modified">{{ item.updated_at }}</v-list-item-subtitle>
               </div>
             </div>
-            <v-btn icon="mdi-arrow-right" variant="text" @click="$emit('update:item', item)"></v-btn>
+
+            <v-btn class="item-open" icon="mdi-arrow-right" variant="text" @click="$emit('update:item', item)"></v-btn>
           </v-list-item>
         </v-list>
 
@@ -504,35 +516,83 @@
     color: #808080;
   }
 
-  .items .v-list-item {
+  .items:not(.grid) .v-list-item {
     border-bottom: 1px solid rgb(var(--v-theme-primary));
     padding: 0.5rem 0;
   }
 
-  .items .v-list-item > * {
+  .items:not(.grid) .v-list-item > * {
     display: flex;
     align-items: center;
   }
 
-  .items .v-selection-control {
+  .items:not(.grid) .v-selection-control {
     flex-grow: unset;
   }
 
-  .items .item-preview .v-img {
+  .items:not(.grid) .item-preview .v-img {
     margin-inline-start: 8px;
     margin-inline-end: 16px;
+    cursor: pointer;
     display: none;
     height: 48px;
     width: 72px
   }
 
-  .items .item-data {
+  .items:not(.grid) .item-data {
     flex-grow: 1;
     cursor: pointer;
   }
 
+  .items.grid {
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    display: grid;
+    gap: 16px;
+  }
+
+  .items.grid .v-list-item {
+    border: 1px solid rgb(var(--v-theme-primary));
+  }
+
+  .items.grid .v-list-item .item-check,
+  .items.grid .v-list-item .item-menu {
+    display: none;
+  }
+
+  .items.grid .v-list-item:hover .item-menu,
+  .items.grid .v-list-item:hover .item-check {
+    background-color: rgb(var(--v-theme-surface-light));
+    border-radius: 50%;
+    position: absolute;
+    display: block;
+    z-index: 2;
+    top: 0;
+  }
+
+  .items.grid .v-list-item:hover .item-check {
+    left: 0;
+  }
+
+  .items.grid .v-list-item:hover .item-menu {
+    right: 0;
+  }
+
+  .items.grid .item-preview {
+    display: flex;
+    height: 180px;
+    z-index: 1;
+  }
+
+  .items.grid .item-preview .v-img {
+    display: block;
+  }
+
+  .items.grid .item-open {
+    display: none;
+  }
+
   @media (min-width: 500px) {
-    .items .item-preview .v-img {
+    .items:not(.grid) .item-preview .v-img {
       display: block;
     }
   }

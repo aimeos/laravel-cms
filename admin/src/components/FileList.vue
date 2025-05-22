@@ -11,7 +11,6 @@
     },
 
     props: {
-      'item': {type: Object, required: true},
       'grid': {type: Boolean, default: false},
       'mime': {type: [String, null], default: null},
       'nav': {type: Boolean, default: false}
@@ -23,10 +22,11 @@
       return {
         items: [],
         filter: '',
-        sort: 'ID',
+        sort: {column: 'ID', order: 'DESC'},
         page: 1,
         last: 1,
         limit: 100,
+        checked: false,
         loading: true,
         trash: false,
         vgrid: false,
@@ -61,11 +61,53 @@
     },
 
     methods: {
-      add() {
-        const item = {id: null}
+      add(ev) {
+        const promises = []
+        const files = ev.target.files || ev.dataTransfer.files || []
 
-        this.items.splice(0, 0, item)
-        this.$emit('update:item', item)
+        if(!files.length) {
+          return
+        }
+
+        Array.from(files).forEach(file => {
+          promises.push(this.$apollo.mutate({
+            mutation: gql`mutation($file: Upload!) {
+              addFile(file: $file) {
+                id
+                mime
+                name
+                path
+                previews
+                editor
+                created_at
+                updated_at
+                deleted_at
+              }
+            }`,
+            variables: {
+              file: file
+            },
+            context: {
+              hasUpload: true
+            }
+          }).then(response => {
+            if(response.errors) {
+              throw response.errors
+            }
+
+            const data = response.data?.addFile || {}
+            data.previews = JSON.parse(data.previews) || {}
+
+            this.items.unshift(data)
+            return data
+          }).catch(error => {
+            console.error(`addFile()`, error)
+          }))
+        })
+
+        Promise.all(promises).then(() => {
+          this.invalidate()
+        })
       },
 
 
@@ -90,13 +132,11 @@
 
 
       drop(idx) {
-        const list = []
+        let list = []
         const promises = []
 
         if(!this.items[idx]) {
-          list = this.items.filter(item => item._checked).forEach(item => {
-            list.push(item)
-          })
+          list = this.items.filter(item => item._checked)
         } else {
           list.push(this.items[idx])
         }
@@ -126,24 +166,31 @@
         })
 
         Promise.all(promises).then(() => {
+          this.invalidate()
           this.search(this.filter)
         })
       },
 
 
+      invalidate() {
+        const cache = this.$apollo.provider.defaultClient.cache
+        cache.evict({id: 'ROOT_QUERY', fieldName: 'files'})
+        cache.gc()
+      },
+
+
       keep(idx) {
-        const list = []
+        let list = []
+        const promises = []
 
         if(!this.items[idx]) {
-          list = this.items.filter(item => item._checked).forEach(item => {
-            list.push(item)
-          })
+          list = this.items.filter(item => item._checked)
         } else {
           list.push(this.items[idx])
         }
 
         list.forEach(item => {
-          this.$apollo.mutate({
+          promises.push(this.$apollo.mutate({
             mutation: gql`
               mutation($id: ID!) {
                 keepFile(id: $id) {
@@ -164,19 +211,22 @@
           }).catch(error => {
             this.messages.add('Error restoring file', 'error')
             console.error(`purge()`, error)
-          })
+          }))
+        })
+
+        Promise.all(promises).then(() => {
+          this.invalidate()
+          this.search(this.filter)
         })
       },
 
 
       purge(idx) {
-        const list = []
+        let list = []
         const promises = []
 
         if(!this.items[idx]) {
-          list = this.items.filter(item => item._checked).forEach(item => {
-            list.push(item)
-          })
+          list = this.items.filter(item => item._checked)
         } else {
           list.push(this.items[idx])
         }
@@ -206,6 +256,7 @@
         })
 
         Promise.all(promises).then(() => {
+          this.invalidate()
           this.search(this.filter)
         })
       },
@@ -244,7 +295,7 @@
             },
             page: this.page,
             limit: this.limit,
-            sort: [{column: this.sort, order: 'ASC'}],
+            sort: [this.sort],
             trashed: this.trash === null ? 'WITH' : (this.trash ? 'ONLY' : 'WITHOUT')
           },
         }).then(result => {
@@ -260,11 +311,17 @@
               previews: JSON.parse(item.previews || '{}'),
             }
           })
+          this.checked = false
           this.loading = false
         }).catch(error => {
           this.messages.add('Error fetching files', 'error')
           console.error(`files()`, error)
         })
+      },
+
+
+      shown(item) {
+        return true
       },
 
 
@@ -274,6 +331,15 @@
           list.push(`${this.url(map[key])} ${key}w`)
         }
         return list.join(', ')
+      },
+
+
+      toggle() {
+        this.items.forEach(el => {
+          if(this.shown(el)) {
+            el._checked = !el._checked
+          }
+        })
       },
 
 
@@ -332,40 +398,37 @@
     <v-container>
       <v-sheet class="box">
         <div class="header">
-          <v-menu>
-            <template #activator="{ props }">
-              <v-btn append-icon="mdi-menu-down" variant="outlined" v-bind="props">Actions</v-btn>
-            </template>
-            <v-list>
-              <v-list-item v-if="!vgrid">
-                <v-btn prepend-icon="mdi-view-grid" variant="text" @click="vgrid = true">Grid view</v-btn>
-              </v-list-item>
-              <v-list-item v-if="vgrid">
-                <v-btn prepend-icon="mdi-view-list" variant="text" @click="vgrid = false">List view</v-btn>
-              </v-list-item>
-              <v-list-item>
-                <v-btn prepend-icon="mdi-folder-plus" variant="text" @click="add()">Add file</v-btn>
-              </v-list-item>
-              <v-list-item v-show="trash !== false">
-                <v-btn prepend-icon="mdi-delete-off" variant="text" @click="trashed(false)">Only non-trashed</v-btn>
-              </v-list-item>
-              <v-list-item v-show="trash !== null">
-                <v-btn prepend-icon="mdi-delete-circle-outline" variant="text" @click="trashed(null)">Include trashed</v-btn>
-              </v-list-item>
-              <v-list-item v-show="trash !== true">
-                <v-btn prepend-icon="mdi-delete-circle" variant="text" @click="trashed(true)">Only trashed</v-btn>
-              </v-list-item>
-              <v-list-item v-show="canTrash">
-                <v-btn prepend-icon="mdi-delete" variant="text" @click="drop()">Trash</v-btn>
-              </v-list-item>
-              <v-list-item v-show="isTrashed">
-                <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="keep()">Restore</v-btn>
-              </v-list-item>
-              <v-list-item v-show="isChecked">
-                <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge()">Purge</v-btn>
-              </v-list-item>
-            </v-list>
-          </v-menu>
+          <div class="bulk">
+            <v-checkbox-btn v-model="checked" @click.stop="toggle()"></v-checkbox-btn>
+            <v-menu location="bottom left">
+              <template #activator="{ props }">
+                <v-btn append-icon="mdi-menu-down" variant="outlined" v-bind="props">Actions</v-btn>
+              </template>
+              <v-list>
+                <v-list-item>
+                  <v-btn prepend-icon="mdi-folder-plus" variant="text" @click="$refs.upload.click()">Add files</v-btn>
+                </v-list-item>
+                <v-list-item v-show="trash !== false">
+                  <v-btn prepend-icon="mdi-delete-off" variant="text" @click="trashed(false)">Only non-trashed</v-btn>
+                </v-list-item>
+                <v-list-item v-show="trash !== null">
+                  <v-btn prepend-icon="mdi-delete-circle-outline" variant="text" @click="trashed(null)">Include trashed</v-btn>
+                </v-list-item>
+                <v-list-item v-show="trash !== true">
+                  <v-btn prepend-icon="mdi-delete-circle" variant="text" @click="trashed(true)">Only trashed</v-btn>
+                </v-list-item>
+                <v-list-item v-show="canTrash">
+                  <v-btn prepend-icon="mdi-delete" variant="text" @click="drop()">Trash</v-btn>
+                </v-list-item>
+                <v-list-item v-show="isTrashed">
+                  <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="keep()">Restore</v-btn>
+                </v-list-item>
+                <v-list-item v-show="isChecked">
+                  <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge()">Purge</v-btn>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </div>
 
           <div class="search">
             <v-text-field
@@ -378,30 +441,38 @@
             ></v-text-field>
           </div>
 
-          <v-menu>
-            <template #activator="{ props }">
-              <v-btn append-icon="mdi-menu-down" prepend-icon="mdi-sort" variant="outlined" location="bottom right" v-bind="props">
-                {{ sort }}
-              </v-btn>
-            </template>
-            <v-list>
-              <v-list-item>
-                <v-btn variant="text" @click="sort = 'ID'">ID</v-btn>
-              </v-list-item>
-              <v-list-item>
-                <v-btn variant="text" @click="sort = 'NAME'">NAME</v-btn>
-              </v-list-item>
-              <v-list-item>
-                <v-btn variant="text" @click="sort = 'MIME'">MIME</v-btn>
-              </v-list-item>
-              <v-list-item>
-                <v-btn variant="text" @click="sort = 'TAG'">TAG</v-btn>
-              </v-list-item>
-              <v-list-item>
-                <v-btn variant="text" @click="sort = 'EDITOR'">EDITOR</v-btn>
-              </v-list-item>
-            </v-list>
-          </v-menu>
+          <div class="layout">
+            <v-btn v-if="!vgrid" @click="vgrid = true" icon="mdi-view-grid-outline" variant="flat" title="Grid view"></v-btn>
+            <v-btn v-if="vgrid" @click="vgrid = false" icon="mdi-format-list-bulleted-square" variant="flat" title="List view"></v-btn>
+
+            <v-menu>
+              <template #activator="{ props }">
+                <v-btn append-icon="mdi-menu-down" prepend-icon="mdi-sort" variant="outlined" location="bottom right" v-bind="props">
+                  {{ sort?.column === 'ID' ? (sort?.order === 'DESC' ? 'Latest' : 'Oldest' ) : (sort?.column || '') }}
+                </v-btn>
+              </template>
+              <v-list>
+                <v-list-item>
+                  <v-btn variant="text" @click="sort = {column: 'ID', order: 'DESC'}">Latest</v-btn>
+                </v-list-item>
+                <v-list-item>
+                  <v-btn variant="text" @click="sort = {column: 'ID', order: 'ASC'}">Oldest</v-btn>
+                </v-list-item>
+                <v-list-item>
+                  <v-btn variant="text" @click="sort = {column: 'NAME', order: 'ASC'}">Name</v-btn>
+                </v-list-item>
+                <v-list-item>
+                  <v-btn variant="text" @click="sort = {column: 'MIME', order: 'ASC'}">Mime</v-btn>
+                </v-list-item>
+                <v-list-item>
+                  <v-btn variant="text" @click="sort = {column: 'TAG', order: 'ASC'}">Tag</v-btn>
+                </v-list-item>
+                <v-list-item>
+                  <v-btn variant="text" @click="sort = {column: 'EDITOR', order: 'ASC'}">Editor</v-btn>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </div>
         </div>
 
         <v-list class="items" :class="{grid: vgrid}">
@@ -463,7 +534,13 @@
         ></v-pagination>
 
         <div class="btn-group">
-          <v-btn color="primary" icon="mdi-folder-plus" @click="add()"></v-btn>
+          <input @change="add($event)"
+            ref="upload"
+            type="file"
+            multiple
+            hidden
+          />
+          <v-btn color="primary" icon="mdi-folder-plus" @click="$refs.upload.click()"></v-btn>
         </div>
       </v-sheet>
     </v-container>
@@ -481,6 +558,15 @@
     align-items: flex-end;
     justify-content: space-between;
     margin-bottom: 1rem;
+  }
+
+  .header > * {
+    margin: 0.5rem 0;
+  }
+
+  .bulk {
+    display: flex;
+    align-items: center;
   }
 
   .search {
@@ -540,6 +626,9 @@
   }
 
   .items:not(.grid) .item-data {
+    justify-content: space-between;
+    flex-wrap: wrap;
+    display: flex;
     flex-grow: 1;
     cursor: pointer;
   }
@@ -556,24 +645,27 @@
 
   .items.grid .v-list-item .item-check,
   .items.grid .v-list-item .item-menu {
-    display: none;
-  }
-
-  .items.grid .v-list-item:hover .item-menu,
-  .items.grid .v-list-item:hover .item-check {
-    background-color: rgb(var(--v-theme-surface-light));
+    background: rgb(var(--v-theme-surface-variant));
+    color: rgb(var(--v-theme-surface));
+    opacity: 0.66;
     border-radius: 50%;
     position: absolute;
-    display: block;
+    display: none;
     z-index: 2;
     top: 0;
   }
 
-  .items.grid .v-list-item:hover .item-check {
+  .items.grid .v-list-item:hover .item-menu,
+  .items.grid .v-list-item:hover .item-check,
+  .items.grid .v-list-item .item-check:has(input:checked) {
+    display: block;
+  }
+
+  .items.grid .v-list-item .item-check {
     left: 0;
   }
 
-  .items.grid .v-list-item:hover .item-menu {
+  .items.grid .v-list-item .item-menu {
     right: 0;
   }
 

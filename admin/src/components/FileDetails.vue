@@ -1,11 +1,14 @@
 <script>
+  import gql from 'graphql-tag'
   import Aside from './Aside.vue'
+  import FileDetailsFile from './FileDetailsFile.vue'
   import { useMessageStore } from '../stores'
 
 
   export default {
     components: {
-      Aside
+      Aside,
+      FileDetailsFile,
     },
 
     props: {
@@ -15,8 +18,8 @@
     emits: ['update:item', 'close'],
 
     data: () => ({
-      changed: {},
-      errors: {},
+      changed: false,
+      error: false,
       nav: null,
       tab: 'file',
     }),
@@ -25,6 +28,37 @@
       const messages = useMessageStore()
       return { messages }
     },
+
+    methods: {
+      save() {
+        this.$apollo.mutate({
+          mutation: gql`mutation ($id: ID!, $input: FileInput!) {
+            saveFile(id: $id, input: $input) {
+              id
+            }
+          }`,
+          variables: {
+            id: this.item.id,
+            input: {
+              name: this.item.name,
+              tag: this.item.tag,
+            }
+          }
+        }).then(result => {
+          if(result.errors) {
+            throw result.errors
+          }
+
+          this.$emit('close', true)
+          this.changed = false
+
+          return result.data.saveFile
+        }).catch(error => {
+          this.messages.add('Error saving file', 'error')
+          console.error(`saveFile(id: ${item.id})`, error)
+        })
+      },
+    }
   }
 </script>
 
@@ -44,7 +78,7 @@
     </v-app-bar-title>
 
     <template v-slot:append>
-      <v-btn :class="{error: false}" :disabled="false" @click="save()" variant="text">
+      <v-btn :class="{error: error}" :disabled="!changed || error" @click="save()" variant="text">
         Save
       </v-btn>
 
@@ -59,12 +93,21 @@
   <v-main class="file-details">
     <v-form @submit.prevent>
       <v-tabs fixed-tabs v-model="tab">
-        <v-tab value="file" :class="{changed: true, error: false}">File</v-tab>
+        <v-tab value="file" :class="{changed: changed, error: error}">File</v-tab>
+        <v-tab value="refs">Used by</v-tab>
       </v-tabs>
 
       <v-window v-model="tab">
 
         <v-window-item value="file">
+          <FileDetailsFile
+            :item="item"
+            @update:item="this.$emit('update:item', item); changed = true"
+            @error="error = $event"
+          />
+        </v-window-item>
+
+        <v-window-item value="refs">
         </v-window-item>
 
       </v-window>
@@ -75,11 +118,7 @@
 </template>
 
 <style scoped>
-  .v-toolbar__content>.v-toolbar-title {
+  .v-toolbar-title {
     margin-inline-start: 0;
-  }
-
-  .v-toolbar-title__placeholder {
-    text-align: center;
   }
 </style>

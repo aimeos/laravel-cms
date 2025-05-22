@@ -27,8 +27,7 @@
       <v-layout class="file-list" key="list">
         <FileList
           v-model:nav="nav"
-          v-model:item="item"
-          @update:item="details = true"
+          @update:item="item = $event; details = true"
         />
       </v-layout>
       <v-layout class="file-details" key="details" v-show="details">

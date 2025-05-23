@@ -487,6 +487,12 @@ type Version {
   "Unique version ID"
   id: ID!
 
+  "ID of the page or element"
+  versionable_id: ID!
+
+  "Model class name of the versioned item"
+  versionable_type: String!
+
   "ISO language code, e.g. 'en', 'en-GB' or empty for default language"
   lang: String
 

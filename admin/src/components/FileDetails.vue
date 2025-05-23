@@ -2,6 +2,7 @@
   import gql from 'graphql-tag'
   import Aside from './Aside.vue'
   import FileDetailsFile from './FileDetailsFile.vue'
+  import FileDetailsRefs from './FileDetailsRefs.vue'
   import { useMessageStore } from '../stores'
 
 
@@ -9,6 +10,7 @@
     components: {
       Aside,
       FileDetailsFile,
+      FileDetailsRefs
     },
 
     props: {
@@ -108,6 +110,9 @@
         </v-window-item>
 
         <v-window-item value="refs">
+          <FileDetailsRefs
+            :item="item"
+          />
         </v-window-item>
 
       </v-window>

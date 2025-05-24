@@ -291,12 +291,12 @@ class Page extends Model
 
 
     /**
-     * Interact with the status property.
+     * Interact with the domain property.
      */
-    protected function status(): Attribute
+    protected function domain(): Attribute
     {
         return Attribute::make(
-            set: fn($value) => (int) $value,
+            set: fn($value) => (string) $value,
         );
     }
 
@@ -316,6 +316,39 @@ class Page extends Model
      * Interact with the slug property.
      */
     protected function slug(): Attribute
+    {
+        return Attribute::make(
+            set: fn($value) => (string) $value,
+        );
+    }
+
+
+    /**
+     * Interact with the status property.
+     */
+    protected function status(): Attribute
+    {
+        return Attribute::make(
+            set: fn($value) => (int) $value,
+        );
+    }
+
+
+    /**
+     * Interact with the tag property.
+     */
+    protected function tag(): Attribute
+    {
+        return Attribute::make(
+            set: fn($value) => (string) $value,
+        );
+    }
+
+
+    /**
+     * Interact with the to property.
+     */
+    protected function to(): Attribute
     {
         return Attribute::make(
             set: fn($value) => (string) $value,

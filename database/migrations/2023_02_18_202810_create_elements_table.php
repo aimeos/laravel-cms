@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('tenant_id');
             $table->string('type', 50);
             $table->string('lang', 5)->nullable();
-            $table->string('name')->nullable();
+            $table->string('name');
             $table->json('data');
             $table->string('editor');
             $table->timestamps();

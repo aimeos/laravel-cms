@@ -446,13 +446,13 @@ type File {
   deleted_at: String
 
   "List of elements using the file"
-  elements: [Element!]! @belongsToMany
+  byelements: [Element!]! @belongsToMany
 
   "List of pages using the file"
-  pages: [Page!]! @belongsToMany
+  bypages: [Page!]! @belongsToMany
 
   "List of versions using the file"
-  versions: [Version!]! @belongsToMany
+  byversions: [Version!]! @belongsToMany
 }
 
 input FileFilter {

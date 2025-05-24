@@ -27,17 +27,17 @@
             query: gql`query ($id: ID!) {
               file(id: $id) {
                 id
-                pages {
+                bypages {
                   id
                   slug
                   name
                 }
-                elements {
+                byelements {
                   id
                   type
                   name
                 }
-                versions {
+                byversions {
                   versionable_id
                   versionable_type
                   data
@@ -53,7 +53,7 @@
             }
 
             this.file = result.data?.file || {}
-            this.versions = (result.data?.file?.versions || []).map(item => {
+            this.versions = (result.data?.file?.byversions || []).map(item => {
               return {
                 id: item.versionable_id,
                 type: item.versionable_type,
@@ -75,7 +75,7 @@
     <v-sheet>
       <v-expansion-panels v-model="panel" elevation="0" multiple>
 
-        <v-expansion-panel v-if="file.pages?.length">
+        <v-expansion-panel v-if="file.bypages?.length">
           <v-expansion-panel-title>Pages</v-expansion-panel-title>
           <v-expansion-panel-text>
             <v-table>
@@ -87,7 +87,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="v in file.pages" :key="v.id">
+                <tr v-for="v in file.bypages" :key="v.id">
                   <td>{{ v.id }}</td>
                   <td>{{ v.slug }}</td>
                   <td>{{ v.name }}</td>
@@ -97,7 +97,7 @@
           </v-expansion-panel-text>
         </v-expansion-panel>
 
-        <v-expansion-panel v-if="file.elements?.length">
+        <v-expansion-panel v-if="file.byelements?.length">
           <v-expansion-panel-title>Elements</v-expansion-panel-title>
           <v-expansion-panel-text>
             <v-table>
@@ -109,7 +109,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="v in file.elements" :key="v.id">
+                <tr v-for="v in file.byelements" :key="v.id">
                   <td>{{ v.id }}</td>
                   <td>{{ v.type }}</td>
                   <td>{{ v.name }}</td>

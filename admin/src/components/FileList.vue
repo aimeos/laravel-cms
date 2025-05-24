@@ -74,10 +74,12 @@
             mutation: gql`mutation($file: Upload!) {
               addFile(file: $file) {
                 id
+                tag
                 mime
                 name
                 path
                 previews
+                description
                 editor
                 created_at
                 updated_at
@@ -97,6 +99,7 @@
 
             const data = response.data?.addFile || {}
             data.previews = JSON.parse(data.previews) || {}
+            data.description = JSON.parse(data.description) || {}
 
             this.items.unshift(data)
             return data
@@ -276,6 +279,7 @@
                   mime
                   path
                   previews
+                  description
                   editor
                   created_at
                   updated_at
@@ -309,6 +313,7 @@
             return {
               ...item,
               previews: JSON.parse(item.previews || '{}'),
+              description: JSON.parse(item.description || '{}'),
             }
           })
           this.checked = false

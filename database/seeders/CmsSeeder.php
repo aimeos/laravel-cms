@@ -51,6 +51,9 @@ class CmsSeeder extends Seeder
                 'name' => 'Test image',
                 'path' => 'https://picsum.photos/id/0/1500/1000',
                 'previews' => ["1000" => "https://picsum.photos/id/0/1000/666", "500" => "https://picsum.photos/id/0/500/333"],
+                'description' => [
+                    'en' => 'Test file description',
+                ],
                 'editor' => 'seeder',
             ];
 

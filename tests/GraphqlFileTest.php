@@ -65,6 +65,7 @@ class GraphqlFileTest extends TestAbstract
                 name
                 path
                 previews
+                description
                 editor
                 created_at
                 updated_at
@@ -113,6 +114,7 @@ class GraphqlFileTest extends TestAbstract
                     name
                     path
                     previews
+                    description
                     editor
                     created_at
                     updated_at
@@ -146,6 +148,7 @@ class GraphqlFileTest extends TestAbstract
             'query' => '
                 mutation($file: Upload!, $preview: Upload) {
                     addFile(file: $file, input: {
+                        description: "{\"en\": \"Test file description\"}"
                         name: "Test file name"
                         tag: "test tag"
                     }, preview: $preview) {
@@ -155,6 +158,7 @@ class GraphqlFileTest extends TestAbstract
                         name
                         path
                         previews
+                        description
                         editor
                         created_at
                         updated_at
@@ -186,6 +190,7 @@ class GraphqlFileTest extends TestAbstract
                     'name' => 'Test file name',
                     'path' => $file->path,
                     'previews' => json_encode( $file->previews ),
+                    'description' => json_encode( $file->description ),
                     'editor' => 'Test',
                     'created_at' => (string) $file->created_at,
                     'updated_at' => (string) $file->updated_at,
@@ -206,6 +211,7 @@ class GraphqlFileTest extends TestAbstract
             'query' => '
                 mutation($preview: Upload) {
                     saveFile(id: "' . $file->id . '", input: {
+                        description: "{\"en\": \"Test file description\"}"
                         name: "test file"
                         tag: "test"
                     }, preview: $preview) {
@@ -213,6 +219,7 @@ class GraphqlFileTest extends TestAbstract
                         tag
                         name
                         previews
+                        description
                         editor
                     }
                 }

@@ -1,5 +1,5 @@
 <script>
-  import { useAppStore, useMessageStore, useSideStore } from '../stores'
+  import { useAppStore, useLanguageStore, useMessageStore, useSideStore } from '../stores'
 
 
   export default {
@@ -9,15 +9,21 @@
 
     emits: ['update:item', 'error'],
 
-    data: () => ({
-    }),
-
     setup() {
+      const languages = useLanguageStore()
       const messages = useMessageStore()
       const side = useSideStore()
       const app = useAppStore()
 
-      return { app, messages, side }
+      return { app, languages, messages, side }
+    },
+
+    computed: {
+      langs() {
+        return Object.keys(this.languages.available || {}).concat(Object.keys(this.item.description || {})).filter((v, idx, self) => {
+          return self.indexOf(v) === idx
+        })
+      }
     },
 
     methods: {
@@ -76,6 +82,21 @@
             counter="30"
             maxlength="30"
           ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col v-for="lang in langs" cols="12" class="desc">
+          <v-textarea ref="description"
+            :modelValue="item.description?.[lang] || ''"
+            @update:modelValue="item.description[lang] = $event; $emit('update:item', item)"
+            :placeholder="`Description in ${lang}`"
+            :label="`Description (${lang})`"
+            variant="underlined"
+            counter="500"
+            rows="2"
+            auto-grow
+            clearable
+          ></v-textarea>
         </v-col>
       </v-row>
       <v-row>

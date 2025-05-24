@@ -41,6 +41,7 @@ class File extends Model
         'name' => '',
         'path' => '',
         'previews' => '{}',
+        'description' => '{}',
         'editor' => '',
     ];
 
@@ -52,6 +53,7 @@ class File extends Model
     protected $casts = [
         'name' => 'string',
         'previews' => 'object',
+        'description' => 'object',
         'tag' => 'string',
     ];
 
@@ -61,6 +63,7 @@ class File extends Model
      * @var array
      */
     protected $fillable = [
+        'description',
         'name',
         'tag',
     ];

@@ -424,8 +424,11 @@ type File {
   "Tag to categorize the file"
   tag: String
 
-  "Descriptive name of the stored file"
+  "Descriptive name of the file"
   name: String
+
+  "Description of the file in different languages with ISO language code as key"
+  description: JSON
 
   "Relative path to the stored file"
   path: String!
@@ -481,6 +484,9 @@ input FileInput {
 
   "Descriptive name of the stored file"
   name: String
+
+  "Description of the file in different languages with ISO language code as key"
+  description: JSON
 }
 
 type Version {
@@ -505,7 +511,7 @@ type Version {
   "List of shared content elements assigned to the version"
   elements: [Element!]! @belongsToMany
 
-  "List of files used in the meta or data properties"
+  "List of files used in the data or contents property"
   files: [File!]
 
   "If versioned is currently published or not"

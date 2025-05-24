@@ -42,6 +42,7 @@
           variables: {
             id: this.item.id,
             input: {
+              description: JSON.stringify(this.item.description || {}),
               name: this.item.name,
               tag: this.item.tag,
             }

@@ -12,7 +12,7 @@ use Aimeos\Cms\Models\Page;
 
 class CmsSeeder extends Seeder
 {
-    private string $shared;
+    private string $element;
     private array $file;
 
 
@@ -65,9 +65,9 @@ class CmsSeeder extends Seeder
     }
 
 
-    protected function shared() : string
+    protected function element() : string
     {
-        if( !isset( $this->shared ) )
+        if( !isset( $this->element ) )
         {
             $data = ['type' => 'footer', 'data' => ['text' => 'Powered by Laravel CMS']];
 
@@ -81,21 +81,21 @@ class CmsSeeder extends Seeder
 
             $version = $element->versions()->forceCreate([
                 'lang' => 'en',
-                'data' => ['type' => 'footer', 'data' => ['text' => 'Powered by Laravel CMS!']],
+                'data' => ['type' => 'footer', 'lang' => 'en', 'data' => ['text' => 'Powered by Laravel CMS!']],
                 'publish_at' => '2025-01-01 00:00:00',
                 'editor' => 'seeder',
             ]);
 
-            $this->shared = $element->id;
+            $this->element = $element->id;
         }
 
-        return $this->shared;
+        return $this->element;
     }
 
 
     protected function home() : Page
     {
-        $sharedId = $this->shared();
+        $elementId = $this->element();
 
         $page = Page::forceCreate([
             'lang' => 'en',
@@ -111,7 +111,7 @@ class CmsSeeder extends Seeder
             'config' => ['test' => ['type' => 'test', 'data' => ['key' => 'value']]],
             'contents' => [
                 ['type' => 'heading', 'text' => 'Welcome to Laravel CMS'],
-                ['type' => 'ref', 'id' => $sharedId]
+                ['type' => 'ref', 'id' => $elementId]
             ],
         ]);
         $page->versions()->forceCreate([
@@ -130,12 +130,12 @@ class CmsSeeder extends Seeder
             ],
             'contents' => [
                 ['type' => 'heading', 'text' => 'Welcome to Laravel CMS'],
-                ['type' => 'ref', 'id' => $sharedId]
+                ['type' => 'ref', 'id' => $elementId]
             ],
             'published' => true,
             'editor' => 'seeder',
         ]);
-        $page->elements()->attach( $sharedId );
+        $page->elements()->attach( $elementId );
 
         return $page;
     }
@@ -143,7 +143,7 @@ class CmsSeeder extends Seeder
 
     protected function addBlog( Page $home )
     {
-        $sharedId = $this->shared();
+        $elementId = $this->element();
 
         $page = Page::forceCreate([
             'name' => 'Blog',
@@ -154,11 +154,11 @@ class CmsSeeder extends Seeder
             'editor' => 'seeder',
             'contents' => [
                 ['type' => 'blog', 'data' => ['text' => 'Blog example']],
-                ['type' => 'ref', 'id' => $sharedId]
+                ['type' => 'ref', 'id' => $elementId]
             ],
         ]);
         $page->appendToNode( $home )->save();
-        $page->elements()->attach( $sharedId );
+        $page->elements()->attach( $elementId );
 
         return $this->addBlogArticle( $page );
     }
@@ -166,7 +166,7 @@ class CmsSeeder extends Seeder
 
     protected function addBlogArticle( Page $blog )
     {
-        $sharedId = $this->shared();
+        $elementId = $this->element();
         $file = $this->file();
 
         $contents = [
@@ -194,7 +194,7 @@ mutation {
 }
 ```'            ],
             ],
-            ['type' => 'ref', 'id' => $sharedId],
+            ['type' => 'ref', 'id' => $elementId],
         ];
 
         $data = [
@@ -208,7 +208,7 @@ mutation {
 
         $page = Page::forceCreate($data + ['contents' => $contents]);
         $page->appendToNode( $blog )->save();
-        $page->elements()->attach( $sharedId );
+        $page->elements()->attach( $elementId );
 
         $version = $page->versions()->forceCreate([
             'data' => $data,
@@ -224,7 +224,7 @@ mutation {
 
     protected function addDev( Page $home )
     {
-        $sharedId = $this->shared();
+        $elementId = $this->element();
 
         $page = Page::forceCreate([
             'name' => 'Dev',
@@ -246,11 +246,11 @@ This is content created using [markdown syntax](https://www.markdownguide.org/ba
                     'text' => 'Test image'
                 ]
             ], [
-                'type' => 'ref', 'id' => $sharedId
+                'type' => 'ref', 'id' => $elementId
             ]]
         ]);
         $page->appendToNode( $home )->save();
-        $page->elements()->attach( $sharedId );
+        $page->elements()->attach( $elementId );
 
         return $this;
     }

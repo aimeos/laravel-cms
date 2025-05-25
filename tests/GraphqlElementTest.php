@@ -40,7 +40,7 @@ class GraphqlElementTest extends TestAbstract
         $this->bootRefreshesSchemaCache();
 
         $this->user = \App\Models\User::create([
-            'name' => 'Test',
+            'name' => 'Test editor',
             'email' => 'editor@testbench',
             'password' => 'secret',
             'cmseditor' => 0x7fffffff
@@ -158,7 +158,7 @@ class GraphqlElementTest extends TestAbstract
                     'versions' => [
                         [
                             'lang' => $element->lang,
-                            'data' => '{"type":"footer","data":{"text":"Powered by Laravel CMS!"}}',
+                            'data' => '{"type":"footer","lang":"en","data":{"text":"Powered by Laravel CMS!"}}',
                             'files' => [],
                             'editor' => 'seeder'
                         ],
@@ -203,7 +203,7 @@ class GraphqlElementTest extends TestAbstract
                     'type' => 'test',
                     'lang' => 'en',
                     'data' => '{"key":"value"}',
-                    'editor' => 'Test',
+                    'editor' => 'Test editor',
                     'pages' => [],
                     'latest' => null
                 ],
@@ -219,12 +219,12 @@ class GraphqlElementTest extends TestAbstract
         $file = File::firstOrFail();
         $element = Element::firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 10 );
+        $this->expectsDatabaseQueryCount( 7 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 saveElement(id: "' . $element->id . '", input: {
                     type: "test"
-                    lang: "en"
+                    lang: "de"
                     data: "{\\"key\\":\\"value\\"}"
                 }, files: ["' . $file->id . '"]) {
                     id
@@ -233,7 +233,12 @@ class GraphqlElementTest extends TestAbstract
                     data
                     editor
                     latest {
+                        lang
                         data
+                        contents
+                        published
+                        publish_at
+                        editor
                     }
                 }
             }
@@ -245,11 +250,18 @@ class GraphqlElementTest extends TestAbstract
             'data' => [
                 'saveElement' => [
                     'id' => $element->id,
-                    'type' => 'test',
+                    'type' => 'footer',
                     'lang' => 'en',
                     'data' => '{"type":"footer","data":{"text":"Powered by Laravel CMS"}}',
-                    'editor' => 'Test',
-                    'latest' => ['data' => '{"key":"value"}'],
+                    'editor' => 'seeder',
+                    'latest' => [
+                        'lang' => 'de',
+                        'data' => '{"type":"test","lang":"de","data":{"key":"value"}}',
+                        'contents' => null,
+                        'published' => false,
+                        'publish_at' => null,
+                        'editor' => 'Test editor',
+                    ],
                ],
             ]
         ] );
@@ -330,7 +342,7 @@ class GraphqlElementTest extends TestAbstract
             }
         ' );
 
-        $element = Element::where('id', $element->id)->firstOrFail();
+        $element = Element::where( 'id', $element->id )->firstOrFail();
 
         $response->assertJson( [
             'data' => [
@@ -357,7 +369,7 @@ class GraphqlElementTest extends TestAbstract
             }
         ' );
 
-        $element = Element::where('id', $element->id)->firstOrFail();
+        $element = Element::where( 'id', $element->id )->firstOrFail();
 
         $response->assertJson( [
             'data' => [

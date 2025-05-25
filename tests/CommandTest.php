@@ -13,9 +13,9 @@ class CommandTest extends TestAbstract
     {
         $this->seed( CmsSeeder::class );
 
-        $this->artisan('cms:publish')->assertExitCode (0 );
+        $this->artisan('cms:publish')->assertExitCode( 0 );
 
         $this->assertEquals( 1, Page::where( 'slug', 'hidden' )->firstOrFail()?->status );
-        $this->assertEquals( 'Powered by Laravel CMS!', Element::where( 'name', 'Shared footer' )->firstOrFail()?->data->data->text );
+        $this->assertEquals( 'Powered by Laravel CMS!', Element::where( 'name', 'Shared footer' )->firstOrFail()?->data->text );
     }
 }

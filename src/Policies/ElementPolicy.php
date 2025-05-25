@@ -9,7 +9,7 @@ use App\Models\User;
 class ElementPolicy
 {
     /**
-     * Determine if the given element can be added by the user.
+     * Determine if elements can be added by the user.
      */
     public function add( User $user ): bool
     {
@@ -18,7 +18,7 @@ class ElementPolicy
 
 
     /**
-     * Determine if the given element can be dropped by the user.
+     * Determine if elements can be dropped by the user.
      */
     public function drop( User $user ): bool
     {
@@ -27,7 +27,7 @@ class ElementPolicy
 
 
     /**
-     * Determine if the given element can be restored by the user.
+     * Determine if elements can be restored by the user.
      */
     public function keep( User $user ): bool
     {
@@ -36,7 +36,7 @@ class ElementPolicy
 
 
     /**
-     * Determine if the given element can be published by the user.
+     * Determine if elements can be published by the user.
      */
     public function publish( User $user ): bool
     {
@@ -45,7 +45,7 @@ class ElementPolicy
 
 
     /**
-     * Determine if the given element can be purged by the user.
+     * Determine if elements can be purged by the user.
      */
     public function purge( User $user ): bool
     {
@@ -54,7 +54,7 @@ class ElementPolicy
 
 
     /**
-     * Determine if the given element can be updated by the user.
+     * Determine if elements can be updated by the user.
      */
     public function save( User $user ): bool
     {
@@ -63,7 +63,7 @@ class ElementPolicy
 
 
     /**
-     * Determine if the given element can be viewed by the user.
+     * Determine if elements can be viewed by the user.
      */
     public function view( User $user ): bool
     {

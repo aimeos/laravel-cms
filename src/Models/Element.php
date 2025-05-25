@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -53,7 +52,6 @@ class Element extends Model
      */
     protected $casts = [
         'data' => 'object',
-        'lang' => 'string',
         'name' => 'string',
     ];
 
@@ -63,6 +61,7 @@ class Element extends Model
      * @var array
      */
     protected $fillable = [
+        'data',
         'type',
         'lang',
         'name',
@@ -78,6 +77,8 @@ class Element extends Model
 
     /**
      * Get the files referencedd by the element.
+     *
+     * @return BelongsToMany Eloquent relationship to the files
      */
     public function files() : BelongsToMany
     {
@@ -87,8 +88,10 @@ class Element extends Model
 
     /**
      * Get the connection name for the model.
+     *
+     * @return string Name of the database connection to use
      */
-    public function getConnectionName()
+    public function getConnectionName() : string
     {
         return config( 'cms.db', 'sqlite' );
     }
@@ -96,6 +99,8 @@ class Element extends Model
 
     /**
      * Get the page's latest head/meta data.
+     *
+     * @return HasOne Eloquent relationship to the latest version of the element
      */
     public function latest() : HasOne
     {
@@ -108,6 +113,8 @@ class Element extends Model
 
     /**
      * Get the pages the element is referenced by.
+     *
+     * @return BelongsToMany Eloquent relationship to the pages
      */
     public function pages() : BelongsToMany
     {
@@ -117,14 +124,23 @@ class Element extends Model
 
     /**
      * Publish the given version of the element.
+     *
+     * @param Version $version Version to publish
+     * @return self Returns the element instance
      */
     public function publish( Version $version ) : self
     {
-        DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( function() use ( $version ) {
+        DB::connection( $this->getConnectionName() )->transaction( function() use ( $version ) {
 
-            $this->data = $version->data;
             $this->files()->sync( $version->files ?? [] );
+
+            $this->fill( (array) $version->data );
+            $this->editor = $version->editor;
+            $this->lang = $version->lang;
             $this->save();
+
+            $version->published = true;
+            $version->save();
 
         }, 3 );
 
@@ -134,6 +150,8 @@ class Element extends Model
 
     /**
      * Get the element's published version.
+     *
+     * @return HasOne Eloquent relationship to the last published version of the element
      */
     public function published() : HasOne
     {
@@ -147,6 +165,8 @@ class Element extends Model
 
     /**
      * Get the prunable model query.
+     *
+     * @return Builder Eloquent query builder instance for pruning
      */
     public function prunable() : Builder
     {
@@ -156,6 +176,8 @@ class Element extends Model
 
     /**
      * Get all of the element's versions.
+     *
+     * @return MorphMany Eloquent relationship to the versions of the element
      */
     public function versions() : MorphMany
     {

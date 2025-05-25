@@ -20,7 +20,6 @@ class GraphqlPageTest extends TestAbstract
 	{
         parent::defineEnvironment( $app );
 
-		$app['config']->set( 'lighthouse.debug', 3 ); // debug + trace
 		$app['config']->set( 'lighthouse.schema_path', __DIR__ . '/default-schema.graphql' );
 		$app['config']->set( 'lighthouse.namespaces.models', ['App\Models', 'Aimeos\\Cms\\Models'] );
 		$app['config']->set( 'lighthouse.namespaces.mutations', ['Aimeos\\Cms\\GraphQL\\Mutations'] );
@@ -668,11 +667,11 @@ class GraphqlPageTest extends TestAbstract
         $element = Element::firstOrFail();
         $root = Page::where('tag', 'root')->firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 14 );
+        $this->expectsDatabaseQueryCount( 12 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 savePage(id: "' . $root->id . '", input: {
-                    lang: "en"
+                    lang: "de"
                     slug: "test"
                     domain: "test.com"
                     name: "test"
@@ -711,8 +710,12 @@ class GraphqlPageTest extends TestAbstract
                     updated_at
                     deleted_at
                     latest {
+                        lang
                         data
                         contents
+                        published
+                        publish_at
+                        editor
                     }
                     published {
                         data
@@ -748,8 +751,13 @@ class GraphqlPageTest extends TestAbstract
                     'created_at' => (string) $root->created_at,
                     'updated_at' => (string) $page->updated_at,
                     'latest' => [
-                        'data' => '{"lang":"en","slug":"test","domain":"test.com","name":"test","title":"Test page","to":"\\/to\\/page","tag":"test","meta":{"canonical":"to\\/page"},"config":{"key":"test"},"status":0,"cache":5}',
+                        'lang' => 'de',
+                        'data' => '{"lang":"de","slug":"test","domain":"test.com","name":"test","title":"Test page","to":"\\/to\\/page","tag":"test","meta":{"canonical":"to\\/page"},"config":{"key":"test"},"status":0,"cache":5}',
                         'contents' => '[{"type":"heading","text":"Welcome to Laravel CMS"}]',
+                        'published' => false,
+                        'publish_at' => null,
+                        'editor' => 'Test editor',
+
                     ],
                     'published' => [
                         'data' => '{"name":"Home","title":"Home | Laravel CMS","slug":"","tag":"root","domain":"mydomain.tld","status":1,"cache":5,"editor":"seeder","meta":{"meta":{"type":"meta","text":"Laravel CMS is outstanding"}},"config":{"test":{"type":"test","data":{"key":"value"}}}}',
@@ -838,7 +846,7 @@ class GraphqlPageTest extends TestAbstract
 
         $page = Page::where('tag', 'root')->firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 10 );
+        $this->expectsDatabaseQueryCount( 9 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 pubPage(id: "' . $page->id . '") {

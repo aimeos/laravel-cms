@@ -517,6 +517,9 @@ type Version {
   "If versioned is currently published or not"
   published: Boolean!
 
+  "ISO date when the version should be published"
+  publish_at: String
+
   "Name of the last user who added, updated or deleted the versioned data"
   editor: String!
 

@@ -111,6 +111,8 @@ class Page extends Model
 
     /**
      * Get all files referenced by the versioned data.
+     *
+     * @return BelongsToMany Eloquent relationship to the files
      */
     public function files() : BelongsToMany
     {
@@ -120,8 +122,10 @@ class Page extends Model
 
     /**
      * Get the connection name for the model.
+     *
+     * @return string Name of the database connection to use
      */
-    public function getConnectionName()
+    public function getConnectionName() : string
     {
         return config( 'cms.db', 'sqlite' );
     }
@@ -132,7 +136,7 @@ class Page extends Model
      *
      * @return bool TRUE if node has children, FALSE if not
      */
-    public function getHasAttribute()
+    public function getHasAttribute() : bool
     {
         return $this->_rgt > $this->_lft + 1;
     }
@@ -158,6 +162,8 @@ class Page extends Model
 
     /**
      * Get the page's latest head/meta data.
+     *
+     * @return HasOne Eloquent relationship to the latest version of the page
      */
     public function latest() : HasOne
     {
@@ -170,6 +176,8 @@ class Page extends Model
 
     /**
      * Get the navigation for the page.
+     *
+     * @return \Kalnoy\Nestedset\Collection Collection of ancestor pages
      */
     public function nav() : \Kalnoy\Nestedset\Collection
     {
@@ -179,6 +187,8 @@ class Page extends Model
 
     /**
      * Get the prunable model query.
+     *
+     * @return Builder Eloquent query builder for pruning models
      */
     public function prunable() : Builder
     {
@@ -188,16 +198,24 @@ class Page extends Model
 
     /**
      * Publish the given version of the page.
+     *
+     * @param Version $version Version to publish
+     * @return self Returns the page object for method chaining
      */
     public function publish( Version $version ) : self
     {
-        DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( function() use ( $version ) {
+        DB::connection( $this->getConnectionName() )->transaction( function() use ( $version ) {
 
             $this->files()->sync( $version->files ?? [] );
             $this->elements()->sync( $version->elements ?? [] );
 
-            $this->fill( (array) $version->data + ['contents' => (array) $version->contents] );
+            $this->fill( (array) $version->data );
+            $this->contents = (array) $version->contents;
+            $this->editor = $version->editor;
             $this->save();
+
+            $version->published = true;
+            $version->save();
 
         }, 3 );
 
@@ -207,6 +225,8 @@ class Page extends Model
 
     /**
      * Get the page's published head/meta data.
+     *
+     * @return HasOne Eloquent relationship to the last published version of the page
      */
     public function published() : HasOne
     {
@@ -220,6 +240,8 @@ class Page extends Model
 
     /**
      * Get the shared element for the page.
+     *
+     * @return BelongsToMany Eloquent relationship to the elements attached to the page
      */
     public function elements() : BelongsToMany
     {
@@ -230,7 +252,7 @@ class Page extends Model
     /**
      * Get query for the complete sub-tree up to three levels.
      *
-     * @return DescendantsRelation
+     * @return DescendantsRelation Eloquent relationship to the descendants of the page
      */
     public function subtree() : DescendantsRelation
     {
@@ -259,6 +281,8 @@ class Page extends Model
 
     /**
      * Get all of the page's versions.
+     *
+     * @return MorphMany Eloquent relationship to the versions of the page
      */
     public function versions() : MorphMany
     {
@@ -280,7 +304,9 @@ class Page extends Model
 
 
     /**
-     * Interact with the cache property.
+     * Interact with the "cache" property.
+     *
+     * @return Attribute Eloquent attribute for the "cache" property
      */
     protected function cache(): Attribute
     {
@@ -291,7 +317,9 @@ class Page extends Model
 
 
     /**
-     * Interact with the domain property.
+     * Interact with the "domain" property.
+     *
+     * @return Attribute Eloquent attribute for the "domain" property
      */
     protected function domain(): Attribute
     {
@@ -302,7 +330,9 @@ class Page extends Model
 
 
     /**
-     * Interact with the name property.
+     * Interact with the "name" property.
+     *
+     * @return Attribute Eloquent attribute for the "name" property
      */
     protected function name(): Attribute
     {
@@ -313,7 +343,9 @@ class Page extends Model
 
 
     /**
-     * Interact with the slug property.
+     * Interact with the "slug" property.
+     *
+     * @return Attribute Eloquent attribute for the "slug" property
      */
     protected function slug(): Attribute
     {
@@ -324,7 +356,9 @@ class Page extends Model
 
 
     /**
-     * Interact with the status property.
+     * Interact with the "status" property.
+     *
+     * @return Attribute Eloquent attribute for the "status" property
      */
     protected function status(): Attribute
     {
@@ -335,7 +369,9 @@ class Page extends Model
 
 
     /**
-     * Interact with the tag property.
+     * Interact with the "tag" property.
+     *
+     * @return Attribute Eloquent attribute for the "tag" property
      */
     protected function tag(): Attribute
     {
@@ -346,7 +382,9 @@ class Page extends Model
 
 
     /**
-     * Interact with the to property.
+     * Interact with the "to" property.
+     *
+     * @return Attribute Eloquent attribute for the "to" property
      */
     protected function to(): Attribute
     {

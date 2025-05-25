@@ -18,39 +18,35 @@ final class SavePage
     public function __invoke( $rootValue, array $args ) : Page
     {
         $page = Page::withTrashed()->findOrFail( $args['id'] );
-        $latest = $page->latest;
 
-        $data = $args['input'] ?? [];
-        $files = $args['files'] ?? [];
-        $elements = $args['elements'] ?? [];
-        $contents = $data['contents'] ?? null;
-        unset( $data['contents'] );
+        DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( function() use ( $page, $args ) {
 
-        if( $data != (array) $latest?->data || $contents != (array) $latest->contents || $elements != $latest?->elements?->all() )
-        {
-            DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( function() use ( $page, $data, $contents, $elements, $files ) {
+            $data = $args['input'] ?? [];
+            unset( $data['contents'] );
 
-                $version = $page->versions()->create([
-                    'editor' => Auth::user()?->name ?? request()->ip(),
-                    'lang' => $data['lang'] ?? '',
-                    'contents' => $contents,
-                    'data' => $data,
-                ]);
+            $version = $page->versions()->create([
+                'editor' => Auth::user()?->name ?? request()->ip(),
+                'contents' => $args['input']['contents'] ?? null,
+                'lang' => $args['input']['lang'] ?? null,
+                'data' => $data,
+            ]);
 
-                $version->elements()->sync( $elements );
-                $version->files()->sync( $files );
+            $version->elements()->sync( $args['elements'] ?? [] );
+            $version->files()->sync( $args['files'] ?? [] );
 
-                // MySQL doesn't support offsets for DELETE
-                $ids = Version::where( 'versionable_id', $page->id )
-                    ->where( 'versionable_type', Page::class )
-                    ->orderBy( 'id', 'desc' )
-                    ->skip( 10 )
-                    ->take( 10 )
-                    ->pluck( 'id' );
+            // MySQL doesn't support offsets for DELETE
+            $ids = Version::where( 'versionable_id', $page->id )
+                ->where( 'versionable_type', Page::class )
+                ->orderBy( 'id', 'desc' )
+                ->skip( 10 )
+                ->take( 10 )
+                ->pluck( 'id' );
 
+            if( !$ids->isEmpty() ) {
                 Version::whereIn( 'id', $ids )->forceDelete();
-            }, 3 );
-        }
+            }
+
+        }, 3 );
 
         return $page;
     }

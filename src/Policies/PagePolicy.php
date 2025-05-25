@@ -9,7 +9,7 @@ use App\Models\User;
 class PagePolicy
 {
     /**
-     * Determine if the given page can be added by the user.
+     * Determine if pages can be added by the user.
      */
     public function add( User $user ): bool
     {
@@ -18,7 +18,7 @@ class PagePolicy
 
 
     /**
-     * Determine if the given page can be dropped by the user.
+     * Determine if pages can be dropped by the user.
      */
     public function drop( User $user ): bool
     {
@@ -27,7 +27,7 @@ class PagePolicy
 
 
     /**
-     * Determine if the given page can be restored by the user.
+     * Determine if pages can be restored by the user.
      */
     public function keep( User $user ): bool
     {
@@ -36,7 +36,7 @@ class PagePolicy
 
 
     /**
-     * Determine if the given page can be moved by the user.
+     * Determine if pages can be moved by the user.
      */
     public function move( User $user ): bool
     {
@@ -45,7 +45,7 @@ class PagePolicy
 
 
     /**
-     * Determine if the given page version can be published by the user.
+     * Determine if pages version can be published by the user.
      */
     public function publish( User $user ): bool
     {
@@ -54,7 +54,7 @@ class PagePolicy
 
 
     /**
-     * Determine if the given page can be purged by the user.
+     * Determine if pages can be purged by the user.
      */
     public function purge( User $user ): bool
     {
@@ -63,7 +63,7 @@ class PagePolicy
 
 
     /**
-     * Determine if the given page can be saved by the user.
+     * Determine if pages can be saved by the user.
      */
     public function save( User $user ): bool
     {
@@ -72,7 +72,7 @@ class PagePolicy
 
 
     /**
-     * Determine if the given page can be viewed by the user.
+     * Determine if pages can be viewed by the user.
      */
     public function view( User $user ): bool
     {

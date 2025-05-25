@@ -41,13 +41,10 @@ class Publish extends Command
                         $type = $version->versionable_type;
 
                         app( $type )::findOrFail( $id )->publish( $version );
-
-                        $version->published = true;
-                        $version->save();
                     }
                     catch( \Exception $e )
                     {
-                        $this->error( "Failed to publish version {$id} of {$type}: {$e->getMessage()}" );
+                        $this->error( "Failed to publish ID {$id} of {$type}: " . $e->getMessage() );
                     }
                 }
 

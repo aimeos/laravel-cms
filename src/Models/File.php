@@ -7,15 +7,21 @@
 
 namespace Aimeos\Cms\Models;
 
+use Aimeos\Cms\Models\Version;
 use Aimeos\Cms\Concerns\Tenancy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\UploadedFile;
+use Intervention\Image\ImageManager;
 
 
 /**
@@ -77,7 +83,83 @@ class File extends Model
 
 
     /**
+     * Adds the uploaded file to the storage and returns the path to it
+     *
+     * @param UploadedFile $upload File upload
+     * @return self The current instance for method chaining
+     */
+    public function addFile( UploadedFile $upload ) : self
+    {
+        $this->path = null;
+
+        if( !$upload->isValid() ) {
+            throw new \RuntimeException( 'Invalid file upload' );
+        }
+
+        $disk = Storage::disk( config( 'cms.disk', 'public' ) );
+        $dir = rtrim( 'cms/' . \Aimeos\Cms\Tenancy::value(), '/' );
+
+        $name = $this->filename( $upload );
+
+        if( !$disk->putFileAs( $dir, $upload, $name ) ) {
+            throw new \RuntimeException( sprintf( 'Unable to store file "%s" to "%s"', $upload->getClientOriginalName(), $dir . '/' . $name ) );
+        }
+
+        $this->path = $dir . '/' . $name;
+        return $this;
+    }
+
+
+    /**
+     * Creates and adds the preview images
+     *
+     * @param UploadedFile $upload File upload
+     * @return self The current instance for method chaining
+     */
+    public function addPreviews( UploadedFile $upload ) : self
+    {
+        $this->previews = [];
+
+        if( !$upload->isValid() ) {
+            throw new \RuntimeException( 'Invalid file upload' );
+        }
+
+        if( !str_starts_with( $upload->getClientMimeType(), 'image/' ) ) {
+            return $this;
+        }
+
+        $sizes = config( 'cms.image.preview-sizes', [[]] );
+        $disk = Storage::disk( config( 'cms.disk', 'public' ) );
+        $dir = rtrim( 'cms/' . \Aimeos\Cms\Tenancy::value(), '/' );
+
+        $driver = ucFirst( config( 'cms.image.driver', 'gd' ) );
+        $manager = ImageManager::withDriver( '\\Intervention\\Image\\Drivers\\' . $driver . '\Driver' );
+        $ext = $manager->driver()->supports( 'image/webp' ) ? 'webp' : 'jpg';
+
+        $file = $manager->read( $upload );
+        $map = [];
+
+        foreach( $sizes as $size )
+        {
+            $image = ( clone $file )->scaleDown( $size['width'] ?? null, $size['height'] ?? null );
+            $path = $dir . '/' . $this->filename( $upload, $ext, $size );
+            $ptr = $image->encodeByExtension( $ext )->toFilePointer();
+
+            if( $disk->put( $path, $ptr, 'public' ) ) {
+                $map[$image->width()] = $path;
+            }
+
+            $this->previews = $map;
+        }
+
+        return $this;
+    }
+
+
+    /**
      * Get all (shared) content elements referencing the file.
+     *
+     * @return BelongsToMany Eloquent relationship to the element referencing the file
      */
     public function byelements() : BelongsToMany
     {
@@ -86,16 +168,9 @@ class File extends Model
 
 
     /**
-     * Get the connection name for the model.
-     */
-    public function getConnectionName()
-    {
-        return config( 'cms.db', 'sqlite' );
-    }
-
-
-    /**
      * Get all pages referencing the file.
+     *
+     * @return BelongsToMany Eloquent relationship to the pages referencing the file
      */
     public function bypages() : BelongsToMany
     {
@@ -104,7 +179,89 @@ class File extends Model
 
 
     /**
+     * Get all versions referencing the file.
+     *
+     * @return BelongsToMany Eloquent relationship to the versions referencing the file
+     */
+    public function byversions() : BelongsToMany
+    {
+        return $this->belongsToMany( Version::class, 'cms_version_file' );
+    }
+
+
+    /**
+     * Get the connection name for the model.
+     *
+     * @return string The name of the database connection to use for the model
+     */
+    public function getConnectionName() : string
+    {
+        return config( 'cms.db', 'sqlite' );
+    }
+
+
+    /**
+     * Get the page's latest head/meta data.
+     *
+     * @return HasOne Eloquent relationship to the latest version of the file
+     */
+    public function latest() : HasOne
+    {
+        return $this->hasOne( Version::class, 'versionable_id' )
+            ->where( 'versionable_type', File::class )
+            ->orderBy( 'id', 'desc' )
+            ->take( 1 );
+    }
+
+
+    /**
+     * Publish the given version of the element.
+     *
+     * @param Version $version The version to publish
+     * @return self The current instance for method chaining
+     */
+    public function publish( Version $version ) : self
+    {
+        $path = $this->path;
+        $previews = $this->previews;
+
+        DB::connection( $this->getConnectionName() )->transaction( function() use ( $version ) {
+
+            $this->fill( (array) $version->data );
+            $this->previews = (array) $version->data->previews ?? [];
+            $this->path = $version->data->path;
+            $this->mime = $version->data->mime;
+            $this->editor = $version->editor;
+            $this->save();
+
+            $version->published = true;
+            $version->save();
+
+        }, 3 );
+
+        $num = Version::where( 'versionable_id', $this->id )
+            ->where( 'versionable_type', File::class )
+            ->where( 'path', $path )
+            ->count();
+
+        if( $num === 0 )
+        {
+            $disk = Storage::disk( config( 'cms.disk', 'public' ) );
+            $disk->delete( $path );
+
+            foreach( $previews as $filepath ) {
+                $disk->delete( $filepath );
+            }
+        }
+
+        return $this;
+    }
+
+
+    /**
      * Get the prunable model query.
+     *
+     * @return Builder Eloquent query builder instance for pruning
      */
     public function prunable() : Builder
     {
@@ -114,22 +271,157 @@ class File extends Model
 
 
     /**
-     * Get all versions referencing the file.
+     * Permanently delete the file and all of its versions incl. the stored files.
+     *
+     * @return void
      */
-    public function byversions() : BelongsToMany
+    public function purge() : void
     {
-        return $this->belongsToMany( Version::class, 'cms_version_file' );
+        $this->pruning();
+        $this->forceDelete();
     }
 
 
     /**
-     * Interact with the name property.
+     * Removes the file from the storage
+     *
+     * @return self The current instance for method chaining
+     */
+    public function removeFile() : self
+    {
+        Storage::disk( config( 'cms.disk', 'public' ) )->delete( $this->path );
+
+        $this->path = null;
+        return $this;
+    }
+
+
+    /**
+     * Removes all preview images from the storage
+     *
+     * @return self The current instance for method chaining
+     */
+    public function removePreviews() : self
+    {
+        $disk = Storage::disk( config( 'cms.disk', 'public' ) );
+
+        foreach( $this->previews as $path )
+        {
+            $disk->delete( $path );
+            unset( $this->previews[$path] );
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * Removes all versions of the file except the latest 10 versions and deletes the stored files
+     * of the older versions.
+     *
+     * @return self The current instance for method chaining
+     */
+    public function removeVersions() : self
+    {
+        $versions = Version::where( 'versionable_id', $this->id )
+            ->where( 'versionable_type', File::class )
+            ->orderBy( 'id', 'desc' )
+            ->take( 10 + 10 ) // keep 10 versions, delete up to 10 older versions
+            ->get();
+
+        if( $versions->count() <= 10 ) {
+            return $this;
+        }
+
+        $paths = [$this->path] = true;
+
+        foreach( $versions->slice( 10 ) as $version )
+        {
+            if( $version->data['path'] ) {
+                $paths[$version->data['path']] = true;
+            }
+        }
+
+        $toDelete = $versions->skip( 10 );
+        $disk = Storage::disk( config( 'cms.storage.disk', 'public' ) );
+
+        foreach( $toDelete as $version )
+        {
+            if( isset( $paths[$version->data['path']] ) ) {
+                continue;
+            }
+
+            $disk->delete( $version->data['path'] );
+
+            foreach( $version->data['previews'] as $path ) {
+                $disk->delete( $path );
+            }
+        }
+
+        Version::whereIn( 'versionable_id', $toDelete->pluck( 'id' ) )
+            ->where( 'versionable_type', File::class )
+            ->forceDelete();
+
+        return $this;
+    }
+
+
+    /**
+     * Get all of the files's versions.
+     *
+     * @return MorphMany Eloquent relationship to the versions of the file
+     */
+    public function versions() : MorphMany
+    {
+        return $this->morphMany( Version::class, 'versionable' );
+    }
+
+
+    /**
+     * Interact with the "name" property.
+     *
+     * @return Attribute Eloquent attribute for the "name" property
      */
     protected function name(): Attribute
     {
         return Attribute::make(
-            set: fn($value) => (string) $value,
+            set: fn( $value ) => (string) $value,
         );
+    }
+
+
+    /**
+     * Interact with the "description" property.
+     *
+     * @return Attribute Eloquent attribute for the "description" property
+     */
+    protected function description(): Attribute
+    {
+        return Attribute::make(
+            set: fn( $value ) => json_encode( $value ),
+        );
+    }
+
+
+    /**
+     * Returns the new name for the uploaded file
+     *
+     * @param UploadedFile $file Uploaded file
+     * @param string|null $ext File extension to use, if not given, the original file extension is used
+     * @param array $size Image width and height, if used
+     * @return string New file name
+     */
+    protected function filename( UploadedFile $file, ?string $ext = null, array $size = [] ) : string
+    {
+        $filename = $file->getClientOriginalName();
+        $regex = '/[[:cntrl:]]|[[:blank:]]|\/|\./smu';
+
+        $ext = $ext ?: preg_replace( $regex, '', pathinfo( $filename, PATHINFO_EXTENSION ) );
+        $name = preg_replace( $regex, '', pathinfo( $filename, PATHINFO_FILENAME ) );
+
+        $hash = substr( md5( microtime(true) . getmypid() . rand(0, 1000) ), -4 );
+
+        return $name . '_' . ( $size['width'] ?? $size['height'] ?? '' ) . '_' . $hash . '.' . $ext;
     }
 
 
@@ -140,21 +432,44 @@ class File extends Model
     {
         $store = Storage::disk( config( 'cms.disk', 'public' ) );
 
+        Version::where( 'versionable_id', $this->id )
+            ->where( 'versionable_type', File::class )
+            ->chunk( 100, function( $versions ) use ( $store ) {
+                foreach( $versions as $version )
+                {
+                    foreach( $version->data->previews ?? [] as $path ) {
+                        $store->delete( $path );
+                    }
+
+                    if( $version->data->path ?? null ) {
+                        $store->delete( $version->data->path );
+                    }
+                }
+            } );
+
+        Version::where( 'versionable_id', $this->id )
+            ->where( 'versionable_type', File::class )
+            ->delete();
+
         foreach( $this->previews as $path ) {
             $store->delete( $path );
         }
 
-        $store->delete( $this->path );
+        if( $this->path ) {
+            $store->delete( $this->path );
+        }
     }
 
 
     /**
      * Interact with the tag property.
+     *
+     * @return Attribute Eloquent attribute for the "tag" property
      */
     protected function tag(): Attribute
     {
         return Attribute::make(
-            set: fn($value) => (string) $value,
+            set: fn( $value ) => (string) $value,
         );
     }
 }

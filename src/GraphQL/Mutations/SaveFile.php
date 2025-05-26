@@ -4,8 +4,6 @@ namespace Aimeos\Cms\GraphQL\Mutations;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
-use Intervention\Image\ImageManager;
 use Aimeos\Cms\Models\File;
 
 
@@ -17,96 +15,50 @@ final class SaveFile
      */
     public function __invoke( $rootValue, array $args ) : File
     {
-        $file = File::withTrashed()->findOrFail( $args['id'] );
-        $file->editor = Auth::user()?->name ?? request()->ip();
+        $orig = File::withTrashed()->findOrFail( $args['id'] );
+        $file = clone $orig;
+        $file->fill( $args['input'] ?? [] );
 
-        $preview = $args['preview'] ?? null;
+        $upload = $args['file'] ?? null;
 
-        if( $preview === false ) {
-            $file->previews = (object) $this->remove( (array) $file->previews );
+        if( $upload instanceof UploadedFile ) {
+            $file->addFile( $upload );
         }
 
-        if( !empty( $preview ) && $preview instanceof UploadedFile && $preview->isValid()
-            && str_starts_with( $preview->getClientMimeType(), 'image/' )
-        ) {
-            $file->previews = (object) $this->create( $preview );
-        }
-
-        $file->fill( $args['input'] ?? [] )->save();
-        return $file;
-    }
-
-
-    /**
-     * Returns the new name for the uploaded file
-     *
-     * @param UploadedFile $file Uploaded file
-     * @param array $size Image width and height if used
-     * @return string New file name
-     */
-    protected function name( UploadedFile $file, array $size = [] ) : string
-    {
-        $filename = $file->getClientOriginalName();
-        $name = preg_replace( '/[[:cntrl:]]|[[:blank:]]|\/|\./smu', '', pathinfo( $filename, PATHINFO_FILENAME ) );
-        $hash = substr( md5( microtime(true) . getmypid() . rand(0, 1000) ), -4 );
-
-        return $name . '_' . ( $size['width'] ?? $size['height'] ?? '' ) . '_' . $hash;
-    }
-
-
-    /**
-     * Creates the preview images
-     *
-     * @param UploadedFile $preview Preview file upload
-     * @return array List of preview image paths with image widths as keys
-     */
-    protected function create( UploadedFile $preview ) : array
-    {
-        $map = [];
-        $sizes = config( 'cms.image.preview-sizes', [[]] );
-        $disk = Storage::disk( config( 'cms.disk', 'public' ) );
-        $dir = rtrim( 'cms/' . \Aimeos\Cms\Tenancy::value(), '/' );
-
-        $driver = ucFirst( config( 'cms.image.driver', 'gd' ) );
-        $manager = ImageManager::withDriver( '\\Intervention\\Image\\Drivers\\' . $driver . '\Driver' );
-        $ext = $manager->driver()->supports( 'image/webp' ) ? 'webp' : 'jpg';
-
-        $file = $manager->read( $preview );
-
-        foreach( $sizes as $size )
+        try
         {
-            $image = ( clone $file )->scaleDown( $size['width'] ?? null, $size['height'] ?? null );
-            $path = $dir . '/' . $this->name( $preview, $size ) . '.' . $ext;
-            $ptr = $image->encodeByExtension( $ext )->toFilePointer();
+            $preview = $args['preview'] ?? null;
 
-            if( $disk->put( $path, $ptr, 'public' ) ) {
-                $map[$image->width()] = $path;
+            if( $preview instanceof UploadedFile ) {
+                $file->addPreviews( $preview );
+            } elseif( $upload instanceof UploadedFile ) {
+                $file->addPreviews( $upload );
+            } elseif( $preview === false ) {
+                $file->previews = [];
             }
         }
-
-        return $map;
-    }
-
-
-    /**
-     * Removes the preview images
-     *
-     * @param array $previews List of preview image paths with image widths as keys
-     * @return array List of preview image paths which haven't been removed
-     */
-    protected function remove( array $previews ) : array
-    {
-        $disk = Storage::disk( config( 'cms.disk', 'public' ) );
-        $dir = rtrim( 'cms/' . \Aimeos\Cms\Tenancy::value(), '/' );
-
-        foreach( $previews as $key => $path )
+        catch( \Throwable $t )
         {
-            if( str_starts_with( $path, $dir ) ) {
-                $disk->delete( $path );
-                unset( $previews[$key] );
-            }
+            $file->removePreviews()->removeFile();
+            throw $t;
         }
 
-        return $previews;
+        $editor = Auth::user()?->name ?? request()->ip();
+        $file->versions()->create( [
+            'editor' => $editor,
+            'data' => [
+                'tag' => $file->tag,
+                'name' => $file->name,
+                'mime' => $file->mime,
+                'path' => $file->path,
+                'previews' => $file->previews,
+                'description' => $file->description,
+                'editor' => $editor,
+            ],
+        ] );
+
+        $file->removeVersions();
+
+        return $orig;
     }
 }

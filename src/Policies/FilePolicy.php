@@ -9,7 +9,7 @@ use App\Models\User;
 class FilePolicy
 {
     /**
-     * Determine if the given file can be added by the user.
+     * Determine if files can be added by the user.
      */
     public function add( User $user ): bool
     {
@@ -18,7 +18,7 @@ class FilePolicy
 
 
     /**
-     * Determine if the given file can be dropped by the user.
+     * Determine if files can be dropped by the user.
      */
     public function drop( User $user ): bool
     {
@@ -27,7 +27,7 @@ class FilePolicy
 
 
     /**
-     * Determine if the given file can be restored by the user.
+     * Determine if files can be restored by the user.
      */
     public function keep( User $user ): bool
     {
@@ -36,7 +36,16 @@ class FilePolicy
 
 
     /**
-     * Determine if the given file can be purged by the user.
+     * Determine if files can be published by the user.
+     */
+    public function publish( User $user ): bool
+    {
+        return \Aimeos\Cms\Permission::can( 'file:publish', $user );
+    }
+
+
+    /**
+     * Determine if files can be purged by the user.
      */
     public function purge( User $user ): bool
     {
@@ -45,7 +54,7 @@ class FilePolicy
 
 
     /**
-     * Determine if the given file can be updated by the user.
+     * Determine if files can be updated by the user.
      */
     public function save( User $user ): bool
     {
@@ -54,7 +63,7 @@ class FilePolicy
 
 
     /**
-     * Determine if the given file can be viewed by the user.
+     * Determine if files can be viewed by the user.
      */
     public function view( User $user ): bool
     {

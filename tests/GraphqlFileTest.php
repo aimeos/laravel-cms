@@ -39,7 +39,7 @@ class GraphqlFileTest extends TestAbstract
         $this->bootRefreshesSchemaCache();
 
         $this->user = \App\Models\User::create([
-            'name' => 'Test',
+            'name' => 'Test editor',
             'email' => 'editor@testbench',
             'password' => 'secret',
             'cmseditor' => 0x7fffffff
@@ -177,9 +177,9 @@ class GraphqlFileTest extends TestAbstract
             '1' => UploadedFile::fake()->image('test-preview-1.jpg', 20),
         ] );
 
-        $element = json_decode( $response->getContent() );
-        $id = $element?->data?->addFile?->id;
-        $file = File::find( $id );
+        $result = json_decode( $response->getContent() );
+        $id = $result?->data?->addFile?->id;
+        $file = File::findOrFail( $id );
 
         $response->assertJson( [
             'data' => [
@@ -191,7 +191,7 @@ class GraphqlFileTest extends TestAbstract
                     'path' => $file->path,
                     'previews' => json_encode( $file->previews ),
                     'description' => json_encode( $file->description ),
-                    'editor' => 'Test',
+                    'editor' => 'Test editor',
                     'created_at' => (string) $file->created_at,
                     'updated_at' => (string) $file->updated_at,
                 ],
@@ -206,21 +206,26 @@ class GraphqlFileTest extends TestAbstract
 
         $file = File::firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 3 );
+        $this->expectsDatabaseQueryCount( 5 );
         $response = $this->actingAs( $this->user )->multipartGraphQL( [
             'query' => '
                 mutation($preview: Upload) {
                     saveFile(id: "' . $file->id . '", input: {
                         description: "{\"en\": \"Test file description\"}"
                         name: "test file"
-                        tag: "test"
+                        tag: "test2"
                     }, preview: $preview) {
                         id
                         tag
                         name
+                        path
                         previews
                         description
                         editor
+                        latest {
+                            data
+                            editor
+                        }
                     }
                 }
             ',
@@ -230,22 +235,33 @@ class GraphqlFileTest extends TestAbstract
         ], [
             '0' => ['variables.preview'],
         ], [
-            '0' => UploadedFile::fake()->image('test-preview-1.jpg', 20),
+            '0' => UploadedFile::fake()->image('test-preview-1.jpg', 200),
         ] );
 
-        $file = File::find( $file->id );
+        $file = File::findOrFail( $file->id );
+        $content = json_decode( $response->getContent() );
+        $data = json_decode( $content->data->saveFile->latest->data, true );
 
         $response->assertJson( [
             'data' => [
                 'saveFile' => [
                     'id' => $file->id,
-                    'name' => 'test file',
+                    'name' => 'Test image',
                     'tag' => 'test',
-                    'editor' => 'Test',
-                    'previews' => json_encode( $file->previews ),
+                    'editor' => 'seeder',
+                    'previews' => '{"1000":"https:\\/\\/picsum.photos\\/id\\/0\\/1000\\/666","500":"https:\\/\\/picsum.photos\\/id\\/0\\/500\\/333"}',
+                    'latest' => [
+                        'editor' => 'Test editor',
+                    ],
                 ],
             ]
         ] );
+
+        $this->assertEquals( 'test2', $data['tag'] );
+        $this->assertEquals( 'test file', $data['name'] );
+        $this->assertEquals( 'Test editor', $data['editor']);
+        $this->assertEquals( ['en'=> 'Test file description'], $data['description'] );
+        $this->assertStringStartsWith( 'cms/demo/test-preview-1', $data['previews'][200] );
     }
 
 
@@ -308,13 +324,67 @@ class GraphqlFileTest extends TestAbstract
     }
 
 
+    public function testPubFile()
+    {
+        $this->seed( CmsSeeder::class );
+
+        $file = File::firstOrFail();
+
+        $this->expectsDatabaseQueryCount( 6 );
+        $response = $this->actingAs( $this->user )->graphQL( '
+            mutation {
+                pubFile(id: "' . $file->id . '") {
+                    id
+                }
+            }
+        ' );
+
+        $file = File::where( 'id', $file->id )->firstOrFail();
+
+        $response->assertJson( [
+            'data' => [
+                'pubFile' => [
+                    'id' => (string) $file->id
+                ],
+            ]
+        ] );
+    }
+
+
+    public function testPubFileAt()
+    {
+        $this->seed( CmsSeeder::class );
+
+        $file = File::firstOrFail();
+
+        $this->expectsDatabaseQueryCount( 4 );
+        $response = $this->actingAs( $this->user )->graphQL( '
+            mutation {
+                pubFile(id: "' . $file->id . '", at: "2025-01-01 00:00:00") {
+                    id
+                }
+            }
+        ' );
+
+        $file = File::where( 'id', $file->id )->firstOrFail();
+
+        $response->assertJson( [
+            'data' => [
+                'pubFile' => [
+                    'id' => (string) $file->id
+                ],
+            ]
+        ] );
+    }
+
+
     public function testPurgeFile()
     {
         $this->seed( CmsSeeder::class );
 
         $file = File::firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 3 );
+        $this->expectsDatabaseQueryCount( 5 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 purgeFile(id: "' . $file->id . '") {
@@ -323,6 +393,6 @@ class GraphqlFileTest extends TestAbstract
             }
         ' );
 
-        $this->assertNull( File::where('id', $file->id)->first() );
+        $this->assertNull( File::find( $file->id ) );
     }
 }

@@ -16,7 +16,7 @@ final class PurgeFile
     public function __invoke( $rootValue, array $args ) : File
     {
         $file = File::withTrashed()->findOrFail( $args['id'] );
-        $file->forceDelete();
+        $file->purge();
 
         return $file;
     }

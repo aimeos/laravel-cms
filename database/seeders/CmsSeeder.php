@@ -13,7 +13,7 @@ use Aimeos\Cms\Models\Page;
 class CmsSeeder extends Seeder
 {
     private string $element;
-    private array $file;
+    private string $file;
 
 
     /**
@@ -41,11 +41,11 @@ class CmsSeeder extends Seeder
     }
 
 
-    protected function file() : array
+    protected function file() : string
     {
         if( !isset( $this->file ) )
         {
-            $this->file = [
+            $file = File::forceCreate( [
                 'mime' => 'image/jpeg',
                 'tag' => 'test',
                 'name' => 'Test image',
@@ -55,10 +55,25 @@ class CmsSeeder extends Seeder
                     'en' => 'Test file description',
                 ],
                 'editor' => 'seeder',
-            ];
+            ] );
 
-            $file = File::forceCreate( $this->file );
-            $this->file['id'] = $file->id;
+            $version = $file->versions()->forceCreate([
+                'data' => [
+                    'mime' => 'image/jpeg',
+                    'tag' => 'test',
+                    'name' => 'Test image',
+                    'path' => 'https://picsum.photos/id/0/1500/1000',
+                    'previews' => ["1000" => "https://picsum.photos/id/0/1000/666", "500" => "https://picsum.photos/id/0/500/333"],
+                    'description' => [
+                        'en' => 'Test file description',
+                        'de' => 'Beschreibung der Testdatei',
+                    ],
+                ],
+                'publish_at' => '2025-01-01 00:00:00',
+                'editor' => 'seeder',
+            ]);
+
+            $this->file = $file->id;
         }
 
         return $this->file;
@@ -69,8 +84,6 @@ class CmsSeeder extends Seeder
     {
         if( !isset( $this->element ) )
         {
-            $data = ['type' => 'footer', 'data' => ['text' => 'Powered by Laravel CMS']];
-
             $element = Element::forceCreate([
                 'lang' => 'en',
                 'type' => 'footer',
@@ -167,14 +180,14 @@ class CmsSeeder extends Seeder
     protected function addBlogArticle( Page $blog )
     {
         $elementId = $this->element();
-        $file = $this->file();
+        $fileId = $this->file();
 
         $contents = [
             [
                 'type' => 'article',
                 'data' => [
                     'title' => 'Welcome to Laravel CMS',
-                    'cover' => $file,
+                    'cover' => ['id' => $fileId, 'type' => 'file'],
                     'intro' => 'A new light-weight Laravel CMS is here!',
                     'text' => 'Laravel CMS is lightweight, lighting fast, easy to use, fully customizable and scalable from one-pagers to millions of pages',
                 ]
@@ -216,7 +229,7 @@ mutation {
             'published' => true,
             'editor' => 'seeder',
         ]);
-        $version->files()->attach( $file['id'] );
+        $version->files()->attach( $fileId );
 
         return $this;
     }
@@ -225,6 +238,7 @@ mutation {
     protected function addDev( Page $home )
     {
         $elementId = $this->element();
+        $fileId = $this->file();
 
         $page = Page::forceCreate([
             'name' => 'Dev',
@@ -242,7 +256,7 @@ This is content created using [markdown syntax](https://www.markdownguide.org/ba
             ], [
                 'type' => 'image-text',
                 'data' => [
-                    'image' => $this->file(),
+                    'image' => ['id' => $fileId, 'type' => 'file'],
                     'text' => 'Test image'
                 ]
             ], [
@@ -251,6 +265,7 @@ This is content created using [markdown syntax](https://www.markdownguide.org/ba
         ]);
         $page->appendToNode( $home )->save();
         $page->elements()->attach( $elementId );
+        $page->files()->attach( $fileId );
 
         return $this;
     }

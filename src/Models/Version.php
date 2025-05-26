@@ -99,7 +99,7 @@ class Version extends Model
 
 
     /**
-     * Get the parent versionable model (page or element).
+     * Get the parent versionable model (page, file or element).
      */
     public function versionable() : MorphTo
     {

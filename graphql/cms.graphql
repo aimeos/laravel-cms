@@ -118,11 +118,11 @@ extend type Mutation {
 
 
   "Adds a new file upload, optionally with preview and the description of the file"
-  addFile(file: Upload!, input: FileInput, preview: Upload): File
+  addFile(input: FileInput, file: Upload!, preview: Upload): File
     @canModel(ability: "add", model: "\\Aimeos\\Cms\\Models\\File")
 
   "Update an existing file"
-  saveFile(id: ID!, input: FileInput!, preview: RemoveableUpload): File
+  saveFile(id: ID!, input: FileInput!, file: Upload, preview: RemoveableUpload): File
     @canModel(ability: "save", model: "\\Aimeos\\Cms\\Models\\File")
 
   "Delete an existing file"
@@ -136,6 +136,10 @@ extend type Mutation {
   "Purge an existing file"
   purgeFile(id: ID!): File
     @canModel(ability: "purge", model: "\\Aimeos\\Cms\\Models\\File")
+
+  "Publish file data"
+  pubFile(id: ID!, at: DateTime): File
+    @canModel(ability: "publish", model: "\\Aimeos\\Cms\\Models\\File")
 }
 
 type Page {
@@ -456,6 +460,12 @@ type File {
 
   "List of versions using the file"
   byversions: [Version!]! @belongsToMany
+
+  "Latest version of the file"
+  latest: Version @hasOne
+
+  "List of versioned data for the file"
+  versions: [Version!]! @morphMany
 }
 
 input FileFilter {

@@ -3,7 +3,6 @@
 namespace Aimeos\Cms\GraphQL\Mutations;
 
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Aimeos\Cms\Models\Element;
 
 
@@ -16,9 +15,9 @@ final class KeepElement
     public function __invoke( $rootValue, array $args ) : Element
     {
         $element = Element::withTrashed()->findOrFail( $args['id'] );
-        $element->editor = Auth::user()?->email ?? request()->ip();
-
+        $element->editor = Auth::user()?->name ?? request()->ip();
         $element->restore();
+
         return $element;
     }
 }

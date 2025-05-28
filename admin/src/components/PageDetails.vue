@@ -93,6 +93,8 @@
             } else {
               this.messages.add(`Page scheduled for publishing at ${at.toLocaleDateString()}`, 'info')
             }
+
+            this.$emit('close')
           }).catch(error => {
             this.messages.add('Error publishing page', 'error')
             console.error(`publishPage(id: ${this.item.id})`, error)
@@ -187,12 +189,11 @@
               this.messages.add('Page saved successfully', 'success')
             }
 
+            this.$emit('close')
             return true
           }).catch(error => {
             this.messages.add('Error saving page data', 'error')
             console.error(`savePage(id: ${this.item.id})`, error)
-          }).finally(() => {
-            this.$emit('close')
           })
         })
       },
@@ -398,8 +399,8 @@
       <v-menu v-model="pubmenu" :close-on-content-click="false">
         <template #activator="{ props }">
           <v-btn-group class="menu-publish" variant="text">
-            <v-btn :class="{error: hasError}" class="button" :disabled="!hasChanged || hasError" @click="publish()">Publish</v-btn>
-            <v-btn :class="{error: hasError}" class="icon" :disabled="!hasChanged || hasError" v-bind="props" icon="mdi-menu-down"></v-btn>
+            <v-btn :class="{error: hasError}" class="button" :disabled="item.published && !hasChanged || hasError" @click="publish()">Publish</v-btn>
+            <v-btn :class="{error: hasError}" class="icon" :disabled="item.published && !hasChanged || hasError" v-bind="props" icon="mdi-menu-down"></v-btn>
           </v-btn-group>
         </template>
         <div class="menu-content">

@@ -64,6 +64,8 @@
             } else {
               this.messages.add(`File scheduled for publishing at ${at.toLocaleDateString()}`, 'info')
             }
+
+            this.$emit('close')
           }).catch(error => {
             this.messages.add('Error publishing page', 'error')
             console.error(`pubFile(id: ${this.item.id})`, error)
@@ -79,6 +81,10 @@
 
 
       save(quiet = false) {
+        if(!this.changed) {
+          return Promise.resolve(true)
+        }
+
         return this.$apollo.mutate({
           mutation: gql`mutation ($id: ID!, $input: FileInput!) {
             saveFile(id: $id, input: $input) {
@@ -105,12 +111,11 @@
             this.messages.add('File saved successfully', 'success')
           }
 
+          this.$emit('close')
           return true
         }).catch(error => {
           this.messages.add('Error saving file', 'error')
           console.error(`saveFile(id: ${this.item.id})`, error)
-        }).finally(() => {
-          this.$emit('close')
         })
       },
 
@@ -188,8 +193,8 @@
       <v-menu v-model="pubmenu" :close-on-content-click="false">
         <template #activator="{ props }">
           <v-btn-group class="menu-publish" variant="text">
-            <v-btn :class="{error: error}" class="button" :disabled="!changed || error" @click="publish()">Publish</v-btn>
-            <v-btn :class="{error: error}" class="icon" :disabled="!changed || error" v-bind="props" icon="mdi-menu-down"></v-btn>
+            <v-btn :class="{error: error}" class="button" :disabled="item.published && !changed || error" @click="publish()">Publish</v-btn>
+            <v-btn :class="{error: error}" class="icon" :disabled="item.published && !changed || error" v-bind="props" icon="mdi-menu-down"></v-btn>
           </v-btn-group>
         </template>
         <div class="menu-content">

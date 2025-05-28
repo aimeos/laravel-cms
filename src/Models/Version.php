@@ -72,6 +72,15 @@ class Version extends Model
 
 
     /**
+     * Get the shared element attached to the version.
+     */
+    public function elements() : BelongsToMany
+    {
+        return $this->belongsToMany( Element::class, 'cms_version_element' );
+    }
+
+
+    /**
      * Get all files referenced by the versioned data.
      */
     public function files() : BelongsToMany
@@ -90,11 +99,12 @@ class Version extends Model
 
 
     /**
-     * Get the shared element attached to the version.
+     * Disables using the updated_at column.
+     * Versions are never updated, each one is created as a new entry.
      */
-    public function elements() : BelongsToMany
+    public function getUpdatedAtColumn()
     {
-        return $this->belongsToMany( Element::class, 'cms_version_element' );
+        return null;
     }
 
 

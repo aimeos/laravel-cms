@@ -138,10 +138,10 @@
         let list = []
         const promises = []
 
-        if(!this.items[idx]) {
+        if(!item) {
           list = this.items.filter(item => item._checked)
         } else {
-          list.push(this.items[idx])
+          list.push(item)
         }
 
         list.forEach(item => {
@@ -182,14 +182,14 @@
       },
 
 
-      keep(idx) {
+      keep(item) {
         let list = []
         const promises = []
 
-        if(!this.items[idx]) {
+        if(!item) {
           list = this.items.filter(item => item._checked)
         } else {
-          list.push(this.items[idx])
+          list.push(item)
         }
 
         list.forEach(item => {
@@ -224,14 +224,53 @@
       },
 
 
-      purge(idx) {
+      publishAll() {
+        const list = this.items.filter(item => {
+          return item._checked && item.id && !item.published
+        })
+
+        list.reverse().forEach(item => {
+          this.publish(item)
+        })
+      },
+
+
+      publish(item) {
+        if(item.published) {
+          return
+        }
+
+        this.$apollo.mutate({
+            mutation: gql`mutation ($id: ID!) {
+              pubFile(id: $id) {
+                id
+              }
+            }`,
+            variables: {
+              id: item.id
+            }
+          }).then(result => {
+            if(result.errors) {
+              throw result.errors
+            }
+
+            item.published = true
+            item._checked = false
+          }).catch(error => {
+            this.messages.add('Error publishing page', 'error')
+            console.error(`pubFile(id: ${item.id})`, error)
+          })
+      },
+
+
+      purge(item) {
         let list = []
         const promises = []
 
-        if(!this.items[idx]) {
+        if(!item) {
           list = this.items.filter(item => item._checked)
         } else {
-          list.push(this.items[idx])
+          list.push(item)
         }
 
         list.forEach(item => {
@@ -284,6 +323,14 @@
                   created_at
                   updated_at
                   deleted_at
+                  latest {
+                    id
+                    published
+                    publish_at
+                    data
+                    editor
+                    created_at
+                  }
                 }
                 paginatorInfo {
                   currentPage
@@ -307,14 +354,27 @@
             throw result.errors
           }
 
-          this.page = result.data.files.paginatorInfo.currentPage
-          this.last = result.data.files.paginatorInfo.lastPage
-          this.items = [...result.data.files.data || []].map(item => {
-            return {
-              ...item,
-              previews: JSON.parse(item.previews || '{}'),
-              description: JSON.parse(item.description || '{}'),
+          const files = result.data.files || {}
+
+          this.last = files.paginatorInfo?.lastPage || 1
+          this.page = files.paginatorInfo?.currentPage || 1
+          this.items = [...files.data || []].map(entry => {
+            const item = entry.latest?.data ? JSON.parse(entry.latest?.data) : {
+              ...entry,
+              previews: JSON.parse(entry.previews || '{}'),
+              description: JSON.parse(entry.description || '{}'),
             }
+
+            return Object.assign(item, {
+              id: entry.id,
+              deleted_at: entry.deleted_at,
+              created_at: entry.created_at,
+              updated_at: entry.latest?.created_at || entry.updated_at,
+              editor: entry.latest?.editor || entry.editor,
+              published: entry.latest?.published ?? true,
+              publish_at: entry.latest?.publish_at || null,
+              latest: entry.latest,
+            })
           })
           this.checked = false
           this.loading = false
@@ -322,11 +382,6 @@
           this.messages.add('Error fetching files', 'error')
           console.error(`files()`, error)
         })
-      },
-
-
-      shown(item) {
-        return true
       },
 
 
@@ -339,11 +394,20 @@
       },
 
 
+      title(item) {
+        const list = []
+
+        if(item.publish_at) {
+          list.push('Publish at: ' + (new Date(item.publish_at)).toLocaleDateString())
+        }
+
+        return list.join("\n")
+      },
+
+
       toggle() {
         this.items.forEach(el => {
-          if(this.shown(el)) {
-            el._checked = !el._checked
-          }
+          el._checked = !el._checked
         })
       },
 
@@ -410,6 +474,9 @@
                 <v-btn append-icon="mdi-menu-down" variant="outlined" v-bind="props">Actions</v-btn>
               </template>
               <v-list>
+                <v-list-item v-show="isChecked">
+                  <v-btn prepend-icon="mdi-publish" variant="text" @click="publishAll()">Publish</v-btn>
+                </v-list-item>
                 <v-list-item>
                   <v-btn prepend-icon="mdi-folder-plus" variant="text" @click="$refs.upload.click()">Add files</v-btn>
                 </v-list-item>
@@ -480,28 +547,31 @@
           </div>
         </div>
 
-        <v-list class="items" :class="{grid: vgrid}">
-          <v-list-item v-for="(item, idx) in items" :key="idx" :class="{trashed: item.deleted_at}">
-            <v-checkbox-btn v-model="item._checked" @click.stop="" class="item-check"></v-checkbox-btn>
+        <v-list class="items" :class="{grid: vgrid, list: !vgrid}">
+          <v-list-item v-for="(item, idx) in items" :key="idx">
+            <v-checkbox-btn v-model="item._checked" :class="{draft: !item.published}" class="item-check"></v-checkbox-btn>
 
             <v-menu>
               <template v-slot:activator="{ props }">
                 <v-btn class="item-menu" icon="mdi-dots-vertical" variant="text" v-bind="props"></v-btn>
               </template>
               <v-list>
+                <v-list-item v-show="!item.deleted_at && !item.published">
+                  <v-btn prepend-icon="mdi-publish" variant="text" @click="publish(item)">Publish</v-btn>
+                </v-list-item>
                 <v-list-item v-if="!item.deleted_at">
-                  <v-btn prepend-icon="mdi-delete" variant="text" @click="drop(idx)">Trash</v-btn>
+                  <v-btn prepend-icon="mdi-delete" variant="text" @click="drop(item)">Trash</v-btn>
                 </v-list-item>
                 <v-list-item v-if="item.deleted_at">
-                  <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="keep(idx)">Restore</v-btn>
+                  <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="keep(item)">Restore</v-btn>
                 </v-list-item>
                 <v-list-item>
-                  <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge(idx)">Purge</v-btn>
+                  <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge(item)">Purge</v-btn>
                 </v-list-item>
               </v-list>
             </v-menu>
 
-            <div class="item-preview" @click="$emit('update:item', item)">
+            <div class="item-preview" @click="$emit('update:item', item)":title="title(item)">
               <v-img v-if="item.previews"
                 :src="url(item.path)"
                 :srcset="srcset(item.previews)"
@@ -509,15 +579,16 @@
               ></v-img>
             </div>
 
-            <div class="item-data" @click="$emit('update:item', item)">
-              <div class="item-title">
-                <v-list-item-title>{{ item.name }}</v-list-item-title>
-                <v-list-item-subtitle>{{ item.mime }}</v-list-item-subtitle>
+            <div class="item-content" @click="$emit('update:item', item)" :class="{trashed: item.deleted_at}":title="title(item)">
+              <div class="item-text">
+                <v-icon v-if="item.publish_at" class="publish-at" icon="mdi-clock-outline"></v-icon>
+                <span class="item-title">{{ item.name }}</span>
+                <div class="item-mime item-subtitle">{{ item.mime }}</div>
               </div>
 
-              <div class="item-meta">
+              <div class="item-aux">
                 <div class="item-editor">{{ item.editor }}</div>
-                <v-list-item-subtitle class="item-modified">{{ item.updated_at }}</v-list-item-subtitle>
+                <div class="item-modified item-subtitle">{{ item.updated_at }}</div>
               </div>
             </div>
 
@@ -553,75 +624,21 @@
 </template>
 
 <style scoped>
-  .file-list .box {
-    margin: 1rem 0;
-  }
-
-  .header {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-end;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-  }
-
-  .header > * {
-    margin: 0.5rem 0;
-  }
-
-  .bulk {
-    display: flex;
-    align-items: center;
-  }
-
-  .search {
-    display: flex;
-    flex-grow: 1;
-    width: 100%;
-    margin: auto;
-    order: 3;
-}
-
-  .search .v-select {
-    max-width: 10rem;
-    margin: 0 0.5rem;
-  }
-
-  .search .v-text-field {
-    min-width: 7.5rem;
-    margin: 0 0.5rem;
-  }
-
-  .trashed .item-data {
-    text-decoration: line-through;
-  }
-
-  .loading,
-  .notfound {
-    display: flex;
-    align-items: center;
-  }
-
-  .loading .spinner {
-    margin-inline-start: 16px;
-    color: #808080;
-  }
-
-  .items:not(.grid) .v-list-item {
+  .items.list .v-list-item {
     border-bottom: 1px solid rgb(var(--v-theme-primary));
     padding: 0.5rem 0;
   }
 
-  .items:not(.grid) .v-list-item > * {
+  .items.list .v-list-item > * {
     display: flex;
     align-items: center;
   }
 
-  .items:not(.grid) .v-selection-control {
+  .items.list .v-selection-control {
     flex-grow: unset;
   }
 
-  .items:not(.grid) .item-preview .v-img {
+  .items.list .item-preview .v-img {
     margin-inline-start: 8px;
     margin-inline-end: 16px;
     cursor: pointer;
@@ -630,13 +647,12 @@
     width: 72px
   }
 
-  .items:not(.grid) .item-data {
-    justify-content: space-between;
-    flex-wrap: wrap;
-    display: flex;
-    flex-grow: 1;
-    cursor: pointer;
+  @media (min-width: 500px) {
+    .items.list .item-preview .v-img {
+      display: block;
+    }
   }
+
 
   .items.grid {
     grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
@@ -662,6 +678,7 @@
 
   .items.grid .v-list-item:hover .item-menu,
   .items.grid .v-list-item:hover .item-check,
+  .items.grid .v-list-item .item-check.draft,
   .items.grid .v-list-item .item-check:has(input:checked) {
     display: block;
   }
@@ -686,19 +703,5 @@
 
   .items.grid .item-open {
     display: none;
-  }
-
-  @media (min-width: 500px) {
-    .items:not(.grid) .item-preview .v-img {
-      display: block;
-    }
-  }
-
-  @media (min-width: 600px) {
-    .search {
-      order: unset;
-      width: unset;
-      max-width: 30rem;
-    }
   }
 </style>

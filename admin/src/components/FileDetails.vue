@@ -1,6 +1,7 @@
 <script>
   import gql from 'graphql-tag'
   import Aside from './Aside.vue'
+  import History from './History.vue'
   import FileDetailsFile from './FileDetailsFile.vue'
   import FileDetailsRefs from './FileDetailsRefs.vue'
   import { useMessageStore } from '../stores'
@@ -9,6 +10,7 @@
   export default {
     components: {
       Aside,
+      History,
       FileDetailsFile,
       FileDetailsRefs
     },
@@ -23,6 +25,9 @@
       changed: false,
       error: false,
       nav: null,
+      publishAt: null,
+      pubmenu: false,
+      vhistory: false,
       tab: 'file',
     }),
 
@@ -32,8 +37,49 @@
     },
 
     methods: {
-      save() {
-        this.$apollo.mutate({
+      publish(at = null) {
+        this.save(true).then(valid => {
+          if(!valid) {
+            return
+          }
+
+          this.$apollo.mutate({
+            mutation: gql`mutation ($id: ID!, $at: DateTime) {
+              pubFile(id: $id, at: $at) {
+                id
+              }
+            }`,
+            variables: {
+              id: this.item.id,
+              at: at?.toISOString()?.substring(0, 19)?.replace('T', ' ')
+            }
+          }).then(response => {
+            if(response.errors) {
+              throw response.errors
+            }
+
+            if(!at) {
+              this.item.published = true
+              this.messages.add('File published successfully', 'success')
+            } else {
+              this.messages.add(`File scheduled for publishing at ${at.toLocaleDateString()}`, 'info')
+            }
+          }).catch(error => {
+            this.messages.add('Error publishing page', 'error')
+            console.error(`pubFile(id: ${this.item.id})`, error)
+          })
+        })
+      },
+
+
+      reset() {
+        this.changed = false
+        this.error = false
+      },
+
+
+      save(quiet = false) {
+        return this.$apollo.mutate({
           mutation: gql`mutation ($id: ID!, $input: FileInput!) {
             saveFile(id: $id, input: $input) {
               id
@@ -52,15 +98,63 @@
             throw result.errors
           }
 
-          this.$emit('close', true)
-          this.changed = false
+          this.item.published = false
+          this.reset()
 
-          return result.data.saveFile
+          if(!quiet) {
+            this.messages.add('File saved successfully', 'success')
+          }
+
+          return true
         }).catch(error => {
           this.messages.add('Error saving file', 'error')
-          console.error(`saveFile(id: ${item.id})`, error)
+          console.error(`saveFile(id: ${this.item.id})`, error)
+        }).finally(() => {
+          this.$emit('close')
         })
       },
+
+
+      use(version) {
+        Object.assign(this.item, version.data)
+        this.vhistory = false
+        this.changed = true
+      },
+
+
+      versions(id) {
+        if(!id) {
+          return Promise.resolve([])
+        }
+
+        return this.$apollo.query({
+          query: gql`query($id: ID!) {
+            file(id: $id) {
+              id
+              versions {
+                id
+                published
+                publish_at
+                data
+                editor
+                created_at
+              }
+            }
+          }`,
+          variables: {
+            id: id
+          }
+        }).then(result => {
+          if(result.errors || !result.data.file) {
+            throw result
+          }
+
+          return result.data.file.versions || []
+        }).catch(error => {
+          this.messages.add('Error fetching file versions', 'error')
+          console.error(`fileversion(id: ${id})`, error)
+        })
+      }
     }
   }
 </script>
@@ -81,9 +175,33 @@
     </v-app-bar-title>
 
     <template v-slot:append>
+      <v-btn icon="mdi-history"
+        :class="{hidden: !changed && !item.latest}"
+        @click="vhistory = true"
+        elevation="0"
+      ></v-btn>
+
       <v-btn :class="{error: error}" :disabled="!changed || error" @click="save()" variant="text">
         Save
       </v-btn>
+
+      <v-menu v-model="pubmenu" :close-on-content-click="false">
+        <template #activator="{ props }">
+          <v-btn-group class="menu-publish" variant="text">
+            <v-btn :class="{error: error}" class="button" :disabled="!changed || error" @click="publish()">Publish</v-btn>
+            <v-btn :class="{error: error}" class="icon" :disabled="!changed || error" v-bind="props" icon="mdi-menu-down"></v-btn>
+          </v-btn-group>
+        </template>
+        <div class="menu-content">
+          <v-date-picker v-model="publishAt" hide-header show-adjacent-months></v-date-picker>
+          <v-btn
+            :disabled="!publishAt || error"
+            :color="publishAt ? 'primary' : ''"
+            @click="publish(publishAt); pubmenu = false"
+            variant="flat"
+          >Publish</v-btn>
+        </div>
+      </v-menu>
 
       <v-btn @click.stop="nav = !nav">
         <v-icon size="x-large">
@@ -121,10 +239,48 @@
   </v-main>
 
   <Aside v-model:state="nav" />
+
+  <Teleport to="body">
+    <v-dialog v-model="vhistory" scrollable width="auto">
+      <History
+        :current="{
+          data: {
+            tag: item.tag,
+            name: item.name,
+            mime: item.mime,
+            path: item.path,
+            previews: item.previews,
+            description: item.description,
+          },
+        }"
+        :load="() => versions(item.id)"
+        @use="use($event)"
+        @revert="use($event); reset()"
+        @close="vhistory = false"
+      />
+    </v-dialog>
+  </Teleport>
 </template>
 
 <style scoped>
   .v-toolbar-title {
     margin-inline-start: 0;
+  }
+
+  .menu-publish {
+    margin-inline-start: 4px;
+  }
+
+  .menu-publish .button {
+    padding: 0;
+    padding-inline-start: 16px;
+  }
+
+  .menu-content {
+    background-color: var(--v-theme-background);
+  }
+
+  .menu-content .v-btn {
+    width: 100%;
   }
 </style>

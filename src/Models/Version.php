@@ -47,7 +47,6 @@ class Version extends Model
     protected $casts = [
         'lang' => 'string',
         'data' => 'object',
-        'contents' => 'array',
     ];
 
     /**

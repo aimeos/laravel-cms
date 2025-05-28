@@ -17,10 +17,11 @@
     mounted() {
       this.load().then(versions => {
         this.list = versions.map(v => {
-          const item = {...v}
-          item.data = JSON.parse(v.data)
-          item.contents = JSON.parse(v.contents)
-          return item
+          return {
+            ...v,
+            data: JSON.parse(v.data),
+            contents: v.contents ? JSON.parse(v.contents) : null
+          }
         }).reverse() // latest versions first
       })
     },
@@ -79,8 +80,8 @@
                 <span v-for="part of diff(list[0]?.data, current.data)" :class="{added: part.added, removed: part.removed}">
                   {{ part.value || part }}
                 </span>
-                <div class="divider">Content:</div>
-                <span v-for="part of diff(list[0]?.contents, current.contents)" :class="{added: part.added, removed: part.removed}">
+                <div v-if="current.contents" class="divider">Content:</div>
+                <span v-if="current.contents" v-for="part of diff(list[0]?.contents, current.contents)" :class="{added: part.added, removed: part.removed}">
                   {{ part.value || part }}
                 </span>
               </v-card-text>
@@ -104,8 +105,8 @@
                   <span v-for="part of diff(version.data, current.data)" :class="{added: part.removed, removed: part.added}">
                     {{ part.value || part }}
                   </span>
-                  <div class="divider">Content:</div>
-                  <span v-for="part of diff(version.contents, current.contents)" :class="{added: part.removed, removed: part.added}">
+                  <div v-if="version.contents" class="divider">Content:</div>
+                  <span v-if="version.contents" v-for="part of diff(version.contents, current.contents)" :class="{added: part.removed, removed: part.added}">
                     {{ part.value || part }}
                   </span>
                 </v-card-text>

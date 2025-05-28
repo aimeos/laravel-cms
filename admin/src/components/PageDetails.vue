@@ -87,8 +87,12 @@
               throw response.errors
             }
 
-            this.item.published = true
-            this.messages.add('Page published successfully', 'success')
+            if(!at) {
+              this.item.published = true
+              this.messages.add('Page published successfully', 'success')
+            } else {
+              this.messages.add(`Page scheduled for publishing at ${at.toLocaleDateString()}`, 'info')
+            }
           }).catch(error => {
             this.messages.add('Error publishing page', 'error')
             console.error(`publishPage(id: ${this.item.id})`, error)
@@ -106,7 +110,7 @@
       },
 
 
-      save(quite = false) {
+      save(quiet = false) {
         if(!this.hasChanged) {
           return Promise.resolve(true)
         }
@@ -179,7 +183,7 @@
             this.item.published = false
             this.reset()
 
-            if(!quite) {
+            if(!quiet) {
               this.messages.add('Page saved successfully', 'success')
             }
 
@@ -236,7 +240,9 @@
             page(id: $id) {
               id
               versions {
+                id
                 published
+                publish_at
                 data
                 contents
                 editor

@@ -61,6 +61,16 @@ body,
   margin: 0 !important;
 }
 
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.25s;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateX(100%);
+}
+
 .v-window,
 .v-container {
   background-color: transparent;
@@ -83,6 +93,10 @@ body,
   padding: 1rem;
   background-color: rgb(var(--v-theme-surface));
   box-shadow: 0px 3px 9px 0px #A8B8C825 !important;
+}
+
+.v-selection-control {
+  flex-grow: unset !important;
 }
 
 .v-selection-control--density-default {
@@ -144,30 +158,131 @@ body,
   width: 100%;
 }
 
+.box {
+  margin: 1rem 1%;
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.header > * {
+  margin: 0.5rem 0;
+}
+
+.bulk {
+  display: flex;
+  align-items: center;
+}
+
+.search {
+  display: flex;
+  flex-grow: 1;
+  width: 100%;
+  margin: auto;
+  order: 3;
+}
+
+.search .v-select {
+  max-width: 10rem;
+  margin: 0 0.5rem;
+}
+
+.search .v-text-field {
+  min-width: 7.5rem;
+  margin: 0 0.5rem;
+}
+
+@media (min-width: 600px) {
+  .search {
+    order: unset;
+    width: unset;
+    max-width: 30rem;
+  }
+}
+
+.loading,
+.notfound {
+  display: flex;
+  align-items: center;
+}
+
+.loading .spinner {
+  margin-inline-start: 16px;
+  color: #808080;
+}
+
+.publish-at {
+  color: rgb(var(--v-theme-warning));
+  margin-inline-end: 4px;
+  font-size: 20px;
+}
+
+.draft {
+  background-color: rgb(var(--v-theme-warning));
+  color: rgb(var(--v-theme-surface-variant));
+  border-radius: 50%;
+  opacity: 0.66;
+}
+
 .hidden {
   visibility: hidden;
+}
+
+.trashed {
+  text-decoration: line-through;
 }
 
 .icon::before {
   padding: 12px;
 }
 
-.unpublished {
-  color: rgb(var(--v-theme-warning));
-}
-
 .btn-group {
   margin: 1rem;
 }
 
-.slide-enter-active,
-.slide-leave-active {
-  transition: all 0.25s;
+.item-content {
+  display: flex;
+  flex-grow: 1;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  overflow: hidden;
+  cursor: pointer;
+  margin: 0 1%;
 }
 
-.slide-enter-from,
-.slide-leave-to {
-  transform: translateX(100%);
+.item-text,
+.item-aux {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.item-aux {
+  align-self: end;
+}
+
+.item-aux,
+.item-subtitle {
+  font-size: 0.8rem;
+  color: #808080;
+}
+
+.item-lang {
+  display: inline-block;
+  margin-inline-end: 0.5rem;
+  text-transform: uppercase;
+  vertical-align: middle;
+  border-radius: 0.625rem;
+  background-color: rgb(var(--v-theme-primary));
+  color: #FFFFFF;
+  font-weight: bold;
+  font-size: 60%;
+  height: 1.25rem;
+  padding: 0.2rem;
 }
 
 .ck-editor {

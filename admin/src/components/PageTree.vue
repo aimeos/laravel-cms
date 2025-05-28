@@ -6,7 +6,6 @@
   import Navigation from './Navigation.vue'
   import User from './User.vue'
 
-
   export default {
     components: {
       Draggable,
@@ -28,6 +27,7 @@
         pages: [],
         trash: false,
         loading: true,
+        checked: false,
         filter: '',
       }
     },
@@ -257,7 +257,9 @@
           deleted_at
           has
           latest {
+            id
             published
+            publish_at
             data
             editor
             created_at
@@ -632,32 +634,43 @@
       },
 
 
-      title(node) {
+      title(item) {
         const list = []
 
-        if(node.theme) {
-          list.push('Theme: ' + node.theme)
+        if(item.publish_at) {
+          list.push('Publish at: ' + (new Date(item.publish_at)).toLocaleDateString())
         }
 
-        if(node.type) {
-          list.push('Page type: ' + node.type)
+        if(item.theme) {
+          list.push('Theme: ' + item.theme)
         }
 
-        if(node.tag) {
-          list.push('Tag: ' + node.tag)
+        if(item.type) {
+          list.push('Page type: ' + item.type)
         }
 
-        if(node.cache) {
-          list.push('Cache: ' + node.cache + ' min')
+        if(item.tag) {
+          list.push('Tag: ' + item.tag)
+        }
+
+        if(item.cache) {
+          list.push('Cache: ' + item.cache + ' min')
         }
 
         return list.join("\n")
       },
 
 
+      toggle() {
+        this.$refs.tree.statsFlat.forEach(el => {
+          el.check = !el.check
+        })
+      },
+
+
       transform(result) {
         const pages = result.data.map(entry => {
-          const item = entry.latest?.data ? JSON.parse(entry.latest?.data) : {
+          const item = entry.latest?.data ? JSON.parse(entry.latest?.data || '{}') : {
             ...entry,
             meta: JSON.parse(entry.meta || '{}'),
             config: JSON.parse(entry.config || '{}'),
@@ -668,9 +681,12 @@
             has: entry.has,
             parent_id: entry.parent_id,
             deleted_at: entry.deleted_at,
+            created_at: entry.created_at,
             updated_at: entry.latest?.created_at || entry.updated_at,
             editor: entry.latest?.editor || entry.editor,
             published: entry.latest?.published ?? true,
+            publish_at: entry.latest?.publish_at || null,
+            latest: entry.latest,
           })
         })
 
@@ -685,8 +701,9 @@
       trashed(val) {
         this.trash = val
         this.loading = true
+        this.checked = false
 
-        const promise = this.filter || this.trash === true ? this.search(this.filter) : this.fetch()
+        const promise = this.filter ? this.search(this.filter) : this.fetch()
 
         promise.then(result => {
           this.pages = result.data
@@ -755,44 +772,47 @@
 
   <Navigation :state="nav" @update:state="$emit('update:nav', $event)" />
 
-  <v-main class="page-tree">
+  <v-main class="item-tree">
     <v-container>
       <v-sheet class="box">
         <div class="header">
-          <v-menu>
-            <template #activator="{ props }">
-              <v-btn append-icon="mdi-menu-down" variant="outlined" v-bind="props">Actions</v-btn>
-            </template>
-            <v-list>
-              <v-list-item v-show="isChecked && !isTrashed">
-                <v-btn prepend-icon="mdi-publish" variant="text" @click="publishAll()">Publish</v-btn>
-              </v-list-item>
-              <v-list-item v-show="isChecked && !isTrashed">
-                <v-btn prepend-icon="mdi-eye" variant="text" @click="status(null, 1)">Enable</v-btn>
-              </v-list-item>
-              <v-list-item v-show="isChecked && !isTrashed">
-                <v-btn prepend-icon="mdi-eye-off" variant="text" @click="status(null, 0)">Disable</v-btn>
-              </v-list-item>
-              <v-list-item v-show="trash !== false">
-                <v-btn prepend-icon="mdi-delete-off" variant="text" @click="trashed(false)">Only non-trashed</v-btn>
-              </v-list-item>
-              <v-list-item v-show="trash !== null">
-                <v-btn prepend-icon="mdi-delete-circle-outline" variant="text" @click="trashed(null)">Include trashed</v-btn>
-              </v-list-item>
-              <v-list-item v-show="trash !== true">
-                <v-btn prepend-icon="mdi-delete-circle" variant="text" @click="trashed(true)">Only trashed</v-btn>
-              </v-list-item>
-              <v-list-item v-show="canTrash">
-                <v-btn prepend-icon="mdi-delete" variant="text" @click="drop()">Trash</v-btn>
-              </v-list-item>
-              <v-list-item v-show="isTrashed">
-                <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="keep()">Restore</v-btn>
-              </v-list-item>
-              <v-list-item v-show="isChecked">
-                <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge()">Purge</v-btn>
-              </v-list-item>
-            </v-list>
-          </v-menu>
+          <div class="bulk">
+            <v-checkbox-btn v-model="checked" @click.stop="toggle()"></v-checkbox-btn>
+            <v-menu>
+              <template #activator="{ props }">
+                <v-btn append-icon="mdi-menu-down" variant="outlined" v-bind="props">Actions</v-btn>
+              </template>
+              <v-list>
+                <v-list-item v-show="isChecked">
+                  <v-btn prepend-icon="mdi-publish" variant="text" @click="publishAll()">Publish</v-btn>
+                </v-list-item>
+                <v-list-item v-show="isChecked">
+                  <v-btn prepend-icon="mdi-eye" variant="text" @click="status(null, 1)">Enable</v-btn>
+                </v-list-item>
+                <v-list-item v-show="isChecked">
+                  <v-btn prepend-icon="mdi-eye-off" variant="text" @click="status(null, 0)">Disable</v-btn>
+                </v-list-item>
+                <v-list-item v-show="trash !== false">
+                  <v-btn prepend-icon="mdi-delete-off" variant="text" @click="trashed(false)">Only non-trashed</v-btn>
+                </v-list-item>
+                <v-list-item v-show="trash !== null">
+                  <v-btn prepend-icon="mdi-delete-circle-outline" variant="text" @click="trashed(null)">Include trashed</v-btn>
+                </v-list-item>
+                <v-list-item v-show="trash !== true">
+                  <v-btn prepend-icon="mdi-delete-circle" variant="text" @click="trashed(true)">Only trashed</v-btn>
+                </v-list-item>
+                <v-list-item v-show="canTrash">
+                  <v-btn prepend-icon="mdi-delete" variant="text" @click="drop()">Trash</v-btn>
+                </v-list-item>
+                <v-list-item v-show="isTrashed">
+                  <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="keep()">Restore</v-btn>
+                </v-list-item>
+                <v-list-item v-show="isChecked">
+                  <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge()">Purge</v-btn>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </div>
 
           <div class="search">
             <v-text-field
@@ -917,7 +937,7 @@
                 </v-list-item>
               </v-list>
             </v-menu>
-            <div class="node-content"
+            <div class="item-content"
               :class="{
                 'status-hidden': node.status == 2,
                 'status-enabled': node.status == 1,
@@ -926,15 +946,16 @@
               }"
               :title="title(node)"
               @click="$emit('update:item', node)">
-              <div class="node-text">
-                <span class="page-lang" v-if="node.lang">{{ node.lang }}</span>
-                <span class="page-name">{{ node.name || 'New' }}</span>
-                <div v-if="node.title" class="page-title">{{ node.title }}</div>
+              <div class="item-text">
+                <v-icon v-if="node.publish_at" class="publish-at" icon="mdi-clock-outline"></v-icon>
+                <span class="item-lang" v-if="node.lang">{{ node.lang }}</span>
+                <span class="item-title">{{ node.name || 'New' }}</span>
+                <div v-if="node.title" class="item-subtitle">{{ node.title }}</div>
               </div>
-              <div class="node-url">
-                <div class="page-domain">{{ node.domain }}</div>
-                <span class="page-slug">{{ url(node) }}</span>
-                <span v-if="node.to" class="page-to"> ➔ {{ node.to }}</span>
+              <div class="item-aux">
+                <div class="item-domain">{{ node.domain }}</div>
+                <span class="item-slug item-subtitle">{{ url(node) }}</span>
+                <span v-if="node.to" class="item-to item-subtitle"> ➔ {{ node.to }}</span>
               </div>
             </div>
             <v-btn icon="mdi-arrow-right" variant="text" @click="$emit('update:item', node)"></v-btn>
@@ -954,41 +975,6 @@
 </template>
 
 <style>
-  .page-tree .box {
-    margin: 1rem 0;
-  }
-
-  .header {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-end;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-  }
-
-  .search {
-    display: flex;
-    flex-grow: 1;
-    width: 100%;
-    margin: auto;
-    order: 3;
-  }
-
-  .search .v-select {
-    max-width: 10rem;
-    margin: 0 0.5rem;
-  }
-
-  .search .v-text-field {
-    min-width: 7.5rem;
-    margin: 0 0.5rem;
-  }
-
-  .draft {
-    background-color: #ffe0c0;
-    border-radius: 50%;
-  }
-
   .drag-placeholder {
     height: 48px;
   }
@@ -1009,107 +995,29 @@
     width: 28px;
   }
 
-  .node-content,
-  .node-url {
-    cursor: pointer;
-  }
-
-  .node-content {
-    justify-content: space-between;
-    margin: 0 1%;
-    width: 100%;
-  }
-
-  .node-text, .node-url {
-    text-overflow: ellipsis;
-    overflow: hidden;
-  }
-
-  .node-url, .page-title {
-    font-size: 80%;
-    color: #808080;
-  }
-
-  .node-url {
-    text-align: end;
-    align-self: end;
-  }
-
-  .page-lang {
-    display: inline-block;
-    margin-inline-end: 0.5rem;
-    text-transform: uppercase;
-    vertical-align: middle;
-    border-radius: 0.625rem;
-    background-color: rgb(var(--v-theme-primary));
-    color: #FFFFFF;
-    font-weight: bold;
-    font-size: 60%;
-    height: 1.25rem;
-    padding: 0.2rem;
-  }
-
-  .page-name {
-    font-size: 110%;
-  }
-
-  .page-domain {
+  .item-domain {
     color: initial;
-  }
-
-  .page-title, .page-domain {
     display: block;
   }
 
-  .page-domain, .page-to {
+  .item-domain,
+  .item-to {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
   }
 
-  .status-disabled .page-name {
+  .status-disabled .item-title {
     text-decoration: line-through;
   }
 
-  .status-hidden .node-text {
-    color: #808080;
-  }
-
-  .page-tree .trashed {
-    text-decoration: line-through;
-  }
-
-  .loading,
-  .notfound {
-    display: flex;
-    align-items: center;
-  }
-
-  .loading .spinner {
-    margin-inline-start: 16px;
+  .status-hidden .item-text {
     color: #808080;
   }
 
   @media (min-width: 600px) {
-    .search {
-      order: unset;
-      width: unset;
-      max-width: 30rem;
-    }
     .tree-node-inner {
       padding: 0.25rem 0;
-    }
-    .node-content {
-      display: flex;
-    }
-    .node-text, .node-url {
-      max-width: 50%;
-    }
-  }
-
-  @media (min-width: 960px) {
-    .page-title {
-      height: 1.25rem;
     }
   }
 </style>

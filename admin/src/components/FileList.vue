@@ -588,7 +588,7 @@
 
               <div class="item-aux">
                 <div class="item-editor">{{ item.editor }}</div>
-                <div class="item-modified item-subtitle">{{ item.updated_at }}</div>
+                <div class="item-modified item-subtitle">{{ (new Date(item.updated_at)).toLocaleString() }}</div>
               </div>
             </div>
 

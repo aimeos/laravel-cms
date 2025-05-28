@@ -19,7 +19,7 @@
         this.list = versions.map(v => {
           return {
             ...v,
-            data: JSON.parse(v.data),
+            data: JSON.parse(v.data || '{}'),
             contents: v.contents ? JSON.parse(v.contents) : null
           }
         }).reverse() // latest versions first
@@ -51,6 +51,7 @@
         }
 
         return (
+          v1.published || v1.publish_at ||
           diffJson(v1.data || {}, v2.data || {}).length !== 1 ||
           diffJson(v1.contents || {}, v2.contents || {}).length !== 1
         )
@@ -95,11 +96,11 @@
           </v-timeline-item>
 
           <v-timeline-item v-for="(version, idx) in versions" :key="idx" size="small"
-            :dot-color="version.published ? 'success' : 'grey-lighten-1'">
+            :dot-color="version.published ? 'success' : 'grey-lighten-1'" :class="{publish: version.publish_at}">
 
             <v-card class="elevation-2">
               <div @click="version._show = !version._show">
-                <v-card-title>{{ version.created_at }}</v-card-title>
+                <v-card-title>{{ (new Date(version.publish_at || version.created_at)).toLocaleString() }}</v-card-title>
                 <v-card-subtitle>{{ version.editor }}</v-card-subtitle>
                 <v-card-text class="diff" :class="{show: version._show}">
                   <span v-for="part of diff(version.data, current.data)" :class="{added: part.removed, removed: part.added}">
@@ -148,6 +149,10 @@
   /* todo: Doesn't work when display:contents is used */
   .v-timeline-item__body {
     justify-self: auto !important;
+  }
+
+  .v-timeline-item.publish .v-card-title {
+    color: rgb(var(--v-theme-success));
   }
 
   .v-timeline-item .v-card-text.diff div.divider {

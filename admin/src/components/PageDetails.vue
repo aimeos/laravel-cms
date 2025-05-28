@@ -91,6 +91,7 @@
               this.item.published = true
               this.messages.add('Page published successfully', 'success')
             } else {
+              this.item.publish_at = at
               this.messages.add(`Page scheduled for publishing at ${at.toLocaleDateString()}`, 'info')
             }
 
@@ -342,13 +343,15 @@
             throw result
           }
 
+          const page = result.data.page
+
           this.reset()
           this.files = {}
           this.elements = {}
-          this.latest = result.data.page.latest
-          this.contents = JSON.parse(this.latest?.contents || result.data.page.contents || '[]')
+          this.latest = page.latest
+          this.contents = JSON.parse(this.latest?.contents || page.contents || '[]')
 
-          for(const entry of (this.latest?.elements || result.data.page.elements || [])) {
+          for(const entry of (this.latest?.elements || page.elements || [])) {
             this.elements[entry.id] = {
               ...entry,
               data: JSON.parse(entry.data || '{}'),
@@ -358,7 +361,7 @@
             }
           }
 
-          for(const entry of (this.latest?.files || result.data.page.files || [])) {
+          for(const entry of (this.latest?.files || page.files || [])) {
             this.files[entry.id] = {...entry, previews: JSON.parse(entry.previews || '{}')}
           }
         }).catch(error => {

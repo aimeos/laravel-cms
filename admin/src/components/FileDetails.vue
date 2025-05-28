@@ -62,6 +62,7 @@
               this.item.published = true
               this.messages.add('File published successfully', 'success')
             } else {
+              this.item.publish_at = at
               this.messages.add(`File scheduled for publishing at ${at.toLocaleDateString()}`, 'info')
             }
 

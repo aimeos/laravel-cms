@@ -259,7 +259,6 @@ class GraphqlFileTest extends TestAbstract
 
         $this->assertEquals( 'test2', $data['tag'] );
         $this->assertEquals( 'test file', $data['name'] );
-        $this->assertEquals( 'Test editor', $data['editor']);
         $this->assertEquals( ['en'=> 'Test file description'], $data['description'] );
         $this->assertStringStartsWith( 'cms/demo/test-preview-1', $data['previews'][200] );
     }

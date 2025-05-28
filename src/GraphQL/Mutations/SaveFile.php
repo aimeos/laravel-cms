@@ -53,7 +53,6 @@ final class SaveFile
                 'path' => $file->path,
                 'previews' => $file->previews,
                 'description' => $file->description,
-                'editor' => $editor,
             ],
         ] );
 

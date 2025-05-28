@@ -241,7 +241,7 @@ class File extends Model
 
         $num = Version::where( 'versionable_id', $this->id )
             ->where( 'versionable_type', File::class )
-            ->where( 'path', $path )
+            ->where( 'data', 'like', '%"path": "' . $path . '"%' )
             ->count();
 
         if( $num === 0 )
@@ -333,12 +333,12 @@ class File extends Model
             return $this;
         }
 
-        $paths = [$this->path] = true;
+        $paths = [$this->path => true];
 
         foreach( $versions->slice( 10 ) as $version )
         {
-            if( $version->data['path'] ) {
-                $paths[$version->data['path']] = true;
+            if( $version->data->path ) {
+                $paths[$version->data->path] = true;
             }
         }
 
@@ -347,11 +347,11 @@ class File extends Model
 
         foreach( $toDelete as $version )
         {
-            if( isset( $paths[$version->data['path']] ) ) {
+            if( isset( $paths[$version->data->path] ) ) {
                 continue;
             }
 
-            $disk->delete( $version->data['path'] );
+            $disk->delete( $version->data->path );
 
             foreach( $version->data['previews'] as $path ) {
                 $disk->delete( $path );

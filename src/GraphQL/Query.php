@@ -151,7 +151,7 @@ final class Query
         }
 
         if( !empty( $value = $filter['any'] ?? null ) ) {
-            $builder->whereAny( ['name', 'tag'], 'like', '%' . $value . '%' );
+            $builder->whereAny( ['description', 'name', 'tag'], 'like', '%' . $value . '%' );
         }
 
         return $builder;

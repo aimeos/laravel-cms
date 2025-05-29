@@ -5,6 +5,7 @@
   import Elements from './Elements.vue'
   import { VueDraggable } from 'vue-draggable-plus'
   import { useMessageStore, useSchemaStore, useSideStore } from '../stores'
+  import { contentid } from '../utils'
 
   export default {
     components: {
@@ -58,7 +59,7 @@
           return
         }
 
-        const entry = {type: type, data: {}}
+        const entry = {cid: contentid(), type: type, data: {}}
 
         if(idx !== null) {
           this.list.splice(idx, 0, entry)

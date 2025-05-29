@@ -2,6 +2,7 @@
   import Fields from './Fields.vue'
   import Elements from './Elements.vue'
   import { useSchemaStore, useSideStore } from '../stores'
+  import { contentid } from '../utils'
 
   export default {
     components: {
@@ -44,7 +45,7 @@
           return
         }
 
-        this.item.meta[type] = {type: type, data: {}}
+        this.item.meta[type] = {cid: contentid(), type: type, data: {}}
         this.panel.push(Object.keys(this.item.meta).length - 1)
         this.vschemas = false
       },

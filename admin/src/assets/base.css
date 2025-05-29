@@ -255,6 +255,11 @@ body,
   margin: 0 1%;
 }
 
+.item-text {
+  flex-grow: 1;
+  margin-inline-end: 0.5rem;
+}
+
 .item-text,
 .item-aux {
   overflow: hidden;

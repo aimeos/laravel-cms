@@ -944,21 +944,19 @@
                 'status-disabled': !node.status,
                 'trashed': node.deleted_at
               }"
-              :title="title(node)"
-              @click="$emit('update:item', node)">
-              <div class="item-text">
+              :title="title(node)">
+              <div class="item-text" @click="$emit('update:item', node)">
                 <v-icon v-if="node.publish_at" class="publish-at" icon="mdi-clock-outline"></v-icon>
                 <span class="item-lang" v-if="node.lang">{{ node.lang }}</span>
                 <span class="item-title">{{ node.name || 'New' }}</span>
                 <div v-if="node.title" class="item-subtitle">{{ node.title }}</div>
               </div>
-              <div class="item-aux">
+              <a class="item-aux" :href="url(node) + '?preview=true'" target="_blank">
                 <div class="item-domain">{{ node.domain }}</div>
                 <span class="item-slug item-subtitle">{{ url(node) }}</span>
                 <span v-if="node.to" class="item-to item-subtitle"> ➔ {{ node.to }}</span>
-              </div>
+              </a>
             </div>
-            <v-btn icon="mdi-arrow-right" variant="text" @click="$emit('update:item', node)"></v-btn>
           </template>
         </Draggable>
         <p v-if="loading" class="loading">

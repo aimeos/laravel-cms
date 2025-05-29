@@ -564,8 +564,6 @@
               <div class="item-modified item-subtitle">{{ (new Date(item.updated_at)).toLocaleString() }}</div>
             </div>
           </div>
-
-          <v-btn class="item-open" icon="mdi-arrow-right" variant="text" @click="$emit('update:item', item)"></v-btn>
         </v-list-item>
       </v-list>
 

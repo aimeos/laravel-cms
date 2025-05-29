@@ -33,14 +33,23 @@
           </button>
         </div>
         <div v-else class="file file-input">
-          <input type="file"
-            @input="add($event)"
-            :accept="config.accept || 'audio/*'"
-            :id="'audio-' + index"
-            :disabled="readonly"
-            :value="selected"
-            hidden>
-          <label :for="'audio-' + index">Add audio</label>
+          <div class="select-file" @click="vfiles = true">
+            <label>
+              <span class="btn">Select audio</span>
+            </label>
+          </div>
+          <div class="upload-file">
+            <input type="file"
+              @input="add($event)"
+              :disabled="readonly"
+              :accept="config.accept || 'audio/*'"
+              :id="'audio-' + index"
+              :value="selected"
+              hidden>
+            <label :for="'image-' + index">
+              <span class="btn">Add audio</span>
+            </label>
+          </div>
         </div>
       </div>
     </v-col>
@@ -48,9 +57,17 @@
       Name: {{ file.name }}<br/>
       Mime: {{ file.mime }}<br/>
       Editor: {{ file.editor }}<br/>
-      Updated: {{ file.updated_at }}
+      Updated: {{ (new Date(file.updated_at)).toLocaleString() }}
     </v-col>
   </v-row>
+
+  <Teleport to="body">
+    <v-dialog v-model="vfiles" scrollable width="100%">
+      <FileListItems
+        @update:item="handle($event); vfiles = false"
+      />
+    </v-dialog>
+  </Teleport>
 </template>
 
 <style scoped>

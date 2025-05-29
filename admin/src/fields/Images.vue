@@ -2,9 +2,11 @@
   import gql from 'graphql-tag'
   import { useAppStore } from '../stores'
   import { VueDraggable } from 'vue-draggable-plus'
+  import FileListItems from '../components/FileListItems.vue'
 
   export default {
     components: {
+      FileListItems,
       VueDraggable
     },
 
@@ -26,7 +28,8 @@
       return {
         images: [],
         index: Math.floor(Math.random() * 100000),
-        selected: null
+        selected: null,
+        vfiles: false
       }
     },
 
@@ -109,33 +112,18 @@
 
 
       remove(idx) {
-        if(!this.images[idx]?.id) {
-          this.images.splice(idx, 1)
-          return
+        if(this.images[idx]?.id) {
+          this.$emit('removeFile', this.images[idx].id)
         }
 
-        const id = this.images[idx].id
+        this.images.splice(idx, 1)
+        this.$emit('update:modelValue', this.images.map(item => ({id: item.id, type: 'file'})))
+      },
 
-        this.$apollo.mutate({
-          mutation: gql`mutation($id: ID!) {
-            dropFile(id: $id) {
-              id
-            }
-          }`,
-          variables: {
-            id: id
-          }
-        }).then(response => {
-          if(response.errors) {
-            throw response.errors
-          }
 
-          this.images.splice(idx, 1)
-          this.$emit('removeFile', id)
-          this.$emit('update:modelValue', this.images.map(item => ({id: item.id, type: 'file'})))
-        }).catch(error => {
-          console.error(`dropFile(${code})`, error)
-        })
+      select(item) {
+          this.images[this.images.length] = item
+          this.$emit('addFile', item.id)
       },
 
 
@@ -201,17 +189,36 @@
     </div>
 
     <div class="file-input">
-      <input type="file"
-        @input="add($event)"
-        :accept="config.accept || 'image/*'"
-        :id="'images-' + index"
-        :disabled="readonly"
-        :value="selected"
-        multiple
-        hidden>
-      <label :for="'images-' + index">Add files</label>
+      <div class="select-file" @click="vfiles = true">
+        <label>
+          <span class="btn">Select file</span>
+        </label>
+      </div>
+      <div class="upload-file">
+        <input type="file"
+          @input="add($event)"
+          :accept="config.accept || 'image/*'"
+          :id="'images-' + index"
+          :disabled="readonly"
+          :value="selected"
+          multiple
+          hidden>
+        <label :for="'images-' + index">
+          <span class="btn">Add files</span>
+        </label>
+      </div>
     </div>
   </VueDraggable>
+
+  <Teleport to="body">
+    <v-dialog v-model="vfiles" scrollable width="100%">
+      <FileListItems
+        @update:item="select($event); vfiles = false"
+        mime="image/"
+        grid
+      />
+    </v-dialog>
+  </Teleport>
 </template>
 
 <style scoped>
@@ -223,28 +230,53 @@
   }
 
   .image, .file-input {
-    display: inline-flex;
-    border: 1px solid #767676;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #808080;
     border-radius: 0.5rem;
     position: relative;
     height: 180px;
-    width: 100%;
+    width: 180px;
     margin: 1px;
   }
 
-  .file-input label {
-    display: flex;
-    flex-wrap: wrap;
-    align-content: center;
+  .file-input {
+    flex-direction: column;
+  }
+
+  .file-input .select-file,
+  .file-input .upload-file {
+    width: 90%;
+  }
+
+  .file-input .select-file label,
+  .file-input .upload-file label {
     justify-content: center;
-    height: 180px;
+    align-content: center;
+    flex-wrap: wrap;
+    display: flex;
+    height: 90px;
     width: 100%;
+  }
+
+  .file-input .select-file label {
+    border-bottom: 1px solid #808080;
+  }
+
+  .file-input .select-file .btn,
+  .file-input .upload-file .btn {
+    background-color: rgba(var(--v-theme-secondary), 1);
+    color: rgb(var(--v-theme-on-secondary));
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
   }
 
   .image button {
     position: absolute;
     background-color: rgba(var(--v-theme-primary), 0.75);
-    border-radius: 0.5rem;
+    border-radius: 50%;
     padding: 0.75rem;
     color: #fff;
     right: 0;

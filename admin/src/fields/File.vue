@@ -1,8 +1,13 @@
 <script>
   import gql from 'graphql-tag'
   import { useAppStore, useMessageStore } from '../stores'
+  import FileListItems from '../components/FileListItems.vue'
 
   export default {
+    components: {
+      FileListItems
+    },
+
     props: {
       'modelValue': {type: [Object, null], default: () => null},
       'config': {type: Object, default: () => {}},
@@ -16,7 +21,8 @@
       return {
         file: {},
         index: Math.floor(Math.random() * 100000),
-        selected: null
+        selected: null,
+        vfiles: false
       }
     },
 
@@ -80,51 +86,37 @@
       },
 
 
-      handle(data, path) {
-        this.file = data
-        this.$emit('addFile', data.id)
-        this.$emit('update:modelValue', {id: data.id, type: 'file'})
+      handle(item, path) {
+        if(!item?.id) {
+          console.error(`File::handle(): Invalid item without ID`, item)
+          return
+        }
+
+        this.file = {...item}
+        this.$emit('addFile', item.id)
+        this.$emit('update:modelValue', {id: item.id, type: 'file'})
         this.validate()
 
-        if(path.startsWith('blob:')) {
+        if(path?.startsWith('blob:')) {
           URL.revokeObjectURL(path)
         }
 
-        return data
+        return item
       },
 
 
       remove() {
-        if(!this.file.id && this.file.path.startsWith('blob:')) {
+        if(this.file.path.startsWith('blob:')) {
           URL.revokeObjectURL(this.file.path)
-          this.file = {}
-          return
         }
 
-        const id = this.file.id
+        if(this.file.id) {
+          this.$emit('removeFile', this.file.id)
+        }
 
-        return this.$apollo.mutate({
-          mutation: gql`mutation($id: ID!) {
-            dropFile(id: $id) {
-              id
-            }
-          }`,
-          variables: {
-            id: id
-          }
-        }).then(response => {
-          if(response.errors) {
-            throw response.errors
-          }
-
-          this.file = {}
-          this.$emit('removeFile', id)
-          this.$emit('update:modelValue', null)
-          this.validate()
-        }).catch(error => {
-          this.messages.add('Error removing file', 'error')
-          console.error(`dropFile(${id})`, error)
-        })
+        this.$emit('update:modelValue', null)
+        this.file = {}
+        this.validate()
       },
 
 
@@ -181,14 +173,23 @@
           </button>
         </div>
         <div v-else class="file file-input">
-          <input type="file"
-            @input="add($event)"
-            :disabled="readonly"
-            :accept="config.accept || '*'"
-            :id="'file-' + index"
-            :value="selected"
-            hidden>
-          <label :for="'file-' + index">Add file</label>
+          <div class="select-file" @click="vfiles = true">
+            <label>
+              <span class="btn">Select file</span>
+            </label>
+          </div>
+          <div class="upload-file">
+            <input type="file"
+              @input="add($event)"
+              :disabled="readonly"
+              :accept="config.accept || '*'"
+              :id="'file-' + index"
+              :value="selected"
+              hidden>
+            <label :for="'file-' + index">
+              <span class="btn">Add file</span>
+            </label>
+          </div>
         </div>
       </div>
     </v-col>
@@ -196,40 +197,61 @@
       Name: {{ file.name }}<br/>
       Mime: {{ file.mime }}<br/>
       Editor: {{ file.editor }}<br/>
-      Updated: {{ file.updated_at }}
+      Updated: {{ (new Date(file.updated_at)).toLocaleString() }}
     </v-col>
   </v-row>
+
+  <Teleport to="body">
+    <v-dialog v-model="vfiles" scrollable width="100%">
+      <FileListItems
+        @update:item="handle($event); vfiles = false"
+      />
+    </v-dialog>
+  </Teleport>
 </template>
 
 <style>
-  .files, .files .file, .files .file.file-input {
+  .files, .files .file {
     justify-content: center;
     align-items: center;
     position: relative;
     display: flex;
-    flex-wrap: wrap;
     min-height: 48px;
+    max-height: 200px;
     max-width: 100%;
     width: 100%;
   }
 
-  .files .file, .files .file.file-input {
-    max-height: 200px;
+  .file-input .select-file,
+  .file-input .upload-file {
+    width: 90%;
   }
 
-  .files .file.file-input label {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
+  .file-input .select-file label,
+  .file-input .upload-file label {
     justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+    display: flex;
     min-height: 48px;
     width: 100%;
   }
 
+  .file-input .select-file .btn,
+  .file-input .upload-file .btn {
+    background-color: rgba(var(--v-theme-secondary), 1);
+    color: rgb(var(--v-theme-on-secondary));
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+  }
+
+
+
   .files button.delete {
     position: absolute;
     background-color: rgba(var(--v-theme-primary), 0.75);
-    border-radius: 0.5rem;
+    border-radius: 50%;
     padding: 0.75rem;
     color: #fff;
     right: 0;

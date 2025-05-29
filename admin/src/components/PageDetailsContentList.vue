@@ -19,7 +19,7 @@
       'item': {type: Object, required: true},
       'contents': {type: Array, required: true},
       'elements': {type: Object, required: true},
-      'files': {type: Object, default: () => ({})}
+      'assets': {type: Object, default: () => ({})}
     },
 
     emits: ['error', 'update:contents',  'update:elements'],
@@ -286,7 +286,7 @@
         }
 
         for(const file of this.elements[entry.refid].files || []) {
-          this.files[file.id] = file
+          this.assets[file.id] = file
         }
 
         this.list[idx] = this.elements[entry.refid].data || {}
@@ -441,14 +441,14 @@
               <Fields v-if="el.type === 'reference'"
                 :data="elements[el.refid]?.data?.data || {}"
                 :fields="fields(elements[el.refid]?.type)"
-                :files="files"
+                :assets="assets"
                 :readonly="true"
               />
               <Fields v-else ref="field"
                 v-model:data="el.data"
+                v-model:files="el.files"
                 :fields="fields(el.type)"
-                :files="files"
-                @update:assets="el.files = $event"
+                :assets="assets"
                 @error="error(el, $event)"
                 @change="update(el)"
               />

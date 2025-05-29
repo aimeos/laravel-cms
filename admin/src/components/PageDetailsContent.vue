@@ -11,7 +11,7 @@
       'item': {type: Object, required: true},
       'contents': {type: Array, required: true},
       'elements': {type: Object, required: true},
-      'files': {type: Object, default: () => ({})}
+      'assets': {type: Object, default: () => ({})}
     },
 
     emits: ['error', 'update:contents',  'update:elements'],
@@ -124,7 +124,7 @@
           :item="item"
           :contents="list"
           :elements="elements"
-          :files="files"
+          :assets="assets"
           @update:contents="update(section, $event)"
           @update:elements="$emit('update:elements', $event)"
           @error="error(section, $event)"
@@ -138,7 +138,7 @@
     :item="item"
     :contents="contents"
     :elements="elements"
-    :files="files"
+    :assets="assets"
     @update:contents="$emit('update:contents', $event)"
     @update:elements="$emit('update:elements', $event)"
     @error="$emit('error', $event)"

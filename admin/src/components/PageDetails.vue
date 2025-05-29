@@ -26,7 +26,7 @@
     data: () => ({
       changed: {},
       errors: {},
-      files: {},
+      assets: {},
       elements: {},
       contents: [],
       latest: null,
@@ -346,7 +346,7 @@
           const page = result.data.page
 
           this.reset()
-          this.files = {}
+          this.assets = {}
           this.elements = {}
           this.latest = page.latest
           this.contents = JSON.parse(this.latest?.contents || page.contents || '[]')
@@ -362,7 +362,7 @@
           }
 
           for(const entry of (this.latest?.files || page.files || [])) {
-            this.files[entry.id] = {...entry, previews: JSON.parse(entry.previews || '{}')}
+            this.assets[entry.id] = {...entry, previews: JSON.parse(entry.previews || '{}')}
           }
         }).catch(error => {
           this.messages.add('Error fetching page data', 'error')
@@ -438,7 +438,7 @@
         <v-window-item value="page">
           <PageDetailsPage ref="page"
             :item="item"
-            :files="files"
+            :assets="assets"
             @update:item="update('page', $event)"
             @error="errors.page = $event"
           />
@@ -447,7 +447,7 @@
         <v-window-item value="contents">
           <PageDetailsContent ref="contents"
             :item="item"
-            :files="files"
+            :assets="assets"
             :elements="elements"
             :contents="contents"
             @update:contents="update('contents', $event)"

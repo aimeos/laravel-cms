@@ -2,16 +2,16 @@
   export default {
     props: {
       'data': {type: Object, default: () => {}},
-      'files': {type: Object, default: () => {}},
-      'fields': {type: Object, required: true},
+      'files': {type: Array, default: () => []},
+      'assets': {type: Object, default: () => {}},
       'readonly': {type: Boolean, default: false},
+      'fields': {type: Object, required: true},
     },
 
-    emits: ['change', 'error', 'update:assets'],
+    emits: ['change', 'error', 'update:files'],
 
     data() {
       return {
-        assets: [],
         errors: {},
       }
     },
@@ -19,9 +19,10 @@
     methods: {
       addFile(id) {
         const ids = Array.isArray(id) ? id : [id]
+        const files = [...this.files]
 
-        this.assets.push(...ids)
-        this.$emit('update:assets', this.assets)
+        files.push(...ids)
+        this.$emit('update:files', files)
       },
 
 
@@ -33,16 +34,17 @@
 
       removeFile(id) {
         const ids = Array.isArray(id) ? id : [id]
+        const files = [...this.files]
 
         for(const id of ids) {
-          const idx = this.assets.findIndex(fileid => fileid === id)
+          const idx = files.findIndex(fileid => fileid === id)
 
           if(idx !== -1) {
-            this.assets.splice(idx, 1)
+            files.splice(idx, 1)
           }
         }
 
-        this.$emit('update:assets', this.assets)
+        this.$emit('update:files', files)
       },
 
 
@@ -72,7 +74,7 @@
     <v-label>{{ field.label || code }}</v-label>
     <component ref="field"
       :is="field.type?.charAt(0)?.toUpperCase() + field.type?.slice(1)"
-      :assets="files"
+      :assets="assets"
       :config="field"
       :readonly="readonly"
       :modelValue="data[code]"

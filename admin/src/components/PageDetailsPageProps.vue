@@ -4,7 +4,7 @@
   export default {
     props: {
       'item': {type: Object, required: true},
-      'files': {type: Object, default: () => {}},
+      'assets': {type: Object, default: () => {}},
     },
 
     emits: ['change', 'error'],

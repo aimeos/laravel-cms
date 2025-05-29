@@ -12,7 +12,7 @@
 
     props: {
       'item': {type: Object, required: true},
-      'files': {type: Object, default: () => {}},
+      'assets': {type: Object, default: () => {}},
     },
 
     emits: ['update:item', 'error'],
@@ -71,15 +71,15 @@
   <v-window v-model="tab">
 
     <v-window-item value="details">
-      <PageDetailsPageProps ref="props" :item="item" :files="files" @change="update('details')" @error="error('details', $event)" />
+      <PageDetailsPageProps ref="props" :item="item" :assets="assets" @change="update('details')" @error="error('details', $event)" />
     </v-window-item>
 
     <v-window-item value="meta">
-      <PageDetailsPageMeta ref="meta" :item="item" :files="files" @change="update('meta')" @error="error('meta', $event)" />
+      <PageDetailsPageMeta ref="meta" :item="item" :assets="assets" @change="update('meta')" @error="error('meta', $event)" />
     </v-window-item>
 
     <v-window-item value="config">
-      <PageDetailsPageConfig ref="config" :item="item" :files="files" @change="update('config')" @error="error('config', $event)" />
+      <PageDetailsPageConfig ref="config" :item="item" :assets="assets" @change="update('config')" @error="error('config', $event)" />
     </v-window-item>
 
   </v-window>

@@ -11,7 +11,7 @@
 
     props: {
       'item': {type: Object, required: true},
-      'files': {type: Object, default: () => {}},
+      'assets': {type: Object, default: () => {}},
     },
 
     emits: ['change', 'error'],
@@ -165,9 +165,9 @@
 
             <Fields ref="field"
               v-model:data="el.data"
+              v-model:files="el.files"
               :fields="fields(el.type)"
-              :files="files"
-              @update:assets="el.files = $event"
+              :assets="assets"
               @error="error(el, $event)"
               @change="update(el)"
             />

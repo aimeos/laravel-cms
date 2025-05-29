@@ -42,8 +42,8 @@
     setup() {
       const messages = useMessageStore()
       const schemas = useSchemaStore()
-      const aside = useSideStore()
-      return { aside, messages, schemas }
+      const side = useSideStore()
+      return { side, messages, schemas }
     },
 
     computed: {
@@ -215,18 +215,15 @@
 
 
       shown(el) {
-        const valid = this.aside.shown('state', 'valid')
-        const error = this.aside.shown('state', 'error')
-        const changed = this.aside.shown('state', 'changed')
+        const valid = this.side.shown('state', 'valid')
+        const error = this.side.shown('state', 'error')
+        const changed = this.side.shown('state', 'changed')
 
-        return (
-          typeof el._hide === 'undefined' || typeof el._hide !== 'undefined' && el._hide !== true
-        ) && (
-          this.aside.shown('type', el.type) && (
-            error && el._error || changed && el._changed || valid && !el._error && !el._changed
-          )
+        return !el._hide && this.side.shown('type', el.type) && (
+          error && el._error || changed && el._changed || valid && !el._error && !el._changed
         )
       },
+
 
       store(isVisible = true) {
         if(!isVisible) {
@@ -251,7 +248,7 @@
           }
         })
 
-        this.aside.store = {type: types, state: state}
+        this.side.store = {type: types, state: state}
       },
 
 

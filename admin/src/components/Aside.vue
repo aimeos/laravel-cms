@@ -39,7 +39,7 @@
         }
 
         if(typeof this.active[key][code] === 'undefined') {
-          this.active[key][code] = true
+          this.active[key][code] = false
         }
 
         return this.active[key][code]
@@ -76,7 +76,7 @@
         </v-expansion-panel-title>
         <v-expansion-panel-text>
           <v-list density="compact">
-            <v-list-item v-for="(value, code) in items" :key="code" :active="isActive(key, code)" @click="toggle(key, code)">
+            <v-list-item v-for="(value, code) in items" :key="code" :active="isActive(key, code)" @click="toggle(key, code)" rounded="lg">
               <span class="name">{{ code }}</span>
               <span class="value">{{ value }}</span>
             </v-list-item>
@@ -96,6 +96,10 @@
 
   .v-list {
     padding: 0;
+  }
+
+  .v-list-item {
+    margin-bottom: 0.25rem;
   }
 
   .meta .v-list-item .name {

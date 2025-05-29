@@ -223,8 +223,8 @@ body,
 }
 
 .draft {
-  background-color: rgb(var(--v-theme-warning));
-  color: rgb(var(--v-theme-surface-variant));
+  background-color: rgb(var(--v-theme-warning)) !important;
+  color: rgb(var(--v-theme-surface-variant)) !important;
   border-radius: 50%;
   opacity: 0.66;
 }

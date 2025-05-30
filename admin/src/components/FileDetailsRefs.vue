@@ -46,6 +46,8 @@
                 byversions {
                   versionable_id
                   versionable_type
+                  published
+                  publish_at
                 }
               }
             }`,
@@ -61,7 +63,8 @@
             this.versions = (result.data?.file?.byversions || []).map(item => {
               return {
                 id: item.versionable_id,
-                type: item.versionable_type.split('\\').at(-1)
+                type: item.versionable_type.split('\\').at(-1),
+                published: item.published ? 'yes' : (item.publish_at ? (new Date(item.publish_at)).toLocaleDateString() : 'no'),
               }
             }).filter(item => {
               return this.auth.can(item.type.toLowerCase() + ':view')
@@ -83,7 +86,7 @@
         <v-expansion-panel v-if="file.bypages?.length && auth.can('page:view')">
           <v-expansion-panel-title>Pages</v-expansion-panel-title>
           <v-expansion-panel-text>
-            <v-table>
+            <v-table density="comfortable" hover>
               <thead>
                 <tr>
                   <th>ID</th>
@@ -105,7 +108,7 @@
         <v-expansion-panel v-if="file.byelements?.length && auth.can('element:view')">
           <v-expansion-panel-title>Elements</v-expansion-panel-title>
           <v-expansion-panel-text>
-            <v-table>
+            <v-table density="comfortable" hover>
               <thead>
                 <tr>
                   <th>ID</th>
@@ -127,17 +130,19 @@
         <v-expansion-panel v-if="versions?.length">
           <v-expansion-panel-title>Versions</v-expansion-panel-title>
           <v-expansion-panel-text>
-            <v-table>
+            <v-table density="comfortable" hover>
               <thead>
                 <tr>
                   <th>ID</th>
                   <th>Type</th>
+                  <th>Published</th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="v in versions" :key="v.id">
                   <td>{{ v.id }}</td>
                   <td>{{ v.type }}</td>
+                  <td>{{ v.published }}</td>
                 </tr>
               </tbody>
             </v-table>
@@ -150,4 +155,13 @@
 </template>
 
 <style scoped>
+  .v-expansion-panel-title {
+    font-weight: bold;
+    font-size: 110%;
+  }
+
+  thead th {
+    font-weight: bold !important;
+    width: 33%
+  }
 </style>

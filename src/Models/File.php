@@ -163,7 +163,8 @@ class File extends Model
      */
     public function byelements() : BelongsToMany
     {
-        return $this->belongsToMany( Element::class, 'cms_element_file' );
+        return $this->belongsToMany( Element::class, 'cms_element_file' )
+            ->select('id', 'type', 'name' );
     }
 
 
@@ -174,7 +175,8 @@ class File extends Model
      */
     public function bypages() : BelongsToMany
     {
-        return $this->belongsToMany( Page::class, 'cms_page_file' );
+        return $this->belongsToMany( Page::class, 'cms_page_file' )
+            ->select('id', 'slug', 'name' );
     }
 
 
@@ -185,7 +187,8 @@ class File extends Model
      */
     public function byversions() : BelongsToMany
     {
-        return $this->belongsToMany( Version::class, 'cms_version_file' );
+        return $this->belongsToMany( Version::class, 'cms_version_file' )
+            ->select('id', 'versionable_id', 'versionable_type', 'published', 'publish_at' );
     }
 
 

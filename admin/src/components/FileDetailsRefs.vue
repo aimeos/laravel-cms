@@ -61,9 +61,8 @@
               }
             })
           }).catch(error => {
-            console.error(`file(id: ${item.id})`, error)
+            this.$log(`FileDetailsRef::watch(item): Error fetching file`, item, error)
           })
-
         }
       }
     }
@@ -133,7 +132,7 @@
               <tbody>
                 <tr v-for="v in versions" :key="v.id">
                   <td>{{ v.id }}</td>
-                  <td>{{ v.type }}</td>
+                  <td>{{ v.type.split('\\').at(-1) }}</td>
                   <td>{{ v.data.name }}</td>
                 </tr>
               </tbody>

@@ -83,7 +83,7 @@
           this.$refs.tree.add(node)
         }).catch(error => {
           this.messages.add('Error adding root page', 'error')
-          console.error(`addPage(root)`, error)
+          this.$log(`PageTree::add(): Error adding root page`, error)
         })
       },
 
@@ -120,7 +120,7 @@
           }
         }).catch(error => {
           this.messages.add('Error moving page', 'error')
-          console.error(`movePage(id: ${dragContext.startInfo.dragNode.data.id})`, error)
+          this.$log(`PageTree::change(): Error moving page`, error)
         })
       },
 
@@ -195,7 +195,7 @@
             }
           }).catch(error => {
             this.messages.add('Error trashing page', 'error')
-            console.error(`dropPage(id: ${stat.data.id})`, error)
+            this.$log(`PageTree::drop(): Error trashing page`, stat, error)
           })
         })
       },
@@ -231,7 +231,7 @@
           return this.transform(result.data.pages)
         }).catch(error => {
           this.messages.add('Error fetching pages', 'error')
-          console.error(`pages()`, error)
+          this.$log(`PageTree::fetch(): Error fetching page`, parent, page, limit, error)
         })
       },
 
@@ -318,7 +318,7 @@
           parent.data.has = true
         }).catch(error => {
           this.messages.add('Error inserting page', 'error')
-          console.error(`addPage(insert)`, error)
+          this.$log(`PageTree::insert(): Error inserting page`, error)
         })
       },
 
@@ -356,7 +356,7 @@
             })
           }).catch(error => {
             this.messages.add('Error restoring page', 'error')
-            console.error(`keepPage(id: ${stat.data.id})`, error)
+            this.$log(`PageTree::keep(): Error restoring page`, stat, error)
           })
         })
       },
@@ -416,7 +416,7 @@
           parent.data.has = true
         }).catch(error => {
           this.messages.add('Error moving page', 'error')
-          console.error(`movePage(id: ${this.clip.node.id})`, error)
+          this.$log(`PageTree::move(): Error moving page`, stat, idx, error)
         })
 
         this.show()
@@ -464,7 +464,7 @@
           parent.data.has = true
         }).catch(error => {
           this.messages.add('Error copying page', 'error')
-          console.error(`addPage(id: ${this.clip.node.id})`, error)
+          this.$log(`PageTree::paste(): Error copying page`, stat, idx, error)
         })
 
         this.show()
@@ -505,7 +505,7 @@
             stat.check = false
           }).catch(error => {
             this.messages.add('Error publishing page', 'error')
-            console.error(`pubPage(id: ${stat.data.id})`, error)
+            this.$log(`PageTree::publish(): Error publishing page`, stat, error)
           })
       },
 
@@ -537,7 +537,7 @@
             }
           }).catch(error => {
             this.messages.add('Error purging page', 'error')
-            console.error(`purgePage(id: ${stat.data.id})`, error)
+            this.$log(`PageTree::purge(): Error purging page`, error)
           })
         })
       },
@@ -584,8 +584,8 @@
 
           return this.transform(result.data.pages)
         }).catch(error => {
-          this.messages.add('Error searching for pages', 'error')
-          console.error(`pages()`, error)
+          this.messages.add('Error searching pages', 'error')
+          this.$log(`PageTree::search(): Error searching pages`, filter, page, limit, error)
         })
       },
 
@@ -628,7 +628,7 @@
             stat.data.status = val
           }).catch(error => {
             this.messages.add('Error saving page', 'error')
-            console.error(`savePage(id: ${stat.data.id})`, error)
+            this.$log(`PageTree::status(): Error saving page`, stat, val, error)
           })
         })
       },

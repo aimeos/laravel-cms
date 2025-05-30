@@ -1,3 +1,8 @@
+/**
+ * Generates a unique content ID based on the current date and time.
+ *
+ * @returns String Unique content ID
+ */
 export function contentid() {
   const BASE64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_'
   const EPOCH = new Date('2025-01-01T00:00:00Z')

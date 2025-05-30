@@ -79,7 +79,7 @@
           return this.handle(data, path)
         }).catch(error => {
           this.messages.add('Error uploading file', 'error')
-          console.error(`addFile()`, error)
+          this.$log(`File::addFile(): Error uploading file`, ev, error)
         }).finally(() => {
           this.selected = null
         })
@@ -88,7 +88,7 @@
 
       handle(item, path) {
         if(!item?.id) {
-          console.error(`File::handle(): Invalid item without ID`, item)
+          this.$log(`File::handle(): Invalid item without ID`, item)
           return
         }
 

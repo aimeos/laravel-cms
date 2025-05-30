@@ -92,7 +92,7 @@
               URL.revokeObjectURL(path)
             })
           }).catch(error => {
-            console.error(`addFile()`, error)
+            this.$log(`Images::addFile(): Error uploading images`, ev, error)
           })
 
           promises.push(promise)

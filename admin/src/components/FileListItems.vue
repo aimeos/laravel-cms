@@ -96,7 +96,7 @@
             this.items.unshift(data)
             return data
           }).catch(error => {
-            console.error(`addFile()`, error)
+            this.$log(`FileListItems::add(): Error adding file`, ev, error)
           }))
         })
 
@@ -126,7 +126,7 @@
       },
 
 
-      drop(idx) {
+      drop(item) {
         let list = []
         const promises = []
 
@@ -156,7 +156,7 @@
             return result.data.dropFile
           }).catch(error => {
             this.messages.add('Error trashing file', 'error')
-            console.error(`trash()`, error)
+            this.$log(`FileListItems::drop(): Error trashing file`, item, error)
           }))
         })
 
@@ -205,7 +205,7 @@
             return result.data.keepFile
           }).catch(error => {
             this.messages.add('Error restoring file', 'error')
-            console.error(`purge()`, error)
+            this.$log(`FileListItems::keep(): Error restoring file`, item, error)
           }))
         })
 
@@ -249,8 +249,8 @@
             item.published = true
             item._checked = false
           }).catch(error => {
-            this.messages.add('Error publishing page', 'error')
-            console.error(`pubFile(id: ${item.id})`, error)
+            this.messages.add('Error publishing file', 'error')
+            this.$log(`FileListItems::publish(): Error publishing file`, item, error)
           })
       },
 
@@ -285,7 +285,7 @@
             return result.data.purgeFile
           }).catch(error => {
             this.messages.add('Error purging file', 'error')
-            console.error(`purge()`, error)
+            this.$log(`FileListItems::purge(): Error purging file`, item, error)
           }))
         })
 
@@ -372,7 +372,7 @@
           this.loading = false
         }).catch(error => {
           this.messages.add('Error fetching files', 'error')
-          console.error(`files()`, error)
+          this.$log(`FileListItems::search(): Error fetching files`, filter, page, limit, error)
         })
       },
 

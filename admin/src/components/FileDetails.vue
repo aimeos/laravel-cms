@@ -68,8 +68,8 @@
 
             this.$emit('close')
           }).catch(error => {
-            this.messages.add('Error publishing page', 'error')
-            console.error(`pubFile(id: ${this.item.id})`, error)
+            this.messages.add('Error publishing file', 'error')
+            this.$log(`FileDetails::publish(): Error publishing file`, at, error)
           })
         })
       },
@@ -116,7 +116,7 @@
           return true
         }).catch(error => {
           this.messages.add('Error saving file', 'error')
-          console.error(`saveFile(id: ${this.item.id})`, error)
+          this.$log(`FileDetails::save(): Error saving file`, error)
         })
       },
 
@@ -158,7 +158,7 @@
           return result.data.file.versions || []
         }).catch(error => {
           this.messages.add('Error fetching file versions', 'error')
-          console.error(`fileversion(id: ${id})`, error)
+          this.$log(`FileDetails::versions(): Error fetching file versions`, id, error)
         })
       }
     }

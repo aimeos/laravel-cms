@@ -11,6 +11,7 @@ import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
+import logger from './log'
 import router from './routes'
 import App from './App.vue'
 
@@ -45,4 +46,10 @@ for(const path in fields) {
 }
 
 
-app.use(pinia).use(router).use(vuetify).use(apolloProvider).use(VueObserveVisibility).mount('#app')
+app.use(logger)
+  .use(pinia)
+  .use(router)
+  .use(vuetify)
+  .use(apolloProvider)
+  .use(VueObserveVisibility)
+  .mount('#app')

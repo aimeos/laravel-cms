@@ -98,7 +98,7 @@
             this.$emit('close')
           }).catch(error => {
             this.messages.add('Error publishing page', 'error')
-            console.error(`publishPage(id: ${this.item.id})`, error)
+            this.$log(`PageDetails::publish(): Error publishing page`, at, error)
           })
         })
       },
@@ -193,8 +193,8 @@
             this.$emit('close')
             return true
           }).catch(error => {
-            this.messages.add('Error saving page data', 'error')
-            console.error(`savePage(id: ${this.item.id})`, error)
+            this.messages.add('Error saving page', 'error')
+            this.$log(`PageDetails::save(): Error saving page`, error)
           })
         })
       },
@@ -263,7 +263,7 @@
           return result.data.page.versions || []
         }).catch(error => {
           this.messages.add('Error fetching page versions', 'error')
-          console.error(`pageversion(id: ${id})`, error)
+          this.$log(`PageDetails::versions(): Error fetching page versions`, id, error)
         })
       }
     },
@@ -365,8 +365,8 @@
             this.assets[entry.id] = {...entry, previews: JSON.parse(entry.previews || '{}')}
           }
         }).catch(error => {
-          this.messages.add('Error fetching page data', 'error')
-          console.error(`page(id: ${this.item.id})`, error)
+          this.messages.add('Error fetching page', 'error')
+          this.$log(`PageDetails::watch(item): Error fetching page`, error)
         })
       }
     }

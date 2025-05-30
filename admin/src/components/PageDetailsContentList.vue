@@ -209,7 +209,7 @@
           this.list[idx] = {type: 'reference', refid: element.id}
         }).catch(error => {
           this.messages.add('Unable to make element shared', 'error')
-          console.error(error)
+          this.$log(`PageDetailsContentList::share(): Error making element shared`, idx, error)
         })
       },
 

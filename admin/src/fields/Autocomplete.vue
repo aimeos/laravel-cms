@@ -58,7 +58,7 @@
           this.list = this.items(this.toList(result.data))
           this.loading = false
         }).catch(error => {
-          console.error('Error fetching data:', error)
+          this.$log('Autocomplete::graphql(): Error fetching data', value, error)
         })
       },
 
@@ -102,7 +102,7 @@
           this.list = this.items(this.toList(result))
           this.loading = false
         }).catch(error => {
-          console.error('Error fetching data:', error)
+          this.$log('Autocomplete::rest(): Error fetching data', value, error)
         })
       },
 

@@ -56,7 +56,7 @@
           </button>
         </div>
         <div v-else class="file file-input">
-          <div class="select-file" @click="vfiles = true">
+          <div class="select-file" v-if="auth.can('file:view')" @click="vfiles = true">
             <label>
               <span class="btn">Select image</span>
             </label>

@@ -18,11 +18,17 @@ export const useAuthStore = defineStore('auth', {
   state: () => ({
     me: null,
     urlintended: null,
+    permissions: JSON.parse(app?.dataset.permissions || '{}'),
   }),
 
   actions: {
+    can(action) {
+      return this.permissions[action] || false
+    },
+
+
     intended(url) {
-      return url ? this.urlintended = url : (this.urlintended || '/pages')
+      return url ? this.urlintended = url : this.urlintended
     },
 
 

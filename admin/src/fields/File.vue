@@ -1,6 +1,6 @@
 <script>
   import gql from 'graphql-tag'
-  import { useAppStore, useMessageStore } from '../stores'
+  import { useAppStore, useAuthStore, useMessageStore } from '../stores'
   import FileListItems from '../components/FileListItems.vue'
 
   export default {
@@ -28,8 +28,10 @@
 
     setup() {
       const messages = useMessageStore()
+      const auth = useAuthStore()
       const app = useAppStore()
-      return { app, messages }
+
+      return { app, auth, messages }
     },
 
     unmounted() {
@@ -173,7 +175,7 @@
           </button>
         </div>
         <div v-else class="file file-input">
-          <div class="select-file" @click="vfiles = true">
+          <div class="select-file" v-if="auth.can('file:view')" @click="vfiles = true">
             <label>
               <span class="btn">Select file</span>
             </label>

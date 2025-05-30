@@ -1,6 +1,6 @@
 <script>
   import gql from 'graphql-tag'
-  import { useAppStore, useMessageStore } from '../stores'
+  import { useAppStore, useAuthStore, useMessageStore } from '../stores'
 
   export default {
     props: {
@@ -27,9 +27,10 @@
 
     setup() {
       const messages = useMessageStore()
+      const auth = useAuthStore()
       const app = useAppStore()
 
-      return { app, messages }
+      return { app, auth, messages }
     },
 
     created() {
@@ -447,28 +448,28 @@
               <v-btn append-icon="mdi-menu-down" variant="outlined" v-bind="props">Actions</v-btn>
             </template>
             <v-list>
-              <v-list-item v-show="isChecked">
+              <v-list-item v-if="isChecked && auth.can('file:publish')">
                 <v-btn prepend-icon="mdi-publish" variant="text" @click="publishAll()">Publish</v-btn>
               </v-list-item>
-              <v-list-item>
+              <v-list-item v-if="auth.can('file:add')">
                 <v-btn prepend-icon="mdi-folder-plus" variant="text" @click="$refs.upload.click()">Add files</v-btn>
               </v-list-item>
-              <v-list-item v-show="trash !== false">
+              <v-list-item v-if="trash !== false">
                 <v-btn prepend-icon="mdi-delete-off" variant="text" @click="trashed(false)">Only non-trashed</v-btn>
               </v-list-item>
-              <v-list-item v-show="trash !== null">
+              <v-list-item v-if="trash !== null">
                 <v-btn prepend-icon="mdi-delete-circle-outline" variant="text" @click="trashed(null)">Include trashed</v-btn>
               </v-list-item>
-              <v-list-item v-show="trash !== true">
+              <v-list-item v-if="trash !== true">
                 <v-btn prepend-icon="mdi-delete-circle" variant="text" @click="trashed(true)">Only trashed</v-btn>
               </v-list-item>
-              <v-list-item v-show="canTrash">
+              <v-list-item v-if="canTrash && auth.can('file:drop')">
                 <v-btn prepend-icon="mdi-delete" variant="text" @click="drop()">Trash</v-btn>
               </v-list-item>
-              <v-list-item v-show="isTrashed">
+              <v-list-item v-if="isTrashed && auth.can('file:keep')">
                 <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="keep()">Restore</v-btn>
               </v-list-item>
-              <v-list-item v-show="isChecked">
+              <v-list-item v-if="isChecked && auth.can('file:purge')">
                 <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge()">Purge</v-btn>
               </v-list-item>
             </v-list>
@@ -529,16 +530,16 @@
               <v-btn class="item-menu" icon="mdi-dots-vertical" variant="text" v-bind="props"></v-btn>
             </template>
             <v-list>
-              <v-list-item v-show="!item.deleted_at && !item.published">
+              <v-list-item v-show="!item.deleted_at && !item.published && auth.can('file:publish')">
                 <v-btn prepend-icon="mdi-publish" variant="text" @click="publish(item)">Publish</v-btn>
               </v-list-item>
-              <v-list-item v-if="!item.deleted_at">
+              <v-list-item v-if="!item.deleted_at && auth.can('file:drop')">
                 <v-btn prepend-icon="mdi-delete" variant="text" @click="drop(item)">Trash</v-btn>
               </v-list-item>
-              <v-list-item v-if="item.deleted_at">
+              <v-list-item v-if="item.deleted_at && auth.can('file:keep')">
                 <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="keep(item)">Restore</v-btn>
               </v-list-item>
-              <v-list-item>
+              <v-list-item v-if="auth.can('file:purge')">
                 <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge(item)">Purge</v-btn>
               </v-list-item>
             </v-list>
@@ -571,6 +572,7 @@
         Loading
         <svg class="spinner" width="32" height="32" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle class="spin1" cx="4" cy="12" r="3"/><circle class="spin1 spin2" cx="12" cy="12" r="3"/><circle class="spin1 spin3" cx="20" cy="12" r="3"/></svg>
       </p>
+
       <p v-if="!loading && filter && !items.length" class="notfound">
         No files found
       </p>
@@ -580,7 +582,7 @@
         :length="last"
       ></v-pagination>
 
-      <div class="btn-group">
+      <div v-if="auth.can('file:add')" class="btn-group">
         <input @change="add($event)"
           ref="upload"
           type="file"

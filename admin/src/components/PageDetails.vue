@@ -5,7 +5,7 @@
   import PageDetailsPage from './PageDetailsPage.vue'
   import PageDetailsContent from './PageDetailsContent.vue'
   import PageDetailsPreview from './PageDetailsPreview.vue'
-  import { useMessageStore } from '../stores'
+  import { useAuthStore, useMessageStore } from '../stores'
 
 
   export default {
@@ -39,7 +39,9 @@
 
     setup() {
       const messages = useMessageStore()
-      return { messages }
+      const auth = useAuthStore()
+
+      return { auth, messages }
     },
 
     computed: {
@@ -395,15 +397,23 @@
         elevation="0"
       ></v-btn>
 
-      <v-btn :class="{error: hasError}" :disabled="!hasChanged || hasError" @click="save()" variant="text">
-        Save
-      </v-btn>
+      <v-btn :class="{error: hasError}"
+        :disabled="!hasChanged || hasError || !auth.can('page:save')"
+        @click="save()"
+        variant="text"
+      >Save</v-btn>
 
       <v-menu v-model="pubmenu" :close-on-content-click="false">
         <template #activator="{ props }">
           <v-btn-group class="menu-publish" variant="text">
-            <v-btn :class="{error: hasError}" class="button" :disabled="item.published && !hasChanged || hasError" @click="publish()">Publish</v-btn>
-            <v-btn :class="{error: hasError}" class="icon" :disabled="item.published && !hasChanged || hasError" v-bind="props" icon="mdi-menu-down"></v-btn>
+            <v-btn :class="{error: hasError}" class="button"
+              :disabled="item.published && !hasChanged || hasError || !auth.can('page:publish')"
+              @click="publish()"
+            >Publish</v-btn>
+            <v-btn :class="{error: hasError}" class="icon" icon="mdi-menu-down"
+              :disabled="item.published && !hasChanged || hasError || !auth.can('page:publish')"
+              v-bind="props"
+            ></v-btn>
           </v-btn-group>
         </template>
         <div class="menu-content">

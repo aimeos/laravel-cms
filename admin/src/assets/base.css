@@ -27,6 +27,10 @@ body,
   background-color: rgb(var(--v-theme-background));
 }
 
+.v-snackbar__content {
+  text-align: center !important;
+}
+
 .v-navigation-drawer,
 .v-navigation-drawer button,
 .v-navigation-drawer .v-list-item,

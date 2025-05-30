@@ -70,4 +70,22 @@ class Permission
 
         return $user && isset( self::$can[$action] ) && self::$can[$action] & $user->cmseditor;
     }
+
+
+    /**
+     * Returns the available actions and their permissions.
+     *
+     * @param \App\Models\User|null $user Laravel user object
+     * @return array List of actions as keys and booleans as values indicating if the user has permission for the action
+     */
+    public static function get( ?User $user ) : array
+    {
+        $map = [];
+
+        foreach( self::$can as $action => $bit ) {
+            $map[$action] = self::can( $action, $user );
+        }
+
+        return $map;
+    }
 }

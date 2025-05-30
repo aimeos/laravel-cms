@@ -1,7 +1,7 @@
 <script>
   import gql from 'graphql-tag'
-  import { useAppStore } from '../stores'
   import { VueDraggable } from 'vue-draggable-plus'
+  import { useAppStore, useAuthStore } from '../stores'
   import FileListItems from '../components/FileListItems.vue'
 
   export default {
@@ -20,8 +20,10 @@
     emits: ['update:modelValue', 'error', 'addFile', 'removeFile'],
 
     setup() {
+      const auth = useAuthStore()
       const app = useAppStore()
-      return { app }
+
+      return { app, auth }
     },
 
     data() {
@@ -189,7 +191,7 @@
     </div>
 
     <div class="file-input">
-      <div class="select-file" @click="vfiles = true">
+      <div class="select-file" v-if="auth.can('file:view')" @click="vfiles = true">
         <label>
           <span class="btn">Select file</span>
         </label>

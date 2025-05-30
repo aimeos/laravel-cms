@@ -16,8 +16,8 @@
     }),
 
     setup() {
-      const messages = useMessageStore()
-      return { messages }
+      const message = useMessageStore()
+      return { message }
     },
   }
 </script>
@@ -38,7 +38,7 @@
       </v-layout>
     </transition-group>
 
-    <v-snackbar-queue v-model="messages.queue"></v-snackbar-queue>
+    <v-snackbar-queue v-model="message.queue"></v-snackbar-queue>
 </template>
 
 <style scoped>

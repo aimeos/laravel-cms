@@ -1,6 +1,6 @@
 <script>
   import router from '../routes'
-  import { useAuthStore } from '../stores'
+  import { useAuthStore, useMessageStore } from '../stores'
 
   export default {
     data: () => ({
@@ -16,8 +16,10 @@
     }),
 
     setup() {
+      const message = useMessageStore()
       const auth = useAuthStore()
-      return { auth }
+
+      return { auth, message }
     },
 
     created() {
@@ -26,7 +28,7 @@
           throw result
         }
 
-        router.replace(this.auth.intended())
+        router.replace(this.next())
       }).catch(err => {
         this.login = true
       })
@@ -43,7 +45,7 @@
 
         this.auth.login(this.creds.email, this.creds.password).then(user => {
           if(user.cmseditor) {
-            router.replace(this.auth.intended())
+            router.replace(this.next())
           } else {
             this.error = 'Not a CMS editor'
           }
@@ -52,6 +54,19 @@
         }).finally(() => {
           this.loading = false
         });
+      },
+
+
+      next() {
+        const url = this.auth.intended() || router.getRoutes().find(route => {
+          return this.auth.can(route.name)
+        })?.path
+
+        if(!url) {
+          this.message.add('Access denied', 'error')
+        }
+
+        return url || '/'
       }
     }
   }
@@ -86,6 +101,8 @@
       </v-card-actions>
     </v-card>
   </v-form>
+
+  <v-snackbar-queue v-model="message.queue"></v-snackbar-queue>
 </template>
 
 <style>

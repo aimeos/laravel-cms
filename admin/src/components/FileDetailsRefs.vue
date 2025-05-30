@@ -1,5 +1,6 @@
 <script>
   import gql from 'graphql-tag'
+  import { useAuthStore } from '../stores'
 
 
   export default {
@@ -14,6 +15,11 @@
       panel: [0, 1, 2],
       versions: {}
     }),
+
+    setup() {
+      const auth = useAuthStore()
+      return { auth }
+    },
 
     watch: {
       item: {
@@ -40,7 +46,6 @@
                 byversions {
                   versionable_id
                   versionable_type
-                  data
                 }
               }
             }`,
@@ -56,9 +61,10 @@
             this.versions = (result.data?.file?.byversions || []).map(item => {
               return {
                 id: item.versionable_id,
-                type: item.versionable_type,
-                data: JSON.parse(item.data)
+                type: item.versionable_type.split('\\').at(-1)
               }
+            }).filter(item => {
+              return this.auth.can(item.type.toLowerCase() + ':view')
             })
           }).catch(error => {
             this.$log(`FileDetailsRef::watch(item): Error fetching file`, item, error)
@@ -74,7 +80,7 @@
     <v-sheet>
       <v-expansion-panels v-model="panel" elevation="0" multiple>
 
-        <v-expansion-panel v-if="file.bypages?.length">
+        <v-expansion-panel v-if="file.bypages?.length && auth.can('page:view')">
           <v-expansion-panel-title>Pages</v-expansion-panel-title>
           <v-expansion-panel-text>
             <v-table>
@@ -96,7 +102,7 @@
           </v-expansion-panel-text>
         </v-expansion-panel>
 
-        <v-expansion-panel v-if="file.byelements?.length">
+        <v-expansion-panel v-if="file.byelements?.length && auth.can('element:view')">
           <v-expansion-panel-title>Elements</v-expansion-panel-title>
           <v-expansion-panel-text>
             <v-table>
@@ -126,14 +132,12 @@
                 <tr>
                   <th>ID</th>
                   <th>Type</th>
-                  <th>Name</th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="v in versions" :key="v.id">
                   <td>{{ v.id }}</td>
-                  <td>{{ v.type.split('\\').at(-1) }}</td>
-                  <td>{{ v.data.name }}</td>
+                  <td>{{ v.type }}</td>
                 </tr>
               </tbody>
             </v-table>

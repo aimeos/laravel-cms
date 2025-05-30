@@ -4,7 +4,7 @@
   import History from './History.vue'
   import FileDetailsFile from './FileDetailsFile.vue'
   import FileDetailsRefs from './FileDetailsRefs.vue'
-  import { useMessageStore } from '../stores'
+  import { useAuthStore, useMessageStore } from '../stores'
 
 
   export default {
@@ -33,7 +33,9 @@
 
     setup() {
       const messages = useMessageStore()
-      return { messages }
+      const auth = useAuthStore()
+
+      return { auth, messages }
     },
 
     methods: {
@@ -187,15 +189,23 @@
         elevation="0"
       ></v-btn>
 
-      <v-btn :class="{error: error}" :disabled="!changed || error" @click="save()" variant="text">
-        Save
-      </v-btn>
+      <v-btn :class="{error: error}"
+        :disabled="!changed || error || !auth.can('file:save')"
+        @click="save()"
+        variant="text"
+      >Save</v-btn>
 
       <v-menu v-model="pubmenu" :close-on-content-click="false">
         <template #activator="{ props }">
           <v-btn-group class="menu-publish" variant="text">
-            <v-btn :class="{error: error}" class="button" :disabled="item.published && !changed || error" @click="publish()">Publish</v-btn>
-            <v-btn :class="{error: error}" class="icon" :disabled="item.published && !changed || error" v-bind="props" icon="mdi-menu-down"></v-btn>
+            <v-btn :class="{error: error}" class="button"
+              :disabled="item.published && !changed || error || !auth.can('file:publish')"
+              @click="publish()"
+            >Publish</v-btn>
+            <v-btn :class="{error: error}" class="icon" icon="mdi-menu-down"
+              :disabled="item.published && !changed || error || !auth.can('file:publish')"
+              v-bind="props"
+            ></v-btn>
           </v-btn-group>
         </template>
         <div class="menu-content">

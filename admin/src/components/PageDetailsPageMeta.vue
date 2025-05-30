@@ -1,7 +1,7 @@
 <script>
   import Fields from './Fields.vue'
   import Elements from './Elements.vue'
-  import { useSchemaStore, useSideStore } from '../stores'
+  import { useAuthStore, useSchemaStore, useSideStore } from '../stores'
   import { contentid } from '../utils'
 
   export default {
@@ -24,8 +24,10 @@
 
     setup() {
       const schemas = useSchemaStore()
-      const aside = useSideStore()
-      return { aside, schemas }
+      const side = useSideStore()
+      const auth = useAuthStore()
+
+      return { auth, side, schemas }
     },
 
     computed: {
@@ -82,11 +84,11 @@
 
 
       shown(el) {
-        const valid = this.aside.shown('state', 'valid')
-        const error = this.aside.shown('state', 'error')
-        const changed = this.aside.shown('state', 'changed')
+        const valid = this.side.shown('state', 'valid')
+        const error = this.side.shown('state', 'error')
+        const changed = this.side.shown('state', 'changed')
 
-        return this.aside.shown('type', el.type) && (
+        return this.side.shown('type', el.type) && (
           error && el._error || changed && el._changed || valid && !el._error && !el._changed
         )
       },
@@ -115,7 +117,7 @@
           }
         }
 
-        this.aside.store = {type: types, state: state}
+        this.side.store = {type: types, state: state}
       },
 
 
@@ -157,7 +159,7 @@
 
         <v-expansion-panel v-for="(el, code) in item.meta || {}" :key="code" :class="{changed: el._changed, error: el._error}" v-show="shown(el)">
           <v-expansion-panel-title expand-icon="mdi-pencil">
-            <v-btn icon="mdi-delete" variant="text" @click="remove(code)"></v-btn>
+            <v-btn v-if="auth.can('page:save')" icon="mdi-delete" variant="text" @click="remove(code)"></v-btn>
             <div class="element-title">{{ title(el) }}</div>
             <div class="element-type">{{ el.type }}</div>
           </v-expansion-panel-title>
@@ -166,6 +168,7 @@
             <Fields ref="field"
               v-model:data="el.data"
               v-model:files="el.files"
+              :readonly="!auth.can('page:save')"
               :fields="fields(el.type)"
               :assets="assets"
               @error="error(el, $event)"
@@ -177,7 +180,7 @@
 
       </v-expansion-panels>
 
-      <div v-if="available" class="btn-group">
+      <div v-if="available && auth.can('page:save')" class="btn-group">
         <v-btn icon="mdi-view-grid-plus" color="primary" @click="vschemas = true" elevation="0"></v-btn>
       </div>
 

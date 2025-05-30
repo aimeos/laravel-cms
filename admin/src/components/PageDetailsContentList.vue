@@ -4,7 +4,7 @@
   import History from './History.vue'
   import Elements from './Elements.vue'
   import { VueDraggable } from 'vue-draggable-plus'
-  import { useMessageStore, useSchemaStore, useSideStore } from '../stores'
+  import { useAuthStore, useMessageStore, useSchemaStore, useSideStore } from '../stores'
   import { contentid } from '../utils'
 
   export default {
@@ -43,7 +43,9 @@
       const messages = useMessageStore()
       const schemas = useSchemaStore()
       const side = useSideStore()
-      return { side, messages, schemas }
+      const auth = useAuthStore()
+
+      return { auth, side, messages, schemas }
     },
 
     computed: {
@@ -361,7 +363,7 @@
     <v-sheet>
 
       <div class="header">
-        <div class="bulk">
+        <div v-if="auth.can('page:save')" class="bulk">
           <v-checkbox-btn v-model="checked" @click.stop="toggle()"></v-checkbox-btn>
           <v-menu location="bottom right">
             <template v-slot:activator="{ props }">
@@ -388,13 +390,13 @@
       </div>
 
       <v-expansion-panels class="list" v-model="panel" elevation="0" multiple>
-        <VueDraggable v-model="list" draggable=".content" group="contents">
+        <VueDraggable v-model="list" :disabled="!auth.can('page:save')" draggable=".content" group="contents">
 
           <v-expansion-panel v-for="(el, idx) in list" :key="idx" v-show="shown(el)" class="content" :class="{changed: el._changed, error: el._error}">
             <v-expansion-panel-title expand-icon="mdi-pencil">
-              <v-checkbox-btn v-model="el._checked" @click.stop=""></v-checkbox-btn>
+              <v-checkbox-btn v-if="auth.can('page:save')" v-model="el._checked" @click.stop=""></v-checkbox-btn>
 
-              <v-menu>
+              <v-menu v-if="auth.can('page:save')">
                 <template v-slot:activator="{ props }">
                   <v-btn icon="mdi-dots-vertical" variant="text" v-bind="props"></v-btn>
                 </template>
@@ -445,6 +447,7 @@
               <Fields v-else ref="field"
                 v-model:data="el.data"
                 v-model:files="el.files"
+                :readonly="!auth.can('page:save')"
                 :fields="fields(el.type)"
                 :assets="assets"
                 @error="error(el, $event)"
@@ -458,7 +461,12 @@
       </v-expansion-panels>
 
       <div class="btn-group">
-        <v-btn icon="mdi-view-grid-plus" color="primary" @click="vschemas = true" elevation="0"></v-btn>
+        <v-btn v-if="auth.can('page:save')"
+          @click="vschemas = true"
+          icon="mdi-view-grid-plus"
+          color="primary"
+          elevation="0"
+        ></v-btn>
       </div>
     </v-sheet>
   </v-container>

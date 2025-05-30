@@ -1,5 +1,5 @@
 <script>
-  import { useAppStore, useConfigStore, useLanguageStore, useSideStore } from '../stores'
+  import { useAppStore, useAuthStore, useConfigStore, useLanguageStore, useSideStore } from '../stores'
 
   export default {
     props: {
@@ -16,10 +16,11 @@
     setup() {
       const languages = useLanguageStore()
       const config = useConfigStore()
-      const aside = useSideStore()
+      const side = useSideStore()
+      const auth = useAuthStore()
       const app = useAppStore()
 
-      return { app, aside, config, languages }
+      return { app, auth, side, config, languages }
     },
 
     computed: {
@@ -31,6 +32,11 @@
         })
 
         return list
+      },
+
+
+      readonly() {
+        return !this.auth.can('page:save')
       }
     },
 
@@ -52,7 +58,7 @@
             state = {error: res}
           }
 
-          this.aside.store = {state: state}
+          this.side.store = {state: state}
         })
       },
 
@@ -112,6 +118,7 @@
               { key: 1, val: 'Enabled' },
               { key: 2, val: 'Hidden in navigation' }
             ]"
+            :readonly="readonly"
             :modelValue="item.status"
             @update:modelValue="update('status', $event)"
             variant="underlined"
@@ -123,6 +130,7 @@
         <v-col cols="12" md="6">
           <v-select ref="lang"
             :items="langs"
+            :readonly="readonly"
             :modelValue="item.lang"
             @update:modelValue="update('lang', $event)"
             variant="underlined"
@@ -139,6 +147,7 @@
             :rules="[
               v => !!v || `The field is required`,
             ]"
+            :readonly="readonly"
             :modelValue="item.name"
             @update:modelValue="update('name', $event)"
             @update:focused="updateSlug($event)"
@@ -148,6 +157,7 @@
             maxlength="255"
           ></v-text-field>
           <v-text-field ref="title"
+            :readonly="readonly"
             :modelValue="item.title"
             @update:modelValue="update('title', $event)"
             variant="underlined"
@@ -161,6 +171,7 @@
             :rules="[
               v => !!v || `The field is required`,
             ]"
+            :readonly="readonly"
             :modelValue="item.slug"
             @update:modelValue="update('slug', $event)"
             variant="underlined"
@@ -169,6 +180,7 @@
             maxlength="255"
           ></v-text-field>
           <v-text-field ref="domain"
+            :readonly="readonly"
             :modelValue="item.domain"
             @update:modelValue="update('domain', $event)"
             variant="underlined"
@@ -182,6 +194,7 @@
       <v-row>
         <v-col cols="12" md="6">
           <v-select ref="theme"
+            :readonly="readonly"
             :items="Object.keys(config.get('themes', {'default': null}))"
             :modelValue="item.theme"
             @update:modelValue="update('theme', $event); item.type = null"
@@ -189,6 +202,7 @@
             label="Theme"
           ></v-select>
           <v-select ref="type"
+            :readonly="readonly"
             :items="Object.keys(config.get(`themes.${item.theme || 'default'}.types`, {'default': null}))"
             :modelValue="item.type"
             @update:modelValue="update('type', $event)"
@@ -199,6 +213,7 @@
         <v-col cols="12" md="6">
           <v-text-field ref="tag"
             v-model="item.tag"
+            :readonly="readonly"
             label="Page tag"
             variant="underlined"
             @update:modelValue="update()"
@@ -218,6 +233,7 @@
               { key: 720, val: '12 hours' },
               { key: 1440, val: '24 hours' },
             ]"
+            :readonly="readonly"
             :modelValue="item.cache"
             @update:modelValue="update('cache', $event)"
             variant="underlined"
@@ -234,6 +250,7 @@
             :rules="[
               v => !v || v.match('^((https?:)?//([^\\s/:@]+(:[^\\s/:@]+)?@)?([0-9a-z]+(\\.|-))*[0-9a-z]+\\.[a-z]{2,}(:[0-9]{1,5})?)?(/[^\\s]*)*$') !== null || 'URL is not valid',
             ]"
+            :readonly="readonly"
             :modelValue="item.to"
             @update:modelValue="update('to', $event)"
             variant="underlined"

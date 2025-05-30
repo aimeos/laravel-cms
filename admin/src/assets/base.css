@@ -132,6 +132,7 @@ body,
 }
 
 .list .v-expansion-panel-title .element-title {
+  margin-inline-start: 0.8rem;
   font-weight: bold;
   flex-grow: 1;
   max-height: 48px;

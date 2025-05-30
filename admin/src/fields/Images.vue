@@ -190,7 +190,7 @@
       </button>
     </div>
 
-    <div class="file-input">
+    <div v-if="!readonly" class="file-input">
       <div class="select-file" v-if="auth.can('file:view')" @click="vfiles = true">
         <label>
           <span class="btn">Select file</span>
@@ -201,7 +201,6 @@
           @input="add($event)"
           :accept="config.accept || 'image/*'"
           :id="'images-' + index"
-          :disabled="readonly"
           :value="selected"
           multiple
           hidden>

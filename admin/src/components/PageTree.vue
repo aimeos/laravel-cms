@@ -112,7 +112,7 @@
 
           const srcparent = dragContext.startInfo.parent
 
-          if(!srcparent?.children.length) {
+          if(srcparent?.data && !srcparent?.children.length) {
             srcparent.data.has = false
           }
 
@@ -843,7 +843,14 @@
           </v-menu>
         </div>
 
-        <Draggable v-model="pages" ref="tree" :defaultOpen="false" :watermark="false" :statHandler="init" virtualization @change="change()">
+        <Draggable v-model="pages" ref="tree"
+          :defaultOpen="false"
+          :disableDrag="!auth.can('page:move')"
+          :watermark="false"
+          :statHandler="init"
+          virtualization
+          @change="change()"
+        >
           <template #default="{ node, stat }">
             <svg v-if="stat.loading" class="spinner" width="24" height="24" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg"><circle class="spin1" cx="4" cy="12" r="3"/><circle class="spin1 spin2" cx="12" cy="12" r="3"/><circle class="spin1 spin3" cx="20" cy="12" r="3"/></svg>
             <v-icon v-else :class="{hidden: !node.has}" size="large" @click="load(stat, node)" :icon="stat.open ? 'mdi-menu-down' : 'mdi-menu-right'"></v-icon>
@@ -945,14 +952,15 @@
                 'status-disabled': !node.status,
                 'trashed': node.deleted_at
               }"
-              :title="title(node)">
+              :title="title(node)"
+            >
               <div class="item-text" @click="$emit('update:item', node)">
                 <v-icon v-if="node.publish_at" class="publish-at" icon="mdi-clock-outline"></v-icon>
                 <span class="item-lang" v-if="node.lang">{{ node.lang }}</span>
                 <span class="item-title">{{ node.name || 'New' }}</span>
                 <div v-if="node.title" class="item-subtitle">{{ node.title }}</div>
               </div>
-              <a class="item-aux" :href="url(node) + '?preview=true'" target="_blank">
+              <a class="item-aux" :href="url(node) + '?preview=true'" target="_blank" draggable="false">
                 <div class="item-domain">{{ node.domain }}</div>
                 <span class="item-slug item-subtitle">{{ url(node) }}</span>
                 <span v-if="node.to" class="item-to item-subtitle"> ➔ {{ node.to }}</span>
@@ -994,6 +1002,7 @@
     align-items: center;
     border-bottom: 1px solid rgb(var(--v-theme-primary));
     padding: 0.5rem 0;
+    user-select: none;
   }
 
   .tree-node-inner .spinner {

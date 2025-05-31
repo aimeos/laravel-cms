@@ -76,6 +76,30 @@ class Element extends Model
 
 
     /**
+     * Get the pages the element is referenced by.
+     *
+     * @return BelongsToMany Eloquent relationship to the pages
+     */
+    public function bypages() : BelongsToMany
+    {
+        return $this->belongsToMany( Page::class, 'cms_page_element' )
+            ->select('id', 'slug', 'name' );
+    }
+
+
+    /**
+     * Get the versions the element is referenced by.
+     *
+     * @return BelongsToMany Eloquent relationship to the versions referencing the element
+     */
+    public function byversions() : BelongsToMany
+    {
+        return $this->belongsToMany( Version::class, 'cms_version_element' )
+            ->select('id', 'versionable_id', 'versionable_type', 'published', 'publish_at' );
+    }
+
+
+    /**
      * Get the files referencedd by the element.
      *
      * @return BelongsToMany Eloquent relationship to the files
@@ -108,17 +132,6 @@ class Element extends Model
             ->where( 'versionable_type', Element::class )
             ->orderBy( 'id', 'desc' )
             ->take( 1 );
-    }
-
-
-    /**
-     * Get the pages the element is referenced by.
-     *
-     * @return BelongsToMany Eloquent relationship to the pages
-     */
-    public function pages() : BelongsToMany
-    {
-        return $this->belongsToMany( Page::class, 'cms_page_element' );
     }
 
 

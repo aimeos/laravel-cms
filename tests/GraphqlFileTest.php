@@ -54,9 +54,14 @@ class GraphqlFileTest extends TestAbstract
         $file = File::firstOrFail();
 
         $attr = collect($file->getAttributes())->except(['tenant_id'])->all();
-        $expected = ['id' => (string) $file->id] + $attr + ['byelements' => [], 'bypages' => [], 'byversions' => [['published' => true]]];
+        $expected = ['id' => (string) $file->id] + $attr + [
+            'byelements' => [],
+            'bypages' => [],
+            'byversions' => [['published' => true]],
+            'versions' => [['published' => false]]
+        ];
 
-        $this->expectsDatabaseQueryCount( 4 );
+        $this->expectsDatabaseQueryCount( 5 );
         $response = $this->actingAs( $this->user )->graphQL( "{
             file(id: \"{$file->id}\") {
                 id
@@ -77,6 +82,9 @@ class GraphqlFileTest extends TestAbstract
                     id
                 }
                 byversions {
+                    published
+                }
+                versions {
                     published
                 }
             }

@@ -57,7 +57,7 @@ class GraphqlElementTest extends TestAbstract
         $attr = collect($element->getAttributes())->except(['tenant_id'])->all();
         $expected = ['id' => (string) $element->id] + $attr;
 
-        $this->expectsDatabaseQueryCount( 1 );
+        $this->expectsDatabaseQueryCount( 4 );
         $response = $this->actingAs( $this->user )->graphQL( "{
             element(id: \"{$element->id}\") {
                 id
@@ -70,6 +70,15 @@ class GraphqlElementTest extends TestAbstract
                 created_at
                 updated_at
                 deleted_at
+                bypages {
+                    id
+                }
+                byversions {
+                    published
+                }
+                versions {
+                    published
+                }
             }
         }" )->assertJson( [
             'data' => [
@@ -187,7 +196,7 @@ class GraphqlElementTest extends TestAbstract
                     lang
                     data
                     editor
-                    pages {
+                    bypages {
                         id
                     }
                     latest {
@@ -204,7 +213,7 @@ class GraphqlElementTest extends TestAbstract
                     'lang' => 'en',
                     'data' => '{"key":"value"}',
                     'editor' => 'Test editor',
-                    'pages' => [],
+                    'bypages' => [],
                     'latest' => null
                 ],
             ]

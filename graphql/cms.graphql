@@ -365,11 +365,14 @@ type Element {
   "Date/time value when the content element was deleted or NULL if it's available"
   deleted_at: String
 
+  "List of pages using the file"
+  bypages: [Page!]! @belongsToMany
+
+  "List of versions using the file"
+  byversions: [Version!]! @belongsToMany
+
   "List of files assigned to the content element"
   files: [File!]! @belongsToMany
-
-  "Relation of all pages the content element belongs to"
-  pages: [Page!]! @belongsToMany
 
   "List of versioned data for the content element"
   versions: [Version!]! @morphMany

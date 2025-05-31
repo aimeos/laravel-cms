@@ -18,6 +18,14 @@ const router = createRouter({
       }
     },
     {
+      path: '/elements',
+      name: 'element:view',
+      component: () => import('./views/ElementsView.vue'),
+      meta: {
+        auth: true
+      }
+    },
+    {
       path: '/files',
       name: 'file:view',
       component: () => import('./views/FilesView.vue'),

@@ -1,0 +1,131 @@
+<script>
+  import Fields from './Fields.vue'
+  import { useAppStore, useAuthStore, useLanguageStore, useMessageStore, useSchemaStore, useSideStore } from '../stores'
+
+
+  export default {
+    components: {
+      Fields
+    },
+
+    props: {
+      'item': {type: Object, required: true},
+      'assets': {type: Object, default: () => {}},
+    },
+
+    emits: ['update:item', 'error'],
+
+    setup() {
+      const languages = useLanguageStore()
+      const messages = useMessageStore()
+      const schemas = useSchemaStore()
+      const side = useSideStore()
+      const auth = useAuthStore()
+      const app = useAppStore()
+
+      return { app, auth, languages, messages, schemas, side }
+    },
+
+    computed: {
+      langs() {
+        const list = [{code: null, name: 'None'}]
+
+        Object.entries(this.languages.available).forEach(pair => {
+          list.push({code: pair[0], name: pair[1]})
+        })
+
+        return list
+      },
+
+
+      readonly() {
+        return !this.auth.can('element:save')
+      }
+    },
+
+    methods: {
+      fields(type) {
+        if(!type) {
+          return []
+        }
+
+        if(!this.schemas.content[type]?.fields) {
+          console.warn(`No definition of fields for "${type}" schemas`)
+          return []
+        }
+
+        return this.schemas.content[type]?.fields
+      },
+
+
+      store(isVisible) {
+        if(!isVisible) {
+          return
+        }
+
+        this.side.store = {
+          meta: {
+            id: this.item.id,
+            type: this.item.type,
+            editor: this.item.editor,
+            created: this.item.created_at,
+            updated: this.item.updated_at
+          }
+        }
+      },
+
+      update(what, value) {
+        this.item[what] = value
+        this.$emit('update:item', this.item)
+      }
+    }
+  }
+</script>
+
+<template>
+  <v-container v-observe-visibility="store">
+    <v-sheet>
+      <v-row>
+        <v-col cols="12" md="6">
+          <v-text-field ref="name"
+            :readonly="readonly"
+            :modelValue="item.name"
+            @update:modelValue="update('name', $event)"
+            variant="underlined"
+            label="Name"
+            counter="255"
+            maxlength="255"
+          ></v-text-field>
+        </v-col>
+        <v-col cols="12" md="6">
+          <v-select ref="lang"
+            :items="langs"
+            :readonly="readonly"
+            :modelValue="item.lang"
+            @update:modelValue="update('lang', $event)"
+            variant="underlined"
+            item-title="name"
+            item-value="code"
+            label="Language"
+          ></v-select>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12">
+          <Fields ref="field"
+            v-model:data="item.data"
+            v-model:files="item.files"
+            :fields="fields(item.type)"
+            :readonly="readonly"
+            :assets="assets"
+            @error="$emit('error', $event)"
+            @change="$emit('update:item', item)"
+          />
+        </v-col>
+      </v-row>
+    </v-sheet>
+  </v-container>
+</template>
+
+<style scoped>
+</style>

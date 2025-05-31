@@ -25,6 +25,9 @@
       <v-list-item v-if="auth.can('page:view')" prepend-icon="mdi-file-tree">
         <router-link to="/pages" class="router-link">Pages</router-link>
       </v-list-item>
+      <v-list-item v-if="auth.can('element:view')" prepend-icon="mdi-share-variant">
+        <router-link to="/elements" class="router-link">Shared elements</router-link>
+      </v-list-item>
       <v-list-item v-if="auth.can('file:view')" prepend-icon="mdi-folder-multiple-image">
         <router-link to="/files" class="router-link">Files</router-link>
       </v-list-item>

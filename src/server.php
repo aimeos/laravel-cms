@@ -9,7 +9,7 @@ $uri = urldecode(
 // This file allows us to emulate Apache's "mod_rewrite" functionality from the
 // built-in PHP web server. This provides a convenient way to test a Laravel
 // application without having installed a "real" web server software here.
-if ($uri !== '/' && file_exists($publicPath.$uri)) {
+if (($path = realpath($publicPath.$uri)) && is_file($path) && str_starts_with($path, $publicPath)) {
     header('Access-Control-Allow-Origin: *');
     header("Content-type: ".mime_content_type($publicPath.$uri));
     readfile($publicPath.$uri);

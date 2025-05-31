@@ -158,6 +158,11 @@
 
 
       share(idx) {
+        if(!this.auth.can('element:add')) {
+          this.messages.add('Permission denied', 'error')
+          return
+        }
+
         const entry = this.list[idx]
 
         if(!entry) {
@@ -422,7 +427,7 @@
                   <v-list-item>
                     <v-btn prepend-icon="mdi-delete" variant="text" @click="remove(idx)">Delete</v-btn>
                   </v-list-item>
-                  <v-list-item v-if="el.type !== 'reference'">
+                  <v-list-item v-if="el.type !== 'reference' && auth.can('element:add')">
                     <v-btn prepend-icon="mdi-link" variant="text" @click="share(idx)">Make shared</v-btn>
                   </v-list-item>
                   <v-list-item v-if="el.type === 'reference'">

@@ -40,6 +40,11 @@
 
     methods: {
       publish(at = null) {
+        if(!this.auth.can('file:publish')) {
+          this.messages.add('Permission denied', 'error')
+          return
+        }
+
         this.save(true).then(valid => {
           if(!valid) {
             return
@@ -84,6 +89,11 @@
 
 
       save(quiet = false) {
+        if(!this.auth.can('file:save')) {
+          this.messages.add('Permission denied', 'error')
+          return Promise.resolve(false)
+        }
+
         if(!this.changed) {
           return Promise.resolve(true)
         }
@@ -131,6 +141,11 @@
 
 
       versions(id) {
+        if(!this.auth.can('file:view')) {
+          this.messages.add('Permission denied', 'error')
+          return Promise.resolve([])
+        }
+
         if(!id) {
           return Promise.resolve([])
         }

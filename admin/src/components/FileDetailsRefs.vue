@@ -25,7 +25,7 @@
       item: {
         immediate: true,
         handler(item) {
-          if(!item.id) {
+          if(!item.id || !this.auth.can('file:view')) {
             return
           }
 

@@ -64,6 +64,11 @@
 
     methods: {
       add() {
+        if(!this.auth.can('page:add')) {
+          this.messages.add('Permission denied', 'error')
+          return
+        }
+
         const node = this.create()
 
         this.$apollo.mutate({
@@ -90,6 +95,11 @@
 
 
       change() {
+        if(!this.auth.can('page:move')) {
+          this.messages.add('Permission denied', 'error')
+          return
+        }
+
         const parent = dragContext.targetInfo.parent
         const siblings = dragContext.targetInfo.siblings
         const ref = siblings[dragContext.targetInfo.indexBeforeDrop+1] || null
@@ -167,6 +177,11 @@
 
 
       drop(stat) {
+        if(!this.auth.can('page:drop')) {
+          this.messages.add('Permission denied', 'error')
+          return
+        }
+
         const list = stat ? [stat] : this.$refs.tree.statsFlat.filter(stat => {
           return stat.check && stat.data.id
         })
@@ -203,6 +218,11 @@
 
 
       fetch(parent = null, page = 1, limit = 100) {
+        if(!this.auth.can('page:view')) {
+          this.messages.add('Permission denied', 'error')
+          return Promise.resolve([])
+        }
+
         return this.$apollo.query({
           query: gql`query($filter: PageFilter, $limit: Int!, $page: Int!, $trashed: Trashed) {
             pages(filter: $filter, first: $limit, page: $page, trashed: $trashed) {
@@ -278,6 +298,11 @@
 
 
       insert(stat, idx = null) {
+        if(!this.auth.can('page:add')) {
+          this.messages.add('Permission denied', 'error')
+          return
+        }
+
         const siblings = this.$refs.tree.getSiblings(stat)
         const parent = idx !== null ? stat.parent : stat
         const pos = siblings.indexOf(stat)
@@ -325,6 +350,11 @@
 
 
       keep(stat) {
+        if(!this.auth.can('page:keep')) {
+          this.messages.add('Permission denied', 'error')
+          return
+        }
+
         const stats = stat ? [stat] : this.$refs.tree.statsFlat.filter(stat => {
           return stat.check && stat.data.id && stat.data.deleted_at
         })
@@ -380,6 +410,11 @@
 
 
       move(stat, idx = null) {
+        if(!this.auth.can('page:move')) {
+          this.messages.add('Permission denied', 'error')
+          return
+        }
+
         const siblings = this.$refs.tree.getSiblings(stat)
         const parent = idx !== null ? stat.parent : stat
         const pos = siblings.indexOf(stat)
@@ -425,6 +460,11 @@
 
 
       paste(stat, idx = null) {
+        if(!this.auth.can('page:add')) {
+          this.messages.add('Permission denied', 'error')
+          return
+        }
+
         const siblings = this.$refs.tree.getSiblings(stat)
         const parent = idx !== null ? stat.parent : stat
         const pos = siblings.indexOf(stat)
@@ -484,6 +524,11 @@
 
 
       publish(stat) {
+        if(!this.auth.can('page:publish')) {
+          this.messages.add('Permission denied', 'error')
+          return
+        }
+
         if(stat.published) {
           return
         }
@@ -512,6 +557,11 @@
 
 
       purge(stat) {
+        if(!this.auth.can('page:purge')) {
+          this.messages.add('Permission denied', 'error')
+          return
+        }
+
         const list = stat ? [stat] : this.$refs.tree.statsFlat.filter(stat => {
           return stat.check && stat.data.id
         })
@@ -557,6 +607,11 @@
 
 
       search(filter, page = 1, limit = 100) {
+        if(!this.auth.can('page:view')) {
+          this.messages.add('Permission denied', 'error')
+          return Promise.resolve([])
+        }
+
         return this.$apollo.query({
           query: gql`query($filter: PageFilter, $limit: Int!, $page: Int!, $trashed: Trashed) {
             pages(filter: $filter, first: $limit, page: $page, trashed: $trashed) {
@@ -604,6 +659,11 @@
 
 
       status(stat, val) {
+        if(!this.auth.can('page:save')) {
+          this.messages.add('Permission denied', 'error')
+          return
+        }
+
         const list = stat ? [stat] : this.$refs.tree.statsFlat.filter(stat => {
           return stat.check && stat.data.id
         })

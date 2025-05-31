@@ -42,6 +42,11 @@
 
     methods: {
       add(ev) {
+        if(!this.auth.can('file:add')) {
+          this.messages.add('Permission denied', 'error')
+          return
+        }
+
         const files = ev.target.files || ev.dataTransfer.files || []
 
         if(!files.length) {

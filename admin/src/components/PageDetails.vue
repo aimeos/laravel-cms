@@ -69,6 +69,11 @@
 
 
       publish(at = null) {
+        if(!this.auth.can('page:publish')) {
+          this.messages.add('Permission denied', 'error')
+          return
+        }
+
         this.save(true).then(valid => {
           if(!valid) {
             return
@@ -116,6 +121,11 @@
 
 
       save(quiet = false) {
+        if(!this.auth.can('page:save')) {
+          this.messages.add('Permission denied', 'error')
+          return Promise.resolve(false)
+        }
+
         if(!this.hasChanged) {
           return Promise.resolve(true)
         }
@@ -235,6 +245,11 @@
 
 
       versions(id) {
+        if(!this.auth.can('page:view')) {
+          this.messages.add('Permission denied', 'error')
+          return Promise.resolve([])
+        }
+
         if(!id) {
           return Promise.resolve([])
         }
@@ -272,6 +287,10 @@
 
     watch: {
       item() {
+        if(!this.item.id || !this.auth.can('page:view')) {
+          return
+        }
+
         this.$apollo.query({
           query: gql`query($id: ID!) {
             page(id: $id) {

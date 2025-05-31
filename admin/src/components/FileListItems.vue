@@ -55,6 +55,11 @@
 
     methods: {
       add(ev) {
+        if(!this.auth.can('file:add')) {
+          this.messages.add('Permission denied', 'error')
+          return
+        }
+
         const promises = []
         const files = ev.target.files || ev.dataTransfer.files || []
 
@@ -128,6 +133,11 @@
 
 
       drop(item) {
+        if(!this.auth.can('file:drop')) {
+          this.messages.add('Permission denied', 'error')
+          return
+        }
+
         let list = []
         const promises = []
 
@@ -176,6 +186,11 @@
 
 
       keep(item) {
+        if(!this.auth.can('file:keep')) {
+          this.messages.add('Permission denied', 'error')
+          return
+        }
+
         let list = []
         const promises = []
 
@@ -229,6 +244,11 @@
 
 
       publish(item) {
+        if(!this.auth.can('file:publish')) {
+          this.messages.add('Permission denied', 'error')
+          return
+        }
+
         if(item.published) {
           return
         }
@@ -257,6 +277,11 @@
 
 
       purge(item) {
+        if(!this.auth.can('file:purge')) {
+          this.messages.add('Permission denied', 'error')
+          return
+        }
+
         let list = []
         const promises = []
 
@@ -298,6 +323,11 @@
 
 
       search(filter, page = 1, limit = 100) {
+        if(!this.auth.can('file:view')) {
+          this.messages.add('Permission denied', 'error')
+          return Promise.resolve([])
+        }
+
         this.loading = true
 
         return this.$apollo.query({
@@ -371,6 +401,8 @@
           })
           this.checked = false
           this.loading = false
+
+          return this.items
         }).catch(error => {
           this.messages.add('Error fetching files', 'error')
           this.$log(`FileListItems::search(): Error fetching files`, filter, page, limit, error)

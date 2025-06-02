@@ -13,8 +13,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -27,7 +27,7 @@ class Element extends Model
 {
     use HasUuids;
     use SoftDeletes;
-    use MassPrunable;
+    use Prunable;
     use Tenancy;
 
 
@@ -195,5 +195,16 @@ class Element extends Model
     public function versions() : MorphMany
     {
         return $this->morphMany( Version::class, 'versionable' );
+    }
+
+
+    /**
+     * Prepare the model for pruning.
+     */
+    protected function pruning() : void
+    {
+        Version::where( 'versionable_id', $this->id )
+            ->where( 'versionable_type', Element::class )
+            ->delete();
     }
 }

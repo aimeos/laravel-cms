@@ -343,6 +343,17 @@ class Page extends Model
 
 
     /**
+     * Prepare the model for pruning.
+     */
+    protected function pruning() : void
+    {
+        Version::where( 'versionable_id', $this->id )
+            ->where( 'versionable_type', Page::class )
+            ->delete();
+    }
+
+
+    /**
      * Interact with the "slug" property.
      *
      * @return Attribute Eloquent attribute for the "slug" property

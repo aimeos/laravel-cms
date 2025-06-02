@@ -16,20 +16,14 @@
 
     mounted() {
       this.load().then(versions => {
-        this.list = versions.map(v => {
-          return {
-            ...v,
-            data: JSON.parse(v.data || '{}'),
-            contents: v.contents ? JSON.parse(v.contents) : null
-          }
-        }).reverse() // latest versions first
+        this.list = versions
       })
     },
 
     computed: {
       versions() {
         return this.list.filter(v => {
-          return this.isModified(v, this.current)
+          return this.isModified(v, this.current) || v.published || v.publish_at
         })
       }
     },
@@ -51,7 +45,6 @@
         }
 
         return (
-          v1.published || v1.publish_at ||
           diffJson(v1.data || {}, v2.data || {}).length !== 1 ||
           diffJson(v1.contents || {}, v2.contents || {}).length !== 1
         )

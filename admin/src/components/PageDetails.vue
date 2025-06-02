@@ -277,7 +277,13 @@
             throw result
           }
 
-          return result.data.page.versions || []
+          return (result.data.page.versions || []).map(v => {
+            return {
+              ...v,
+              data: JSON.parse(v.data || '{}'),
+              contents: v.contents ? JSON.parse(v.contents) : null
+            }
+          }).reverse() // latest versions first
         }).catch(error => {
           this.messages.add('Error fetching page versions', 'error')
           this.$log(`PageDetails::versions(): Error fetching page versions`, id, error)

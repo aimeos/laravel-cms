@@ -2,8 +2,8 @@
   import gql from 'graphql-tag'
   import Aside from './Aside.vue'
   import History from './History.vue'
-  import FileDetailsFile from './FileDetailsFile.vue'
   import FileDetailsRefs from './FileDetailsRefs.vue'
+  import FileDetailsFile from './FileDetailsFile.vue'
   import { useAuthStore, useMessageStore } from '../stores'
 
 
@@ -172,7 +172,12 @@
             throw result
           }
 
-          return result.data.file.versions || []
+          return (result.data.file.versions || []).map(v => {
+            return {
+              ...v,
+              data: JSON.parse(v.data || '{}'),
+            }
+          }).reverse() // latest versions first
         }).catch(error => {
           this.messages.add('Error fetching file versions', 'error')
           this.$log(`FileDetails::versions(): Error fetching file versions`, id, error)

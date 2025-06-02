@@ -175,7 +175,13 @@ console.log('ElementDetails::save(): Saving element', this.item)
             throw result
           }
 
-          return result.data.element.versions || []
+          return (result.data.element.versions || []).map(v => {
+            return {
+              ...v,
+              data: JSON.parse(v.data || '{}'),
+              files: v.files.map(file => file.id),
+            }
+          }).reverse() // latest versions first
         }).catch(error => {
           this.messages.add('Error fetching element versions', 'error')
           this.$log(`ElementDetails::versions(): Error fetching element versions`, id, error)

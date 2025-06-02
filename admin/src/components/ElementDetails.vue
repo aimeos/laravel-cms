@@ -98,11 +98,10 @@
         if(!this.changed) {
           return Promise.resolve(true)
         }
-console.log('ElementDetails::save(): Saving element', this.item)
 
         return this.$apollo.mutate({
-          mutation: gql`mutation ($id: ID!, $input: ElementInput!) {
-            saveElement(id: $id, input: $input) {
+          mutation: gql`mutation ($id: ID!, $input: ElementInput!, $files: [ID!]) {
+            saveElement(id: $id, input: $input, files: $files) {
               id
             }
           }`,
@@ -113,7 +112,10 @@ console.log('ElementDetails::save(): Saving element', this.item)
               name: this.item.name,
               lang: this.item.lang,
               data: JSON.stringify(this.item.data || {}),
-            }
+            },
+            files: this.item.files.filter((fileid, idx, self) => {
+              return self.indexOf(fileid) === idx
+            })
           }
         }).then(result => {
           if(result.errors) {
@@ -164,6 +166,9 @@ console.log('ElementDetails::save(): Saving element', this.item)
                 data
                 editor
                 created_at
+                files {
+                  id
+                }
               }
             }
           }`,
@@ -233,6 +238,7 @@ console.log('ElementDetails::save(): Saving element', this.item)
             throw result
           }
 
+          const files = []
           const element = result.data.element
 
           this.reset()
@@ -240,7 +246,10 @@ console.log('ElementDetails::save(): Saving element', this.item)
 
           for(const entry of (element.latest?.files || element.files || [])) {
             this.assets[entry.id] = {...entry, previews: JSON.parse(entry.previews || '{}')}
+            files.push(entry.id)
           }
+
+          this.item.files = files
         }).catch(error => {
           this.messages.add('Error fetching element', 'error')
           this.$log(`ElementDetails::watch(item): Error fetching element`, error)
@@ -322,6 +331,7 @@ console.log('ElementDetails::save(): Saving element', this.item)
         <v-window-item value="element">
           <ElementDetailsElement
             :item="item"
+            :assets="assets"
             @update:item="this.$emit('update:item', item); changed = true"
             @error="error = $event"
           />
@@ -349,6 +359,7 @@ console.log('ElementDetails::save(): Saving element', this.item)
             name: item.name,
             data: item.data,
           },
+          files: item.files,
         }"
         :load="() => versions(item.id)"
         @use="use($event)"

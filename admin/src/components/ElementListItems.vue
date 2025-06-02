@@ -1,8 +1,13 @@
 <script>
   import gql from 'graphql-tag'
+  import Elements from './Elements.vue'
   import { useAuthStore, useMessageStore } from '../stores'
 
   export default {
+    components: {
+      Elements
+    },
+
     emits: ['update:item'],
 
     data() {
@@ -13,6 +18,7 @@
         page: 1,
         last: 1,
         limit: 100,
+        vschemas: false,
         checked: false,
         loading: true,
         trash: false,
@@ -46,7 +52,7 @@
     },
 
     methods: {
-      add() {
+      add(type) {
         if(!this.auth.can('element:add')) {
           this.messages.add('Permission denied', 'error')
           return
@@ -68,8 +74,9 @@
           }`,
           variables: {
             input: {
-              type: 'text',
-              name: 'New Element',
+              type: type,
+              name: 'New shared element',
+              data: '{}',
             }
           }
         }).then(response => {
@@ -79,9 +86,13 @@
 
           const data = response.data?.addElement || {}
           data.data = JSON.parse(data.data) || {}
+          data.published = true
 
+          this.vschemas = false
+          this.items.unshift(data)
           this.invalidate()
-          return data
+
+          this.$emit('update:item', data)
         }).catch(error => {
           this.$log(`ElementListItems::add(): Error adding shared element`, error)
         })
@@ -308,7 +319,7 @@
 
         return this.$apollo.query({
           query: gql`
-            query($filter: ElementsFilter, $sort: [QueryElementsSortOrderByClause!], $limit: Int!, $page: Int!, $trashed: Trashed) {
+            query($filter: ElementFilter, $sort: [QueryElementsSortOrderByClause!], $limit: Int!, $page: Int!, $trashed: Trashed) {
               elements(filter: $filter, sort: $sort, first: $limit, page: $page, trashed: $trashed) {
                 data {
                   id
@@ -435,10 +446,10 @@
               <v-btn append-icon="mdi-menu-down" variant="outlined" v-bind="props">Actions</v-btn>
             </template>
             <v-list>
-              <v-list-item v-show="isChecked">
+              <v-list-item v-show="isChecked && auth.can('element:publish')">
                 <v-btn prepend-icon="mdi-publish" variant="text" @click="publishAll()">Publish</v-btn>
               </v-list-item>
-              <v-list-item>
+              <v-list-item v-if="auth.can('element:add')">
                 <v-btn prepend-icon="mdi-folder-plus" variant="text" @click="add()">Add element</v-btn>
               </v-list-item>
               <v-list-item v-show="trash !== false">
@@ -450,13 +461,13 @@
               <v-list-item v-show="trash !== true">
                 <v-btn prepend-icon="mdi-delete-circle" variant="text" @click="trashed(true)">Only trashed</v-btn>
               </v-list-item>
-              <v-list-item v-show="canTrash">
+              <v-list-item v-show="canTrash && auth.can('element:drop')">
                 <v-btn prepend-icon="mdi-delete" variant="text" @click="drop()">Trash</v-btn>
               </v-list-item>
-              <v-list-item v-show="isTrashed">
+              <v-list-item v-show="isTrashed && auth.can('element:keep')">
                 <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="keep()">Restore</v-btn>
               </v-list-item>
-              <v-list-item v-show="isChecked">
+              <v-list-item v-show="isChecked && auth.can('element:purge')">
                 <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge()">Purge</v-btn>
               </v-list-item>
             </v-list>
@@ -511,16 +522,16 @@
               <v-btn class="item-menu" icon="mdi-dots-vertical" variant="text" v-bind="props"></v-btn>
             </template>
             <v-list>
-              <v-list-item v-show="!item.deleted_at && !item.published">
+              <v-list-item v-show="!item.deleted_at && !item.published && this.auth.can('element:publish')">
                 <v-btn prepend-icon="mdi-publish" variant="text" @click="publish(item)">Publish</v-btn>
               </v-list-item>
-              <v-list-item v-if="!item.deleted_at">
+              <v-list-item v-if="!item.deleted_at && this.auth.can('element:drop')">
                 <v-btn prepend-icon="mdi-delete" variant="text" @click="drop(item)">Trash</v-btn>
               </v-list-item>
-              <v-list-item v-if="item.deleted_at">
+              <v-list-item v-if="item.deleted_at && this.auth.can('element:keep')">
                 <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="keep(item)">Restore</v-btn>
               </v-list-item>
-              <v-list-item>
+              <v-list-item v-if="this.auth.can('element:purge')">
                 <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge(item)">Purge</v-btn>
               </v-list-item>
             </v-list>
@@ -555,25 +566,35 @@
         :length="last"
       ></v-pagination>
 
-      <div class="btn-group">
-        <v-btn color="primary" icon="mdi-folder-plus" @click="add()"></v-btn>
+      <div v-if="this.auth.can('element:add')" class="btn-group">
+        <v-btn @click="vschemas = true"
+          icon="mdi-view-grid-plus"
+          color="primary"
+          elevation="0"
+        ></v-btn>
       </div>
     </v-sheet>
   </v-container>
+
+  <Teleport to="body">
+    <v-dialog v-model="vschemas" scrollable width="auto">
+      <Elements type="content" @add="add($event)" />
+    </v-dialog>
+  </Teleport>
 </template>
 
 <style scoped>
-  .items.list .v-list-item {
+  .items .v-list-item {
     border-bottom: 1px solid rgb(var(--v-theme-primary));
     padding: 0.5rem 0;
   }
 
-  .items.list .v-list-item > * {
+  .items .v-list-item > * {
     display: flex;
     align-items: center;
   }
 
-  .items.list .v-selection-control {
+  .items .v-selection-control {
     flex-grow: unset;
   }
 </style>

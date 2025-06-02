@@ -144,6 +144,16 @@
     },
 
     watch: {
+      assets: {
+        handler(assets) {
+          if(!this.file.path && this.modelValue && assets[this.modelValue.id]) {
+            this.file = assets[this.modelValue.id]
+          }
+          this.validate()
+        }
+      },
+
+
       modelValue: {
         immediate: true,
         handler(data) {

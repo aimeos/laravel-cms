@@ -18,6 +18,9 @@
           image.src = this.url(Object.values(data.previews)[0] || data.path)
         }).then(() => {
           return File.methods.handle.call(this, data, path)
+        }).catch(error => {
+          console.error(error)
+          return false
         })
       },
 

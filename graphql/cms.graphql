@@ -179,9 +179,6 @@ type Page {
   "Arbitrary header data"
   meta: JSON!
 
-  "Arbitrary page data"
-  data: JSON!
-
   "Arbitrary configuration settings"
   config: JSON!
 
@@ -320,9 +317,6 @@ input PageInput {
 
   "Arbitrary page header"
   meta: JSON
-
-  "Arbitrary page data"
-  data: JSON
 
   "Arbitrary configuration settings"
   config: JSON

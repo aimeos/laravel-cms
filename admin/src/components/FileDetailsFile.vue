@@ -1,5 +1,5 @@
 <script>
-  import { useAppStore, useLanguageStore, useMessageStore, useSideStore } from '../stores'
+  import { useAppStore, useAuthStore, useLanguageStore, useMessageStore, useSideStore } from '../stores'
 
 
   export default {
@@ -10,19 +10,25 @@
     emits: ['update:item', 'error'],
 
     setup() {
-      const languages = useLanguageStore()
-      const messages = useMessageStore()
+      const language = useLanguageStore()
+      const message = useMessageStore()
       const side = useSideStore()
+      const auth = useAuthStore()
       const app = useAppStore()
 
-      return { app, languages, messages, side }
+      return { app, auth, language, message, side }
     },
 
     computed: {
       langs() {
-        return Object.keys(this.languages.available || {}).concat(Object.keys(this.item.description || {})).filter((v, idx, self) => {
+        return Object.keys(this.language.available || {}).concat(Object.keys(this.item.description || {})).filter((v, idx, self) => {
           return self.indexOf(v) === idx
         })
+      },
+
+
+      readonly() {
+        return !this.auth.can('file:save')
       }
     },
 
@@ -65,6 +71,7 @@
       <v-row>
         <v-col cols="12" md="6">
           <v-text-field ref="name"
+            :readonly="readonly"
             :modelValue="item.name"
             @update:modelValue="update('name', $event)"
             variant="underlined"
@@ -75,6 +82,7 @@
         </v-col>
         <v-col cols="12" md="6">
           <v-text-field ref="tag"
+            :readonly="readonly"
             :modelValue="item.tag"
             @update:modelValue="update('tag', $event)"
             variant="underlined"
@@ -87,6 +95,7 @@
       <v-row>
         <v-col v-for="lang in langs" cols="12" class="desc">
           <v-textarea ref="description"
+            :readonly="readonly"
             :modelValue="item.description?.[lang] || ''"
             @update:modelValue="item.description[lang] = $event; $emit('update:item', item)"
             :placeholder="`Description in ${lang}`"

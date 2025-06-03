@@ -1,11 +1,15 @@
 <script>
   import gql from 'graphql-tag'
-  import Elements from './Elements.vue'
+  import SchemaItems from './SchemaItems.vue'
   import { useAuthStore, useMessageStore } from '../stores'
 
   export default {
     components: {
-      Elements
+      SchemaItems
+    },
+
+    props: {
+      'embed': {type: Boolean, default: false},
     },
 
     emits: ['update:item'],
@@ -52,8 +56,8 @@
     },
 
     methods: {
-      add(type) {
-        if(!this.auth.can('element:add')) {
+      add(item) {
+        if(this.embed || !this.auth.can('element:add')) {
           this.messages.add('Permission denied', 'error')
           return
         }
@@ -74,7 +78,7 @@
           }`,
           variables: {
             input: {
-              type: type,
+              type: item.type,
               name: 'New shared element',
               data: '{}',
             }
@@ -451,8 +455,8 @@
               <v-list-item v-show="isChecked && auth.can('element:publish')">
                 <v-btn prepend-icon="mdi-publish" variant="text" @click="publishAll()">Publish</v-btn>
               </v-list-item>
-              <v-list-item v-if="auth.can('element:add')">
-                <v-btn prepend-icon="mdi-folder-plus" variant="text" @click="add()">Add element</v-btn>
+              <v-list-item v-if="!this.embed && auth.can('element:add')">
+                <v-btn prepend-icon="mdi-folder-plus" variant="text" @click="vschemas = true">Add element</v-btn>
               </v-list-item>
               <v-list-item v-show="trash !== false">
                 <v-btn prepend-icon="mdi-delete-off" variant="text" @click="trashed(false)">Only non-trashed</v-btn>
@@ -568,7 +572,7 @@
         :length="last"
       ></v-pagination>
 
-      <div v-if="this.auth.can('element:add')" class="btn-group">
+      <div v-if="!this.embed && this.auth.can('element:add')" class="btn-group">
         <v-btn @click="vschemas = true"
           icon="mdi-view-grid-plus"
           color="primary"
@@ -580,7 +584,7 @@
 
   <Teleport to="body">
     <v-dialog v-model="vschemas" scrollable width="auto">
-      <Elements type="content" @add="add($event)" />
+      <SchemaItems type="content" @add="add($event)" />
     </v-dialog>
   </Teleport>
 </template>

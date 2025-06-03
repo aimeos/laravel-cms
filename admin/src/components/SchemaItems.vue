@@ -29,32 +29,36 @@
 
         return map
       }
+    },
+
+    methods: {
+      select(item) {
+        this.$emit('add', {id: contentid(), type: item.type, data: {}})
+      }
     }
   }
 </script>
 
 <template>
-  <v-container class="rounded-lg">
-    <v-tabs v-model="tab">
-      <v-tab v-for="(group, name) in groups" :key="name" :value="name">{{ name }}</v-tab>
-    </v-tabs>
+  <v-tabs v-model="tab">
+    <v-tab v-for="(group, name) in groups" :key="name" :value="name">{{ name }}</v-tab>
+  </v-tabs>
 
-    <v-tabs-window v-model="tab">
-      <v-tabs-window-item v-for="name in Object.keys(groups)" :key="name" :value="name">
+  <v-tabs-window v-model="tab">
+    <v-tabs-window-item v-for="name in Object.keys(groups)" :key="name" :value="name">
 
-        <v-card>
-          <v-btn v-for="item in groups[name]" :key="item.type" variant="text" stacked
-            @click="$emit('add', item.type)">
-            <template v-slot:prepend>
-              <span class="icon" v-html="item.icon"></span>
-            </template>
-            {{ item.type }}
-          </v-btn>
-        </v-card>
+      <v-card>
+        <v-btn v-for="item in groups[name]" :key="item.type" variant="text" stacked
+          @click="$emit('add', item)">
+          <template v-slot:prepend>
+            <span class="icon" v-html="item.icon"></span>
+          </template>
+          {{ item.type }}
+        </v-btn>
+      </v-card>
 
-      </v-tabs-window-item>
-    </v-tabs-window>
-  </v-container>
+    </v-tabs-window-item>
+  </v-tabs-window>
 </template>
 
 <style scoped>

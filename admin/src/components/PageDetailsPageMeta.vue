@@ -1,13 +1,13 @@
 <script>
   import Fields from './Fields.vue'
-  import Elements from './Elements.vue'
-  import { useAuthStore, useSchemaStore, useSideStore } from '../stores'
+  import SchemaItems from './SchemaItems.vue'
+  import { useAuthStore, useMessageStore, useSchemaStore, useSideStore } from '../stores'
   import { contentid } from '../utils'
 
   export default {
     components: {
-      Elements,
       Fields,
+      SchemaItems,
     },
 
     props: {
@@ -23,11 +23,12 @@
     }),
 
     setup() {
+      const message = useMessageStore()
       const schemas = useSchemaStore()
       const side = useSideStore()
       const auth = useAuthStore()
 
-      return { auth, side, schemas }
+      return { auth, message, side, schemas }
     },
 
     computed: {
@@ -42,12 +43,12 @@
           this.item.meta = {}
         }
 
-        if(this.item.meta[type]) {
-          alert('Element is already available')
+        if(this.item.meta[el.type]) {
+          this.message.add('Element is already available', 'error')
           return
         }
 
-        this.item.meta[type] = {cid: contentid(), type: type, data: {}}
+        this.item.meta[item.type] = {cid: contentid(), type: item.type, data: {}}
         this.panel.push(Object.keys(this.item.meta).length - 1)
         this.vschemas = false
       },
@@ -189,7 +190,7 @@
 
   <Teleport to="body">
     <v-dialog v-model="vschemas" scrollable width="auto">
-      <Elements type="meta" @add="add($event)" />
+      <SchemaItems type="meta" @add="add($event)" />
     </v-dialog>
   </Teleport>
 </template>

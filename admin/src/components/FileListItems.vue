@@ -5,6 +5,7 @@
   export default {
     props: {
       'grid': {type: Boolean, default: false},
+      'embed': {type: Boolean, default: false},
       'mime': {type: [String, null], default: null},
     },
 
@@ -55,7 +56,7 @@
 
     methods: {
       add(ev) {
-        if(!this.auth.can('file:add')) {
+        if(this.embed || !this.auth.can('file:add')) {
           this.messages.add('Permission denied', 'error')
           return
         }
@@ -484,7 +485,7 @@
               <v-list-item v-if="isChecked && auth.can('file:publish')">
                 <v-btn prepend-icon="mdi-publish" variant="text" @click="publishAll()">Publish</v-btn>
               </v-list-item>
-              <v-list-item v-if="auth.can('file:add')">
+              <v-list-item v-if="!this.embed && auth.can('file:add')">
                 <v-btn prepend-icon="mdi-folder-plus" variant="text" @click="$refs.upload.click()">Add files</v-btn>
               </v-list-item>
               <v-list-item v-if="trash !== false">
@@ -615,7 +616,7 @@
         :length="last"
       ></v-pagination>
 
-      <div v-if="auth.can('file:add')" class="btn-group">
+      <div v-if="!this.embed && auth.can('file:add')" class="btn-group">
         <input @change="add($event)"
           ref="upload"
           type="file"

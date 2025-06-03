@@ -1,17 +1,17 @@
 <script>
   import gql from 'graphql-tag'
+  import Schema from './Schema.vue'
   import Fields from './Fields.vue'
   import History from './History.vue'
-  import Elements from './Elements.vue'
   import { VueDraggable } from 'vue-draggable-plus'
   import { useAuthStore, useMessageStore, useSchemaStore, useSideStore } from '../stores'
   import { contentid } from '../utils'
 
   export default {
     components: {
+      Schema,
       Fields,
       History,
-      Elements,
       VueDraggable
     },
 
@@ -54,13 +54,18 @@
     },
 
     methods: {
-      add(type, idx) {
-        if(!this.schemas.content[type]) {
-          this.messages.add(`No schema definition for element "${type}"`, 'error')
-          return
+      add(item, idx) {
+        let entry = {
+          cid: contentid(),
+          group: this.section || 'main'
         }
 
-        const entry = {cid: contentid(), type: type, data: {}}
+        if(item.id) {
+          entry = Object.assign(entry, {type: 'reference', refid: item.id})
+          this.$emit('update:elements', Object.assign(this.elements, {[item.id]: item}))
+        } else {
+          entry = Object.assign(entry, {type: item.type, data: {}})
+        }
 
         if(idx !== null) {
           this.list.splice(idx, 0, entry)
@@ -480,8 +485,8 @@
 
 
   <Teleport to="body">
-    <v-dialog v-model="vschemas" scrollable width="auto">
-      <Elements type="content" @add="add($event, index)" />
+    <v-dialog v-model="vschemas" scrollable width="100%">
+      <Schema @add="add($event, index)" />
     </v-dialog>
   </Teleport>
 

@@ -1,6 +1,6 @@
 <script>
   import Fields from './Fields.vue'
-  import { useAppStore, useAuthStore, useLanguageStore, useMessageStore, useSchemaStore, useSideStore } from '../stores'
+  import { useAppStore, useAuthStore, useLanguageStore, useSchemaStore, useSideStore } from '../stores'
 
 
   export default {
@@ -17,13 +17,12 @@
 
     setup() {
       const languages = useLanguageStore()
-      const messages = useMessageStore()
       const schemas = useSchemaStore()
       const side = useSideStore()
       const auth = useAuthStore()
       const app = useAppStore()
 
-      return { app, auth, languages, messages, schemas, side }
+      return { app, auth, languages, schemas, side }
     },
 
     computed: {

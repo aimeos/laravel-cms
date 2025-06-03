@@ -23,12 +23,12 @@
     }),
 
     setup() {
-      const message = useMessageStore()
+      const messages = useMessageStore()
       const schemas = useSchemaStore()
       const side = useSideStore()
       const auth = useAuthStore()
 
-      return { auth, message, side, schemas }
+      return { auth, messages, schemas, side }
     },
 
     computed: {
@@ -44,7 +44,7 @@
         }
 
         if(this.item.config[item.type]) {
-          this.message.add('Element is already available', 'error')
+          this.messages.add('Element is already available', 'error')
           return
         }
 

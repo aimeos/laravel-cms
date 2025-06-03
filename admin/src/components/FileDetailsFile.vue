@@ -1,5 +1,5 @@
 <script>
-  import { useAppStore, useAuthStore, useLanguageStore, useMessageStore, useSideStore } from '../stores'
+  import { useAppStore, useAuthStore, useLanguageStore, useSideStore } from '../stores'
 
 
   export default {
@@ -10,18 +10,17 @@
     emits: ['update:item', 'error'],
 
     setup() {
-      const language = useLanguageStore()
-      const message = useMessageStore()
+      const languages = useLanguageStore()
       const side = useSideStore()
       const auth = useAuthStore()
       const app = useAppStore()
 
-      return { app, auth, language, message, side }
+      return { app, auth, languages, side }
     },
 
     computed: {
       langs() {
-        return Object.keys(this.language.available || {}).concat(Object.keys(this.item.description || {})).filter((v, idx, self) => {
+        return Object.keys(this.languages.available || {}).concat(Object.keys(this.item.description || {})).filter((v, idx, self) => {
           return self.indexOf(v) === idx
         })
       },

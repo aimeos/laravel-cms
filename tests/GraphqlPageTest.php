@@ -778,7 +778,7 @@ class GraphqlPageTest extends TestAbstract
         $this->expectsDatabaseQueryCount( 6 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
-                dropPage(id: "' . $root->id . '") {
+                dropPage(id: ["' . $root->id . '"]) {
                     id
                     editor
                     deleted_at
@@ -790,11 +790,11 @@ class GraphqlPageTest extends TestAbstract
 
         $response->assertJson( [
             'data' => [
-                'dropPage' => [
+                'dropPage' => [[
                     'id' => (string) $root->id,
                     'editor' => 'Test editor',
                     'deleted_at' => (string) $page->deleted_at,
-                ],
+                ]],
             ]
         ] );
 
@@ -814,7 +814,7 @@ class GraphqlPageTest extends TestAbstract
         $this->expectsDatabaseQueryCount( 5 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
-                keepPage(id: "' . $root->id . '") {
+                keepPage(id: ["' . $root->id . '"]) {
                     id
                     editor
                     deleted_at
@@ -826,11 +826,11 @@ class GraphqlPageTest extends TestAbstract
 
         $response->assertJson( [
             'data' => [
-                'keepPage' => [
+                'keepPage' => [[
                     'id' => (string) $root->id,
                     'editor' => 'Test editor',
                     'deleted_at' => null,
-                ],
+                ]],
             ]
         ] );
 
@@ -849,7 +849,7 @@ class GraphqlPageTest extends TestAbstract
         $this->expectsDatabaseQueryCount( 9 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
-                pubPage(id: "' . $page->id . '") {
+                pubPage(id: ["' . $page->id . '"]) {
                     id
                 }
             }
@@ -859,9 +859,9 @@ class GraphqlPageTest extends TestAbstract
 
         $response->assertJson( [
             'data' => [
-                'pubPage' => [
+                'pubPage' => [[
                     'id' => (string) $page->id
-                ],
+                ]],
             ]
         ] );
     }
@@ -876,7 +876,7 @@ class GraphqlPageTest extends TestAbstract
         $this->expectsDatabaseQueryCount( 4 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
-                pubPage(id: "' . $page->id . '", at: "2025-01-01 00:00:00") {
+                pubPage(id: ["' . $page->id . '"], at: "2025-01-01 00:00:00") {
                     id
                 }
             }
@@ -886,9 +886,9 @@ class GraphqlPageTest extends TestAbstract
 
         $response->assertJson( [
             'data' => [
-                'pubPage' => [
+                'pubPage' => [[
                     'id' => (string) $page->id
-                ],
+                ]],
             ]
         ] );
     }
@@ -903,7 +903,7 @@ class GraphqlPageTest extends TestAbstract
         $this->expectsDatabaseQueryCount( 6 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
-                purgePage(id: "' . $root->id . '") {
+                purgePage(id: ["' . $root->id . '"]) {
                     id
                 }
             }

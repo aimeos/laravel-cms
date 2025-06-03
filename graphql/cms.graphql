@@ -76,19 +76,19 @@ extend type Mutation {
     @canModel(ability: "save", model: "\\Aimeos\\Cms\\Models\\Page")
 
   "Delete an existing page"
-  dropPage(id: ID!): Page
+  dropPage(id: [ID!]!): [Page]!
     @canModel(ability: "drop", model: "\\Aimeos\\Cms\\Models\\Page")
 
   "Restore an existing page"
-  keepPage(id: ID!): Page
+  keepPage(id: [ID!]!): [Page]!
     @canModel(ability: "keep", model: "\\Aimeos\\Cms\\Models\\Page")
 
   "Purge an existing page"
-  purgePage(id: ID!): Page
+  purgePage(id: [ID!]!): [Page]!
     @canModel(ability: "purge", model: "\\Aimeos\\Cms\\Models\\Page")
 
   "Publish page data"
-  pubPage(id: ID!, at: DateTime): Page
+  pubPage(id: [ID!]!, at: DateTime): [Page]!
     @canModel(ability: "publish", model: "\\Aimeos\\Cms\\Models\\Page")
 
 

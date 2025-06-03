@@ -12,12 +12,17 @@ final class KeepPage
      * @param  null  $rootValue
      * @param  array  $args
      */
-    public function __invoke( $rootValue, array $args ) : Page
+    public function __invoke( $rootValue, array $args ) : array
     {
-        $page = Page::withTrashed()->findOrFail( $args['id'] );
-        $page->editor = Auth::user()?->name ?? request()->ip();
-        $page->restore();
+        $items = Page::withTrashed()->whereIn( 'id', $args['id'] )->get();
+        $editor = Auth::user()?->name ?? request()->ip();
 
-        return $page;
+        foreach( $items as $item )
+        {
+            $item->editor = $editor;
+            $item->restore();
+        }
+
+        return $items->all();
     }
 }

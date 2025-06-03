@@ -80,13 +80,13 @@
           }
 
           this.$apollo.mutate({
-            mutation: gql`mutation ($id: ID!, $at: DateTime) {
+            mutation: gql`mutation ($id: [ID!]!, $at: DateTime) {
               pubPage(id: $id, at: $at) {
                 id
               }
             }`,
             variables: {
-              id: this.item.id,
+              id: [this.item.id],
               at: at?.toISOString()?.substring(0, 19)?.replace('T', ' ')
             }
           }).then(response => {

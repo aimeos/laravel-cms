@@ -184,37 +184,37 @@
           return
         }
 
-        const list = stat ? [stat] : this.$refs.tree.statsFlat.filter(stat => {
-          return stat.check && stat.data.id
-        })
+        const list = (stat ? [stat] : this.$refs.tree.statsFlat.filter(stat => {
+          return stat.check && stat.data?.id
+        }))
 
-        list.forEach(stat => {
-          this.$apollo.mutate({
-            mutation: gql`mutation ($id: ID!) {
-              dropPage(id: $id) {
-                id
-              }
-            }`,
-            variables: {
-              id: stat.data.id
-            }
-          }).then(result => {
-            if(result.errors) {
-              throw result.errors
-            }
+        if(!list.length) {
+          return
+        }
 
-            this.update(stat, (stat) => {
-              stat.data.deleted_at = (new Date).toISOString().replace(/T/, ' ').substring(0, 19)
-              stat.check = false
+        this.$apollo.mutate({
+          mutation: gql`mutation ($id: [ID!]!) {
+            dropPage(id: $id) {
+              id
+            }
+          }`,
+          variables: {
+            id: list.map(item => item.data.id)
+          }
+        }).then(result => {
+          if(result.errors) {
+            throw result.errors
+          }
+
+          for(const item of list) {
+            this.update(item, (item) => {
+              item.data.deleted_at = (new Date).toISOString().replace(/T/, ' ').substring(0, 19)
+              item.check = false
             })
-
-            if(stat.parent && !stat.parent.children?.length) {
-              stat.parent.data.has = false
-            }
-          }).catch(error => {
-            this.messages.add('Error trashing page', 'error')
-            this.$log(`PageTree::drop(): Error trashing page`, stat, error)
-          })
+          }
+        }).catch(error => {
+          this.messages.add('Error trashing page', 'error')
+          this.$log(`PageTree::drop(): Error trashing page`, list, error)
         })
       },
 
@@ -363,34 +363,37 @@
         const list = stats.filter(stat => {
           return stats.indexOf(stat.parent) === -1
         })
+        const deleted_at = stat.data.deleted_at || null
 
-        list.forEach(stat => {
-          this.$apollo.mutate({
-            mutation: gql`mutation ($id: ID!) {
-              keepPage(id: $id) {
-                id
-              }
-            }`,
-            variables: {
-              id: stat.data.id
+        if(!list.length) {
+          return
+        }
+
+        this.$apollo.mutate({
+          mutation: gql`mutation ($id: [ID!]!) {
+            keepPage(id: $id) {
+              id
             }
-          }).then(result => {
-            if(result.errors) {
-              throw result.errors
-            }
+          }`,
+          variables: {
+            id: list.map(item => item.data.id)
+          }
+        }).then(result => {
+          if(result.errors) {
+            throw result.errors
+          }
 
-            const deleted_at = stat.data.deleted_at
-
-            this.update(stat, (stat) => {
-              if(deleted_at >= stat.data.deleted_at) {
-                stat.data.deleted_at = null
-                stat.check = false
+          for(const item of list) {
+            this.update(item, (item) => {
+              if(deleted_at >= item.data.deleted_at) {
+                item.data.deleted_at = null
+                item.check = false
               }
             })
-          }).catch(error => {
-            this.messages.add('Error restoring page', 'error')
-            this.$log(`PageTree::keep(): Error restoring page`, stat, error)
-          })
+          }
+        }).catch(error => {
+          this.messages.add('Error restoring page', 'error')
+          this.$log(`PageTree::keep(): Error restoring page`, list, error)
         })
       },
 
@@ -514,47 +517,42 @@
       },
 
 
-      publishAll() {
-        const list = this.$refs.tree.statsFlat.filter(stat => {
-          return stat.check && stat.data.id && !stat.data.published
-        })
-
-        list.reverse().forEach(stat => {
-          this.publish(stat)
-        })
-      },
-
-
       publish(stat) {
         if(!this.auth.can('page:publish')) {
           this.messages.add('Permission denied', 'error')
           return
         }
 
-        if(stat.published) {
+        const list = stat ? [stat] : this.$refs.tree.statsFlat.filter(stat => {
+          return stat.check && stat.data.id && !stat.data.published
+        })
+
+        if(!list.length) {
           return
         }
 
         this.$apollo.mutate({
-            mutation: gql`mutation ($id: ID!) {
-              pubPage(id: $id) {
-                id
-              }
-            }`,
-            variables: {
-              id: stat.data.id
+          mutation: gql`mutation ($id: [ID!]!) {
+            pubPage(id: $id) {
+              id
             }
-          }).then(result => {
-            if(result.errors) {
-              throw result.errors
-            }
+          }`,
+          variables: {
+            id: list.map(item => item.data.id)
+          }
+        }).then(result => {
+          if(result.errors) {
+            throw result.errors
+          }
 
-            stat.data.published = true
-            stat.check = false
-          }).catch(error => {
-            this.messages.add('Error publishing page', 'error')
-            this.$log(`PageTree::publish(): Error publishing page`, stat, error)
-          })
+          for(const item of list) {
+            item.data.published = true
+            item.check = false
+          }
+        }).catch(error => {
+          this.messages.add('Error publishing page', 'error')
+          this.$log(`PageTree::publish(): Error publishing page`, list, error)
+        })
       },
 
 
@@ -568,30 +566,34 @@
           return stat.check && stat.data.id
         })
 
-        list.reverse().forEach(stat => {
-          this.$apollo.mutate({
-            mutation: gql`mutation ($id: ID!) {
-              purgePage(id: $id) {
-                id
-              }
-            }`,
-            variables: {
-              id: stat.data.id
-            }
-          }).then(result => {
-            if(result.errors) {
-              throw result.errors
-            }
+        if(!list.length) {
+          return
+        }
 
-            this.$refs.tree.remove(stat)
-
-            if(stat.parent && !stat.parent.children?.length) {
-              stat.parent.data.has = false
+        this.$apollo.mutate({
+          mutation: gql`mutation ($id: [ID!]!) {
+            purgePage(id: $id) {
+              id
             }
-          }).catch(error => {
-            this.messages.add('Error purging page', 'error')
-            this.$log(`PageTree::purge(): Error purging page`, error)
-          })
+          }`,
+          variables: {
+            id: list.map(item => item.data.id).reverse()
+          }
+        }).then(result => {
+          if(result.errors) {
+            throw result.errors
+          }
+
+          for(const item of list) {
+            this.$refs.tree.remove(item)
+
+            if(item.parent && !item.parent.children?.length) {
+              item.parent.data.has = false
+            }
+          }
+        }).catch(error => {
+          this.messages.add('Error purging page', 'error')
+          this.$log(`PageTree::purge(): Error purging page`, list, error)
         })
       },
 
@@ -847,7 +849,7 @@
               </template>
               <v-list>
                 <v-list-item v-if="isChecked && auth.can('page:publish')">
-                  <v-btn prepend-icon="mdi-publish" variant="text" @click="publishAll()">Publish</v-btn>
+                  <v-btn prepend-icon="mdi-publish" variant="text" @click="publish()">Publish</v-btn>
                 </v-list-item>
                 <v-list-item v-if="isChecked && auth.can('page:save')">
                   <v-btn prepend-icon="mdi-eye" variant="text" @click="status(null, 1)">Enable</v-btn>

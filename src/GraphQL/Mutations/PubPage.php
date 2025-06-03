@@ -3,6 +3,7 @@
 namespace Aimeos\Cms\GraphQL\Mutations;
 
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Auth;
 use Aimeos\Cms\Models\Page;
 
 
@@ -12,23 +13,28 @@ final class PubPage
      * @param  null  $rootValue
      * @param  array  $args
      */
-    public function __invoke( $rootValue, array $args ) : Page
+    public function __invoke( $rootValue, array $args ) : array
     {
-        $page = Page::findOrFail( $args['id'] );
+        $items = Page::withTrashed()->whereIn( 'id', $args['id'] )->get();
+        $editor = Auth::user()?->name ?? request()->ip();
 
-        if( $latest = $page->latest )
+        foreach( $items as $item )
         {
-            if( $args['at'] ?? null )
+            if( $latest = $item->latest )
             {
-                $latest->publish_at = $args['at'];
-                $latest->save();
-                return $page;
-            }
+                if( $args['at'] ?? null )
+                {
+                    $latest->publish_at = $args['at'];
+                    $latest->editor = $editor;
+                    $latest->save();
+                    continue;
+                }
 
-            $page->publish( $latest );
-            Cache::forget( Page::key( $page ) );
+                $item->publish( $latest );
+                Cache::forget( Page::key( $item ) );
+            }
         }
 
-        return $page;
+        return $items->all();
     }
 }

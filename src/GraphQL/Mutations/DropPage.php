@@ -13,14 +13,19 @@ final class DropPage
      * @param  null  $rootValue
      * @param  array  $args
      */
-    public function __invoke( $rootValue, array $args ) : Page
+    public function __invoke( $rootValue, array $args ) : array
     {
-        $page = Page::withTrashed()->findOrFail( $args['id'] );
-        $page->editor = Auth::user()?->name ?? request()->ip();
-        $page->delete();
+        $items = Page::withTrashed()->whereIn( 'id', $args['id'] )->get();
+        $editor = Auth::user()?->name ?? request()->ip();
 
-        Cache::forget( Page::key( $page ) );
+        foreach( $items as $item )
+        {
+            $item->editor = $editor;
+            $item->delete();
 
-        return $page;
+            Cache::forget( Page::key( $item ) );
+        }
+
+        return $items->all();
     }
 }

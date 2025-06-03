@@ -86,6 +86,8 @@
           }
 
           node.id = result.data.addPage.id
+          node.data.published = true
+
           this.$refs.tree.add(node)
         }).catch(error => {
           this.messages.add('Error adding root page', 'error')

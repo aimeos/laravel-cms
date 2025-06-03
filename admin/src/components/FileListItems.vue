@@ -98,6 +98,7 @@
             const data = response.data?.addFile || {}
             data.previews = JSON.parse(data.previews) || {}
             data.description = JSON.parse(data.description) || {}
+            data.published = true
 
             this.items.unshift(data)
             return data
@@ -106,7 +107,7 @@
           }))
         })
 
-        Promise.all(promises).then(() => {
+        return Promise.all(promises).then(() => {
           this.invalidate()
         })
       },

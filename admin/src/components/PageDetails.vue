@@ -293,7 +293,7 @@
 
     watch: {
       item() {
-        if(!this.item.id || !this.auth.can('page:view')) {
+        if(!this.item?.id || !this.auth.can('page:view')) {
           return
         }
 

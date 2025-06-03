@@ -11,9 +11,9 @@
     emits: [],
 
     data: () => ({
-      file: {},
       panel: [0, 1, 2],
-      versions: {}
+      versions: {},
+      file: {}
     }),
 
     setup() {

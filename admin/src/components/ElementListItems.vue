@@ -58,7 +58,7 @@
           return
         }
 
-        this.$apollo.mutate({
+        return this.$apollo.mutate({
           mutation: gql`mutation($input: ElementInput!) {
             addElement(input: $input) {
               id
@@ -90,9 +90,11 @@
 
           this.vschemas = false
           this.items.unshift(data)
-          this.invalidate()
 
           this.$emit('update:item', data)
+          this.invalidate()
+
+          return data
         }).catch(error => {
           this.$log(`ElementListItems::add(): Error adding shared element`, error)
         })

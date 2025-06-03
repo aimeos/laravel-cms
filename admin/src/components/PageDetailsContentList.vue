@@ -29,7 +29,6 @@
       list: [],
       panel: [],
       menu: {},
-      side: {},
       clip: null,
       index: null,
       history: null,
@@ -72,6 +71,7 @@
         }
 
         this.vschemas = false
+        this.store()
       },
 
 
@@ -97,6 +97,7 @@
       cut(idx) {
         this.clip = {type: 'cut', index: idx, content: this.list[idx]}
         this.list.splice(idx, 1)
+        this.store()
       },
 
 
@@ -126,12 +127,15 @@
       paste(idx) {
         this.list.splice(idx, 0, this.clip.content)
         this.clip = null
+        this.store()
       },
 
 
       purge() {
         for(let i = this.list.length - 1; i >= 0; i--) {
-          this.list[i]._checked ? this.remove(i) : null
+          if(this.list[i]._checked) {
+            this.remove(i)
+          }
         }
         this.checked = false
       },
@@ -139,6 +143,9 @@
 
       remove(idx) {
         this.list.splice(idx, 1)
+        this.$emit('update:contents', this.list)
+        this.$emit('error', this.list.some(el => el._error))
+        this.store()
       },
 
 
@@ -213,7 +220,8 @@
           element.files = element.files.map(file => file.id)
 
           this.$emit('update:elements', Object.assign(this.elements, {[element.id]: element}))
-          this.list[idx] = {type: 'reference', refid: element.id}
+          this.list[idx] = {cid: contentid(), group: this.section || 'main', type: 'reference', refid: element.id}
+          this.store()
         }).catch(error => {
           this.messages.add('Unable to make element shared', 'error')
           this.$log(`PageDetailsContentList::share(): Error making element shared`, idx, error)
@@ -295,6 +303,7 @@
         }
 
         this.list[idx] = this.elements[entry.refid].data || {}
+        this.store()
       },
 
 
@@ -310,9 +319,11 @@
 
 
       use(data, idx, changed = true) {
-        this.list[idx].data = data
         this.list[idx]._changed = changed
+        this.list[idx].data = data
+
         this.history = null
+        this.store()
       },
 
 
@@ -347,15 +358,7 @@
 
 
       list: {
-        handler(list, old) {
-          const a = (old || [])
-          const b = (list || [])
-
-          if(a.length === b.length && a.every((el, idx) => el === b[idx])) {
-            return
-          }
-
-          // after drag and drop
+        handler(list) {
           this.$emit('update:contents', list)
         }
       }
@@ -406,28 +409,28 @@
                   <v-btn icon="mdi-dots-vertical" variant="text" v-bind="props"></v-btn>
                 </template>
                 <v-list>
-                  <v-list-item>
+                  <v-list-item v-if="!el._error">
                     <v-btn prepend-icon="mdi-content-copy" variant="text" @click="copy(idx)">Copy</v-btn>
                   </v-list-item>
-                  <v-list-item>
+                  <v-list-item v-if="!el._error">
                     <v-btn prepend-icon="mdi-content-cut" variant="text" @click="cut(idx)">Cut</v-btn>
                   </v-list-item>
-                  <v-list-item>
+                  <v-list-item v-if="!el._error">
                     <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(idx)">Insert before</v-btn>
                   </v-list-item>
-                  <v-list-item>
+                  <v-list-item v-if="!el._error">
                     <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(idx + 1)">Insert after</v-btn>
                   </v-list-item>
-                  <v-list-item v-if="clip">
+                  <v-list-item v-if="!el._error && clip">
                     <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(idx)">Paste before</v-btn>
                   </v-list-item>
-                  <v-list-item v-if="clip">
+                  <v-list-item v-if="!el._error && clip">
                     <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(idx + 1)">Paste after</v-btn>
                   </v-list-item>
                   <v-list-item>
                     <v-btn prepend-icon="mdi-delete" variant="text" @click="remove(idx)">Delete</v-btn>
                   </v-list-item>
-                  <v-list-item v-if="el.type !== 'reference' && auth.can('element:add')">
+                  <v-list-item v-if="!el._error && el.type !== 'reference' && auth.can('element:add')">
                     <v-btn prepend-icon="mdi-link" variant="text" @click="share(idx)">Make shared</v-btn>
                   </v-list-item>
                   <v-list-item v-if="el.type === 'reference'">
@@ -444,7 +447,7 @@
             <v-expansion-panel-text>
 
               <Fields v-if="el.type === 'reference'"
-                :data="elements[el.refid]?.data?.data || {}"
+                :data="elements[el.refid]?.data || {}"
                 :fields="fields(elements[el.refid]?.type)"
                 :assets="assets"
                 :readonly="true"
@@ -465,9 +468,8 @@
         </VueDraggable>
       </v-expansion-panels>
 
-      <div class="btn-group">
-        <v-btn v-if="auth.can('page:save')"
-          @click="vschemas = true"
+      <div v-if="auth.can('page:save')" class="btn-group">
+        <v-btn @click="vschemas = true"
           icon="mdi-view-grid-plus"
           color="primary"
           elevation="0"

@@ -1,11 +1,11 @@
 <script>
-  import PageTree from '../components/PageTree.vue'
+  import PageList from '../components/PageList.vue'
   import PageDetails from '../components/PageDetails.vue'
   import { useMessageStore } from '../stores'
 
   export default {
     components: {
-      PageTree,
+      PageList,
       PageDetails
     },
 
@@ -25,10 +25,9 @@
 <template>
     <transition-group name="slide">
       <v-layout class="page-tree" key="tree">
-        <PageTree
+        <PageList
           v-model:nav="nav"
-          v-model:item="item"
-          @update:item="details = true"
+          @update:item="item = $event; details = true"
         />
       </v-layout>
       <v-layout class="page-details" key="details" v-show="details">

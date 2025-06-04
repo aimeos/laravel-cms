@@ -2,6 +2,7 @@
 
 namespace Aimeos\Cms\GraphQL\Mutations;
 
+use Illuminate\Support\Facades\Auth;
 use Aimeos\Cms\Models\Element;
 
 
@@ -11,22 +12,27 @@ final class PubElement
      * @param  null  $rootValue
      * @param  array  $args
      */
-    public function __invoke( $rootValue, array $args ) : Element
+    public function __invoke( $rootValue, array $args ) : array
     {
-        $element = Element::findOrFail( $args['id'] );
+        $items = Element::withTrashed()->whereIn( 'id', $args['id'] )->get();
+        $editor = Auth::user()?->name ?? request()->ip();
 
-        if( $latest = $element->latest )
+        foreach( $items as $item )
         {
-            if( $args['at'] ?? null )
+            if( $latest = $item->latest )
             {
-                $latest->publish_at = $args['at'];
-                $latest->save();
-                return $element;
-            }
+                if( $args['at'] ?? null )
+                {
+                    $latest->publish_at = $args['at'];
+                    $latest->editor = $editor;
+                    $latest->save();
+                    continue;
+                }
 
-            $element->publish( $latest );
+                $item->publish( $latest );
+            }
         }
 
-        return $element;
+        return $items->all();
     }
 }

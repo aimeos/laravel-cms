@@ -101,19 +101,19 @@ extend type Mutation {
     @canModel(ability: "save", model: "\\Aimeos\\Cms\\Models\\Element")
 
   "Delete an existing shared content element"
-  dropElement(id: ID!): Element
+  dropElement(id: [ID!]!): [Element]!
     @canModel(ability: "drop", model: "\\Aimeos\\Cms\\Models\\Element")
 
   "Restore an existing shared content element"
-  keepElement(id: ID!): Element
+  keepElement(id: [ID!]!): [Element]!
     @canModel(ability: "keep", model: "\\Aimeos\\Cms\\Models\\Element")
 
   "Purge an existing shared content element"
-  purgeElement(id: ID!): Element
+  purgeElement(id: [ID!]!): [Element]!
     @canModel(ability: "purge", model: "\\Aimeos\\Cms\\Models\\Element")
 
   "Publish an existing shared content element"
-  pubElement(id: ID!, at: DateTime): Element
+  pubElement(id: [ID!]!, at: DateTime): [Element]!
     @canModel(ability: "publish", model: "\\Aimeos\\Cms\\Models\\Element")
 
 

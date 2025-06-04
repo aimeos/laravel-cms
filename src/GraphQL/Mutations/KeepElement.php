@@ -12,12 +12,17 @@ final class KeepElement
      * @param  null  $rootValue
      * @param  array  $args
      */
-    public function __invoke( $rootValue, array $args ) : Element
+    public function __invoke( $rootValue, array $args ) : array
     {
-        $element = Element::withTrashed()->findOrFail( $args['id'] );
-        $element->editor = Auth::user()?->name ?? request()->ip();
-        $element->restore();
+        $items = Element::withTrashed()->whereIn( 'id', $args['id'] )->get();
+        $editor = Auth::user()?->name ?? request()->ip();
 
-        return $element;
+        foreach( $items as $item )
+        {
+            $item->editor = $editor;
+            $item->restore();
+        }
+
+        return $items->all();
     }
 }

@@ -286,7 +286,7 @@ class GraphqlElementTest extends TestAbstract
         $this->expectsDatabaseQueryCount( 3 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
-                dropElement(id: "' . $element->id . '") {
+                dropElement(id: ["' . $element->id . '"]) {
                     id
                     deleted_at
                 }
@@ -297,10 +297,10 @@ class GraphqlElementTest extends TestAbstract
 
         $response->assertJson( [
             'data' => [
-                'dropElement' => [
+                'dropElement' => [[
                     'id' => $element->id,
                     'deleted_at' => $element->deleted_at,
-                ],
+                ]],
             ]
         ] );
     }
@@ -316,7 +316,7 @@ class GraphqlElementTest extends TestAbstract
         $this->expectsDatabaseQueryCount( 3 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
-                keepElement(id: "' . $element->id . '") {
+                keepElement(id: ["' . $element->id . '"]) {
                     id
                     deleted_at
                 }
@@ -327,10 +327,10 @@ class GraphqlElementTest extends TestAbstract
 
         $response->assertJson( [
             'data' => [
-                'keepElement' => [
+                'keepElement' => [[
                     'id' => $element->id,
                     'deleted_at' => null,
-                ],
+                ]],
             ]
         ] );
     }
@@ -345,7 +345,7 @@ class GraphqlElementTest extends TestAbstract
         $this->expectsDatabaseQueryCount( 7 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
-                pubElement(id: "' . $element->id . '") {
+                pubElement(id: ["' . $element->id . '"]) {
                     id
                 }
             }
@@ -355,9 +355,9 @@ class GraphqlElementTest extends TestAbstract
 
         $response->assertJson( [
             'data' => [
-                'pubElement' => [
+                'pubElement' => [[
                     'id' => (string) $element->id
-                ],
+                ]],
             ]
         ] );
     }
@@ -372,7 +372,7 @@ class GraphqlElementTest extends TestAbstract
         $this->expectsDatabaseQueryCount( 4 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
-                pubElement(id: "' . $element->id . '", at: "2025-01-01 00:00:00") {
+                pubElement(id: ["' . $element->id . '"], at: "2025-01-01 00:00:00") {
                     id
                 }
             }
@@ -382,9 +382,9 @@ class GraphqlElementTest extends TestAbstract
 
         $response->assertJson( [
             'data' => [
-                'pubElement' => [
+                'pubElement' => [[
                     'id' => (string) $element->id
-                ],
+                ]],
             ]
         ] );
     }

@@ -140,42 +140,33 @@
           return
         }
 
-        let list = []
-        const promises = []
+        const list = item ? [item] : this.items.filter(item => item._checked)
 
-        if(!item) {
-          list = this.items.filter(item => item._checked)
-        } else {
-          list.push(item)
+        if(!list.length) {
+          return
         }
 
-        list.forEach(item => {
-          promises.push(this.$apollo.mutate({
-            mutation: gql`
-              mutation($id: ID!) {
-                dropFile(id: $id) {
-                  id
-                }
+        this.$apollo.mutate({
+          mutation: gql`
+            mutation($id: [ID!]!) {
+              dropFile(id: $id) {
+                id
               }
-            `,
-            variables: {
-              id: item.id
-            },
-          }).then(result => {
-            if(result.errors) {
-              throw result.errors
             }
+          `,
+          variables: {
+            id: list.map(item => item.id)
+          },
+        }).then(result => {
+          if(result.errors) {
+            throw result.errors
+          }
 
-            return result.data.dropFile
-          }).catch(error => {
-            this.messages.add('Error trashing file', 'error')
-            this.$log(`FileListItems::drop(): Error trashing file`, item, error)
-          }))
-        })
-
-        Promise.all(promises).then(() => {
           this.invalidate()
           this.search(this.filter)
+        }).catch(error => {
+          this.messages.add('Error trashing file', 'error')
+          this.$log(`FileListItems::drop(): Error trashing file`, item, error)
         })
       },
 
@@ -193,54 +184,37 @@
           return
         }
 
-        let list = []
-        const promises = []
+        const list = item ? [item] : this.items.filter(item => item._checked)
 
-        if(!item) {
-          list = this.items.filter(item => item._checked)
-        } else {
-          list.push(item)
+        if(!list.length) {
+          return
         }
 
-        list.forEach(item => {
-          promises.push(this.$apollo.mutate({
-            mutation: gql`
-              mutation($id: ID!) {
-                keepFile(id: $id) {
-                  id
-                }
+        this.$apollo.mutate({
+          mutation: gql`
+            mutation($id: [ID!]!) {
+              keepFile(id: $id) {
+                id
               }
-            `,
-            variables: {
-              id: item.id
-            },
-          }).then(result => {
-            if(result.errors) {
-              throw result.errors
             }
+          `,
+          variables: {
+            id: list.map(item => item.id)
+          },
+        }).then(result => {
+          if(result.errors) {
+            throw result.errors
+          }
 
+          list.forEach(item => {
             item.deleted_at = null
-            return result.data.keepFile
-          }).catch(error => {
-            this.messages.add('Error restoring file', 'error')
-            this.$log(`FileListItems::keep(): Error restoring file`, item, error)
-          }))
-        })
+          })
 
-        Promise.all(promises).then(() => {
           this.invalidate()
           this.search(this.filter)
-        })
-      },
-
-
-      publishAll() {
-        const list = this.items.filter(item => {
-          return item._checked && item.id && !item.published
-        })
-
-        list.reverse().forEach(item => {
-          this.publish(item)
+        }).catch(error => {
+          this.messages.add('Error restoring file', 'error')
+          this.$log(`FileListItems::keep(): Error restoring file`, item, error)
         })
       },
 
@@ -251,30 +225,36 @@
           return
         }
 
-        if(item.published) {
+        const list = item ? [item] : this.items.filter(item => {
+          return item._checked && item.id && !item.published
+        })
+
+        if(!list.length) {
           return
         }
 
         this.$apollo.mutate({
-            mutation: gql`mutation ($id: ID!) {
-              pubFile(id: $id) {
-                id
-              }
-            }`,
-            variables: {
-              id: item.id
+          mutation: gql`mutation ($id: [ID!]!) {
+            pubFile(id: $id) {
+              id
             }
-          }).then(result => {
-            if(result.errors) {
-              throw result.errors
-            }
+          }`,
+          variables: {
+            id: list.map(item => item.id)
+          }
+        }).then(result => {
+          if(result.errors) {
+            throw result.errors
+          }
 
+          list.forEach(item => {
             item.published = true
             item._checked = false
-          }).catch(error => {
-            this.messages.add('Error publishing file', 'error')
-            this.$log(`FileListItems::publish(): Error publishing file`, item, error)
           })
+        }).catch(error => {
+          this.messages.add('Error publishing file', 'error')
+          this.$log(`FileListItems::publish(): Error publishing file`, item, error)
+        })
       },
 
 
@@ -284,42 +264,33 @@
           return
         }
 
-        let list = []
-        const promises = []
+        const list = item ? [item] : this.items.filter(item => item._checked)
 
-        if(!item) {
-          list = this.items.filter(item => item._checked)
-        } else {
-          list.push(item)
+        if(!list.length) {
+          return
         }
 
-        list.forEach(item => {
-          promises.push(this.$apollo.mutate({
-            mutation: gql`
-              mutation($id: ID!) {
-                purgeFile(id: $id) {
-                  id
-                }
+        this.$apollo.mutate({
+          mutation: gql`
+            mutation($id: [ID!]!) {
+              purgeFile(id: $id) {
+                id
               }
-            `,
-            variables: {
-              id: item.id
-            },
-          }).then(result => {
-            if(result.errors) {
-              throw result.errors
             }
+          `,
+          variables: {
+            id: list.map(item => item.id)
+          },
+        }).then(result => {
+          if(result.errors) {
+            throw result.errors
+          }
 
-            return result.data.purgeFile
-          }).catch(error => {
-            this.messages.add('Error purging file', 'error')
-            this.$log(`FileListItems::purge(): Error purging file`, item, error)
-          }))
-        })
-
-        Promise.all(promises).then(() => {
           this.invalidate()
           this.search(this.filter)
+        }).catch(error => {
+          this.messages.add('Error purging file', 'error')
+          this.$log(`FileListItems::purge(): Error purging file`, item, error)
         })
       },
 
@@ -483,7 +454,7 @@
             </template>
             <v-list>
               <v-list-item v-if="isChecked && auth.can('file:publish')">
-                <v-btn prepend-icon="mdi-publish" variant="text" @click="publishAll()">Publish</v-btn>
+                <v-btn prepend-icon="mdi-publish" variant="text" @click="publish()">Publish</v-btn>
               </v-list-item>
               <v-list-item v-if="!this.embed && auth.can('file:add')">
                 <v-btn prepend-icon="mdi-folder-plus" variant="text" @click="$refs.upload.click()">Add files</v-btn>

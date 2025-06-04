@@ -2,6 +2,7 @@
 
 namespace Aimeos\Cms\GraphQL\Mutations;
 
+use Illuminate\Support\Facades\Auth;
 use Aimeos\Cms\Models\File;
 
 
@@ -11,22 +12,27 @@ final class PubFile
      * @param  null  $rootValue
      * @param  array  $args
      */
-    public function __invoke( $rootValue, array $args ) : File
+    public function __invoke( $rootValue, array $args ) : array
     {
-        $file = File::findOrFail( $args['id'] );
+        $items = File::withTrashed()->whereIn( 'id', $args['id'] )->get();
+        $editor = Auth::user()?->name ?? request()->ip();
 
-        if( $latest = $file->latest )
+        foreach( $items as $item )
         {
-            if( $args['at'] ?? null )
+            if( $latest = $item->latest )
             {
-                $latest->publish_at = $args['at'];
-                $latest->save();
-                return $file;
-            }
+                if( $args['at'] ?? null )
+                {
+                    $latest->publish_at = $args['at'];
+                    $latest->editor = $editor;
+                    $latest->save();
+                    continue;
+                }
 
-            $file->publish( $latest );
+                $item->publish( $latest );
+            }
         }
 
-        return $file;
+        return $items->all();
     }
 }

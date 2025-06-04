@@ -12,12 +12,17 @@ final class DropFile
      * @param  null  $rootValue
      * @param  array  $args
      */
-    public function __invoke( $rootValue, array $args ) : File
+    public function __invoke( $rootValue, array $args ) : array
     {
-        $file = File::withTrashed()->findOrFail( $args['id'] );
-        $file->editor = Auth::user()?->name ?? request()->ip();
-        $file->delete();
+        $items = File::withTrashed()->whereIn( 'id', $args['id'] )->get();
+        $editor = Auth::user()?->name ?? request()->ip();
 
-        return $file;
+        foreach( $items as $item )
+        {
+            $item->editor = $editor;
+            $item->delete();
+        }
+
+        return $items->all();
     }
 }

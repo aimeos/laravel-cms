@@ -13,11 +13,14 @@ final class PurgeFile
      * @param  null  $rootValue
      * @param  array  $args
      */
-    public function __invoke( $rootValue, array $args ) : File
+    public function __invoke( $rootValue, array $args ) : array
     {
-        $file = File::withTrashed()->findOrFail( $args['id'] );
-        $file->purge();
+        $items = File::withTrashed()->whereIn( 'id', $args['id'] )->get();
 
-        return $file;
+        foreach( $items as $item ) {
+            $item->purge();
+        }
+
+        return $items->all();
     }
 }

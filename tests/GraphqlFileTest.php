@@ -281,7 +281,7 @@ class GraphqlFileTest extends TestAbstract
         $this->expectsDatabaseQueryCount( 3 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
-                dropFile(id: "' . $file->id . '") {
+                dropFile(id: ["' . $file->id . '"]) {
                     id
                     deleted_at
                 }
@@ -292,10 +292,10 @@ class GraphqlFileTest extends TestAbstract
 
         $response->assertJson( [
             'data' => [
-                'dropFile' => [
+                'dropFile' => [[
                     'id' => $file->id,
                     'deleted_at' => $file->deleted_at,
-                ],
+                ]],
             ]
         ] );
     }
@@ -311,7 +311,7 @@ class GraphqlFileTest extends TestAbstract
         $this->expectsDatabaseQueryCount( 3 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
-                keepFile(id: "' . $file->id . '") {
+                keepFile(id: ["' . $file->id . '"]) {
                     id
                     deleted_at
                 }
@@ -322,10 +322,10 @@ class GraphqlFileTest extends TestAbstract
 
         $response->assertJson( [
             'data' => [
-                'keepFile' => [
+                'keepFile' => [[
                     'id' => $file->id,
                     'deleted_at' => null,
-                ],
+                ]],
             ]
         ] );
     }
@@ -340,7 +340,7 @@ class GraphqlFileTest extends TestAbstract
         $this->expectsDatabaseQueryCount( 6 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
-                pubFile(id: "' . $file->id . '") {
+                pubFile(id: ["' . $file->id . '"]) {
                     id
                 }
             }
@@ -350,9 +350,9 @@ class GraphqlFileTest extends TestAbstract
 
         $response->assertJson( [
             'data' => [
-                'pubFile' => [
+                'pubFile' => [[
                     'id' => (string) $file->id
-                ],
+                ]],
             ]
         ] );
     }
@@ -367,7 +367,7 @@ class GraphqlFileTest extends TestAbstract
         $this->expectsDatabaseQueryCount( 4 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
-                pubFile(id: "' . $file->id . '", at: "2025-01-01 00:00:00") {
+                pubFile(id: ["' . $file->id . '"], at: "2025-01-01 00:00:00") {
                     id
                 }
             }
@@ -377,9 +377,9 @@ class GraphqlFileTest extends TestAbstract
 
         $response->assertJson( [
             'data' => [
-                'pubFile' => [
+                'pubFile' => [[
                     'id' => (string) $file->id
-                ],
+                ]],
             ]
         ] );
     }
@@ -394,7 +394,7 @@ class GraphqlFileTest extends TestAbstract
         $this->expectsDatabaseQueryCount( 5 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
-                purgeFile(id: "' . $file->id . '") {
+                purgeFile(id: ["' . $file->id . '"]) {
                     id
                 }
             }

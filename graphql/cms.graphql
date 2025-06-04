@@ -126,19 +126,19 @@ extend type Mutation {
     @canModel(ability: "save", model: "\\Aimeos\\Cms\\Models\\File")
 
   "Delete an existing file"
-  dropFile(id: ID!): File
+  dropFile(id: [ID!]!): [File]!
     @canModel(ability: "drop", model: "\\Aimeos\\Cms\\Models\\File")
 
   "Restore an existing file"
-  keepFile(id: ID!): Element
+  keepFile(id: [ID!]!): [File]!
     @canModel(ability: "keep", model: "\\Aimeos\\Cms\\Models\\File")
 
   "Purge an existing file"
-  purgeFile(id: ID!): File
+  purgeFile(id: [ID!]!): [File]!
     @canModel(ability: "purge", model: "\\Aimeos\\Cms\\Models\\File")
 
   "Publish file data"
-  pubFile(id: ID!, at: DateTime): File
+  pubFile(id: [ID!]!, at: DateTime): [File]!
     @canModel(ability: "publish", model: "\\Aimeos\\Cms\\Models\\File")
 }
 

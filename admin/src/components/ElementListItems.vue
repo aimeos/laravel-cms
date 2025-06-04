@@ -38,7 +38,7 @@
 
     created() {
       this.search()
-      this.search = this.debounce(this.search, 500)
+      this.searchd = this.debounce(this.search, 500)
     },
 
     computed: {
@@ -396,7 +396,7 @@
 
     watch: {
       filter(value) {
-        this.search(value)
+        this.searchd(value)
       },
 
 

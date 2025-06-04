@@ -42,6 +42,8 @@
     },
 
     created() {
+      this.searchd = this.debounce(this.search, 500)
+
       this.fetch().then(result => {
         this.pages = result.data
         this.loading = false
@@ -805,8 +807,7 @@
           this.pages = []
           this.loading = true
 
-          const search = this.debounce(this.search, 500)
-          const promise = this.filter ? search(this.filter) : this.fetch()
+          const promise = this.filter ? this.searchd(this.filter) : this.fetch()
 
           promise.then(result => {
             this.pages = result.data

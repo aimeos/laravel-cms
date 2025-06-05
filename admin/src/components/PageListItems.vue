@@ -11,6 +11,7 @@
 
     props: {
       'embed': {type: Boolean, default: false},
+      'filter': {type: Object, default: () => ({})},
     },
 
     emits: ['update:item'],
@@ -19,11 +20,10 @@
       return {
         clip: null,
         menu: {},
-        pages: [],
-        trash: false,
+        items: [],
         loading: true,
         checked: false,
-        filter: '',
+        term: '',
       }
     },
 
@@ -40,7 +40,7 @@
       this.searchd = this.debounce(this.search, 500)
 
       this.fetch().then(result => {
-        this.pages = result.data
+        this.items = result.data
         this.loading = false
       })
     },
@@ -241,7 +241,7 @@
             },
             page: page,
             limit: limit,
-            trashed: this.trash === null ? 'WITH' : (this.trash ? 'ONLY' : 'WITHOUT')
+            trashed: this.filter.trashed || 'WITHOUT'
           }
         }).then(result => {
           if(result.errors) {
@@ -284,15 +284,6 @@
             editor
             created_at
           }`
-      },
-
-
-      init(stat) {
-        if(stat.data.deleted_at && this.trash === false ) {
-          stat.hidden = true
-        }
-
-        return stat
       },
 
 
@@ -600,17 +591,26 @@
         this.languages.current = lang
 
         this.fetch().then(result => {
-          this.pages = result.data
+          this.items = result.data
         }).finally(() => {
           this.loading = false
         })
       },
 
 
-      search(filter, page = 1, limit = 100) {
+      search(page = 1, limit = 100) {
         if(!this.auth.can('page:view')) {
           this.messages.add('Permission denied', 'error')
           return Promise.resolve([])
+        }
+
+        const filter = {
+          lang: this.languages.current,
+          any: this.term
+        }
+
+        if(this.filter.editor) {
+          filter.editor = this.filter.editor
         }
 
         return this.$apollo.query({
@@ -626,13 +626,10 @@
             }
           }`,
           variables: {
-            filter: {
-              lang: this.languages.current,
-              any: filter
-            },
+            filter: filter,
             page: page,
             limit: limit,
-            trashed: this.trash === null ? 'WITH' : (this.trash ? 'ONLY' : 'WITHOUT')
+            trashed: this.filter.trashed || 'WITHOUT'
           }
         }).then(result => {
           if(result.errors) {
@@ -642,7 +639,7 @@
           return this.transform(result.data.pages)
         }).catch(error => {
           this.messages.add('Error searching pages', 'error')
-          this.$log(`PageList::search(): Error searching pages`, filter, page, limit, error)
+          this.$log(`PageList::search(): Error searching pages`, term, page, limit, error)
         })
       },
 
@@ -760,20 +757,6 @@
       },
 
 
-      trashed(val) {
-        this.trash = val
-        this.loading = true
-        this.checked = false
-
-        const promise = this.filter ? this.search(this.filter) : this.fetch()
-
-        promise.then(result => {
-          this.pages = result.data
-          this.loading = false
-        })
-      },
-
-
       update(stat, fcn) {
         if(typeof fcn !== 'function') {
           throw new Error('Second paramter must be a function')
@@ -798,14 +781,27 @@
     watch: {
       filter: {
         deep: true,
-        handler() {
-          this.pages = []
+        handler(val) {
+          this.items = []
           this.loading = true
 
-          const promise = this.filter ? this.searchd(this.filter) : this.fetch()
+          this.search().then(result => {
+            this.items = result.data
+            this.loading = false
+          })
+        }
+      },
+
+
+      term: {
+        handler() {
+          this.items = []
+          this.loading = true
+
+          const promise = this.term ? this.searchd() : this.fetch()
 
           promise.then(result => {
-            this.pages = result.data
+            this.items = result.data
             this.loading = false
           })
         }
@@ -834,15 +830,6 @@
               <v-list-item v-if="isChecked && auth.can('page:save')">
                 <v-btn prepend-icon="mdi-eye-off" variant="text" @click="status(null, 0)">Disable</v-btn>
               </v-list-item>
-              <v-list-item v-if="trash !== false">
-                <v-btn prepend-icon="mdi-delete-off" variant="text" @click="trashed(false)">Only non-trashed</v-btn>
-              </v-list-item>
-              <v-list-item v-if="trash !== null">
-                <v-btn prepend-icon="mdi-delete-circle-outline" variant="text" @click="trashed(null)">Include trashed</v-btn>
-              </v-list-item>
-              <v-list-item v-if="trash !== true">
-                <v-btn prepend-icon="mdi-delete-circle" variant="text" @click="trashed(true)">Only trashed</v-btn>
-              </v-list-item>
               <v-list-item v-if="canTrash && auth.can('page:drop')">
                 <v-btn prepend-icon="mdi-delete" variant="text" @click="drop()">Trash</v-btn>
               </v-list-item>
@@ -858,7 +845,7 @@
 
         <div class="search">
           <v-text-field
-            v-model="filter"
+            v-model="term"
             prepend-inner-icon="mdi-magnify"
             variant="underlined"
             label="Search for"
@@ -884,11 +871,10 @@
         </v-menu>
       </div>
 
-      <Draggable v-model="pages" ref="tree"
+      <Draggable v-model="items" ref="tree"
         :defaultOpen="false"
         :disableDrag="!auth.can('page:move')"
         :watermark="false"
-        :statHandler="init"
         virtualization
         @change="change()"
       >
@@ -1015,11 +1001,11 @@
         <svg class="spinner" width="32" height="32" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle class="spin1" cx="4" cy="12" r="3"/><circle class="spin1 spin2" cx="12" cy="12" r="3"/><circle class="spin1 spin3" cx="20" cy="12" r="3"/></svg>
       </p>
 
-      <p v-if="!loading && filter && !pages.length" class="notfound">
-        No pages found
+      <p v-if="!loading && !items.length" class="notfound">
+        No items found
       </p>
 
-      <div v-if="!loading && !filter && !pages.length && !this.embed && this.auth.can('page:add')" class="btn-group">
+      <div v-if="!loading && !items.length && !this.embed && this.auth.can('page:add')" class="btn-group">
         <v-btn @click="add()"
           icon="mdi-folder-plus"
           color="primary"

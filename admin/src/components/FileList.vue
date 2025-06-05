@@ -1,13 +1,16 @@
 <script>
   import gql from 'graphql-tag'
   import User from './User.vue'
+  import AsideList from './AsideList.vue'
   import Navigation from './Navigation.vue'
   import FileListItems from './FileListItems.vue'
+  import { useAuthStore } from '../stores'
 
   export default {
     components: {
       FileListItems,
       Navigation,
+      AsideList,
       User
     },
 
@@ -15,7 +18,17 @@
       'nav': {type: Boolean, default: false}
     },
 
-    emits: ['update:nav', 'update:item']
+    emits: ['update:nav', 'update:item'],
+
+    data: () => ({
+      aside: null,
+      filter: {'trashed': 'WITHOUT'},
+    }),
+
+    setup() {
+      const auth = useAuthStore()
+      return { auth }
+    }
   }
 </script>
 
@@ -33,14 +46,35 @@
 
     <template #append>
       <User />
+
+      <v-btn @click.stop="aside = !aside">
+        <v-icon size="x-large">
+          {{ aside ? 'mdi-chevron-right' : 'mdi-chevron-left' }}
+        </v-icon>
+      </v-btn>
     </template>
   </v-app-bar>
 
   <Navigation :state="nav" @update:state="$emit('update:nav', $event)" />
 
   <v-main class="file-list">
-    <FileListItems @update:item="$emit('update:item', $event)" />
+    <FileListItems @update:item="$emit('update:item', $event)" :filter="filter" />
   </v-main>
+
+  <AsideList v-model:state="aside" v-model:filter="filter" :content="[{
+      group: 'trashed',
+      items: [
+        { title: 'Non-trashed', value: {'trashed': 'WITHOUT'} },
+        { title: 'Include trashed', value: {'trashed': 'WITH'} },
+        { title: 'Only trashed', value: {'trashed': 'ONLY'} }
+      ]
+    }, {
+      group: 'editor',
+      items: [
+        { title: 'Edited by me', value: {'editor': this.auth.me.email} },
+      ]
+    }]"
+  />
 </template>
 
 <style scoped>

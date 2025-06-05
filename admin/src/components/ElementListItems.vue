@@ -10,6 +10,7 @@
 
     props: {
       'embed': {type: Boolean, default: false},
+      'filter': {type: Object, default: () => ({})},
     },
 
     emits: ['update:item'],
@@ -17,7 +18,7 @@
     data() {
       return {
         items: [],
-        filter: '',
+        term: '',
         sort: {column: 'ID', order: 'DESC'},
         page: 1,
         last: 1,
@@ -154,7 +155,7 @@
           }
 
           this.invalidate()
-          this.search(this.filter)
+          this.search()
         }).catch(error => {
           this.messages.add('Error trashing shared element', 'error')
           this.$log(`ElementListItems::drop(): Error trashing shared element`, list, error)
@@ -202,7 +203,7 @@
           })
 
           this.invalidate()
-          this.search(this.filter)
+          this.search()
         }).catch(error => {
           this.messages.add('Error restoring shared element', 'error')
           this.$log(`ElementListItems::keep(): Error restoring shared element`, list, error)
@@ -278,7 +279,7 @@
           }
 
           this.invalidate()
-          this.search(this.filter)
+          this.search()
         }).catch(error => {
           this.messages.add('Error purging shared element', 'error')
           this.$log(`ElementListItems::purge(): Error purging shared element`, list, error)
@@ -286,10 +287,18 @@
       },
 
 
-      search(filter, page = 1, limit = 100) {
+      search() {
         if(!this.auth.can('element:view')) {
           this.messages.add('Permission denied', 'error')
           return Promise.resolve([])
+        }
+
+        const filter = {
+          any: this.term
+        }
+
+        if(this.filter.editor) {
+          filter.editor = this.filter.editor
         }
 
         this.loading = true
@@ -318,20 +327,17 @@
                   }
                 }
                 paginatorInfo {
-                  currentPage
                   lastPage
                 }
               }
             }
           `,
           variables: {
-            filter: {
-              any: filter,
-            },
+            filter: filter,
             page: this.page,
             limit: this.limit,
             sort: [this.sort],
-            trashed: this.trash === null ? 'WITH' : (this.trash ? 'ONLY' : 'WITHOUT')
+            trashed: this.filter.trashed || 'WITHOUT'
           },
         }).then(result => {
           if(result.errors) {
@@ -341,7 +347,6 @@
           const elements = result.data.elements || {}
 
           this.last = elements.paginatorInfo?.lastPage || 1
-          this.page = elements.paginatorInfo?.currentPage || 1
           this.items = [...elements.data || []].map(entry => {
             const item = entry.latest?.data ? JSON.parse(entry.latest?.data) : {
               ...entry,
@@ -385,28 +390,30 @@
         this.items.forEach(el => {
           el._checked = !el._checked
         })
-      },
-
-
-      trashed(value) {
-        this.trash = value
-        this.search(this.filter)
       }
     },
 
     watch: {
-      filter(value) {
-        this.searchd(value)
+      filter: {
+        deep: true,
+        handler() {
+          this.search()
+        }
       },
 
 
-      page(value) {
-        this.search(this.filter, value)
+      term() {
+        this.searchd()
       },
 
 
-      sort(value) {
-        this.search(this.filter)
+      page() {
+        this.search()
+      },
+
+
+      sort() {
+        this.search()
       }
     }
   }
@@ -429,15 +436,6 @@
               <v-list-item v-if="!this.embed && auth.can('element:add')">
                 <v-btn prepend-icon="mdi-folder-plus" variant="text" @click="vschemas = true">Add element</v-btn>
               </v-list-item>
-              <v-list-item v-show="trash !== false">
-                <v-btn prepend-icon="mdi-delete-off" variant="text" @click="trashed(false)">Only non-trashed</v-btn>
-              </v-list-item>
-              <v-list-item v-show="trash !== null">
-                <v-btn prepend-icon="mdi-delete-circle-outline" variant="text" @click="trashed(null)">Include trashed</v-btn>
-              </v-list-item>
-              <v-list-item v-show="trash !== true">
-                <v-btn prepend-icon="mdi-delete-circle" variant="text" @click="trashed(true)">Only trashed</v-btn>
-              </v-list-item>
               <v-list-item v-show="canTrash && auth.can('element:drop')">
                 <v-btn prepend-icon="mdi-delete" variant="text" @click="drop()">Trash</v-btn>
               </v-list-item>
@@ -453,7 +451,7 @@
 
         <div class="search">
           <v-text-field
-            v-model="filter"
+            v-model="term"
             prepend-inner-icon="mdi-magnify"
             variant="underlined"
             label="Search for"
@@ -534,8 +532,8 @@
         Loading
         <svg class="spinner" width="32" height="32" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle class="spin1" cx="4" cy="12" r="3"/><circle class="spin1 spin2" cx="12" cy="12" r="3"/><circle class="spin1 spin3" cx="20" cy="12" r="3"/></svg>
       </p>
-      <p v-if="!loading && filter && !items.length" class="notfound">
-        No files found
+      <p v-if="!loading && !items.length" class="notfound">
+        No items found
       </p>
 
       <v-pagination v-if="last > 1"

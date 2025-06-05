@@ -7,6 +7,7 @@
       'grid': {type: Boolean, default: false},
       'embed': {type: Boolean, default: false},
       'mime': {type: [String, null], default: null},
+      'filter': {type: Object, default: () => ({})},
     },
 
     emits: ['update:item'],
@@ -14,14 +15,13 @@
     data() {
       return {
         items: [],
-        filter: '',
+        term: '',
         sort: {column: 'ID', order: 'DESC'},
         page: 1,
         last: 1,
         limit: 100,
         checked: false,
         loading: true,
-        trash: false,
         vgrid: false,
       }
     },
@@ -35,9 +35,9 @@
     },
 
     created() {
-      this.search()
       this.searchd = this.debounce(this.search, 500)
       this.vgrid = this.grid
+      this.search()
     },
 
     computed: {
@@ -163,7 +163,7 @@
           }
 
           this.invalidate()
-          this.search(this.filter)
+          this.search()
         }).catch(error => {
           this.messages.add('Error trashing file', 'error')
           this.$log(`FileListItems::drop(): Error trashing file`, item, error)
@@ -211,7 +211,7 @@
           })
 
           this.invalidate()
-          this.search(this.filter)
+          this.search()
         }).catch(error => {
           this.messages.add('Error restoring file', 'error')
           this.$log(`FileListItems::keep(): Error restoring file`, item, error)
@@ -287,7 +287,7 @@
           }
 
           this.invalidate()
-          this.search(this.filter)
+          this.search()
         }).catch(error => {
           this.messages.add('Error purging file', 'error')
           this.$log(`FileListItems::purge(): Error purging file`, item, error)
@@ -295,10 +295,19 @@
       },
 
 
-      search(filter, page = 1, limit = 100) {
+      search() {
         if(!this.auth.can('file:view')) {
           this.messages.add('Permission denied', 'error')
           return Promise.resolve([])
+        }
+
+        const filter = {
+          mime: this.mime,
+          any: this.term
+        }
+
+        if(this.filter.editor) {
+          filter.editor = this.filter.editor
         }
 
         this.loading = true
@@ -329,21 +338,17 @@
                   }
                 }
                 paginatorInfo {
-                  currentPage
                   lastPage
                 }
               }
             }
           `,
           variables: {
-            filter: {
-              mime: this.mime,
-              any: filter,
-            },
+            filter: filter,
             page: this.page,
             limit: this.limit,
             sort: [this.sort],
-            trashed: this.trash === null ? 'WITH' : (this.trash ? 'ONLY' : 'WITHOUT')
+            trashed: this.filter.trashed || 'WITHOUT'
           },
         }).then(result => {
           if(result.errors) {
@@ -353,7 +358,6 @@
           const files = result.data.files || {}
 
           this.last = files.paginatorInfo?.lastPage || 1
-          this.page = files.paginatorInfo?.currentPage || 1
           this.items = [...files.data || []].map(entry => {
             const item = entry.latest?.data ? JSON.parse(entry.latest?.data) : {
               ...entry,
@@ -410,12 +414,6 @@
       },
 
 
-      trashed(value) {
-        this.trash = value
-        this.search(this.filter)
-      },
-
-
       url(path) {
         if(path.startsWith('http') || path.startsWith('blob:')) {
           return path
@@ -425,18 +423,26 @@
     },
 
     watch: {
-      filter(value) {
-        this.searchd(value)
+      filter: {
+        deep: true,
+        handler() {
+          this.search()
+        }
       },
 
 
-      page(value) {
-        this.search(this.filter, value)
+      term() {
+        this.searchd()
       },
 
 
-      sort(value) {
-        this.search(this.filter)
+      page() {
+        this.search()
+      },
+
+
+      sort() {
+        this.search()
       }
     }
   }
@@ -459,15 +465,6 @@
               <v-list-item v-if="!this.embed && auth.can('file:add')">
                 <v-btn prepend-icon="mdi-folder-plus" variant="text" @click="$refs.upload.click()">Add files</v-btn>
               </v-list-item>
-              <v-list-item v-if="trash !== false">
-                <v-btn prepend-icon="mdi-delete-off" variant="text" @click="trashed(false)">Only non-trashed</v-btn>
-              </v-list-item>
-              <v-list-item v-if="trash !== null">
-                <v-btn prepend-icon="mdi-delete-circle-outline" variant="text" @click="trashed(null)">Include trashed</v-btn>
-              </v-list-item>
-              <v-list-item v-if="trash !== true">
-                <v-btn prepend-icon="mdi-delete-circle" variant="text" @click="trashed(true)">Only trashed</v-btn>
-              </v-list-item>
               <v-list-item v-if="canTrash && auth.can('file:drop')">
                 <v-btn prepend-icon="mdi-delete" variant="text" @click="drop()">Trash</v-btn>
               </v-list-item>
@@ -483,7 +480,7 @@
 
         <div class="search">
           <v-text-field
-            v-model="filter"
+            v-model="term"
             prepend-inner-icon="mdi-magnify"
             variant="underlined"
             label="Search for"
@@ -578,8 +575,8 @@
         <svg class="spinner" width="32" height="32" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle class="spin1" cx="4" cy="12" r="3"/><circle class="spin1 spin2" cx="12" cy="12" r="3"/><circle class="spin1 spin3" cx="20" cy="12" r="3"/></svg>
       </p>
 
-      <p v-if="!loading && filter && !items.length" class="notfound">
-        No files found
+      <p v-if="!loading && !items.length" class="notfound">
+        No items found
       </p>
 
       <v-pagination v-if="last > 1"

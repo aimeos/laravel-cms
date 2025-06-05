@@ -113,8 +113,8 @@
               lang: this.item.lang,
               data: JSON.stringify(this.item.data || {}),
             },
-            files: this.item.files.filter((fileid, idx, self) => {
-              return self.indexOf(fileid) === idx
+            files: this.item.files.filter((id, idx, self) => {
+              return self.indexOf(id) === idx && this.assets[id]
             })
           }
         }).then(result => {

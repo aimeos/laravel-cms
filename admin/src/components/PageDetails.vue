@@ -191,7 +191,7 @@
               },
               elements: Object.keys(this.elements),
               files: files.filter((id, idx, self) => {
-                return self.indexOf(id) === idx
+                return self.indexOf(id) === idx && this.assets[id]
               }),
             }
           }).then(response => {
@@ -395,6 +395,14 @@
 
           for(const entry of (this.latest?.files || page.files || [])) {
             this.assets[entry.id] = {...entry, previews: JSON.parse(entry.previews || '{}')}
+          }
+
+          for(const entry of this.contents) {
+            if(entry.files && Array.isArray(entry.files)) {
+              entry.files = entry.files.filter(id => {
+                return typeof this.assets[id] !== 'undefined'
+              })
+            }
           }
         }).catch(error => {
           this.messages.add('Error fetching page', 'error')

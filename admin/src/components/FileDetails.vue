@@ -1,7 +1,7 @@
 <script>
   import gql from 'graphql-tag'
-  import Aside from './Aside.vue'
   import History from './History.vue'
+  import AsideMeta from './AsideMeta.vue'
   import FileDetailsRefs from './FileDetailsRefs.vue'
   import FileDetailsFile from './FileDetailsFile.vue'
   import { useAuthStore, useMessageStore } from '../stores'
@@ -9,8 +9,8 @@
 
   export default {
     components: {
-      Aside,
       History,
+      AsideMeta,
       FileDetailsFile,
       FileDetailsRefs
     },
@@ -274,7 +274,7 @@
     </v-form>
   </v-main>
 
-  <Aside v-model:state="nav" />
+  <AsideMeta v-model:state="nav" :item="item" />
 
   <Teleport to="body">
     <v-dialog v-model="vhistory" scrollable width="auto">

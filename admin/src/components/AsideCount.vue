@@ -102,25 +102,11 @@
     margin-bottom: 0.25rem;
   }
 
-  .meta .v-list-item .name {
-    text-transform: capitalize;
-  }
-
-  .meta .v-list-item .name::after {
-    content: ':';
-  }
-
-  .meta .v-list-item .value {
-    display: block;
-  }
-
-  .state .v-list-item .value::before,
-  .type .v-list-item .value::before {
+  .v-list-item .value::before {
     content: ' (';
   }
 
-  .state .v-list-item .value::after,
-  .type .v-list-item .value::after {
+  .v-list-item .value::after {
     content: ')';
   }
 </style>

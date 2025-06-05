@@ -15,7 +15,7 @@
       'assets': {type: Object, default: () => {}},
     },
 
-    emits: ['update:item', 'error'],
+    emits: ['update:item', 'update:aside', 'error'],
 
     data: () => ({
       changed: {},
@@ -61,9 +61,18 @@
   <v-container>
     <v-sheet>
       <v-tabs class="subtabs" v-model="tab" align-tabs="center" density="compact">
-        <v-tab value="details" :class="{changed: changed.details, error: errors.details}">Details</v-tab>
-        <v-tab value="meta" :class="{changed: changed.meta, error: errors.meta}">Meta</v-tab>
-        <v-tab value="config" :class="{changed: changed.config, error: errors.config}">Config</v-tab>
+        <v-tab value="details"
+          :class="{changed: changed.details, error: errors.details}"
+          @click="$emit('update:aside', 'meta')"
+        >Details</v-tab>
+        <v-tab value="meta"
+          :class="{changed: changed.meta, error: errors.meta}"
+          @click="$emit('update:aside', 'count')"
+        >Meta</v-tab>
+        <v-tab value="config"
+          :class="{changed: changed.config, error: errors.config}"
+          @click="$emit('update:aside', 'count')"
+        >Config</v-tab>
       </v-tabs>
     </v-sheet>
   </v-container>
@@ -71,15 +80,30 @@
   <v-window v-model="tab">
 
     <v-window-item value="details">
-      <PageDetailsPageProps ref="props" :item="item" :assets="assets" @change="update('details')" @error="error('details', $event)" />
+      <PageDetailsPageProps ref="props"
+        :item="item"
+        :assets="assets"
+        @change="update('details')"
+        @error="error('details', $event)"
+      />
     </v-window-item>
 
     <v-window-item value="meta">
-      <PageDetailsPageMeta ref="meta" :item="item" :assets="assets" @change="update('meta')" @error="error('meta', $event)" />
+      <PageDetailsPageMeta ref="meta"
+        :item="item"
+        :assets="assets"
+        @change="update('meta')"
+        @error="error('meta', $event)"
+      />
     </v-window-item>
 
     <v-window-item value="config">
-      <PageDetailsPageConfig ref="config" :item="item" :assets="assets" @change="update('config')" @error="error('config', $event)" />
+      <PageDetailsPageConfig ref="config"
+        :item="item"
+        :assets="assets"
+        @change="update('config')"
+        @error="error('config', $event)"
+      />
     </v-window-item>
 
   </v-window>

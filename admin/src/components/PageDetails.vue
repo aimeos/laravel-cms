@@ -1,7 +1,8 @@
 <script>
   import gql from 'graphql-tag'
-  import Aside from './Aside.vue'
   import History from './History.vue'
+  import AsideMeta from './AsideMeta.vue'
+  import AsideCount from './AsideCount.vue'
   import PageDetailsPage from './PageDetailsPage.vue'
   import PageDetailsContent from './PageDetailsContent.vue'
   import PageDetailsPreview from './PageDetailsPreview.vue'
@@ -10,8 +11,9 @@
 
   export default {
     components: {
-      Aside,
       History,
+      AsideMeta,
+      AsideCount,
       PageDetailsPage,
       PageDetailsContent,
       PageDetailsPreview
@@ -24,6 +26,8 @@
     emits: ['update:item', 'close'],
 
     data: () => ({
+      aside: 'meta',
+      asidePage: 'meta',
       changed: {},
       errors: {},
       assets: {},
@@ -395,6 +399,11 @@
           this.messages.add('Error fetching page', 'error')
           this.$log(`PageDetails::watch(item): Error fetching page`, error)
         })
+      },
+
+
+      asidePage(newAside) {
+        this.aside = newAside
       }
     }
   }
@@ -463,9 +472,17 @@
   <v-main class="page-details">
     <v-form @submit.prevent>
       <v-tabs fixed-tabs v-model="tab">
-        <v-tab value="page" :class="{changed: changed.page, error: errors.page}">Page</v-tab>
-        <v-tab value="contents" :class="{changed: changed.contents, error: errors.contents}">Content</v-tab>
-        <v-tab value="preview">Preview</v-tab>
+        <v-tab value="page"
+          :class="{changed: changed.page, error: errors.page}"
+          @click="aside = asidePage"
+        >Page</v-tab>
+        <v-tab value="contents"
+          :class="{changed: changed.contents, error: errors.contents}"
+          @click="aside = 'count'"
+        >Content</v-tab>
+        <v-tab value="preview"
+          @click="aside = ''"
+        >Preview</v-tab>
       </v-tabs>
 
       <v-window v-model="tab">
@@ -475,6 +492,7 @@
             :item="item"
             :assets="assets"
             @update:item="update('page', $event)"
+            @update:aside="asidePage = $event"
             @error="errors.page = $event"
           />
         </v-window-item>
@@ -499,7 +517,8 @@
     </v-form>
   </v-main>
 
-  <Aside v-model:state="nav" />
+  <AsideMeta v-if="aside === 'meta'" v-model:state="nav" :item="item" />
+  <AsideCount v-if="aside === 'count'" v-model:state="nav" />
 
   <Teleport to="body">
     <v-dialog v-model="vhistory" scrollable width="auto">

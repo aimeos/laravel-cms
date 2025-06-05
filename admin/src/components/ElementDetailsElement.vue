@@ -56,23 +56,6 @@
         return this.schemas.content[type]?.fields
       },
 
-
-      store(isVisible) {
-        if(!isVisible) {
-          return
-        }
-
-        this.side.store = {
-          meta: {
-            id: this.item.id,
-            type: this.item.type,
-            editor: this.item.editor,
-            created: this.item.created_at,
-            updated: this.item.updated_at
-          }
-        }
-      },
-
       update(what, value) {
         this.item[what] = value
         this.$emit('update:item', this.item)
@@ -82,7 +65,7 @@
 </script>
 
 <template>
-  <v-container v-observe-visibility="store">
+  <v-container>
     <v-sheet>
       <v-row>
         <v-col cols="12" md="6">

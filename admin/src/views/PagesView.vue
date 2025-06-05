@@ -24,7 +24,7 @@
 
 <template>
     <transition-group name="slide">
-      <v-layout class="page-tree" key="tree">
+      <v-layout class="page-list" key="list">
         <PageList
           v-model:nav="nav"
           @update:item="item = $event; details = true"
@@ -42,12 +42,12 @@
 </template>
 
 <style scoped>
-  .page-tree, .page-details {
+  .page-list, .page-details {
     background: rgb(var(--v-theme-background));
     overflow-y: auto;
     position: fixed;
     height: 100vh;
-    width: 100vw;
+    width: 100%;
     left: 0;
     top: 0;
   }

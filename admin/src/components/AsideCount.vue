@@ -11,7 +11,6 @@
     data: () => ({
       active: {},
       panel: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-      width: window.innerWidth
     }),
 
     setup() {
@@ -67,7 +66,7 @@
 </script>
 
 <template>
-  <v-navigation-drawer location="end" rail-width="220" :modelValue="state" @update:modelValue="$emit('update:state', $event)" :rail="width > 1200 ? false : true" expand-on-hover>
+  <v-navigation-drawer :modelValue="state" @update:modelValue="$emit('update:state', $event)" width="224" mobile-breakpoint="md" location="end">
 
     <v-expansion-panels variant="accordion" v-model="panel" multiple>
       <v-expansion-panel v-for="(items, key) in stores" :key="key" v-show="Object.keys(items).length" :class="key" elevation="0">

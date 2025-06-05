@@ -37,7 +37,7 @@
 </script>
 
 <template>
-  <v-navigation-drawer location="end" rail-width="220" :modelValue="state" @update:modelValue="$emit('update:state', $event)" :rail="width > 1200 ? false : true" expand-on-hover>
+  <v-navigation-drawer :modelValue="state" @update:modelValue="$emit('update:state', $event)" width="224" mobile-breakpoint="md" location="end">
 
     <div class="title">Meta data</div>
 

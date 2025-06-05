@@ -8,10 +8,6 @@
 
     emits: ['update:state'],
 
-    data: () => ({
-      width: window.innerWidth
-    }),
-
     setup() {
       const auth = useAuthStore()
       return { auth }
@@ -20,7 +16,7 @@
 </script>
 
 <template>
-  <v-navigation-drawer location="start" rail-width="220" :modelValue="state" @update:modelValue="$emit('update:state', $event)" :rail="width > 1200 ? false : true" expand-on-hover>
+  <v-navigation-drawer :modelValue="state" @update:modelValue="$emit('update:state', $event)" width="224" location="start" mobile-breakpoint="lg">
     <v-list>
       <v-list-item v-if="auth.can('page:view')" prepend-icon="mdi-file-tree">
         <router-link to="/pages" class="router-link">Pages</router-link>

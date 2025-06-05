@@ -214,6 +214,7 @@
                 editor
               }
               latest {
+                id
                 published
                 data
                 editor

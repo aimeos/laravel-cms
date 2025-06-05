@@ -332,6 +332,7 @@
                 }
               }
               latest {
+                id
                 published
                 data
                 contents

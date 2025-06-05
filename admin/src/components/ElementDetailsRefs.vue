@@ -39,6 +39,7 @@
                   name
                 }
                 byversions {
+                  id
                   versionable_id
                   versionable_type
                   published

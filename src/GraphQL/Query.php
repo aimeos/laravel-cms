@@ -36,6 +36,7 @@ final class Query
         }
 
         switch( $args['trashed'] ?? null ) {
+            case 'without': $builder->withoutTrashed(); break;
             case 'with': $builder->withTrashed(); break;
             case 'only': $builder->onlyTrashed(); break;
         }
@@ -126,6 +127,7 @@ final class Query
         }
 
         switch( $args['trashed'] ?? null ) {
+            case 'without': $builder->withoutTrashed(); break;
             case 'with': $builder->withTrashed(); break;
             case 'only': $builder->onlyTrashed(); break;
         }
@@ -175,6 +177,7 @@ final class Query
             ->take( min( max( $limit, 1 ), 100 ) );
 
         switch( $trashed ) {
+            case 'without': $builder->withoutTrashed(); break;
             case 'with': $builder->withTrashed(); break;
             case 'only': $builder->onlyTrashed(); break;
         }

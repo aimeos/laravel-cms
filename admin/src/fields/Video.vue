@@ -65,7 +65,7 @@
 
   <Teleport to="body">
     <v-dialog v-model="vfiles" scrollable width="100%">
-      <FileListItems
+      <FileListItems embed
         @update:item="handle($event); vfiles = false"
       />
     </v-dialog>

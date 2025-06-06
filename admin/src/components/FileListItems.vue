@@ -6,7 +6,6 @@
     props: {
       'grid': {type: Boolean, default: false},
       'embed': {type: Boolean, default: false},
-      'mime': {type: [String, null], default: null},
       'filter': {type: Object, default: () => ({})},
     },
 
@@ -302,8 +301,11 @@
         }
 
         const filter = {
-          mime: this.mime,
           any: this.term
+        }
+
+        if(this.filter.mime) {
+          filter.mime = this.filter.mime
         }
 
         if(this.filter.editor) {

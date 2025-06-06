@@ -218,9 +218,9 @@
 
   <Teleport to="body">
     <v-dialog v-model="vfiles" scrollable width="100%">
-      <FileListItems
+      <FileListItems embed
         @update:item="select($event); vfiles = false"
-        mime="image/"
+        :filter="{mime: 'image/'}"
         grid
       />
     </v-dialog>

@@ -47,7 +47,7 @@
     overflow-y: auto;
     position: fixed;
     height: 100vh;
-    width: 100vw;
+    width: 100%;
     left: 0;
     top: 0;
   }

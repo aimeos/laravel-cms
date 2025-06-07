@@ -6,7 +6,7 @@
   import PageDetailsPage from './PageDetailsPage.vue'
   import PageDetailsContent from './PageDetailsContent.vue'
   import PageDetailsPreview from './PageDetailsPreview.vue'
-  import { useAuthStore, useMessageStore } from '../stores'
+  import { useAuthStore, useDrawerStore, useMessageStore } from '../stores'
 
 
   export default {
@@ -36,16 +36,16 @@
       latest: null,
       publishAt: null,
       pubmenu: null,
-      nav: null,
       tab: 'page',
       vhistory: false,
     }),
 
     setup() {
       const messages = useMessageStore()
+      const drawer = useDrawerStore()
       const auth = useAuthStore()
 
-      return { auth, messages }
+      return { auth, drawer, messages }
     },
 
     computed: {
@@ -486,9 +486,9 @@
         </div>
       </v-menu>
 
-      <v-btn @click.stop="nav = !nav">
+      <v-btn @click.stop="drawer.toggle('aside')">
         <v-icon size="x-large">
-          {{ nav ? 'mdi-chevron-right' : 'mdi-chevron-left' }}
+          {{ drawer.aside ? 'mdi-chevron-right' : 'mdi-chevron-left' }}
         </v-icon>
       </v-btn>
     </template>
@@ -542,8 +542,8 @@
     </v-form>
   </v-main>
 
-  <AsideMeta v-if="aside === 'meta'" v-model:state="nav" :item="item" />
-  <AsideCount v-if="aside === 'count'" v-model:state="nav" />
+  <AsideMeta v-if="aside === 'meta'" :item="item" />
+  <AsideCount v-if="aside === 'count'" />
 
   <Teleport to="body">
     <v-dialog v-model="vhistory" scrollable width="auto">

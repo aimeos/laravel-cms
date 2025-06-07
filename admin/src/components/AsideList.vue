@@ -1,17 +1,23 @@
 <script>
+  import { useDrawerStore } from '../stores'
+
   export default {
     props: {
       'content': {type: Array, required: true},
       'filter': {type: Object, required: true},
-      'state': {type: [Boolean, null], required: true}
     },
 
-    emits: ['update:state', 'update:filter'],
+    emits: ['update:filter'],
+
+    setup() {
+      const drawer = useDrawerStore()
+      return { drawer }
+    },
   }
 </script>
 
 <template>
-  <v-navigation-drawer :modelValue="state" @update:modelValue="$emit('update:state', $event)" width="224" mobile-breakpoint="md" location="end">
+  <v-navigation-drawer v-model="drawer.aside" width="224" mobile-breakpoint="md" location="end">
 
     <v-list v-for="(group, index) in content" :key="index" density="compact">
       <v-list-item v-for="(item, idx) in (group.items || [])" @click="$emit('update:filter', item.value)" rounded="lg">

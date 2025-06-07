@@ -1,15 +1,15 @@
 <script>
+  import { useDrawerStore } from '../stores.js'
+
   export default {
     props: {
       'item': {type: Object, required: true},
-      'state': {type: [Boolean, null], required: true}
     },
 
-    emits: ['update:state'],
-
-    data: () => ({
-      width: window.innerWidth
-    }),
+    setup() {
+      const drawer = useDrawerStore()
+      return { drawer }
+    },
 
     computed: {
       values() {
@@ -37,7 +37,7 @@
 </script>
 
 <template>
-  <v-navigation-drawer :modelValue="state" @update:modelValue="$emit('update:state', $event)" width="224" mobile-breakpoint="md" location="end">
+  <v-navigation-drawer v-model="drawer.aside" width="224" mobile-breakpoint="md" location="end">
 
     <div class="title">Meta data</div>
 

@@ -4,7 +4,7 @@
   import AsideMeta from './AsideMeta.vue'
   import ElementDetailsRefs from './ElementDetailsRefs.vue'
   import ElementDetailsElement from './ElementDetailsElement.vue'
-  import { useAuthStore, useMessageStore } from '../stores'
+  import { useAuthStore, useDrawerStore, useMessageStore} from '../stores'
 
 
   export default {
@@ -25,7 +25,6 @@
       assets: {},
       changed: false,
       error: false,
-      nav: null,
       publishAt: null,
       pubmenu: false,
       vhistory: false,
@@ -34,9 +33,10 @@
 
     setup() {
       const messages = useMessageStore()
+      const drawer = useDrawerStore()
       const auth = useAuthStore()
 
-      return { auth, messages }
+      return { auth, drawer, messages }
     },
 
     methods: {
@@ -312,9 +312,9 @@
         </div>
       </v-menu>
 
-      <v-btn @click.stop="nav = !nav">
+      <v-btn @click="drawer.toggle('aside')">
         <v-icon size="x-large">
-          {{ nav ? 'mdi-chevron-right' : 'mdi-chevron-left' }}
+          {{ drawer.aside ? 'mdi-chevron-right' : 'mdi-chevron-left' }}
         </v-icon>
       </v-btn>
     </template>
@@ -348,7 +348,7 @@
     </v-form>
   </v-main>
 
-  <AsideMeta v-model:state="nav" :item="item" />
+  <AsideMeta :item="item" />
 
   <Teleport to="body">
     <v-dialog v-model="vhistory" scrollable width="auto">

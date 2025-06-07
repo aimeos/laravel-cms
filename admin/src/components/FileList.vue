@@ -4,7 +4,7 @@
   import AsideList from './AsideList.vue'
   import Navigation from './Navigation.vue'
   import FileListItems from './FileListItems.vue'
-  import { useAuthStore } from '../stores'
+  import { useAuthStore, useDrawerStore } from '../stores'
 
   export default {
     components: {
@@ -14,20 +14,15 @@
       User
     },
 
-    props: {
-      'nav': {type: Boolean, default: false}
-    },
-
-    emits: ['update:nav', 'update:item'],
-
     data: () => ({
-      aside: null,
       filter: {'trashed': 'WITHOUT'},
     }),
 
     setup() {
+      const drawer = useDrawerStore()
       const auth = useAuthStore()
-      return { auth }
+
+      return { auth, drawer }
     }
   }
 </script>
@@ -35,9 +30,9 @@
 <template>
   <v-app-bar :elevation="1" density="compact">
     <template #prepend>
-      <v-btn @click.stop="$emit('update:nav', !nav)">
+      <v-btn @click="drawer.toggle('nav')">
         <v-icon size="x-large">
-          {{ `mdi-${nav ? 'close' : 'menu'}` }}
+          {{ drawer.nav ? 'mdi-close' : 'mdi-menu' }}
         </v-icon>
       </v-btn>
     </template>
@@ -47,21 +42,21 @@
     <template #append>
       <User />
 
-      <v-btn @click.stop="aside = !aside">
+      <v-btn @click="drawer.toggle('aside')">
         <v-icon size="x-large">
-          {{ aside ? 'mdi-chevron-right' : 'mdi-chevron-left' }}
+          {{ drawer.aside ? 'mdi-chevron-right' : 'mdi-chevron-left' }}
         </v-icon>
       </v-btn>
     </template>
   </v-app-bar>
 
-  <Navigation :state="nav" @update:state="$emit('update:nav', $event)" />
+  <Navigation />
 
   <v-main class="file-list">
     <FileListItems @update:item="$emit('update:item', $event)" :filter="filter" />
   </v-main>
 
-  <AsideList v-model:state="aside" v-model:filter="filter" :content="[{
+  <AsideList v-model:filter="filter" :content="[{
       group: 'trashed',
       items: [
         { title: 'Non-trashed', value: {'trashed': 'WITHOUT'} },

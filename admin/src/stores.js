@@ -139,6 +139,20 @@ export const useConfigStore = defineStore('config', {
 })
 
 
+export const useDrawerStore = defineStore('drawer', {
+  state: () => ({
+    aside: null,
+    nav: null,
+  }),
+
+  actions: {
+    toggle(key) {
+      this[key] = !this[key]
+    }
+  }
+})
+
+
 export const useLanguageStore = defineStore('language', {
   state: () => ({
     available: JSON.parse(app?.dataset.languages || '{}'),

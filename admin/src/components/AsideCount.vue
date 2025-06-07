@@ -1,30 +1,26 @@
 <script>
-  import { useSideStore } from '../stores'
+  import { useDrawerStore, useSideStore } from '../stores'
 
   export default {
-    props: {
-      'state': {type: [Boolean, null], required: true}
-    },
-
-    emits: ['update:state'],
-
     data: () => ({
       active: {},
       panel: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
     }),
 
     setup() {
-      const sidestore = useSideStore()
-      return { sidestore }
+      const drawer = useDrawerStore()
+      const side = useSideStore()
+
+      return { drawer, side }
     },
 
     computed: {
       stores() {
-        const keys = Object.keys(this.sidestore.store).sort()
+        const keys = Object.keys(this.side.store).sort()
         const map = {}
 
         for(const key of keys) {
-          map[key] = this.sidestore.store[key]
+          map[key] = this.side.store[key]
         }
 
         return map
@@ -58,7 +54,7 @@
 
 
       toggle(key, code) {
-        this.sidestore.toggle(key, code)
+        this.side.toggle(key, code)
         this.active[key][code] = !this.active[key][code]
       }
     }
@@ -66,7 +62,7 @@
 </script>
 
 <template>
-  <v-navigation-drawer :modelValue="state" @update:modelValue="$emit('update:state', $event)" width="224" mobile-breakpoint="md" location="end">
+  <v-navigation-drawer v-model="drawer.aside" width="224" mobile-breakpoint="md" location="end">
 
     <v-expansion-panels variant="accordion" v-model="panel" multiple>
       <v-expansion-panel v-for="(items, key) in stores" :key="key" v-show="Object.keys(items).length" :class="key" elevation="0">

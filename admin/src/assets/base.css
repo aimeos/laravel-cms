@@ -20,11 +20,9 @@ input:-webkit-autofill:focus {
 }
 
 
-body,
-.v-main {
+body {
   --cms-primary: 64, 112, 160;
   --cms-primary-dark: 16, 64, 112;
-  background-color: rgb(var(--v-theme-background));
 }
 
 .v-snackbar__content {
@@ -63,16 +61,6 @@ body,
 .v-dialog > .v-overlay__content {
   max-width: calc(100% - 2.5%) !important;
   margin: 0 !important;
-}
-
-.slide-enter-active,
-.slide-leave-active {
-  transition: all 0.25s;
-}
-
-.slide-enter-from,
-.slide-leave-to {
-  transform: translateX(100%);
 }
 
 .v-window,

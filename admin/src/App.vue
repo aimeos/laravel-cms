@@ -1,7 +1,40 @@
 <script>
+  import { computed, markRaw, provide } from 'vue'
   import { useConfigStore, useSchemaStore } from './stores'
 
   export default {
+    data() {
+      return {
+        viewStack: [],
+      }
+    },
+
+    provide() {
+      return {
+        openView: this.open,
+        closeView: this.close,
+      }
+    },
+
+    methods: {
+      open(component, props = {}) {
+        if(!component) {
+          console.error('Component is not defined')
+          return
+        }
+
+        this.viewStack.push({
+          component: markRaw(component),
+          props: props || {},
+        })
+      },
+
+
+      close() {
+        this.viewStack.pop()
+      },
+    },
+
     setup() {
       const config = useConfigStore()
 
@@ -205,8 +238,38 @@
 </script>
 
 <template>
-  <router-view></router-view>
+  <v-app>
+    <transition-group name="slide-stack">
+      <v-layout key="list" class="view" style="z-index: 10">
+        <router-view />
+      </v-layout>
+
+      <v-layout v-for="(view, i) in viewStack" :key="i" class="view" :style="{ zIndex: 10 + i }">
+        <component :is="view.component" v-bind="view.props" />
+      </v-layout>
+    </transition-group>
+  </v-app>
 </template>
 
 <style>
+  .view {
+    position: absolute !important;
+    background: rgb(var(--v-theme-background));
+    min-height: 100vh;
+    width: 100%;
+  }
+
+  /* Slide animation */
+  .slide-stack-enter-active,
+  .slide-stack-leave-active {
+    transition: transform 0.3s ease;
+  }
+
+  .slide-stack-enter-from {
+    transform: translateX(100%);
+  }
+
+  .slide-stack-leave-to {
+    transform: translateX(100%);
+  }
 </style>

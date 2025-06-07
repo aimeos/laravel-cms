@@ -19,11 +19,11 @@
       PageDetailsPreview
     },
 
+    inject: ['closeView'],
+
     props: {
       'item': {type: Object, required: true}
     },
-
-    emits: ['update:item', 'close'],
 
     data: () => ({
       aside: 'meta',
@@ -106,7 +106,7 @@
               this.messages.add(`Page scheduled for publishing at ${at.toLocaleDateString()}`, 'info')
             }
 
-            this.$emit('close')
+            this.closeView()
           }).catch(error => {
             this.messages.add('Error publishing page', 'error')
             this.$log(`PageDetails::publish(): Error publishing page`, at, error)
@@ -206,7 +206,7 @@
               this.messages.add('Page saved successfully', 'success')
             }
 
-            this.$emit('close')
+            this.closeView()
             return true
           }).catch(error => {
             this.messages.add('Error saving page', 'error')
@@ -438,7 +438,7 @@
   <v-app-bar :elevation="1" density="compact">
     <template v-slot:prepend>
       <v-btn icon="mdi-keyboard-backspace"
-        @click="$emit('close')"
+        @click="closeView()"
         elevation="0"
       ></v-btn>
     </template>
@@ -578,6 +578,10 @@
 <style scoped>
   .v-toolbar-title {
     margin-inline-start: 0;
+  }
+
+  .v-window {
+    margin: 0 1%;
   }
 
   .menu-publish {

@@ -11,15 +11,15 @@
     components: {
       History,
       AsideMeta,
-      ElementDetailsElement,
-      ElementDetailsRefs
+      ElementDetailsRefs,
+      ElementDetailsElement
     },
+
+    inject: ['closeView'],
 
     props: {
       'item': {type: Object, required: true}
     },
-
-    emits: ['update:item', 'close'],
 
     data: () => ({
       assets: {},
@@ -74,7 +74,7 @@
               this.messages.add(`Element scheduled for publishing at ${at.toLocaleDateString()}`, 'info')
             }
 
-            this.$emit('close')
+            this.closeView()
           }).catch(error => {
             this.messages.add('Error publishing element', 'error')
             this.$log(`ElementDetails::publish(): Error publishing element`, at, error)
@@ -129,7 +129,7 @@
             this.messages.add('Element saved successfully', 'success')
           }
 
-          this.$emit('close')
+          this.closeView()
           return true
         }).catch(error => {
           this.messages.add('Error saving element', 'error')
@@ -264,7 +264,7 @@
   <v-app-bar :elevation="1" density="compact">
     <template v-slot:prepend>
       <v-btn icon="mdi-keyboard-backspace"
-        @click="$emit('close')"
+        @click="closeView()"
         elevation="0"
       ></v-btn>
     </template>
@@ -374,6 +374,10 @@
 <style scoped>
   .v-toolbar-title {
     margin-inline-start: 0;
+  }
+
+  .v-window {
+    margin: 0 1%;
   }
 
   .menu-publish {

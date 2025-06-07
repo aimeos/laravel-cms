@@ -156,6 +156,7 @@
 <template>
   <v-container v-observe-visibility="store">
     <v-sheet>
+
       <v-expansion-panels class="list" v-model="panel" elevation="0" multiple>
 
         <v-expansion-panel v-for="(el, code) in item.meta || {}" :key="code" :class="{changed: el._changed, error: el._error}" v-show="shown(el)">

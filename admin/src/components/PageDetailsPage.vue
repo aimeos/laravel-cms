@@ -114,8 +114,4 @@
     padding-top: 0;
     padding-bottom: 0;
   }
-
-  .v-window-item {
-    padding: 0 0.25rem;
-  }
 </style>

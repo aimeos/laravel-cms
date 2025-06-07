@@ -308,10 +308,12 @@
               contents
               files {
                 id
+                tag
                 mime
                 name
                 path
                 previews
+                description
                 updated_at
                 editor
               }
@@ -323,10 +325,12 @@
                 updated_at
                 files {
                   id
+                  tag
                   mime
                   name
                   path
                   previews
+                  description
                   updated_at
                   editor
                 }
@@ -340,10 +344,12 @@
                 created_at
                 files {
                   id
+                  tag
                   mime
                   name
                   path
                   previews
+                  description
                   updated_at
                   editor
                 }
@@ -356,10 +362,12 @@
                   updated_at
                   files {
                     id
+                    tag
                     mime
                     name
                     path
                     previews
+                    description
                     updated_at
                     editor
                   }
@@ -388,13 +396,21 @@
               ...entry,
               data: JSON.parse(entry.data || '{}'),
               files: (entry.files || []).map(file => {
-                return {...file, previews: JSON.parse(file.previews || '{}')}
+                return {
+                  ...file,
+                  previews: JSON.parse(file.previews || '{}'),
+                  description: JSON.parse(file.description || '{}')
+                }
               })
             }
           }
 
           for(const entry of (this.latest?.files || page.files || [])) {
-            this.assets[entry.id] = {...entry, previews: JSON.parse(entry.previews || '{}')}
+            this.assets[entry.id] = {
+              ...entry,
+              previews: JSON.parse(entry.previews || '{}'),
+              description: JSON.parse(entry.description || '{}')
+            }
           }
 
           for(const entry of this.contents) {

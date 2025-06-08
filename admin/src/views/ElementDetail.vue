@@ -1,9 +1,9 @@
 <script>
   import gql from 'graphql-tag'
-  import History from './History.vue'
-  import AsideMeta from './AsideMeta.vue'
-  import ElementDetailsRefs from './ElementDetailsRefs.vue'
-  import ElementDetailsElement from './ElementDetailsElement.vue'
+  import History from '../components/History.vue'
+  import AsideMeta from '../components/AsideMeta.vue'
+  import ElementDetailRefs from '../components/ElementDetailRefs.vue'
+  import ElementDetailElement from '../components/ElementDetailElement.vue'
   import { useAuthStore, useDrawerStore, useMessageStore} from '../stores'
 
 
@@ -11,8 +11,8 @@
     components: {
       History,
       AsideMeta,
-      ElementDetailsRefs,
-      ElementDetailsElement
+      ElementDetailRefs,
+      ElementDetailElement
     },
 
     inject: ['closeView'],
@@ -97,7 +97,7 @@
         this.item.files = files
       }).catch(error => {
         this.messages.add('Error fetching element', 'error')
-        this.$log(`ElementDetails::watch(item): Error fetching element`, error)
+        this.$log(`ElementDetail::watch(item): Error fetching element`, error)
       })
     },
 
@@ -139,7 +139,7 @@
             this.closeView()
           }).catch(error => {
             this.messages.add('Error publishing element', 'error')
-            this.$log(`ElementDetails::publish(): Error publishing element`, at, error)
+            this.$log(`ElementDetail::publish(): Error publishing element`, at, error)
           })
         })
       },
@@ -195,7 +195,7 @@
           return true
         }).catch(error => {
           this.messages.add('Error saving element', 'error')
-          this.$log(`ElementDetails::save(): Error saving element`, error)
+          this.$log(`ElementDetail::save(): Error saving element`, error)
         })
       },
 
@@ -251,7 +251,7 @@
           }).reverse() // latest versions first
         }).catch(error => {
           this.messages.add('Error fetching element versions', 'error')
-          this.$log(`ElementDetails::versions(): Error fetching element versions`, id, error)
+          this.$log(`ElementDetail::versions(): Error fetching element versions`, id, error)
         })
       }
     }
@@ -328,7 +328,7 @@
       <v-window v-model="tab">
 
         <v-window-item value="element">
-          <ElementDetailsElement
+          <ElementDetailElement
             :item="item"
             :assets="assets"
             @update:item="this.$emit('update:item', item); changed = true"
@@ -337,7 +337,7 @@
         </v-window-item>
 
         <v-window-item value="refs">
-          <ElementDetailsRefs
+          <ElementDetailRefs
             :item="item"
           />
         </v-window-item>

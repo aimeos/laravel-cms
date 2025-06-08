@@ -1,11 +1,11 @@
 <script>
   import gql from 'graphql-tag'
-  import FileDetails from './FileDetails.vue'
+  import FileDetail from '../views//FileDetail.vue'
   import { useAppStore, useAuthStore, useMessageStore } from '../stores'
 
   export default {
     components: {
-      FileDetails
+      FileDetail
     },
 
     inject: ['openView'],
@@ -224,7 +224,7 @@
 
 
       open(item) {
-        this.openView(FileDetails, {item: item})
+        this.openView(FileDetail, {item: item})
       },
 
 

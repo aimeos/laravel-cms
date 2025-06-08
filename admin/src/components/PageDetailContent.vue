@@ -1,10 +1,10 @@
 <script>
-  import PageDetailsContentList from './PageDetailsContentList.vue'
+  import PageDetailContentList from './PageDetailContentList.vue'
   import { useConfigStore } from '../stores'
 
   export default {
     components: {
-      PageDetailsContentList
+      PageDetailContentList
     },
 
     props: {
@@ -119,7 +119,7 @@
     <v-window v-model="tab">
 
       <v-window-item v-for="(list, section) in sections" :key="section" :value="section">
-        <PageDetailsContentList
+        <PageDetailContentList
           :section="section"
           :item="item"
           :contents="list"
@@ -134,7 +134,7 @@
     </v-window>
   </div>
 
-  <PageDetailsContentList v-else
+  <PageDetailContentList v-else
     :item="item"
     :contents="contents"
     :elements="elements"

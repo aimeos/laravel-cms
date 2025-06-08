@@ -1,9 +1,9 @@
 <script>
   import gql from 'graphql-tag'
-  import History from './History.vue'
-  import AsideMeta from './AsideMeta.vue'
-  import FileDetailsRefs from './FileDetailsRefs.vue'
-  import FileDetailsFile from './FileDetailsFile.vue'
+  import History from '../components/History.vue'
+  import AsideMeta from '../components/AsideMeta.vue'
+  import FileDetailRefs from '../components/FileDetailRefs.vue'
+  import FileDetailFile from '../components/FileDetailFile.vue'
   import { useAuthStore, useDrawerStore, useMessageStore } from '../stores'
 
 
@@ -11,8 +11,8 @@
     components: {
       History,
       AsideMeta,
-      FileDetailsFile,
-      FileDetailsRefs
+      FileDetailFile,
+      FileDetailRefs
     },
 
     inject: ['closeView'],
@@ -76,7 +76,7 @@
             this.closeView()
           }).catch(error => {
             this.messages.add('Error publishing file', 'error')
-            this.$log(`FileDetails::publish(): Error publishing file`, at, error)
+            this.$log(`FileDetail::publish(): Error publishing file`, at, error)
           })
         })
       },
@@ -128,7 +128,7 @@
           return true
         }).catch(error => {
           this.messages.add('Error saving file', 'error')
-          this.$log(`FileDetails::save(): Error saving file`, error)
+          this.$log(`FileDetail::save(): Error saving file`, error)
         })
       },
 
@@ -180,7 +180,7 @@
           }).reverse() // latest versions first
         }).catch(error => {
           this.messages.add('Error fetching file versions', 'error')
-          this.$log(`FileDetails::versions(): Error fetching file versions`, id, error)
+          this.$log(`FileDetail::versions(): Error fetching file versions`, id, error)
         })
       }
     }
@@ -257,7 +257,7 @@
       <v-window v-model="tab">
 
         <v-window-item value="file">
-          <FileDetailsFile
+          <FileDetailFile
             :item="item"
             @update:item="this.$emit('update:item', item); changed = true"
             @error="error = $event"
@@ -265,7 +265,7 @@
         </v-window-item>
 
         <v-window-item value="refs">
-          <FileDetailsRefs
+          <FileDetailRefs
             :item="item"
           />
         </v-window-item>

@@ -12,7 +12,7 @@ const router = createRouter({
     {
       path: '/pages',
       name: 'page:view',
-      component: () => import('./components/PageList.vue'),
+      component: () => import('./views/PageList.vue'),
       meta: {
         auth: true
       }
@@ -20,7 +20,7 @@ const router = createRouter({
     {
       path: '/elements',
       name: 'element:view',
-      component: () => import('./components/ElementList.vue'),
+      component: () => import('./views/ElementList.vue'),
       meta: {
         auth: true
       }
@@ -28,7 +28,7 @@ const router = createRouter({
     {
       path: '/files',
       name: 'file:view',
-      component: () => import('./components/FileList.vue'),
+      component: () => import('./views/FileList.vue'),
       meta: {
         auth: true
       }

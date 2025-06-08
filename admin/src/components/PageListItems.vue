@@ -3,11 +3,11 @@
   import { Draggable } from '@he-tree/vue'
   import { dragContext } from '@he-tree/vue'
   import { useAppStore, useAuthStore, useLanguageStore, useMessageStore } from '../stores'
-  import PageDetails from './PageDetails.vue'
+  import PageDetail from '../views//PageDetail.vue'
 
   export default {
     components: {
-      PageDetails,
+      PageDetail,
       Draggable
     },
 
@@ -455,7 +455,7 @@
 
 
       open(node) {
-        this.openView(PageDetails, {item: node})
+        this.openView(PageDetail, {item: node})
       },
 
 

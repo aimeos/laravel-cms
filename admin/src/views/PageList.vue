@@ -1,21 +1,20 @@
 <script>
   import gql from 'graphql-tag'
-  import User from './User.vue'
-  import AsideList from './AsideList.vue'
-  import Navigation from './Navigation.vue'
-  import ElementListItems from './ElementListItems.vue'
+  import User from '../components/User.vue'
+  import AsideList from '../components/AsideList.vue'
+  import Navigation from '../components/Navigation.vue'
+  import PageListItems from '../components/PageListItems.vue'
   import { useAuthStore, useDrawerStore } from '../stores'
 
   export default {
     components: {
-      ElementListItems,
+      PageListItems,
       Navigation,
       AsideList,
       User
     },
 
     data: () => ({
-      aside: null,
       filter: {'trashed': 'WITHOUT'},
     }),
 
@@ -38,7 +37,7 @@
       </v-btn>
     </template>
 
-    <v-app-bar-title>Shared elements</v-app-bar-title>
+    <v-app-bar-title>Pages</v-app-bar-title>
 
     <template #append>
       <User />
@@ -53,8 +52,8 @@
 
   <Navigation />
 
-  <v-main class="element-list">
-    <ElementListItems @update:item="$emit('update:item', $event)" :filter="filter" />
+  <v-main class="page-list">
+    <PageListItems @update:item="$emit('update:item', $event)" :filter="filter" />
   </v-main>
 
   <AsideList v-model:filter="filter" :content="[{

@@ -1,11 +1,11 @@
 <script>
   import gql from 'graphql-tag'
-  import History from './History.vue'
-  import AsideMeta from './AsideMeta.vue'
-  import AsideCount from './AsideCount.vue'
-  import PageDetailsPage from './PageDetailsPage.vue'
-  import PageDetailsContent from './PageDetailsContent.vue'
-  import PageDetailsPreview from './PageDetailsPreview.vue'
+  import History from '../components/History.vue'
+  import AsideMeta from '../components/AsideMeta.vue'
+  import AsideCount from '../components/AsideCount.vue'
+  import PageDetailPage from '../components/PageDetailPage.vue'
+  import PageDetailContent from '../components/PageDetailContent.vue'
+  import PageDetailPreview from '../components/PageDetailPreview.vue'
   import { useAuthStore, useDrawerStore, useMessageStore } from '../stores'
 
 
@@ -14,9 +14,9 @@
       History,
       AsideMeta,
       AsideCount,
-      PageDetailsPage,
-      PageDetailsContent,
-      PageDetailsPreview
+      PageDetailPage,
+      PageDetailContent,
+      PageDetailPreview
     },
 
     inject: ['closeView'],
@@ -184,7 +184,7 @@
         }
       }).catch(error => {
         this.messages.add('Error fetching page', 'error')
-        this.$log(`PageDetails::watch(item): Error fetching page`, error)
+        this.$log(`PageDetail::watch(item): Error fetching page`, error)
       })
     },
 
@@ -239,7 +239,7 @@
             this.closeView()
           }).catch(error => {
             this.messages.add('Error publishing page', 'error')
-            this.$log(`PageDetails::publish(): Error publishing page`, at, error)
+            this.$log(`PageDetail::publish(): Error publishing page`, at, error)
           })
         })
       },
@@ -340,7 +340,7 @@
             return true
           }).catch(error => {
             this.messages.add('Error saving page', 'error')
-            this.$log(`PageDetails::save(): Error saving page`, error)
+            this.$log(`PageDetail::save(): Error saving page`, error)
           })
         })
       },
@@ -420,7 +420,7 @@
           }).reverse() // latest versions first
         }).catch(error => {
           this.messages.add('Error fetching page versions', 'error')
-          this.$log(`PageDetails::versions(): Error fetching page versions`, id, error)
+          this.$log(`PageDetail::versions(): Error fetching page versions`, id, error)
         })
       }
     },
@@ -512,7 +512,7 @@
       <v-window v-model="tab">
 
         <v-window-item value="page">
-          <PageDetailsPage ref="page"
+          <PageDetailPage ref="page"
             :item="item"
             :assets="assets"
             @update:item="update('page', $event)"
@@ -522,7 +522,7 @@
         </v-window-item>
 
         <v-window-item value="contents">
-          <PageDetailsContent ref="contents"
+          <PageDetailContent ref="contents"
             :item="item"
             :assets="assets"
             :elements="elements"
@@ -534,7 +534,7 @@
         </v-window-item>
 
         <v-window-item value="preview">
-          <PageDetailsPreview :item="item" />
+          <PageDetailPreview :item="item" />
         </v-window-item>
 
       </v-window>

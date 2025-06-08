@@ -229,7 +229,7 @@
           this.store()
         }).catch(error => {
           this.messages.add('Unable to make element shared', 'error')
-          this.$log(`PageDetailsContentList::share(): Error making element shared`, idx, error)
+          this.$log(`PageDetailContentList::share(): Error making element shared`, idx, error)
         })
       },
 

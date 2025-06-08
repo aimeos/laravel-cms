@@ -1,13 +1,13 @@
 <script>
   import gql from 'graphql-tag'
   import SchemaItems from './SchemaItems.vue'
-  import ElementDetails from './ElementDetails.vue'
+  import ElementDetail from '../views/ElementDetail.vue'
   import { useAuthStore, useMessageStore } from '../stores'
 
   export default {
     components: {
       SchemaItems,
-      ElementDetails
+      ElementDetail
     },
 
     inject: ['openView'],
@@ -214,7 +214,7 @@
 
 
       open(item) {
-        this.openView(ElementDetails, {item: item})
+        this.openView(ElementDetail, {item: item})
       },
 
 

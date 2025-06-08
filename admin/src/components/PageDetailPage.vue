@@ -1,13 +1,13 @@
 <script>
-  import PageDetailsPageMeta from './PageDetailsPageMeta.vue'
-  import PageDetailsPageProps from './PageDetailsPageProps.vue'
-  import PageDetailsPageConfig from './PageDetailsPageConfig.vue'
+  import PageDetailPageMeta from './PageDetailPageMeta.vue'
+  import PageDetailPageProps from './PageDetailPageProps.vue'
+  import PageDetailPageConfig from './PageDetailPageConfig.vue'
 
   export default {
     components: {
-      PageDetailsPageMeta,
-      PageDetailsPageProps,
-      PageDetailsPageConfig,
+      PageDetailPageMeta,
+      PageDetailPageProps,
+      PageDetailPageConfig,
     },
 
     props: {
@@ -64,7 +64,7 @@
         <v-tab value="details"
           :class="{changed: changed.details, error: errors.details}"
           @click="$emit('update:aside', 'meta')"
-        >Details</v-tab>
+        >Detail</v-tab>
         <v-tab value="meta"
           :class="{changed: changed.meta, error: errors.meta}"
           @click="$emit('update:aside', 'count')"
@@ -80,7 +80,7 @@
   <v-window v-model="tab">
 
     <v-window-item value="details">
-      <PageDetailsPageProps ref="props"
+      <PageDetailPageProps ref="props"
         :item="item"
         :assets="assets"
         @change="update('details')"
@@ -89,7 +89,7 @@
     </v-window-item>
 
     <v-window-item value="meta">
-      <PageDetailsPageMeta ref="meta"
+      <PageDetailPageMeta ref="meta"
         :item="item"
         :assets="assets"
         @change="update('meta')"
@@ -98,7 +98,7 @@
     </v-window-item>
 
     <v-window-item value="config">
-      <PageDetailsPageConfig ref="config"
+      <PageDetailPageConfig ref="config"
         :item="item"
         :assets="assets"
         @change="update('config')"

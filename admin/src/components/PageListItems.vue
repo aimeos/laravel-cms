@@ -646,7 +646,7 @@
           return this.transform(result.data.pages)
         }).catch(error => {
           this.messages.add('Error searching pages', 'error')
-          this.$log(`PageList::search(): Error searching pages`, term, page, limit, error)
+          this.$log(`PageList::search(): Error searching pages`, page, limit, error)
         })
       },
 

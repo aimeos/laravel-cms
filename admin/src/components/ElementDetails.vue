@@ -39,6 +39,68 @@
       return { auth, drawer, messages }
     },
 
+    created() {
+      if(!this.item?.id || !this.auth.can('element:view')) {
+        return
+      }
+
+      this.$apollo.query({
+        query: gql`query($id: ID!) {
+          element(id: $id) {
+            id
+            files {
+              id
+              mime
+              name
+              path
+              previews
+              updated_at
+              editor
+            }
+            latest {
+              id
+              published
+              data
+              editor
+              created_at
+              files {
+                id
+                mime
+                name
+                path
+                previews
+                updated_at
+                editor
+              }
+            }
+          }
+        }`,
+        variables: {
+          id: this.item.id
+        }
+      }).then(result => {
+        if(result.errors || !result.data.element) {
+          throw result
+        }
+
+        const files = []
+        const element = result.data.element
+
+        this.reset()
+        this.assets = {}
+
+        for(const entry of (element.latest?.files || element.files || [])) {
+          this.assets[entry.id] = {...entry, previews: JSON.parse(entry.previews || '{}')}
+          files.push(entry.id)
+        }
+
+        this.item.files = files
+      }).catch(error => {
+        this.messages.add('Error fetching element', 'error')
+        this.$log(`ElementDetails::watch(item): Error fetching element`, error)
+      })
+    },
+
     methods: {
       publish(at = null) {
         if(!this.auth.can('element:publish')) {
@@ -190,70 +252,6 @@
         }).catch(error => {
           this.messages.add('Error fetching element versions', 'error')
           this.$log(`ElementDetails::versions(): Error fetching element versions`, id, error)
-        })
-      }
-    },
-
-    watch: {
-      item() {
-        if(!this.item?.id || !this.auth.can('element:view')) {
-          return
-        }
-
-        this.$apollo.query({
-          query: gql`query($id: ID!) {
-            element(id: $id) {
-              id
-              files {
-                id
-                mime
-                name
-                path
-                previews
-                updated_at
-                editor
-              }
-              latest {
-                id
-                published
-                data
-                editor
-                created_at
-                files {
-                  id
-                  mime
-                  name
-                  path
-                  previews
-                  updated_at
-                  editor
-                }
-              }
-            }
-          }`,
-          variables: {
-            id: this.item.id
-          }
-        }).then(result => {
-          if(result.errors || !result.data.element) {
-            throw result
-          }
-
-          const files = []
-          const element = result.data.element
-
-          this.reset()
-          this.assets = {}
-
-          for(const entry of (element.latest?.files || element.files || [])) {
-            this.assets[entry.id] = {...entry, previews: JSON.parse(entry.previews || '{}')}
-            files.push(entry.id)
-          }
-
-          this.item.files = files
-        }).catch(error => {
-          this.messages.add('Error fetching element', 'error')
-          this.$log(`ElementDetails::watch(item): Error fetching element`, error)
         })
       }
     }

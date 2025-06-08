@@ -26,6 +26,7 @@
     },
 
     data: () => ({
+      tab: 'page',
       aside: 'meta',
       asidePage: 'meta',
       changed: {},
@@ -34,9 +35,8 @@
       elements: {},
       contents: [],
       latest: null,
-      publishAt: null,
       pubmenu: null,
-      tab: 'page',
+      publishAt: null,
       vhistory: false,
     }),
 
@@ -56,6 +56,136 @@
       hasError() {
         return Object.values(this.errors).some(entry => entry)
       }
+    },
+
+    created() {
+      if(!this.item?.id || !this.auth.can('page:view')) {
+        return
+      }
+
+      this.$apollo.query({
+        query: gql`query($id: ID!) {
+          page(id: $id) {
+            id
+            contents
+            files {
+              id
+              tag
+              mime
+              name
+              path
+              previews
+              description
+              updated_at
+              editor
+            }
+            elements {
+              id
+              type
+              data
+              editor
+              updated_at
+              files {
+                id
+                tag
+                mime
+                name
+                path
+                previews
+                description
+                updated_at
+                editor
+              }
+            }
+            latest {
+              id
+              published
+              data
+              contents
+              editor
+              created_at
+              files {
+                id
+                tag
+                mime
+                name
+                path
+                previews
+                description
+                updated_at
+                editor
+              }
+              elements {
+                id
+                type
+                data
+                name
+                editor
+                updated_at
+                files {
+                  id
+                  tag
+                  mime
+                  name
+                  path
+                  previews
+                  description
+                  updated_at
+                  editor
+                }
+              }
+            }
+          }
+        }`,
+        variables: {
+          id: this.item.id
+        }
+      }).then(result => {
+        if(result.errors || !result.data.page) {
+          throw result
+        }
+
+        const page = result.data.page
+
+        this.reset()
+        this.assets = {}
+        this.elements = {}
+        this.latest = page.latest
+        this.contents = JSON.parse(this.latest?.contents || page.contents || '[]')
+
+        for(const entry of (this.latest?.elements || page.elements || [])) {
+          this.elements[entry.id] = {
+            ...entry,
+            data: JSON.parse(entry.data || '{}'),
+            files: (entry.files || []).map(file => {
+              return {
+                ...file,
+                previews: JSON.parse(file.previews || '{}'),
+                description: JSON.parse(file.description || '{}')
+              }
+            })
+          }
+        }
+
+        for(const entry of (this.latest?.files || page.files || [])) {
+          this.assets[entry.id] = {
+            ...entry,
+            previews: JSON.parse(entry.previews || '{}'),
+            description: JSON.parse(entry.description || '{}')
+          }
+        }
+
+        for(const entry of this.contents) {
+          if(entry.files && Array.isArray(entry.files)) {
+            entry.files = entry.files.filter(id => {
+              return typeof this.assets[id] !== 'undefined'
+            })
+          }
+        }
+      }).catch(error => {
+        this.messages.add('Error fetching page', 'error')
+        this.$log(`PageDetails::watch(item): Error fetching page`, error)
+      })
     },
 
     methods: {
@@ -296,137 +426,6 @@
     },
 
     watch: {
-      item() {
-        if(!this.item?.id || !this.auth.can('page:view')) {
-          return
-        }
-
-        this.$apollo.query({
-          query: gql`query($id: ID!) {
-            page(id: $id) {
-              id
-              contents
-              files {
-                id
-                tag
-                mime
-                name
-                path
-                previews
-                description
-                updated_at
-                editor
-              }
-              elements {
-                id
-                type
-                data
-                editor
-                updated_at
-                files {
-                  id
-                  tag
-                  mime
-                  name
-                  path
-                  previews
-                  description
-                  updated_at
-                  editor
-                }
-              }
-              latest {
-                id
-                published
-                data
-                contents
-                editor
-                created_at
-                files {
-                  id
-                  tag
-                  mime
-                  name
-                  path
-                  previews
-                  description
-                  updated_at
-                  editor
-                }
-                elements {
-                  id
-                  type
-                  data
-                  name
-                  editor
-                  updated_at
-                  files {
-                    id
-                    tag
-                    mime
-                    name
-                    path
-                    previews
-                    description
-                    updated_at
-                    editor
-                  }
-                }
-              }
-            }
-          }`,
-          variables: {
-            id: this.item.id
-          }
-        }).then(result => {
-          if(result.errors || !result.data.page) {
-            throw result
-          }
-
-          const page = result.data.page
-
-          this.reset()
-          this.assets = {}
-          this.elements = {}
-          this.latest = page.latest
-          this.contents = JSON.parse(this.latest?.contents || page.contents || '[]')
-
-          for(const entry of (this.latest?.elements || page.elements || [])) {
-            this.elements[entry.id] = {
-              ...entry,
-              data: JSON.parse(entry.data || '{}'),
-              files: (entry.files || []).map(file => {
-                return {
-                  ...file,
-                  previews: JSON.parse(file.previews || '{}'),
-                  description: JSON.parse(file.description || '{}')
-                }
-              })
-            }
-          }
-
-          for(const entry of (this.latest?.files || page.files || [])) {
-            this.assets[entry.id] = {
-              ...entry,
-              previews: JSON.parse(entry.previews || '{}'),
-              description: JSON.parse(entry.description || '{}')
-            }
-          }
-
-          for(const entry of this.contents) {
-            if(entry.files && Array.isArray(entry.files)) {
-              entry.files = entry.files.filter(id => {
-                return typeof this.assets[id] !== 'undefined'
-              })
-            }
-          }
-        }).catch(error => {
-          this.messages.add('Error fetching page', 'error')
-          this.$log(`PageDetails::watch(item): Error fetching page`, error)
-        })
-      },
-
-
       asidePage(newAside) {
         this.aside = newAside
       }

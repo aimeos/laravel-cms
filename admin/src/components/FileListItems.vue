@@ -394,7 +394,7 @@
           return this.items
         }).catch(error => {
           this.messages.add('Error fetching files', 'error')
-          this.$log(`FileListItems::search(): Error fetching files`, filter, page, limit, error)
+          this.$log(`FileListItems::search(): Error fetching files`, error)
         })
       },
 

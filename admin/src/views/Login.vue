@@ -106,11 +106,12 @@
 </template>
 
 <style>
-  #app {
+  .login {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100vh;
+    width: 100%;
   }
 
   .login .v-card {

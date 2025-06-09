@@ -3,12 +3,16 @@
   import { VueDraggable } from 'vue-draggable-plus'
   import { useAppStore, useAuthStore } from '../stores'
   import FileListItems from '../components/FileListItems.vue'
+  import FileDetail from '../views/FileDetail.vue'
 
   export default {
     components: {
+      FileDetail,
       FileListItems,
       VueDraggable
     },
+
+    inject: ['openView'],
 
     props: {
       'modelValue': {type: Array, default: () => []},
@@ -118,6 +122,11 @@
       },
 
 
+      open(item) {
+        this.openView(FileDetail, {item: item})
+      },
+
+
       remove(idx) {
         if(this.images[idx]?.id) {
           this.$emit('removeFile', this.images[idx].id)
@@ -176,7 +185,7 @@
 <template>
   <VueDraggable v-model="images" :disabled="readonly" @change="change()" draggable=".image" group="images" class="files" animation="500">
 
-    <div v-for="(item, idx) in images" :key="idx" class="image">
+    <div v-for="(item, idx) in images" :key="idx" class="image" @click="open(item)">
       <v-progress-linear v-if="item.uploading"
         color="primary"
         height="5"

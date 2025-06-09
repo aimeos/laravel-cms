@@ -40,7 +40,7 @@
   <v-row>
     <v-col cols="12" md="6">
       <div class="files">
-        <div v-if="file.path" class="file">
+        <div v-if="file.path" class="file" @click="open(file)">
           <v-progress-linear v-if="file.uploading"
             color="primary"
             height="5"

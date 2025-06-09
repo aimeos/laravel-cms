@@ -2,11 +2,15 @@
   import gql from 'graphql-tag'
   import { useAppStore, useAuthStore, useMessageStore } from '../stores'
   import FileListItems from '../components/FileListItems.vue'
+  import FileDetail from '../views/FileDetail.vue'
 
   export default {
     components: {
-      FileListItems
+      FileListItems,
+      FileDetail
     },
+
+    inject: ['openView'],
 
     props: {
       'modelValue': {type: [Object, null], default: () => null},
@@ -112,6 +116,11 @@
       },
 
 
+      open(item) {
+        this.openView(FileDetail, {item: item})
+      },
+
+
       remove() {
         if(this.file.path.startsWith('blob:')) {
           URL.revokeObjectURL(this.file.path)
@@ -171,7 +180,7 @@
   <v-row>
     <v-col cols="12" md="6">
       <div class="files">
-        <div v-if="file.path" class="file">
+        <div v-if="file.path" class="file" @click="open(file)">
           <v-progress-linear v-if="file.uploading"
             color="primary"
             height="5"
@@ -262,8 +271,6 @@
     border-radius: 0.5rem;
     cursor: pointer;
   }
-
-
 
   .files button.delete {
     position: absolute;

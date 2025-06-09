@@ -245,7 +245,9 @@
       </v-layout>
 
       <v-layout v-for="(view, i) in viewStack" :key="i" class="view" :style="{ zIndex: 10 + i }">
-        <component :is="view.component" v-bind="view.props" />
+        <div class="view-scroll">
+          <component :is="view.component" v-bind="view.props" />
+        </div>
       </v-layout>
     </transition-group>
   </v-app>
@@ -253,11 +255,17 @@
 
 <style>
   .view {
-    position: absolute !important;
     background: rgb(var(--v-theme-background));
-    min-height: 100vh;
-    width: 100%;
+    position: absolute !important;
+    inset: 0;
   }
+
+  .view-scroll {
+    width: 100%;
+    overflow-y: auto; /* Only this scrolls */
+    -webkit-overflow-scrolling: touch; /* Smooth scroll on mobile */
+  }
+
 
   /* Slide animation */
   .slide-stack-enter-active,

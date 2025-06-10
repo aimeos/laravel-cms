@@ -70,7 +70,7 @@
             contents
             files {
               id
-              tag
+              lang
               mime
               name
               path
@@ -87,7 +87,7 @@
               updated_at
               files {
                 id
-                tag
+                lang
                 mime
                 name
                 path
@@ -106,7 +106,7 @@
               created_at
               files {
                 id
-                tag
+                lang
                 mime
                 name
                 path
@@ -124,7 +124,7 @@
                 updated_at
                 files {
                   id
-                  tag
+                  lang
                   mime
                   name
                   path
@@ -450,7 +450,7 @@
 
     <template v-slot:append>
       <v-btn icon="mdi-history"
-        :class="{hidden: !hasChanged && !latest}"
+        :class="{hidden: item.published && !hasChanged && !latest}"
         @click="vhistory = true"
         elevation="0"
       ></v-btn>

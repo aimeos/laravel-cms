@@ -109,7 +109,7 @@
             input: {
               description: JSON.stringify(this.item.description || {}),
               name: this.item.name,
-              tag: this.item.tag,
+              lang: this.item.lang,
             }
           }
         }).then(result => {
@@ -204,7 +204,7 @@
 
     <template v-slot:append>
       <v-btn icon="mdi-history"
-        :class="{hidden: !changed && !item.latest}"
+        :class="{hidden: item.published && !changed && !item.latest}"
         @click="vhistory = true"
         elevation="0"
       ></v-btn>
@@ -281,7 +281,7 @@
       v-model="vhistory"
       :current="{
         data: {
-          tag: item.tag,
+          lang: item.lang,
           name: item.name,
           mime: item.mime,
           path: item.path,

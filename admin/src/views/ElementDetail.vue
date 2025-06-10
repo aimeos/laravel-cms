@@ -275,7 +275,7 @@
 
     <template v-slot:append>
       <v-btn icon="mdi-history"
-        :class="{hidden: !changed && !item.latest}"
+        :class="{hidden: item.published && !changed && !item.latest}"
         @click="vhistory = true"
         elevation="0"
       ></v-btn>

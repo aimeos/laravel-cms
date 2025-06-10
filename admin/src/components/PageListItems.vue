@@ -66,7 +66,7 @@
           return
         }
 
-        const node = this.create()
+        const item = this.create()
 
         this.$apollo.mutate({
           mutation: gql`mutation ($input: PageInput!) {
@@ -75,18 +75,18 @@
             }
           }`,
           variables: {
-            input: node
+            input: item
           }
         }).then(result => {
           if(result.errors) {
             throw result.errors
           }
 
-          node.id = result.data.addPage.id
-          node.data.published = true
+          item.id = result.data.addPage.id
+          item.published = true
 
-          this.$refs.tree.add(node)
-          this.$emit('select', node)
+          this.$refs.tree.add(item)
+          this.$emit('select', item)
         }).catch(error => {
           this.messages.add('Error adding root page', 'error')
           this.$log(`PageList::add(): Error adding root page`, error)
@@ -331,7 +331,9 @@
             this.$refs.tree.add(node, parent, idx !== null ? pos + idx : 0)
           }
 
-          parent.data.has = true
+          if(parent) {
+            parent.data.has = true
+          }
         }).catch(error => {
           this.messages.add('Error inserting page', 'error')
           this.$log(`PageList::insert(): Error inserting page`, error)
@@ -439,10 +441,12 @@
 
           this.$refs.tree.move(this.clip.stat, parent, index)
 
-          if(!this.clip.stat.children?.length) {
-            stat.parent.data.has = false
+          if(parent) {
+            if(!this.clip.stat.children?.length) {
+              stat.parent.data.has = false
+            }
+            parent.data.has = true
           }
-          parent.data.has = true
         }).catch(error => {
           this.messages.add('Error moving page', 'error')
           this.$log(`PageList::move(): Error moving page`, stat, idx, error)
@@ -493,9 +497,11 @@
           }
 
           const index = idx !== null ? this.$refs.tree.getSiblings(stat).indexOf(stat) + idx : 0
-
           this.$refs.tree.add(node, parent, index)
-          parent.data.has = true
+
+          if(parent) {
+            parent.data.has = true
+          }
         }).catch(error => {
           this.messages.add('Error copying page', 'error')
           this.$log(`PageList::paste(): Error copying page`, stat, idx, error)
@@ -1011,7 +1017,7 @@
   }
 
   .tree-node-inner .spinner {
-    margin-inline-end: 5px;
+    transform: rotate(90deg);
     width: 28px;
   }
 

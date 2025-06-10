@@ -393,11 +393,37 @@ class Page extends Model
 
 
     /**
+     * Interact with the "theme" property.
+     *
+     * @return Attribute Eloquent attribute for the "theme" property
+     */
+    protected function theme(): Attribute
+    {
+        return Attribute::make(
+            set: fn($value) => (string) $value,
+        );
+    }
+
+
+    /**
      * Interact with the "to" property.
      *
      * @return Attribute Eloquent attribute for the "to" property
      */
     protected function to(): Attribute
+    {
+        return Attribute::make(
+            set: fn($value) => (string) $value,
+        );
+    }
+
+
+    /**
+     * Interact with the "type" property.
+     *
+     * @return Attribute Eloquent attribute for the "type" property
+     */
+    protected function type(): Attribute
     {
         return Attribute::make(
             set: fn($value) => (string) $value,

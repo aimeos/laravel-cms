@@ -453,152 +453,148 @@
 </script>
 
 <template>
-  <v-container>
-    <v-sheet class="box">
-      <div class="header">
-        <div class="bulk">
-          <v-checkbox-btn v-model="checked" @click.stop="toggle()"></v-checkbox-btn>
-          <v-menu location="bottom left">
-            <template #activator="{ props }">
-              <v-btn append-icon="mdi-menu-down" variant="outlined" v-bind="props">Actions</v-btn>
-            </template>
-            <v-list>
-              <v-list-item v-if="isChecked && auth.can('file:publish')">
-                <v-btn prepend-icon="mdi-publish" variant="text" @click="publish()">Publish</v-btn>
-              </v-list-item>
-              <v-list-item v-if="!this.embed && auth.can('file:add')">
-                <v-btn prepend-icon="mdi-folder-plus" variant="text" @click="$refs.upload.click()">Add files</v-btn>
-              </v-list-item>
-              <v-list-item v-if="canTrash && auth.can('file:drop')">
-                <v-btn prepend-icon="mdi-delete" variant="text" @click="drop()">Trash</v-btn>
-              </v-list-item>
-              <v-list-item v-if="isTrashed && auth.can('file:keep')">
-                <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="keep()">Restore</v-btn>
-              </v-list-item>
-              <v-list-item v-if="isChecked && auth.can('file:purge')">
-                <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge()">Purge</v-btn>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </div>
+  <div class="header">
+    <div class="bulk">
+      <v-checkbox-btn v-model="checked" @click.stop="toggle()"></v-checkbox-btn>
+      <v-menu location="bottom left">
+        <template #activator="{ props }">
+          <v-btn append-icon="mdi-menu-down" variant="outlined" v-bind="props">Actions</v-btn>
+        </template>
+        <v-list>
+          <v-list-item v-if="isChecked && auth.can('file:publish')">
+            <v-btn prepend-icon="mdi-publish" variant="text" @click="publish()">Publish</v-btn>
+          </v-list-item>
+          <v-list-item v-if="!this.embed && auth.can('file:add')">
+            <v-btn prepend-icon="mdi-folder-plus" variant="text" @click="$refs.upload.click()">Add files</v-btn>
+          </v-list-item>
+          <v-list-item v-if="canTrash && auth.can('file:drop')">
+            <v-btn prepend-icon="mdi-delete" variant="text" @click="drop()">Trash</v-btn>
+          </v-list-item>
+          <v-list-item v-if="isTrashed && auth.can('file:keep')">
+            <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="keep()">Restore</v-btn>
+          </v-list-item>
+          <v-list-item v-if="isChecked && auth.can('file:purge')">
+            <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge()">Purge</v-btn>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </div>
 
-        <div class="search">
-          <v-text-field
-            v-model="term"
-            prepend-inner-icon="mdi-magnify"
-            variant="underlined"
-            label="Search for"
-            hide-details
-            clearable
-          ></v-text-field>
-        </div>
+    <div class="search">
+      <v-text-field
+        v-model="term"
+        prepend-inner-icon="mdi-magnify"
+        variant="underlined"
+        label="Search for"
+        hide-details
+        clearable
+      ></v-text-field>
+    </div>
 
-        <div class="layout">
-          <v-btn v-if="!vgrid" @click="vgrid = true" icon="mdi-view-grid-outline" variant="flat" title="Grid view"></v-btn>
-          <v-btn v-if="vgrid" @click="vgrid = false" icon="mdi-format-list-bulleted-square" variant="flat" title="List view"></v-btn>
+    <div class="layout">
+      <v-btn v-if="!vgrid" @click="vgrid = true" icon="mdi-view-grid-outline" variant="flat" title="Grid view"></v-btn>
+      <v-btn v-if="vgrid" @click="vgrid = false" icon="mdi-format-list-bulleted-square" variant="flat" title="List view"></v-btn>
 
-          <v-menu>
-            <template #activator="{ props }">
-              <v-btn append-icon="mdi-menu-down" prepend-icon="mdi-sort" variant="outlined" location="bottom right" v-bind="props">
-                {{ sort?.column === 'ID' ? (sort?.order === 'DESC' ? 'Latest' : 'Oldest' ) : (sort?.column || '') }}
-              </v-btn>
-            </template>
-            <v-list>
-              <v-list-item>
-                <v-btn variant="text" @click="sort = {column: 'ID', order: 'DESC'}">Latest</v-btn>
-              </v-list-item>
-              <v-list-item>
-                <v-btn variant="text" @click="sort = {column: 'ID', order: 'ASC'}">Oldest</v-btn>
-              </v-list-item>
-              <v-list-item>
-                <v-btn variant="text" @click="sort = {column: 'NAME', order: 'ASC'}">Name</v-btn>
-              </v-list-item>
-              <v-list-item>
-                <v-btn variant="text" @click="sort = {column: 'MIME', order: 'ASC'}">Mime</v-btn>
-              </v-list-item>
-              <v-list-item>
-                <v-btn variant="text" @click="sort = {column: 'TAG', order: 'ASC'}">Tag</v-btn>
-              </v-list-item>
-              <v-list-item>
-                <v-btn variant="text" @click="sort = {column: 'EDITOR', order: 'ASC'}">Editor</v-btn>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </div>
+      <v-menu>
+        <template #activator="{ props }">
+          <v-btn append-icon="mdi-menu-down" prepend-icon="mdi-sort" variant="outlined" location="bottom right" v-bind="props">
+            {{ sort?.column === 'ID' ? (sort?.order === 'DESC' ? 'Latest' : 'Oldest' ) : (sort?.column || '') }}
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item>
+            <v-btn variant="text" @click="sort = {column: 'ID', order: 'DESC'}">Latest</v-btn>
+          </v-list-item>
+          <v-list-item>
+            <v-btn variant="text" @click="sort = {column: 'ID', order: 'ASC'}">Oldest</v-btn>
+          </v-list-item>
+          <v-list-item>
+            <v-btn variant="text" @click="sort = {column: 'NAME', order: 'ASC'}">Name</v-btn>
+          </v-list-item>
+          <v-list-item>
+            <v-btn variant="text" @click="sort = {column: 'MIME', order: 'ASC'}">Mime</v-btn>
+          </v-list-item>
+          <v-list-item>
+            <v-btn variant="text" @click="sort = {column: 'TAG', order: 'ASC'}">Tag</v-btn>
+          </v-list-item>
+          <v-list-item>
+            <v-btn variant="text" @click="sort = {column: 'EDITOR', order: 'ASC'}">Editor</v-btn>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </div>
+  </div>
+
+  <v-list class="items" :class="{grid: vgrid, list: !vgrid}">
+    <v-list-item v-for="(item, idx) in items" :key="idx">
+      <v-checkbox-btn v-model="item._checked" :class="{draft: !item.published}" class="item-check"></v-checkbox-btn>
+
+      <v-menu>
+        <template v-slot:activator="{ props }">
+          <v-btn class="item-menu" icon="mdi-dots-vertical" variant="text" v-bind="props"></v-btn>
+        </template>
+        <v-list>
+          <v-list-item v-show="!item.deleted_at && !item.published && auth.can('file:publish')">
+            <v-btn prepend-icon="mdi-publish" variant="text" @click="publish(item)">Publish</v-btn>
+          </v-list-item>
+          <v-list-item v-if="!item.deleted_at && auth.can('file:drop')">
+            <v-btn prepend-icon="mdi-delete" variant="text" @click="drop(item)">Trash</v-btn>
+          </v-list-item>
+          <v-list-item v-if="item.deleted_at && auth.can('file:keep')">
+            <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="keep(item)">Restore</v-btn>
+          </v-list-item>
+          <v-list-item v-if="auth.can('file:purge')">
+            <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge(item)">Purge</v-btn>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+
+      <div class="item-preview" @click="$emit('select', item)":title="title(item)">
+        <v-img v-if="item.previews"
+          :src="url(item.path)"
+          :srcset="srcset(item.previews)"
+          :alt="item.name"
+        ></v-img>
       </div>
 
-      <v-list class="items" :class="{grid: vgrid, list: !vgrid}">
-        <v-list-item v-for="(item, idx) in items" :key="idx">
-          <v-checkbox-btn v-model="item._checked" :class="{draft: !item.published}" class="item-check"></v-checkbox-btn>
+      <div class="item-content" @click="$emit('select', item)" :class="{trashed: item.deleted_at}" :title="title(item)">
+        <div class="item-text">
+          <v-icon v-if="item.publish_at" class="publish-at" icon="mdi-clock-outline"></v-icon>
+          <span class="item-title">{{ item.name }}</span>
+          <div class="item-mime item-subtitle">{{ item.mime }}</div>
+        </div>
 
-          <v-menu>
-            <template v-slot:activator="{ props }">
-              <v-btn class="item-menu" icon="mdi-dots-vertical" variant="text" v-bind="props"></v-btn>
-            </template>
-            <v-list>
-              <v-list-item v-show="!item.deleted_at && !item.published && auth.can('file:publish')">
-                <v-btn prepend-icon="mdi-publish" variant="text" @click="publish(item)">Publish</v-btn>
-              </v-list-item>
-              <v-list-item v-if="!item.deleted_at && auth.can('file:drop')">
-                <v-btn prepend-icon="mdi-delete" variant="text" @click="drop(item)">Trash</v-btn>
-              </v-list-item>
-              <v-list-item v-if="item.deleted_at && auth.can('file:keep')">
-                <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="keep(item)">Restore</v-btn>
-              </v-list-item>
-              <v-list-item v-if="auth.can('file:purge')">
-                <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge(item)">Purge</v-btn>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-
-          <div class="item-preview" @click="$emit('select', item)":title="title(item)">
-            <v-img v-if="item.previews"
-              :src="url(item.path)"
-              :srcset="srcset(item.previews)"
-              :alt="item.name"
-            ></v-img>
-          </div>
-
-          <div class="item-content" @click="$emit('select', item)" :class="{trashed: item.deleted_at}" :title="title(item)">
-            <div class="item-text">
-              <v-icon v-if="item.publish_at" class="publish-at" icon="mdi-clock-outline"></v-icon>
-              <span class="item-title">{{ item.name }}</span>
-              <div class="item-mime item-subtitle">{{ item.mime }}</div>
-            </div>
-
-            <div class="item-aux">
-              <div class="item-editor">{{ item.editor }}</div>
-              <div class="item-modified item-subtitle">{{ (new Date(item.updated_at)).toLocaleString() }}</div>
-            </div>
-          </div>
-        </v-list-item>
-      </v-list>
-
-      <p v-if="loading" class="loading">
-        Loading
-        <svg class="spinner" width="32" height="32" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle class="spin1" cx="4" cy="12" r="3"/><circle class="spin1 spin2" cx="12" cy="12" r="3"/><circle class="spin1 spin3" cx="20" cy="12" r="3"/></svg>
-      </p>
-
-      <p v-if="!loading && !items.length" class="notfound">
-        No items found
-      </p>
-
-      <v-pagination v-if="last > 1"
-        v-model="page"
-        :length="last"
-      ></v-pagination>
-
-      <div v-if="!this.embed && auth.can('file:add')" class="btn-group">
-        <input @change="add($event)"
-          ref="upload"
-          type="file"
-          multiple
-          hidden
-        />
-        <v-btn color="primary" icon="mdi-folder-plus" @click="$refs.upload.click()"></v-btn>
+        <div class="item-aux">
+          <div class="item-editor">{{ item.editor }}</div>
+          <div class="item-modified item-subtitle">{{ (new Date(item.updated_at)).toLocaleString() }}</div>
+        </div>
       </div>
-    </v-sheet>
-  </v-container>
+    </v-list-item>
+  </v-list>
+
+  <p v-if="loading" class="loading">
+    Loading
+    <svg class="spinner" width="32" height="32" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle class="spin1" cx="4" cy="12" r="3"/><circle class="spin1 spin2" cx="12" cy="12" r="3"/><circle class="spin1 spin3" cx="20" cy="12" r="3"/></svg>
+  </p>
+
+  <p v-if="!loading && !items.length" class="notfound">
+    No items found
+  </p>
+
+  <v-pagination v-if="last > 1"
+    v-model="page"
+    :length="last"
+  ></v-pagination>
+
+  <div v-if="!this.embed && auth.can('file:add')" class="btn-group">
+    <input @change="add($event)"
+      ref="upload"
+      type="file"
+      multiple
+      hidden
+    />
+    <v-btn color="primary" icon="mdi-folder-plus" @click="$refs.upload.click()"></v-btn>
+  </div>
 </template>
 
 <style scoped>

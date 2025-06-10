@@ -30,6 +30,7 @@
 
       <v-card-text>
         <SchemaItems type="content" @add="$emit('add', $event)" />
+
         <v-tabs>
           <v-tab>Shared elements</v-tab>
         </v-tabs>
@@ -42,5 +43,6 @@
 <style scoped>
   .v-tabs {
     background-color: rgb(var(--v-theme-background));
+    margin-bottom: 1rem;
   }
 </style>

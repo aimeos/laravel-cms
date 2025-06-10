@@ -63,7 +63,11 @@
   <Navigation />
 
   <v-main class="file-list">
-    <FileListItems @select="open($event)" :filter="filter" />
+    <v-container>
+      <v-sheet class="box">
+        <FileListItems @select="open($event)" :filter="filter" />
+      </v-sheet>
+    </v-container>
   </v-main>
 
   <AsideList v-model:filter="filter" :content="[{

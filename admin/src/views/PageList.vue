@@ -63,7 +63,11 @@
   <Navigation />
 
   <v-main class="page-list">
-    <PageListItems @select="open($event)" :filter="filter" />
+    <v-container>
+      <v-sheet class="box">
+        <PageListItems @select="open($event)" :filter="filter" />
+      </v-sheet>
+    </v-container>
   </v-main>
 
   <AsideList v-model:filter="filter" :content="[{

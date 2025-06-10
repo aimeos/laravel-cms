@@ -812,209 +812,205 @@
 </script>
 
 <template>
-  <v-container>
-    <v-sheet class="box">
-      <div class="header">
-        <div class="bulk">
-          <v-checkbox-btn v-model="checked" @click.stop="toggle()"></v-checkbox-btn>
-          <v-menu>
-            <template #activator="{ props }">
-              <v-btn append-icon="mdi-menu-down" variant="outlined" v-bind="props">Actions</v-btn>
-            </template>
-            <v-list>
-              <v-list-item v-if="isChecked && auth.can('page:publish')">
-                <v-btn prepend-icon="mdi-publish" variant="text" @click="publish()">Publish</v-btn>
-              </v-list-item>
-              <v-list-item v-if="isChecked && auth.can('page:save')">
-                <v-btn prepend-icon="mdi-eye" variant="text" @click="status(null, 1)">Enable</v-btn>
-              </v-list-item>
-              <v-list-item v-if="isChecked && auth.can('page:save')">
-                <v-btn prepend-icon="mdi-eye-off" variant="text" @click="status(null, 0)">Disable</v-btn>
-              </v-list-item>
-              <v-list-item v-if="canTrash && auth.can('page:drop')">
-                <v-btn prepend-icon="mdi-delete" variant="text" @click="drop()">Trash</v-btn>
-              </v-list-item>
-              <v-list-item v-if="isTrashed && auth.can('page:keep')">
-                <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="keep()">Restore</v-btn>
-              </v-list-item>
-              <v-list-item v-if="isChecked && auth.can('page:purge')">
-                <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge()">Purge</v-btn>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </div>
-
-        <div class="search">
-          <v-text-field
-            v-model="term"
-            prepend-inner-icon="mdi-magnify"
-            variant="underlined"
-            label="Search for"
-            hide-details
-            clearable
-          ></v-text-field>
-        </div>
-
-        <v-menu v-if="Object.keys(languages.available).length">
-          <template #activator="{ props }">
-            <v-btn append-icon="mdi-menu-down" prepend-icon="mdi-translate" variant="outlined" location="bottom right" v-bind="props">
-              {{ languages.available[languages.current] || 'All' }}
-            </v-btn>
-          </template>
-          <v-list>
-            <v-list-item>
-              <v-btn variant="text" @click="reload()">All</v-btn>
-            </v-list-item>
-            <v-list-item v-for="(name, code) in languages.available" :key="code">
-              <v-btn variant="text" @click="reload(code)">{{ name }}</v-btn>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </div>
-
-      <Draggable v-model="items" ref="tree"
-        :defaultOpen="false"
-        :disableDrag="!auth.can('page:move')"
-        :watermark="false"
-        virtualization
-        @change="change()"
-      >
-        <template #default="{ node, stat }">
-          <svg v-if="stat.loading" class="spinner" width="24" height="24" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg"><circle class="spin1" cx="4" cy="12" r="3"/><circle class="spin1 spin2" cx="12" cy="12" r="3"/><circle class="spin1 spin3" cx="20" cy="12" r="3"/></svg>
-          <v-icon v-else :class="{hidden: !node.has}" size="large" @click="load(stat, node)" :icon="stat.open ? 'mdi-menu-down' : 'mdi-menu-right'"></v-icon>
-
-          <v-checkbox-btn v-model="stat.check" :class="{draft: !node.published}"></v-checkbox-btn>
-
-          <v-menu v-if="node.id">
-            <template #activator="{ props }">
-              <v-btn icon="mdi-dots-vertical" variant="text" v-bind="props"></v-btn>
-            </template>
-            <v-list>
-              <v-list-item v-if="!node.deleted_at && !node.published && auth.can('page:publish')">
-                <v-btn prepend-icon="mdi-publish" variant="text" @click="publish(stat)">Publish</v-btn>
-              </v-list-item>
-              <v-list-item v-if="node.status !== 0 && auth.can('page:save')">
-                <v-btn prepend-icon="mdi-eye-off" variant="text" @click="status(stat, 0)">Disable</v-btn>
-              </v-list-item>
-              <v-list-item v-if="node.status !== 1 && auth.can('page:save')">
-                <v-btn prepend-icon="mdi-eye" variant="text" @click="status(stat, 1)">Enable</v-btn>
-              </v-list-item>
-              <v-list-item v-if="node.status !== 2 && auth.can('page:save')">
-                <v-btn prepend-icon="mdi-eye-off-outline" variant="text" @click="status(stat, 2)">Hide in menu</v-btn>
-              </v-list-item>
-              <v-list-item v-if="auth.can('page:move')">
-                <v-btn prepend-icon="mdi-content-cut" variant="text" @click="cut(stat, node)">Cut</v-btn>
-              </v-list-item>
-              <v-list-item v-if="!this.embed && auth.can('page:add')">
-                <v-btn prepend-icon="mdi-content-copy" variant="text" @click="copy(stat, node)">Copy</v-btn>
-              </v-list-item>
-              <v-list-item v-if="!this.embed && auth.can('page:add')">
-                <v-btn prepend-icon="mdi-content-paste" variant="text" @click.stop="show('insert')">Insert</v-btn>
-              </v-list-item>
-              <v-fade-transition v-if="menu.insert && !this.embed && auth.can('page:add')">
-                <v-list-item>
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(stat, 0)">🠕 Before</v-btn>
-                </v-list-item>
-              </v-fade-transition>
-              <v-fade-transition v-if="menu.insert && !this.embed && auth.can('page:add')">
-                <v-list-item>
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(stat)">🠖 Into</v-btn>
-                </v-list-item>
-              </v-fade-transition>
-              <v-fade-transition v-if="menu.insert && !this.embed && auth.can('page:add')">
-                <v-list-item>
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(stat, 1)">🠗 After</v-btn>
-                </v-list-item>
-              </v-fade-transition>
-              <v-list-item v-if="clip && clip.type == 'copy' && !this.embed && auth.can('page:add')">
-                <v-btn prepend-icon="mdi-content-paste" variant="text" @click.stop="show('paste')">Paste</v-btn>
-              </v-list-item>
-              <v-fade-transition v-if="clip && clip.type == 'copy' && menu.paste && !this.embed && auth.can('page:add')">
-                <v-list-item>
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(stat, 0)">🠕 Before</v-btn>
-                </v-list-item>
-              </v-fade-transition>
-              <v-fade-transition v-if="clip && clip.type == 'copy' && menu.paste && !this.embed && auth.can('page:add')">
-                <v-list-item>
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(stat)">🠖 Into</v-btn>
-                </v-list-item>
-              </v-fade-transition>
-              <v-fade-transition v-if="clip && clip.type == 'copy' && menu.paste && !this.embed && auth.can('page:add')">
-                <v-list-item>
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(stat, 1)">🠗 After</v-btn>
-                </v-list-item>
-              </v-fade-transition>
-              <v-list-item v-if="clip && clip.type == 'cut' && auth.can('page:move')">
-                <v-btn prepend-icon="mdi-content-paste" variant="text" @click.stop="show('move')">Paste</v-btn>
-              </v-list-item>
-              <v-fade-transition v-if="clip && clip.type == 'cut' && menu.move && auth.can('page:move')">
-                <v-list-item>
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="move(stat, 0)">🠕 Before</v-btn>
-                </v-list-item>
-              </v-fade-transition>
-              <v-fade-transition v-if="clip && clip.type == 'cut' && menu.move && auth.can('page:move')">
-                <v-list-item>
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="move(stat)">🠖 Into</v-btn>
-                </v-list-item>
-              </v-fade-transition>
-              <v-fade-transition v-if="clip && clip.type == 'cut' && menu.move && auth.can('page:move')">
-                <v-list-item>
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="move(stat, 1)">🠗 After</v-btn>
-                </v-list-item>
-              </v-fade-transition>
-              <v-list-item v-if="!node.deleted_at && auth.can('page:drop')">
-                <v-btn prepend-icon="mdi-delete" variant="text" @click="drop(stat)">Trash</v-btn>
-              </v-list-item>
-              <v-list-item v-if="node.deleted_at && auth.can('page:keep')">
-                <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="keep(stat)">Restore</v-btn>
-              </v-list-item>
-              <v-list-item v-if="auth.can('page:purge')">
-                <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge(stat)">Purge</v-btn>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-          <div class="item-content"
-            :class="{
-              'status-hidden': node.status == 2,
-              'status-enabled': node.status == 1,
-              'status-disabled': !node.status,
-              'trashed': node.deleted_at
-            }"
-            :title="title(node)"
-          >
-            <div class="item-text" @click="$emit('select', node)">
-              <v-icon v-if="node.publish_at" class="publish-at" icon="mdi-clock-outline"></v-icon>
-              <span class="item-lang" v-if="node.lang">{{ node.lang }}</span>
-              <span class="item-title">{{ node.name || 'New' }}</span>
-              <div v-if="node.title" class="item-subtitle">{{ node.title }}</div>
-            </div>
-            <a class="item-aux" :href="url(node) + '?preview=true'" target="_blank" draggable="false">
-              <div class="item-domain">{{ node.domain }}</div>
-              <span class="item-slug item-subtitle">{{ url(node) }}</span>
-              <span v-if="node.to" class="item-to item-subtitle"> ➔ {{ node.to }}</span>
-            </a>
-          </div>
+  <div class="header">
+    <div class="bulk">
+      <v-checkbox-btn v-model="checked" @click.stop="toggle()"></v-checkbox-btn>
+      <v-menu>
+        <template #activator="{ props }">
+          <v-btn append-icon="mdi-menu-down" variant="outlined" v-bind="props">Actions</v-btn>
         </template>
-      </Draggable>
+        <v-list>
+          <v-list-item v-if="isChecked && auth.can('page:publish')">
+            <v-btn prepend-icon="mdi-publish" variant="text" @click="publish()">Publish</v-btn>
+          </v-list-item>
+          <v-list-item v-if="isChecked && auth.can('page:save')">
+            <v-btn prepend-icon="mdi-eye" variant="text" @click="status(null, 1)">Enable</v-btn>
+          </v-list-item>
+          <v-list-item v-if="isChecked && auth.can('page:save')">
+            <v-btn prepend-icon="mdi-eye-off" variant="text" @click="status(null, 0)">Disable</v-btn>
+          </v-list-item>
+          <v-list-item v-if="canTrash && auth.can('page:drop')">
+            <v-btn prepend-icon="mdi-delete" variant="text" @click="drop()">Trash</v-btn>
+          </v-list-item>
+          <v-list-item v-if="isTrashed && auth.can('page:keep')">
+            <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="keep()">Restore</v-btn>
+          </v-list-item>
+          <v-list-item v-if="isChecked && auth.can('page:purge')">
+            <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge()">Purge</v-btn>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </div>
 
-      <p v-if="loading" class="loading">
-        Loading
-        <svg class="spinner" width="32" height="32" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle class="spin1" cx="4" cy="12" r="3"/><circle class="spin1 spin2" cx="12" cy="12" r="3"/><circle class="spin1 spin3" cx="20" cy="12" r="3"/></svg>
-      </p>
+    <div class="search">
+      <v-text-field
+        v-model="term"
+        prepend-inner-icon="mdi-magnify"
+        variant="underlined"
+        label="Search for"
+        hide-details
+        clearable
+      ></v-text-field>
+    </div>
 
-      <p v-if="!loading && !items.length" class="notfound">
-        No items found
-      </p>
+    <v-menu v-if="Object.keys(languages.available).length">
+      <template #activator="{ props }">
+        <v-btn append-icon="mdi-menu-down" prepend-icon="mdi-translate" variant="outlined" location="bottom right" v-bind="props">
+          {{ languages.available[languages.current] || 'All' }}
+        </v-btn>
+      </template>
+      <v-list>
+        <v-list-item>
+          <v-btn variant="text" @click="reload()">All</v-btn>
+        </v-list-item>
+        <v-list-item v-for="(name, code) in languages.available" :key="code">
+          <v-btn variant="text" @click="reload(code)">{{ name }}</v-btn>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+  </div>
 
-      <div v-if="!loading && !items.length && !this.embed && this.auth.can('page:add')" class="btn-group">
-        <v-btn @click="add()"
-          icon="mdi-folder-plus"
-          color="primary"
-          elevation="0"
-        ></v-btn>
+  <Draggable v-model="items" ref="tree"
+    :defaultOpen="false"
+    :disableDrag="!auth.can('page:move')"
+    :watermark="false"
+    virtualization
+    @change="change()"
+  >
+    <template #default="{ node, stat }">
+      <svg v-if="stat.loading" class="spinner" width="24" height="24" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg"><circle class="spin1" cx="4" cy="12" r="3"/><circle class="spin1 spin2" cx="12" cy="12" r="3"/><circle class="spin1 spin3" cx="20" cy="12" r="3"/></svg>
+      <v-icon v-else :class="{hidden: !node.has}" size="large" @click="load(stat, node)" :icon="stat.open ? 'mdi-menu-down' : 'mdi-menu-right'"></v-icon>
+
+      <v-checkbox-btn v-model="stat.check" :class="{draft: !node.published}"></v-checkbox-btn>
+
+      <v-menu v-if="node.id">
+        <template #activator="{ props }">
+          <v-btn icon="mdi-dots-vertical" variant="text" v-bind="props"></v-btn>
+        </template>
+        <v-list>
+          <v-list-item v-if="!node.deleted_at && !node.published && auth.can('page:publish')">
+            <v-btn prepend-icon="mdi-publish" variant="text" @click="publish(stat)">Publish</v-btn>
+          </v-list-item>
+          <v-list-item v-if="node.status !== 0 && auth.can('page:save')">
+            <v-btn prepend-icon="mdi-eye-off" variant="text" @click="status(stat, 0)">Disable</v-btn>
+          </v-list-item>
+          <v-list-item v-if="node.status !== 1 && auth.can('page:save')">
+            <v-btn prepend-icon="mdi-eye" variant="text" @click="status(stat, 1)">Enable</v-btn>
+          </v-list-item>
+          <v-list-item v-if="node.status !== 2 && auth.can('page:save')">
+            <v-btn prepend-icon="mdi-eye-off-outline" variant="text" @click="status(stat, 2)">Hide in menu</v-btn>
+          </v-list-item>
+          <v-list-item v-if="auth.can('page:move')">
+            <v-btn prepend-icon="mdi-content-cut" variant="text" @click="cut(stat, node)">Cut</v-btn>
+          </v-list-item>
+          <v-list-item v-if="!this.embed && auth.can('page:add')">
+            <v-btn prepend-icon="mdi-content-copy" variant="text" @click="copy(stat, node)">Copy</v-btn>
+          </v-list-item>
+          <v-list-item v-if="!this.embed && auth.can('page:add')">
+            <v-btn prepend-icon="mdi-content-paste" variant="text" @click.stop="show('insert')">Insert</v-btn>
+          </v-list-item>
+          <v-fade-transition v-if="menu.insert && !this.embed && auth.can('page:add')">
+            <v-list-item>
+              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(stat, 0)">🠕 Before</v-btn>
+            </v-list-item>
+          </v-fade-transition>
+          <v-fade-transition v-if="menu.insert && !this.embed && auth.can('page:add')">
+            <v-list-item>
+              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(stat)">🠖 Into</v-btn>
+            </v-list-item>
+          </v-fade-transition>
+          <v-fade-transition v-if="menu.insert && !this.embed && auth.can('page:add')">
+            <v-list-item>
+              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(stat, 1)">🠗 After</v-btn>
+            </v-list-item>
+          </v-fade-transition>
+          <v-list-item v-if="clip && clip.type == 'copy' && !this.embed && auth.can('page:add')">
+            <v-btn prepend-icon="mdi-content-paste" variant="text" @click.stop="show('paste')">Paste</v-btn>
+          </v-list-item>
+          <v-fade-transition v-if="clip && clip.type == 'copy' && menu.paste && !this.embed && auth.can('page:add')">
+            <v-list-item>
+              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(stat, 0)">🠕 Before</v-btn>
+            </v-list-item>
+          </v-fade-transition>
+          <v-fade-transition v-if="clip && clip.type == 'copy' && menu.paste && !this.embed && auth.can('page:add')">
+            <v-list-item>
+              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(stat)">🠖 Into</v-btn>
+            </v-list-item>
+          </v-fade-transition>
+          <v-fade-transition v-if="clip && clip.type == 'copy' && menu.paste && !this.embed && auth.can('page:add')">
+            <v-list-item>
+              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(stat, 1)">🠗 After</v-btn>
+            </v-list-item>
+          </v-fade-transition>
+          <v-list-item v-if="clip && clip.type == 'cut' && auth.can('page:move')">
+            <v-btn prepend-icon="mdi-content-paste" variant="text" @click.stop="show('move')">Paste</v-btn>
+          </v-list-item>
+          <v-fade-transition v-if="clip && clip.type == 'cut' && menu.move && auth.can('page:move')">
+            <v-list-item>
+              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="move(stat, 0)">🠕 Before</v-btn>
+            </v-list-item>
+          </v-fade-transition>
+          <v-fade-transition v-if="clip && clip.type == 'cut' && menu.move && auth.can('page:move')">
+            <v-list-item>
+              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="move(stat)">🠖 Into</v-btn>
+            </v-list-item>
+          </v-fade-transition>
+          <v-fade-transition v-if="clip && clip.type == 'cut' && menu.move && auth.can('page:move')">
+            <v-list-item>
+              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="move(stat, 1)">🠗 After</v-btn>
+            </v-list-item>
+          </v-fade-transition>
+          <v-list-item v-if="!node.deleted_at && auth.can('page:drop')">
+            <v-btn prepend-icon="mdi-delete" variant="text" @click="drop(stat)">Trash</v-btn>
+          </v-list-item>
+          <v-list-item v-if="node.deleted_at && auth.can('page:keep')">
+            <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="keep(stat)">Restore</v-btn>
+          </v-list-item>
+          <v-list-item v-if="auth.can('page:purge')">
+            <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge(stat)">Purge</v-btn>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+      <div class="item-content"
+        :class="{
+          'status-hidden': node.status == 2,
+          'status-enabled': node.status == 1,
+          'status-disabled': !node.status,
+          'trashed': node.deleted_at
+        }"
+        :title="title(node)"
+      >
+        <div class="item-text" @click="$emit('select', node)">
+          <v-icon v-if="node.publish_at" class="publish-at" icon="mdi-clock-outline"></v-icon>
+          <span class="item-lang" v-if="node.lang">{{ node.lang }}</span>
+          <span class="item-title">{{ node.name || 'New' }}</span>
+          <div v-if="node.title" class="item-subtitle">{{ node.title }}</div>
+        </div>
+        <a class="item-aux" :href="url(node) + '?preview=true'" target="_blank" draggable="false">
+          <div class="item-domain">{{ node.domain }}</div>
+          <span class="item-slug item-subtitle">{{ url(node) }}</span>
+          <span v-if="node.to" class="item-to item-subtitle"> ➔ {{ node.to }}</span>
+        </a>
       </div>
-    </v-sheet>
-  </v-container>
+    </template>
+  </Draggable>
+
+  <p v-if="loading" class="loading">
+    Loading
+    <svg class="spinner" width="32" height="32" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle class="spin1" cx="4" cy="12" r="3"/><circle class="spin1 spin2" cx="12" cy="12" r="3"/><circle class="spin1 spin3" cx="20" cy="12" r="3"/></svg>
+  </p>
+
+  <p v-if="!loading && !items.length" class="notfound">
+    No items found
+  </p>
+
+  <div v-if="!loading && !items.length && !this.embed && this.auth.can('page:add')" class="btn-group">
+    <v-btn @click="add()"
+      icon="mdi-folder-plus"
+      color="primary"
+      elevation="0"
+    ></v-btn>
+  </div>
 </template>
 
 <style>

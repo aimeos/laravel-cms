@@ -64,7 +64,11 @@
   <Navigation />
 
   <v-main class="element-list">
-    <ElementListItems :filter="filter" @select="open($event)" />
+    <v-container>
+      <v-sheet class="box">
+        <ElementListItems :filter="filter" @select="open($event)" />
+      </v-sheet>
+    </v-container>
   </v-main>
 
   <AsideList v-model:filter="filter" :content="[{

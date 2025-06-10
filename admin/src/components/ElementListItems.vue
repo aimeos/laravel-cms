@@ -420,136 +420,132 @@
 </script>
 
 <template>
-  <v-container>
-    <v-sheet class="box">
-      <div class="header">
-        <div class="bulk">
-          <v-checkbox-btn v-model="checked" @click.stop="toggle()"></v-checkbox-btn>
-          <v-menu location="bottom left">
-            <template #activator="{ props }">
-              <v-btn append-icon="mdi-menu-down" variant="outlined" v-bind="props">Actions</v-btn>
-            </template>
-            <v-list>
-              <v-list-item v-show="isChecked && auth.can('element:publish')">
-                <v-btn prepend-icon="mdi-publish" variant="text" @click="publish()">Publish</v-btn>
-              </v-list-item>
-              <v-list-item v-if="!this.embed && auth.can('element:add')">
-                <v-btn prepend-icon="mdi-folder-plus" variant="text" @click="vschemas = true">Add element</v-btn>
-              </v-list-item>
-              <v-list-item v-show="canTrash && auth.can('element:drop')">
-                <v-btn prepend-icon="mdi-delete" variant="text" @click="drop()">Trash</v-btn>
-              </v-list-item>
-              <v-list-item v-show="isTrashed && auth.can('element:keep')">
-                <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="keep()">Restore</v-btn>
-              </v-list-item>
-              <v-list-item v-show="isChecked && auth.can('element:purge')">
-                <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge()">Purge</v-btn>
-              </v-list-item>
-            </v-list>
-          </v-menu>
+  <div class="header">
+    <div class="bulk">
+      <v-checkbox-btn v-model="checked" @click.stop="toggle()"></v-checkbox-btn>
+      <v-menu location="bottom left">
+        <template #activator="{ props }">
+          <v-btn append-icon="mdi-menu-down" variant="outlined" v-bind="props">Actions</v-btn>
+        </template>
+        <v-list>
+          <v-list-item v-show="isChecked && auth.can('element:publish')">
+            <v-btn prepend-icon="mdi-publish" variant="text" @click="publish()">Publish</v-btn>
+          </v-list-item>
+          <v-list-item v-if="!this.embed && auth.can('element:add')">
+            <v-btn prepend-icon="mdi-folder-plus" variant="text" @click="vschemas = true">Add element</v-btn>
+          </v-list-item>
+          <v-list-item v-show="canTrash && auth.can('element:drop')">
+            <v-btn prepend-icon="mdi-delete" variant="text" @click="drop()">Trash</v-btn>
+          </v-list-item>
+          <v-list-item v-show="isTrashed && auth.can('element:keep')">
+            <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="keep()">Restore</v-btn>
+          </v-list-item>
+          <v-list-item v-show="isChecked && auth.can('element:purge')">
+            <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge()">Purge</v-btn>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </div>
+
+    <div class="search">
+      <v-text-field
+        v-model="term"
+        prepend-inner-icon="mdi-magnify"
+        variant="underlined"
+        label="Search for"
+        hide-details
+        clearable
+      ></v-text-field>
+    </div>
+
+    <div class="layout">
+      <v-menu>
+        <template #activator="{ props }">
+          <v-btn append-icon="mdi-menu-down" prepend-icon="mdi-sort" variant="outlined" location="bottom right" v-bind="props">
+            {{ sort?.column === 'ID' ? (sort?.order === 'DESC' ? 'Latest' : 'Oldest' ) : (sort?.column || '') }}
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item>
+            <v-btn variant="text" @click="sort = {column: 'ID', order: 'DESC'}">Latest</v-btn>
+          </v-list-item>
+          <v-list-item>
+            <v-btn variant="text" @click="sort = {column: 'ID', order: 'ASC'}">Oldest</v-btn>
+          </v-list-item>
+          <v-list-item>
+            <v-btn variant="text" @click="sort = {column: 'NAME', order: 'ASC'}">Name</v-btn>
+          </v-list-item>
+          <v-list-item>
+            <v-btn variant="text" @click="sort = {column: 'TYPE', order: 'ASC'}">Type</v-btn>
+          </v-list-item>
+          <v-list-item>
+            <v-btn variant="text" @click="sort = {column: 'EDITOR', order: 'ASC'}">Editor</v-btn>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </div>
+  </div>
+
+  <v-list class="items">
+    <v-list-item v-for="(item, idx) in items" :key="idx">
+      <v-checkbox-btn v-model="item._checked" :class="{draft: !item.published}" class="item-check"></v-checkbox-btn>
+
+      <v-menu>
+        <template v-slot:activator="{ props }">
+          <v-btn class="item-menu" icon="mdi-dots-vertical" variant="text" v-bind="props"></v-btn>
+        </template>
+        <v-list>
+          <v-list-item v-show="!item.deleted_at && !item.published && this.auth.can('element:publish')">
+            <v-btn prepend-icon="mdi-publish" variant="text" @click="publish(item)">Publish</v-btn>
+          </v-list-item>
+          <v-list-item v-if="!item.deleted_at && this.auth.can('element:drop')">
+            <v-btn prepend-icon="mdi-delete" variant="text" @click="drop(item)">Trash</v-btn>
+          </v-list-item>
+          <v-list-item v-if="item.deleted_at && this.auth.can('element:keep')">
+            <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="keep(item)">Restore</v-btn>
+          </v-list-item>
+          <v-list-item v-if="this.auth.can('element:purge')">
+            <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge(item)">Purge</v-btn>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+
+      <div class="item-content" @click="$emit('select', item)" :class="{trashed: item.deleted_at}":title="title(item)">
+        <div class="item-text">
+          <v-icon v-if="item.publish_at" class="publish-at" icon="mdi-clock-outline"></v-icon>
+          <span class="item-lang" v-if="item.lang">{{ item.lang }}</span>
+          <span class="item-title">{{ item.name }}</span>
+          <div class="item-type item-subtitle">{{ item.type }}</div>
         </div>
 
-        <div class="search">
-          <v-text-field
-            v-model="term"
-            prepend-inner-icon="mdi-magnify"
-            variant="underlined"
-            label="Search for"
-            hide-details
-            clearable
-          ></v-text-field>
-        </div>
-
-        <div class="layout">
-          <v-menu>
-            <template #activator="{ props }">
-              <v-btn append-icon="mdi-menu-down" prepend-icon="mdi-sort" variant="outlined" location="bottom right" v-bind="props">
-                {{ sort?.column === 'ID' ? (sort?.order === 'DESC' ? 'Latest' : 'Oldest' ) : (sort?.column || '') }}
-              </v-btn>
-            </template>
-            <v-list>
-              <v-list-item>
-                <v-btn variant="text" @click="sort = {column: 'ID', order: 'DESC'}">Latest</v-btn>
-              </v-list-item>
-              <v-list-item>
-                <v-btn variant="text" @click="sort = {column: 'ID', order: 'ASC'}">Oldest</v-btn>
-              </v-list-item>
-              <v-list-item>
-                <v-btn variant="text" @click="sort = {column: 'NAME', order: 'ASC'}">Name</v-btn>
-              </v-list-item>
-              <v-list-item>
-                <v-btn variant="text" @click="sort = {column: 'TYPE', order: 'ASC'}">Type</v-btn>
-              </v-list-item>
-              <v-list-item>
-                <v-btn variant="text" @click="sort = {column: 'EDITOR', order: 'ASC'}">Editor</v-btn>
-              </v-list-item>
-            </v-list>
-          </v-menu>
+        <div class="item-aux">
+          <div class="item-editor">{{ item.editor }}</div>
+          <div class="item-modified item-subtitle">{{ (new Date(item.updated_at)).toLocaleString() }}</div>
         </div>
       </div>
+    </v-list-item>
+  </v-list>
 
-      <v-list class="items">
-        <v-list-item v-for="(item, idx) in items" :key="idx">
-          <v-checkbox-btn v-model="item._checked" :class="{draft: !item.published}" class="item-check"></v-checkbox-btn>
+  <p v-if="loading" class="loading">
+    Loading
+    <svg class="spinner" width="32" height="32" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle class="spin1" cx="4" cy="12" r="3"/><circle class="spin1 spin2" cx="12" cy="12" r="3"/><circle class="spin1 spin3" cx="20" cy="12" r="3"/></svg>
+  </p>
+  <p v-if="!loading && !items.length" class="notfound">
+    No items found
+  </p>
 
-          <v-menu>
-            <template v-slot:activator="{ props }">
-              <v-btn class="item-menu" icon="mdi-dots-vertical" variant="text" v-bind="props"></v-btn>
-            </template>
-            <v-list>
-              <v-list-item v-show="!item.deleted_at && !item.published && this.auth.can('element:publish')">
-                <v-btn prepend-icon="mdi-publish" variant="text" @click="publish(item)">Publish</v-btn>
-              </v-list-item>
-              <v-list-item v-if="!item.deleted_at && this.auth.can('element:drop')">
-                <v-btn prepend-icon="mdi-delete" variant="text" @click="drop(item)">Trash</v-btn>
-              </v-list-item>
-              <v-list-item v-if="item.deleted_at && this.auth.can('element:keep')">
-                <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="keep(item)">Restore</v-btn>
-              </v-list-item>
-              <v-list-item v-if="this.auth.can('element:purge')">
-                <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge(item)">Purge</v-btn>
-              </v-list-item>
-            </v-list>
-          </v-menu>
+  <v-pagination v-if="last > 1"
+    v-model="page"
+    :length="last"
+  ></v-pagination>
 
-          <div class="item-content" @click="$emit('select', item)" :class="{trashed: item.deleted_at}":title="title(item)">
-            <div class="item-text">
-              <v-icon v-if="item.publish_at" class="publish-at" icon="mdi-clock-outline"></v-icon>
-              <span class="item-lang" v-if="item.lang">{{ item.lang }}</span>
-              <span class="item-title">{{ item.name }}</span>
-              <div class="item-type item-subtitle">{{ item.type }}</div>
-            </div>
-
-            <div class="item-aux">
-              <div class="item-editor">{{ item.editor }}</div>
-              <div class="item-modified item-subtitle">{{ (new Date(item.updated_at)).toLocaleString() }}</div>
-            </div>
-          </div>
-        </v-list-item>
-      </v-list>
-
-      <p v-if="loading" class="loading">
-        Loading
-        <svg class="spinner" width="32" height="32" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle class="spin1" cx="4" cy="12" r="3"/><circle class="spin1 spin2" cx="12" cy="12" r="3"/><circle class="spin1 spin3" cx="20" cy="12" r="3"/></svg>
-      </p>
-      <p v-if="!loading && !items.length" class="notfound">
-        No items found
-      </p>
-
-      <v-pagination v-if="last > 1"
-        v-model="page"
-        :length="last"
-      ></v-pagination>
-
-      <div v-if="!this.embed && this.auth.can('element:add')" class="btn-group">
-        <v-btn @click="vschemas = true"
-          icon="mdi-view-grid-plus"
-          color="primary"
-          elevation="0"
-        ></v-btn>
-      </div>
-    </v-sheet>
-  </v-container>
+  <div v-if="!this.embed && this.auth.can('element:add')" class="btn-group">
+    <v-btn @click="vschemas = true"
+      icon="mdi-view-grid-plus"
+      color="primary"
+      elevation="0"
+    ></v-btn>
+  </div>
 
   <Teleport to="body">
     <v-dialog v-model="vschemas" scrollable width="auto">

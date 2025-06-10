@@ -16,6 +16,8 @@
       User
     },
 
+    inject: ['openView'],
+
     data: () => ({
       filter: {'trashed': 'WITHOUT'},
     }),
@@ -81,4 +83,7 @@
 </template>
 
 <style scoped>
+  .v-main {
+    overflow-y: auto;
+  }
 </style>

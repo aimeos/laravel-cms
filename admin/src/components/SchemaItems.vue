@@ -1,5 +1,6 @@
 <script>
   import { useSchemaStore } from '../stores'
+  import { contentid } from '../utils'
 
   export default {
     props: {
@@ -32,7 +33,7 @@
     },
 
     methods: {
-      select(item) {
+      add(item) {
         this.$emit('add', {id: contentid(), type: item.type, data: {}})
       }
     }
@@ -48,8 +49,7 @@
     <v-tabs-window-item v-for="name in Object.keys(groups)" :key="name" :value="name">
 
       <v-card>
-        <v-btn v-for="item in groups[name]" :key="item.type" variant="text" stacked
-          @click="$emit('add', item)">
+        <v-btn v-for="item in groups[name]" :key="item.type" @click="add(item)" variant="text" stacked>
           <template v-slot:prepend>
             <span class="icon" v-html="item.icon"></span>
           </template>

@@ -101,6 +101,8 @@
             data.published = true
 
             this.items.unshift(data)
+            this.$emit('select', data)
+
             return data
           }).catch(error => {
             this.$log(`FileListItems::add(): Error adding file`, ev, error)

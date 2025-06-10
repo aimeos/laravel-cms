@@ -58,11 +58,6 @@ body {
   color: rgb(var(--v-theme-error));
 }
 
-.v-dialog > .v-overlay__content {
-  max-width: calc(100% - 2.5%) !important;
-  margin: 0 !important;
-}
-
 .v-window,
 .v-container {
   background-color: transparent;

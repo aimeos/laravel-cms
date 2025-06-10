@@ -1,8 +1,8 @@
 <script>
   import gql from 'graphql-tag'
-  import History from '../components/History.vue'
   import AsideMeta from '../components/AsideMeta.vue'
   import AsideCount from '../components/AsideCount.vue'
+  import HistoryDialog from '../components/HistoryDialog.vue'
   import PageDetailPage from '../components/PageDetailPage.vue'
   import PageDetailContent from '../components/PageDetailContent.vue'
   import PageDetailPreview from '../components/PageDetailPreview.vue'
@@ -11,9 +11,9 @@
 
   export default {
     components: {
-      History,
       AsideMeta,
       AsideCount,
+      HistoryDialog,
       PageDetailPage,
       PageDetailContent,
       PageDetailPreview
@@ -545,32 +545,30 @@
   <AsideCount v-if="aside === 'count'" />
 
   <Teleport to="body">
-    <v-dialog v-model="vhistory" scrollable width="auto">
-      <History
-        :current="{
-          data: {
-            cache: item.cache,
-            domain: item.domain,
-            lang: item.lang,
-            name: item.name,
-            slug: item.slug,
-            status: item.status,
-            title: item.title,
-            tag: item.tag,
-            to: item.to,
-            type: item.type,
-            theme: item.theme,
-            meta: clean(item.meta),
-            config: clean(item.config)
-          },
-          contents: clean(contents),
-        }"
-        :load="() => versions(item.id)"
-        @use="use($event)"
-        @revert="use($event); reset()"
-        @close="vhistory = false"
-      />
-    </v-dialog>
+    <HistoryDialog
+      v-model="vhistory"
+      :current="{
+        data: {
+          cache: item.cache,
+          domain: item.domain,
+          lang: item.lang,
+          name: item.name,
+          slug: item.slug,
+          status: item.status,
+          title: item.title,
+          tag: item.tag,
+          to: item.to,
+          type: item.type,
+          theme: item.theme,
+          meta: clean(item.meta),
+          config: clean(item.config)
+        },
+        contents: clean(contents),
+      }"
+      :load="() => versions(item.id)"
+      @use="use($event)"
+      @revert="use($event); reset()"
+    />
   </Teleport>
 </template>
 

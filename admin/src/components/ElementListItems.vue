@@ -96,7 +96,7 @@
           this.vschemas = false
           this.items.unshift(data)
 
-          this.$emit('update:item', data)
+          this.$emit('select', data)
           this.invalidate()
 
           return data

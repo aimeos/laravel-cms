@@ -2,12 +2,14 @@
   import gql from 'graphql-tag'
   import { useAppStore, useAuthStore, useMessageStore } from '../stores'
   import FileListItems from '../components/FileListItems.vue'
+  import FileDialog from '../components/FileDialog.vue'
   import FileDetail from '../views/FileDetail.vue'
 
   export default {
     components: {
       FileListItems,
-      FileDetail
+      FileDetail,
+      FileDialog
     },
 
     inject: ['openView'],
@@ -112,6 +114,7 @@
           URL.revokeObjectURL(path)
         }
 
+        this.vfiles = false
         return item
       },
 
@@ -192,7 +195,7 @@
             <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/>
           </svg>
           {{ file.name }}
-          <button class="delete" v-if="!readonly && file.path" @click="remove()"
+          <button class="delete" v-if="!readonly && file.path" @click.stop="remove()"
             title="Remove file"
             type="button">
             <v-icon icon="mdi-trash-can" role="img"></v-icon>
@@ -228,12 +231,9 @@
   </v-row>
 
   <Teleport to="body">
-    <v-dialog v-model="vfiles" scrollable width="100%">
-      <FileListItems embed
-        @update:item="handle($event); vfiles = false"
-      />
-    </v-dialog>
+    <FileDialog v-model="vfiles" @add="handle($event)" />
   </Teleport>
+
 </template>
 
 <style>

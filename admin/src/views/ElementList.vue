@@ -84,4 +84,7 @@
 </template>
 
 <style scoped>
+  .v-main {
+    overflow-y: auto;
+  }
 </style>

@@ -3,11 +3,12 @@
 
   export default {
     props: {
+      'modelValue': {type: Boolean, required: true},
       'current': {type: Object, required: true},
       'load': {type: Function, required: true},
     },
 
-    emit: ['close', 'use', 'revert'],
+    emit: ['update:modelValue', 'use', 'revert'],
 
     data: () => ({
       list: [],
@@ -54,9 +55,10 @@
 </script>
 
 <template>
+  <v-dialog :modelValue="modelValue" max-width="1200" scrollable>
     <v-card prepend-icon="mdi-history">
       <template v-slot:append>
-        <v-icon @click="$emit('close')">mdi-close</v-icon>
+        <v-icon @click="$emit('update:modelValue', false)">mdi-close</v-icon>
       </template>
       <template v-slot:title>
         History
@@ -115,15 +117,8 @@
           </v-timeline-item>
         </v-timeline>
       </v-card-text>
-
-      <v-divider></v-divider>
-
-      <v-card-actions>
-        <v-btn block @click="$emit('close')">
-          Close
-        </v-btn>
-      </v-card-actions>
     </v-card>
+  </v-dialog>
 </template>
 
 <style scoped>

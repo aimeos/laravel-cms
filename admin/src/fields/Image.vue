@@ -52,7 +52,7 @@
             :src="url(file.path)"
             :srcset="srcset(file.previews)"
           ></v-img>
-          <button class="delete" v-if="!readonly && file.path" @click="remove()"
+          <button class="delete" v-if="!readonly && file.path" @click.stop="remove()"
             title="Remove image"
             type="button">
             <v-icon icon="mdi-trash-can" role="img"></v-icon>
@@ -88,11 +88,7 @@
   </v-row>
 
   <Teleport to="body">
-    <v-dialog v-model="vfiles" scrollable width="100%">
-      <FileListItems embed
-        @update:item="handle($event); vfiles = false"
-      />
-    </v-dialog>
+    <FileDialog v-model="vfiles" @add="handle($event)" :filter="{mime: 'image/'}" grid />
   </Teleport>
 </template>
 

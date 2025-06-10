@@ -1,17 +1,15 @@
 <script>
   import gql from 'graphql-tag'
-  import Schema from './Schema.vue'
   import Fields from './Fields.vue'
-  import History from './History.vue'
+  import SchemaDialog from './SchemaDialog.vue'
   import { VueDraggable } from 'vue-draggable-plus'
   import { useAuthStore, useMessageStore, useSchemaStore, useSideStore } from '../stores'
   import { contentid } from '../utils'
 
   export default {
     components: {
-      Schema,
       Fields,
-      History,
+      SchemaDialog,
       VueDraggable
     },
 
@@ -31,7 +29,6 @@
       menu: {},
       clip: null,
       index: null,
-      history: null,
       checked: false,
       vschemas: false,
       currentPage: 1,
@@ -323,15 +320,6 @@
       },
 
 
-      use(data, idx, changed = true) {
-        this.list[idx]._changed = changed
-        this.list[idx].data = data
-
-        this.history = null
-        this.store()
-      },
-
-
       validate() {
         const list = []
 
@@ -485,21 +473,7 @@
 
 
   <Teleport to="body">
-    <v-dialog v-model="vschemas" scrollable width="100%">
-      <Schema @add="add($event, index)" />
-    </v-dialog>
-  </Teleport>
-
-  <Teleport to="body">
-    <v-dialog :modelValue="!!history" scrollable width="auto">
-      <History
-        :data="history?.data"
-        :versions="history?.versions || []"
-        @revert="use($event, history?.index, false)"
-        @use="use($event, history?.index)"
-        @hide="history = null"
-      />
-    </v-dialog>
+    <SchemaDialog v-model="vschemas" @add="add($event, index)" />
   </Teleport>
 
 </template>

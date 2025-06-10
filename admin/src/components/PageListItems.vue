@@ -86,6 +86,7 @@
           node.data.published = true
 
           this.$refs.tree.add(node)
+          this.$emit('select', node)
         }).catch(error => {
           this.messages.add('Error adding root page', 'error')
           this.$log(`PageList::add(): Error adding root page`, error)

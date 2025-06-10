@@ -1,7 +1,7 @@
 <script>
   import gql from 'graphql-tag'
-  import History from '../components/History.vue'
   import AsideMeta from '../components/AsideMeta.vue'
+  import HistoryDialog from '../components/HistoryDialog.vue'
   import FileDetailRefs from '../components/FileDetailRefs.vue'
   import FileDetailFile from '../components/FileDetailFile.vue'
   import { useAuthStore, useDrawerStore, useMessageStore } from '../stores'
@@ -9,8 +9,8 @@
 
   export default {
     components: {
-      History,
       AsideMeta,
+      HistoryDialog,
       FileDetailFile,
       FileDetailRefs
     },
@@ -277,24 +277,22 @@
   <AsideMeta :item="item" />
 
   <Teleport to="body">
-    <v-dialog v-model="vhistory" scrollable width="auto">
-      <History
-        :current="{
-          data: {
-            tag: item.tag,
-            name: item.name,
-            mime: item.mime,
-            path: item.path,
-            previews: item.previews,
-            description: item.description,
-          },
-        }"
-        :load="() => versions(item.id)"
-        @use="use($event)"
-        @revert="use($event); reset()"
-        @close="vhistory = false"
-      />
-    </v-dialog>
+    <HistoryDialog
+      v-model="vhistory"
+      :current="{
+        data: {
+          tag: item.tag,
+          name: item.name,
+          mime: item.mime,
+          path: item.path,
+          previews: item.previews,
+          description: item.description,
+        },
+      }"
+      :load="() => versions(item.id)"
+      @use="use($event)"
+      @revert="use($event); reset()"
+    />
   </Teleport>
 </template>
 

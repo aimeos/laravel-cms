@@ -3,11 +3,13 @@
   import { VueDraggable } from 'vue-draggable-plus'
   import { useAppStore, useAuthStore } from '../stores'
   import FileListItems from '../components/FileListItems.vue'
+  import FileDialog from '../components/FileDialog.vue'
   import FileDetail from '../views/FileDetail.vue'
 
   export default {
     components: {
       FileDetail,
+      FileDialog,
       FileListItems,
       VueDraggable
     },
@@ -140,6 +142,7 @@
       select(item) {
           this.images[this.images.length] = item
           this.$emit('addFile', item.id)
+          this.vfiles = false
       },
 
 
@@ -197,7 +200,7 @@
         :src="url(item.path)"
         draggable="false"
       ></v-img>
-      <button v-if="!readonly && item.id" @click="remove(idx)"
+      <button v-if="!readonly && item.id" @click.stop="remove(idx)"
         title="Remove image"
         type="button">
         <v-icon icon="mdi-trash-can" role="img"></v-icon>
@@ -226,13 +229,7 @@
   </VueDraggable>
 
   <Teleport to="body">
-    <v-dialog v-model="vfiles" scrollable width="100%">
-      <FileListItems embed
-        @update:item="select($event); vfiles = false"
-        :filter="{mime: 'image/'}"
-        grid
-      />
-    </v-dialog>
+    <FileDialog v-model="vfiles" @add="select($event)" :filter="{mime: 'image/'}" grid />
   </Teleport>
 </template>
 

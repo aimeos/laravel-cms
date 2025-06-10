@@ -45,6 +45,7 @@ final class SaveFile
 
         $editor = Auth::user()?->name ?? request()->ip();
         $file->versions()->create( [
+            'lang' => $args['input']['lang'] ?? null,
             'editor' => $editor,
             'data' => [
                 'tag' => $file->tag,

@@ -39,7 +39,7 @@ class Element extends Model
     protected $attributes = [
         'tenant_id' => '',
         'type' => '',
-        'lang' => '',
+        'lang' => null,
         'name' => '',
         'data' => '{}',
         'editor' => '',

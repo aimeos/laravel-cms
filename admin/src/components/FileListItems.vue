@@ -72,7 +72,7 @@
             mutation: gql`mutation($file: Upload!) {
               addFile(file: $file) {
                 id
-                tag
+                lang
                 mime
                 name
                 path
@@ -302,16 +302,10 @@
           return Promise.resolve([])
         }
 
-        const filter = {
+        const filter = this.filter
+
+        if(this.term) {
           any: this.term
-        }
-
-        if(this.filter.mime) {
-          filter.mime = this.filter.mime
-        }
-
-        if(this.filter.editor) {
-          filter.editor = this.filter.editor
         }
 
         this.loading = true
@@ -322,7 +316,7 @@
               files(filter: $filter, sort: $sort, first: $limit, page: $page, trashed: $trashed) {
                 data {
                   id
-                  tag
+                  lang
                   name
                   mime
                   path

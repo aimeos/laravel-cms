@@ -17,7 +17,7 @@ return new class extends Migration
             $table->uuid('id');
             $table->string('tenant_id');
             $table->string('mime', 100);
-            $table->string('tag', 30);
+            $table->string('lang', 5)->nullable();
             $table->string('name');
             $table->string('path');
             $table->json('previews');
@@ -28,7 +28,7 @@ return new class extends Migration
 
             $table->primary('id');
             $table->index(['mime', 'tenant_id']);
-            $table->index(['tag', 'tenant_id']);
+            $table->index(['lang', 'tenant_id']);
             $table->index(['name', 'tenant_id']);
             $table->index(['editor', 'tenant_id']);
             $table->index('deleted_at');

@@ -43,7 +43,7 @@ class File extends Model
     protected $attributes = [
         'tenant_id' => '',
         'mime' => '',
-        'tag' => '',
+        'lang' => null,
         'name' => '',
         'path' => '',
         'previews' => '{}',
@@ -60,7 +60,6 @@ class File extends Model
         'name' => 'string',
         'previews' => 'object',
         'description' => 'object',
-        'tag' => 'string',
     ];
 
     /**
@@ -71,7 +70,7 @@ class File extends Model
     protected $fillable = [
         'description',
         'name',
-        'tag',
+        'lang',
     ];
 
     /**

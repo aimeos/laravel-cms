@@ -293,12 +293,10 @@
           return Promise.resolve([])
         }
 
-        const filter = {
-          any: this.term
-        }
+        const filter = this.filter
 
-        if(this.filter.editor) {
-          filter.editor = this.filter.editor
+        if(this.term) {
+          any: this.term
         }
 
         this.loading = true

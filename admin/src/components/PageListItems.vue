@@ -144,7 +144,7 @@
       create(attr = {}) {
         return Object.assign({
           slug: '_' + Math.floor(Math.random() * 10000),
-          lang: this.languages.current,
+          lang: this.languages.current || this.languages.default(),
           status: 0,
           cache: 5
         }, attr)
@@ -238,7 +238,6 @@
           variables: {
             filter: {
               parent_id: parent,
-              lang: this.languages.current,
             },
             page: page,
             limit: limit,
@@ -605,13 +604,10 @@
           return Promise.resolve([])
         }
 
-        const filter = {
-          lang: this.languages.current,
-          any: this.term
-        }
+        const filter = this.filter
 
-        if(this.filter.editor) {
-          filter.editor = this.filter.editor
+        if(this.term) {
+          filter.any = this.term
         }
 
         return this.$apollo.query({
@@ -774,8 +770,8 @@
         return this.app.urlpage
           .replace(/:domain/, node.domain || '')
           .replace(/:slug/, node.slug || '')
-          .replace(/xx-XX/, node.lang || '')
-          .replaceAll('//', '/').replace(':/', '://')
+          .replace(/xx-XX/, node.lang !== this.languages.default() ? node.lang : '')
+          .replace(/(\/){2,}/g, '/').replace(':/', '://')
       }
     },
 
@@ -852,22 +848,6 @@
         clearable
       ></v-text-field>
     </div>
-
-    <v-menu v-if="Object.keys(languages.available).length">
-      <template #activator="{ props }">
-        <v-btn append-icon="mdi-menu-down" prepend-icon="mdi-translate" variant="outlined" location="bottom right" v-bind="props">
-          {{ languages.available[languages.current] || 'All' }}
-        </v-btn>
-      </template>
-      <v-list>
-        <v-list-item>
-          <v-btn variant="text" @click="reload()">All</v-btn>
-        </v-list-item>
-        <v-list-item v-for="(name, code) in languages.available" :key="code">
-          <v-btn variant="text" @click="reload(code)">{{ name }}</v-btn>
-        </v-list-item>
-      </v-list>
-    </v-menu>
   </div>
 
   <Draggable v-model="items" ref="tree"

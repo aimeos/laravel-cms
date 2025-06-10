@@ -150,7 +150,7 @@ type Page {
   parent_id: ID
 
   "ISO language code, e.g. 'en', 'en-GB' or empty for default language"
-  lang: String
+  lang: String!
 
   "URL segment of the page, unique in combination with the language"
   slug: String
@@ -289,7 +289,7 @@ input PageFilter {
 
 input PageInput {
   "ISO language code, e.g. 'en', 'en-GB' or empty for default language"
-  lang: String
+  lang: String!
 
   "URL segment of the page, unique in combination with the language"
   slug: String
@@ -422,8 +422,8 @@ type File {
   "Mime type of the stored file"
   mime: String
 
-  "Tag to categorize the file"
-  tag: String
+  "ISO language code, e.g. 'en', 'en-GB' or empty for default language"
+  lang: String
 
   "Descriptive name of the file"
   name: String
@@ -486,8 +486,8 @@ input FileFilter {
 }
 
 input FileInput {
-  "Tag to categorize the file"
-  tag: String
+  "ISO language code, e.g. 'en', 'en-GB' or empty for default language"
+  lang: String
 
   "Descriptive name of the stored file"
   name: String

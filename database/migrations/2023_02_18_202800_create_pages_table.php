@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('to');
             $table->string('title');
             $table->string('domain');
-            $table->string('lang', 5)->nullable();
+            $table->string('lang', 5);
             $table->string('tag', 30);
             $table->string('type', 30);
             $table->string('theme', 30);

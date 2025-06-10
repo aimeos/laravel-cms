@@ -1,6 +1,10 @@
 <script>
   import { computed, markRaw, provide } from 'vue'
   import { useConfigStore, useSchemaStore } from './stores'
+  import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
+
+  loadDevMessages()
+  loadErrorMessages()
 
   export default {
     data() {
@@ -179,6 +183,76 @@
             'intro': {type: 'text', min: 1},
           }
         },
+
+        'all': {
+          type: 'all',
+          label: 'All content',
+          icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 21H5C3.89 21 3 20.11 3 19V5C3 3.89 3.89 3 5 3H19C20.11 3 21 3.89 21 5V10.33C20.7 10.21 20.37 10.14 20.04 10.14C19.67 10.14 19.32 10.22 19 10.37V5H5V19H10.11L10 19.11V21M7 9H17V7H7V9M7 17H12.11L14 15.12V15H7V17M7 13H16.12L17 12.12V11H7V13M21.7 13.58L20.42 12.3C20.21 12.09 19.86 12.09 19.65 12.3L18.65 13.3L20.7 15.35L21.7 14.35C21.91 14.14 21.91 13.79 21.7 13.58M12 22H14.06L20.11 15.93L18.06 13.88L12 19.94V22Z" /></svg>',
+          fields: {
+            'autocomplete': {
+              type: 'autocomplete',
+              multiple: true,
+              placeholder: 'Search for products',
+              options: [
+              ],
+              endpoint: {
+                url: 'https://dummyjson.com/products/search?q=_term_',
+                type: 'REST',
+              },
+              'list-key': 'products',
+              'item-value': 'id',
+              'item-title': 'title',
+            },
+            'checkbox': {type: 'checkbox'},
+            'color': {type: 'color'},
+            'combobox': {
+              type: 'combobox',
+              multiple: true,
+              options: ['Test 1', 'Test 2'],
+              endpoint: {
+                url: '/graphql',
+                type: 'GQL',
+                query: `query {
+                  pages(filter: {any: _term_}) {
+                    data {
+                      slug
+                    }
+                  }
+                }`
+              },
+              'list-key': 'pages/data',
+              'item-value': 'slug',
+            },
+            'date': {type: 'date'},
+            'html': {type: 'html'},
+            'file': {type: 'file'},
+            'audio': {type: 'audio'},
+            'video': {type: 'video'},
+            'image': {type: 'image'},
+            'images': {type: 'images'},
+            'items': {type: 'items', item: {
+              'name': {type: 'string'},
+            }, max: 3},
+            'markdown': {type: 'markdown'},
+            'number': {type: 'number'},
+            'plaintext': {type: 'plaintext'},
+            'radio': {type: 'radio', options: [
+              {value: 't1', label: 'Test 1'},
+              {value: 't2', label: 'Test 2'},
+            ]},
+            'range': {type: 'range'},
+            'select': {type: 'select', options: [
+              {value: 't1', label: 'Test 1'},
+              {value: 't2', label: 'Test 2'},
+            ]},
+            'slider': {type: 'slider'},
+            'string': {type: 'string'},
+            'switch': {type: 'switch'},
+            'table': {type: 'table'},
+            'text': {type: 'text'},
+            'url': {type: 'url', required: true},
+          }
+        }
       }
 
       schemas.meta = {

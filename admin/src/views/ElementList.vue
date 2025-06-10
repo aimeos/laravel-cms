@@ -3,9 +3,9 @@
   import User from '../components/User.vue'
   import AsideList from '../components/AsideList.vue'
   import Navigation from '../components/Navigation.vue'
-  import ElementDetail from '../views/ElementDetail.vue'
   import ElementListItems from '../components/ElementListItems.vue'
-  import { useAuthStore, useDrawerStore } from '../stores'
+  import { useAuthStore, useDrawerStore, useLanguageStore } from '../stores'
+  import ElementDetail from '../views/ElementDetail.vue'
 
   export default {
     components: {
@@ -24,13 +24,25 @@
     }),
 
     setup() {
+      const languages = useLanguageStore()
       const drawer = useDrawerStore()
       const auth = useAuthStore()
 
-      return { auth, drawer }
+      return { auth, drawer, languages }
     },
 
     methods: {
+      languages() {
+        const list = []
+
+        for(const key in this.languages.available) {
+          list.push({ title: this.languages.available[key], value: {lang: key} })
+        }
+
+        return list
+      },
+
+
       open(item) {
         this.openView(ElementDetail, {item: item})
       }
@@ -83,6 +95,9 @@
       items: [
         { title: 'Edited by me', value: {'editor': this.auth.me.email} },
       ]
+    }, {
+      group: 'language',
+      items: languages()
     }]"
   />
 </template>

@@ -22,7 +22,7 @@ final class SaveElement
 
             $version = $element->versions()->create( [
                 'editor' => Auth::user()?->name ?? request()->ip(),
-                'lang' => $args['input']['lang'] ?? '',
+                'lang' => $args['input']['lang'] ?? null,
                 'data' => $args['input'] ?? [],
             ] );
 

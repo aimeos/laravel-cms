@@ -19,10 +19,21 @@
     },
 
     computed: {
-      langs() {
+      desclangs() {
         return Object.keys(this.languages.available || {}).concat(Object.keys(this.item.description || {})).filter((v, idx, self) => {
           return self.indexOf(v) === idx
         })
+      },
+
+
+      langs() {
+        const list = [{code: null, name: 'None'}]
+
+        Object.entries(this.languages.available).forEach(pair => {
+          list.push({code: pair[0], name: pair[1]})
+        })
+
+        return list
       },
 
 
@@ -64,19 +75,20 @@
           ></v-text-field>
         </v-col>
         <v-col cols="12" md="6">
-          <v-text-field ref="tag"
+          <v-select ref="lang"
+            :items="langs"
             :readonly="readonly"
-            :modelValue="item.tag"
-            @update:modelValue="update('tag', $event)"
+            :modelValue="item.lang"
+            @update:modelValue="update('lang', $event)"
             variant="underlined"
-            label="Tag"
-            counter="30"
-            maxlength="30"
-          ></v-text-field>
+            item-title="name"
+            item-value="code"
+            label="Language"
+          ></v-select>
         </v-col>
       </v-row>
       <v-row>
-        <v-col v-for="lang in langs" cols="12" class="desc">
+        <v-col v-for="lang in desclangs" cols="12" class="desc">
           <v-textarea ref="description"
             :readonly="readonly"
             :modelValue="item.description?.[lang] || ''"

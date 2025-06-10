@@ -4,7 +4,7 @@
   import AsideList from '../components/AsideList.vue'
   import Navigation from '../components/Navigation.vue'
   import FileListItems from '../components/FileListItems.vue'
-  import { useAuthStore, useDrawerStore } from '../stores'
+  import { useAuthStore, useDrawerStore, useLanguageStore } from '../stores'
   import FileDetail from '../views//FileDetail.vue'
 
   export default {
@@ -23,13 +23,25 @@
     }),
 
     setup() {
+      const languages = useLanguageStore()
       const drawer = useDrawerStore()
       const auth = useAuthStore()
 
-      return { auth, drawer }
+      return { auth, drawer, languages }
     },
 
     methods: {
+      languages() {
+        const list = []
+
+        for(const key in this.languages.available) {
+          list.push({ title: this.languages.available[key], value: {lang: key} })
+        }
+
+        return list
+      },
+
+
       open(item) {
         this.openView(FileDetail, {item: item})
       }
@@ -82,6 +94,9 @@
       items: [
         { title: 'Edited by me', value: {'editor': this.auth.me.email} },
       ]
+    }, {
+      group: 'language',
+      items: languages()
     }]"
   />
 </template>

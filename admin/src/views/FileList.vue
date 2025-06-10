@@ -5,10 +5,12 @@
   import Navigation from '../components/Navigation.vue'
   import FileListItems from '../components/FileListItems.vue'
   import { useAuthStore, useDrawerStore } from '../stores'
+  import FileDetail from '../views//FileDetail.vue'
 
   export default {
     components: {
       FileListItems,
+      FileDetail,
       Navigation,
       AsideList,
       User
@@ -23,6 +25,12 @@
       const auth = useAuthStore()
 
       return { auth, drawer }
+    },
+
+    methods: {
+      open(item) {
+        this.openView(FileDetail, {item: item})
+      }
     }
   }
 </script>
@@ -53,7 +61,7 @@
   <Navigation />
 
   <v-main class="file-list">
-    <FileListItems @update:item="$emit('update:item', $event)" :filter="filter" />
+    <FileListItems @select="open($event)" :filter="filter" />
   </v-main>
 
   <AsideList v-model:filter="filter" :content="[{

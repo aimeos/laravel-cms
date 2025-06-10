@@ -3,16 +3,20 @@
   import User from '../components/User.vue'
   import AsideList from '../components/AsideList.vue'
   import Navigation from '../components/Navigation.vue'
+  import ElementDetail from '../views/ElementDetail.vue'
   import ElementListItems from '../components/ElementListItems.vue'
   import { useAuthStore, useDrawerStore } from '../stores'
 
   export default {
     components: {
       ElementListItems,
+      ElementDetail,
       Navigation,
       AsideList,
       User
     },
+
+    inject: ['openView'],
 
     data: () => ({
       aside: null,
@@ -24,6 +28,12 @@
       const auth = useAuthStore()
 
       return { auth, drawer }
+    },
+
+    methods: {
+      open(item) {
+        this.openView(ElementDetail, {item: item})
+      }
     }
   }
 </script>
@@ -54,7 +64,7 @@
   <Navigation />
 
   <v-main class="element-list">
-    <ElementListItems @update:item="$emit('update:item', $event)" :filter="filter" />
+    <ElementListItems :filter="filter" @select="open($event)" />
   </v-main>
 
   <AsideList v-model:filter="filter" :content="[{

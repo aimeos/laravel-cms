@@ -3,20 +3,18 @@
   import { Draggable } from '@he-tree/vue'
   import { dragContext } from '@he-tree/vue'
   import { useAppStore, useAuthStore, useLanguageStore, useMessageStore } from '../stores'
-  import PageDetail from '../views//PageDetail.vue'
 
   export default {
     components: {
-      PageDetail,
       Draggable
     },
-
-    inject: ['openView'],
 
     props: {
       'embed': {type: Boolean, default: false},
       'filter': {type: Object, default: () => ({})},
     },
+
+    emits: ['select'],
 
     data() {
       return {
@@ -451,11 +449,6 @@
         })
 
         this.show()
-      },
-
-
-      open(node) {
-        this.openView(PageDetail, {item: node})
       },
 
 
@@ -988,7 +981,7 @@
             }"
             :title="title(node)"
           >
-            <div class="item-text" @click="open(node)">
+            <div class="item-text" @click="$emit('select', node)">
               <v-icon v-if="node.publish_at" class="publish-at" icon="mdi-clock-outline"></v-icon>
               <span class="item-lang" v-if="node.lang">{{ node.lang }}</span>
               <span class="item-title">{{ node.name || 'New' }}</span>

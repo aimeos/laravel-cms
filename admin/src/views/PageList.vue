@@ -5,10 +5,12 @@
   import Navigation from '../components/Navigation.vue'
   import PageListItems from '../components/PageListItems.vue'
   import { useAuthStore, useDrawerStore } from '../stores'
+  import PageDetail from '../views//PageDetail.vue'
 
   export default {
     components: {
       PageListItems,
+      PageDetail,
       Navigation,
       AsideList,
       User
@@ -23,6 +25,12 @@
       const auth = useAuthStore()
 
       return { auth, drawer }
+    },
+
+    methods: {
+      open(item) {
+        this.openView(PageDetail, {item: item})
+      }
     }
   }
 </script>
@@ -53,7 +61,7 @@
   <Navigation />
 
   <v-main class="page-list">
-    <PageListItems @update:item="$emit('update:item', $event)" :filter="filter" />
+    <PageListItems @select="open($event)" :filter="filter" />
   </v-main>
 
   <AsideList v-model:filter="filter" :content="[{

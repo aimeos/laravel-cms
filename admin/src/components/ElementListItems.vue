@@ -1,21 +1,19 @@
 <script>
   import gql from 'graphql-tag'
   import SchemaItems from './SchemaItems.vue'
-  import ElementDetail from '../views/ElementDetail.vue'
   import { useAuthStore, useMessageStore } from '../stores'
 
   export default {
     components: {
-      SchemaItems,
-      ElementDetail
+      SchemaItems
     },
-
-    inject: ['openView'],
 
     props: {
       'embed': {type: Boolean, default: false},
       'filter': {type: Object, default: () => ({})},
     },
+
+    emits: ['select'],
 
     data() {
       return {
@@ -210,11 +208,6 @@
           this.messages.add('Error restoring shared element', 'error')
           this.$log(`ElementListItems::keep(): Error restoring shared element`, list, error)
         })
-      },
-
-
-      open(item) {
-        this.openView(ElementDetail, {item: item})
       },
 
 
@@ -519,7 +512,7 @@
             </v-list>
           </v-menu>
 
-          <div class="item-content" @click="open(item)" :class="{trashed: item.deleted_at}":title="title(item)">
+          <div class="item-content" @click="$emit('select', item)" :class="{trashed: item.deleted_at}":title="title(item)">
             <div class="item-text">
               <v-icon v-if="item.publish_at" class="publish-at" icon="mdi-clock-outline"></v-icon>
               <span class="item-lang" v-if="item.lang">{{ item.lang }}</span>

@@ -1,20 +1,15 @@
 <script>
   import gql from 'graphql-tag'
-  import FileDetail from '../views//FileDetail.vue'
   import { useAppStore, useAuthStore, useMessageStore } from '../stores'
 
   export default {
-    components: {
-      FileDetail
-    },
-
-    inject: ['openView'],
-
     props: {
       'grid': {type: Boolean, default: false},
       'embed': {type: Boolean, default: false},
       'filter': {type: Object, default: () => ({})},
     },
+
+    emits: ['select'],
 
     data() {
       return {
@@ -220,11 +215,6 @@
           this.messages.add('Error restoring file', 'error')
           this.$log(`FileListItems::keep(): Error restoring file`, item, error)
         })
-      },
-
-
-      open(item) {
-        this.openView(FileDetail, {item: item})
       },
 
 
@@ -559,7 +549,7 @@
             </v-list>
           </v-menu>
 
-          <div class="item-preview" @click="open(item)":title="title(item)">
+          <div class="item-preview" @click="$emit('select', item)":title="title(item)">
             <v-img v-if="item.previews"
               :src="url(item.path)"
               :srcset="srcset(item.previews)"
@@ -567,7 +557,7 @@
             ></v-img>
           </div>
 
-          <div class="item-content" @click="open(item)" :class="{trashed: item.deleted_at}":title="title(item)">
+          <div class="item-content" @click="$emit('select', item)" :class="{trashed: item.deleted_at}" :title="title(item)">
             <div class="item-text">
               <v-icon v-if="item.publish_at" class="publish-at" icon="mdi-clock-outline"></v-icon>
               <span class="item-title">{{ item.name }}</span>

@@ -176,7 +176,7 @@
               data: JSON.stringify(this.item.data || {}),
             },
             files: this.item.files.filter((id, idx, self) => {
-              return self.indexOf(id) === idx && this.assets[id]
+              return self.indexOf(id) === idx
             })
           }
         }).then(result => {

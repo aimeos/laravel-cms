@@ -1,5 +1,5 @@
 <script>
-  import { useAppStore } from '../stores'
+  import { useAppStore, useLanguageStore } from '../stores'
 
   export default {
     props: {
@@ -9,8 +9,10 @@
     emits: ['update:item'],
 
     setup() {
+      const languages = useLanguageStore()
       const app = useAppStore()
-      return { app }
+
+      return { app, languages }
     },
 
     computed: {
@@ -18,8 +20,8 @@
         const url = this.app.urlpage
           .replace(/:domain/, this.item.domain || '')
           .replace(/:slug/, this.item.slug || '')
-          .replace(/xx-XX/, this.item.lang || '')
-          .replaceAll('//', '/').replace(':/', '://')
+          .replace(/xx-XX/, this.item.lang !== this.languages.default() ? this.item.lang : '')
+          .replace(/(\/){2,}/g, '/').replace(':/', '://')
 
         return url + (url.includes('?') ? '&' : '?') + 'preview=true'
       }

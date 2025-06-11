@@ -321,7 +321,7 @@
               },
               elements: Object.keys(this.elements),
               files: files.filter((id, idx, self) => {
-                return self.indexOf(id) === idx && this.assets[id]
+                return self.indexOf(id) === idx
               }),
             }
           }).then(response => {

@@ -46,7 +46,7 @@
               :id="'audio-' + index"
               :value="selected"
               hidden>
-            <label :for="'image-' + index">
+            <label :for="'audio-' + index">
               <span class="btn">Add audio</span>
             </label>
           </div>

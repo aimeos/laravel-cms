@@ -48,7 +48,7 @@
               :id="'video-' + index"
               :value="selected"
               hidden>
-            <label :for="'image-' + index">
+            <label :for="'video-' + index">
               <span class="btn">Add video</span>
             </label>
           </div>

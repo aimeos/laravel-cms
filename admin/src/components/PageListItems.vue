@@ -610,7 +610,9 @@
           return Promise.resolve([])
         }
 
-        const filter = this.filter
+        const trashed = this.filter.trashed || 'WITHOUT'
+        const filter = {...this.filter}
+        delete filter.trashed
 
         if(this.term) {
           filter.any = this.term
@@ -632,7 +634,7 @@
             filter: filter,
             page: page,
             limit: limit,
-            trashed: this.filter.trashed || 'WITHOUT'
+            trashed: trashed
           }
         }).then(result => {
           if(result.errors) {

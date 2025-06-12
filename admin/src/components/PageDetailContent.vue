@@ -101,10 +101,10 @@
 </script>
 
 <template>
-  <div v-if="Object.keys(sections).length > 1">
-    <v-container>
-      <v-sheet>
-        <v-tabs class="subtabs" v-model="tab" align-tabs="center" density="compact">
+  <v-container>
+    <v-sheet class="box">
+      <div v-if="Object.keys(sections).length > 1">
+        <v-tabs class="subtabs" v-model="tab" align-tabs="center">
           <v-tab v-for="(list, section) in sections" :key="section"
             :class="{
               changed: changed[section],
@@ -113,45 +113,40 @@
             :value="section"
           >{{ section }}</v-tab>
         </v-tabs>
-      </v-sheet>
-    </v-container>
 
-    <v-window v-model="tab">
+        <v-window v-model="tab">
+          <v-window-item v-for="(list, section) in sections" :key="section" :value="section">
+            <PageDetailContentList
+              :section="section"
+              :item="item"
+              :contents="list"
+              :elements="elements"
+              :assets="assets"
+              @update:contents="update(section, $event)"
+              @update:elements="$emit('update:elements', $event)"
+              @error="error(section, $event)"
+            />
+          </v-window-item>
+        </v-window>
+      </div>
 
-      <v-window-item v-for="(list, section) in sections" :key="section" :value="section">
-        <PageDetailContentList
-          :section="section"
-          :item="item"
-          :contents="list"
-          :elements="elements"
-          :assets="assets"
-          @update:contents="update(section, $event)"
-          @update:elements="$emit('update:elements', $event)"
-          @error="error(section, $event)"
-        />
-      </v-window-item>
-
-    </v-window>
-  </div>
-
-  <PageDetailContentList v-else
-    :item="item"
-    :contents="contents"
-    :elements="elements"
-    :assets="assets"
-    @update:contents="$emit('update:contents', $event)"
-    @update:elements="$emit('update:elements', $event)"
-    @error="$emit('error', $event)"
-  />
+      <PageDetailContentList v-else
+        :item="item"
+        :contents="contents"
+        :elements="elements"
+        :assets="assets"
+        @update:contents="$emit('update:contents', $event)"
+        @update:elements="$emit('update:elements', $event)"
+        @error="$emit('error', $event)"
+      />
+    </v-sheet>
+  </v-container>
 </template>
 
 <style scoped>
   .v-sheet {
+    margin: 0;
     padding-top: 0;
     padding-bottom: 0;
-  }
-
-  .v-window-item {
-    padding: 0 0.25rem;
   }
 </style>

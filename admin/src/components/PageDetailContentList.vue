@@ -360,116 +360,114 @@
 </script>
 
 <template>
-  <v-container v-observe-visibility="store">
-    <v-sheet>
+  <div v-observe-visibility="store">
 
-      <div class="header">
-        <div v-if="auth.can('page:save')" class="bulk">
-          <v-checkbox-btn v-model="checked" @click.stop="toggle()"></v-checkbox-btn>
-          <v-menu location="bottom right">
-            <template v-slot:activator="{ props }">
-              <v-btn append-icon="mdi-menu-down" variant="outlined" v-bind="props">Actions</v-btn>
-            </template>
-            <v-list>
-              <v-list-item>
-                <v-btn prepend-icon="mdi-delete" variant="text" @click="purge()">Delete</v-btn>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </div>
-
-        <v-text-field
-          prepend-inner-icon="mdi-magnify"
-          variant="underlined"
-          label="Search for"
-          class="search"
-          clearable
-          hide-details
-          @input="search($event.target.value)"
-          @click:clear="search('')"
-        ></v-text-field>
+    <div class="header">
+      <div v-if="auth.can('page:save')" class="bulk">
+        <v-checkbox-btn v-model="checked" @click.stop="toggle()"></v-checkbox-btn>
+        <v-menu location="bottom right">
+          <template v-slot:activator="{ props }">
+            <v-btn append-icon="mdi-menu-down" variant="outlined" v-bind="props">Actions</v-btn>
+          </template>
+          <v-list>
+            <v-list-item>
+              <v-btn prepend-icon="mdi-delete" variant="text" @click="purge()">Delete</v-btn>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </div>
 
-      <v-expansion-panels class="list" v-model="panel" elevation="0" multiple>
-        <VueDraggable v-model="list" :disabled="!auth.can('page:save')" draggable=".content" group="contents">
+      <v-text-field
+        prepend-inner-icon="mdi-magnify"
+        variant="underlined"
+        label="Search for"
+        class="search"
+        clearable
+        hide-details
+        @input="search($event.target.value)"
+        @click:clear="search('')"
+      ></v-text-field>
+    </div>
 
-          <v-expansion-panel v-for="(el, idx) in list" :key="idx" v-show="shown(el)" class="content" :class="{changed: el._changed, error: el._error}">
-            <v-expansion-panel-title expand-icon="mdi-pencil">
-              <v-checkbox-btn v-if="auth.can('page:save')" v-model="el._checked" @click.stop=""></v-checkbox-btn>
+    <v-expansion-panels class="list" v-model="panel" elevation="0" multiple>
+      <VueDraggable v-model="list" :disabled="!auth.can('page:save')" draggable=".content" group="contents">
 
-              <v-menu v-if="auth.can('page:save')">
-                <template v-slot:activator="{ props }">
-                  <v-btn icon="mdi-dots-vertical" variant="text" v-bind="props"></v-btn>
-                </template>
-                <v-list>
-                  <v-list-item v-if="!el._error">
-                    <v-btn prepend-icon="mdi-content-copy" variant="text" @click="copy(idx)">Copy</v-btn>
-                  </v-list-item>
-                  <v-list-item v-if="!el._error">
-                    <v-btn prepend-icon="mdi-content-cut" variant="text" @click="cut(idx)">Cut</v-btn>
-                  </v-list-item>
-                  <v-list-item v-if="!el._error">
-                    <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(idx)">Insert before</v-btn>
-                  </v-list-item>
-                  <v-list-item v-if="!el._error">
-                    <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(idx + 1)">Insert after</v-btn>
-                  </v-list-item>
-                  <v-list-item v-if="!el._error && clip">
-                    <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(idx)">Paste before</v-btn>
-                  </v-list-item>
-                  <v-list-item v-if="!el._error && clip">
-                    <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(idx + 1)">Paste after</v-btn>
-                  </v-list-item>
-                  <v-list-item>
-                    <v-btn prepend-icon="mdi-delete" variant="text" @click="remove(idx)">Delete</v-btn>
-                  </v-list-item>
-                  <v-list-item v-if="!el._error && el.type !== 'reference' && auth.can('element:add')">
-                    <v-btn prepend-icon="mdi-link" variant="text" @click="share(idx)">Make shared</v-btn>
-                  </v-list-item>
-                  <v-list-item v-if="el.type === 'reference'">
-                    <v-btn prepend-icon="mdi-link-off" variant="text" @click="unshare(idx)">Merge copy</v-btn>
-                  </v-list-item>
-                </v-list>
-              </v-menu>
+        <v-expansion-panel v-for="(el, idx) in list" :key="idx" v-show="shown(el)" class="content" :class="{changed: el._changed, error: el._error}">
+          <v-expansion-panel-title expand-icon="mdi-pencil">
+            <v-checkbox-btn v-if="auth.can('page:save')" v-model="el._checked" @click.stop=""></v-checkbox-btn>
 
-              <v-icon v-if="el.type === 'reference'" class="icon-shared" icon="mdi-link" title="Shared element"></v-icon>
+            <v-menu v-if="auth.can('page:save')">
+              <template v-slot:activator="{ props }">
+                <v-btn icon="mdi-dots-vertical" variant="text" v-bind="props"></v-btn>
+              </template>
+              <v-list>
+                <v-list-item v-if="!el._error">
+                  <v-btn prepend-icon="mdi-content-copy" variant="text" @click="copy(idx)">Copy</v-btn>
+                </v-list-item>
+                <v-list-item v-if="!el._error">
+                  <v-btn prepend-icon="mdi-content-cut" variant="text" @click="cut(idx)">Cut</v-btn>
+                </v-list-item>
+                <v-list-item v-if="!el._error">
+                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(idx)">Insert before</v-btn>
+                </v-list-item>
+                <v-list-item v-if="!el._error">
+                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(idx + 1)">Insert after</v-btn>
+                </v-list-item>
+                <v-list-item v-if="!el._error && clip">
+                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(idx)">Paste before</v-btn>
+                </v-list-item>
+                <v-list-item v-if="!el._error && clip">
+                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(idx + 1)">Paste after</v-btn>
+                </v-list-item>
+                <v-list-item>
+                  <v-btn prepend-icon="mdi-delete" variant="text" @click="remove(idx)">Delete</v-btn>
+                </v-list-item>
+                <v-list-item v-if="!el._error && el.type !== 'reference' && auth.can('element:add')">
+                  <v-btn prepend-icon="mdi-link" variant="text" @click="share(idx)">Make shared</v-btn>
+                </v-list-item>
+                <v-list-item v-if="el.type === 'reference'">
+                  <v-btn prepend-icon="mdi-link-off" variant="text" @click="unshare(idx)">Merge copy</v-btn>
+                </v-list-item>
+              </v-list>
+            </v-menu>
 
-              <div class="element-title">{{ el.type === 'reference' ? elements[el.refid]?.name : title(el) }}</div>
-              <div class="element-type">{{ el.type }}</div>
-            </v-expansion-panel-title>
-            <v-expansion-panel-text>
+            <v-icon v-if="el.type === 'reference'" class="icon-shared" icon="mdi-link" title="Shared element"></v-icon>
 
-              <Fields v-if="el.type === 'reference'"
-                :data="elements[el.refid]?.data || {}"
-                :fields="fields(elements[el.refid]?.type)"
-                :assets="assets"
-                :readonly="true"
-              />
-              <Fields v-else ref="field"
-                v-model:data="el.data"
-                v-model:files="el.files"
-                :readonly="!auth.can('page:save')"
-                :fields="fields(el.type)"
-                :assets="assets"
-                @error="error(el, $event)"
-                @change="update(el)"
-              />
+            <div class="element-title">{{ el.type === 'reference' ? elements[el.refid]?.name : title(el) }}</div>
+            <div class="element-type">{{ el.type }}</div>
+          </v-expansion-panel-title>
+          <v-expansion-panel-text>
 
-            </v-expansion-panel-text>
-          </v-expansion-panel>
+            <Fields v-if="el.type === 'reference'"
+              :data="elements[el.refid]?.data || {}"
+              :fields="fields(elements[el.refid]?.type)"
+              :assets="assets"
+              :readonly="true"
+            />
+            <Fields v-else ref="field"
+              v-model:data="el.data"
+              v-model:files="el.files"
+              :readonly="!auth.can('page:save')"
+              :fields="fields(el.type)"
+              :assets="assets"
+              @error="error(el, $event)"
+              @change="update(el)"
+            />
 
-        </VueDraggable>
-      </v-expansion-panels>
+          </v-expansion-panel-text>
+        </v-expansion-panel>
 
-      <div v-if="auth.can('page:save')" class="btn-group">
-        <v-btn @click="vschemas = true"
-          icon="mdi-view-grid-plus"
-          color="primary"
-          elevation="0"
-        ></v-btn>
-      </div>
-    </v-sheet>
-  </v-container>
+      </VueDraggable>
+    </v-expansion-panels>
+
+    <div v-if="auth.can('page:save')" class="btn-group">
+      <v-btn @click="vschemas = true"
+        icon="mdi-view-grid-plus"
+        color="primary"
+        elevation="0"
+      ></v-btn>
+    </div>
+  </div>
 
 
   <Teleport to="body">
@@ -480,14 +478,7 @@
 
 <style scoped>
 .header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 2rem;
-}
-
-.header > * {
-  margin: 0.5rem 0;
+  margin-top: 8px;
 }
 
 .bulk {
@@ -530,6 +521,6 @@
 
 .icon-shared {
   color: rgb(var(--v-theme-warning));
-  margin-inline-end: 0.5rem;
+  margin-inline-end: 4px;
 }
 </style>

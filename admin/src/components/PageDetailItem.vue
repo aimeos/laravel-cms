@@ -59,8 +59,8 @@
 
 <template>
   <v-container>
-    <v-sheet>
-      <v-tabs class="subtabs" v-model="tab" align-tabs="center" density="compact">
+    <v-sheet class="box">
+      <v-tabs class="subtabs" v-model="tab" align-tabs="center">
         <v-tab value="details"
           :class="{changed: changed.details, error: errors.details}"
           @click="$emit('update:aside', 'meta')"
@@ -74,43 +74,43 @@
           @click="$emit('update:aside', 'count')"
         >Config</v-tab>
       </v-tabs>
+
+      <v-window v-model="tab">
+        <v-window-item value="details">
+          <PageDetailItemProps ref="props"
+            :item="item"
+            :assets="assets"
+            @change="update('details')"
+            @error="error('details', $event)"
+          />
+        </v-window-item>
+
+        <v-window-item value="meta">
+          <PageDetailItemMeta ref="meta"
+            :item="item"
+            :assets="assets"
+            @change="update('meta')"
+            @error="error('meta', $event)"
+          />
+        </v-window-item>
+
+        <v-window-item value="config">
+          <PageDetailItemConfig ref="config"
+            :item="item"
+            :assets="assets"
+            @change="update('config')"
+            @error="error('config', $event)"
+          />
+        </v-window-item>
+      </v-window>
     </v-sheet>
   </v-container>
 
-  <v-window v-model="tab">
-
-    <v-window-item value="details">
-      <PageDetailItemProps ref="props"
-        :item="item"
-        :assets="assets"
-        @change="update('details')"
-        @error="error('details', $event)"
-      />
-    </v-window-item>
-
-    <v-window-item value="meta">
-      <PageDetailItemMeta ref="meta"
-        :item="item"
-        :assets="assets"
-        @change="update('meta')"
-        @error="error('meta', $event)"
-      />
-    </v-window-item>
-
-    <v-window-item value="config">
-      <PageDetailItemConfig ref="config"
-        :item="item"
-        :assets="assets"
-        @change="update('config')"
-        @error="error('config', $event)"
-      />
-    </v-window-item>
-
-  </v-window>
 </template>
 
 <style scoped>
   .v-sheet {
+    margin: 0;
     padding-top: 0;
     padding-bottom: 0;
   }

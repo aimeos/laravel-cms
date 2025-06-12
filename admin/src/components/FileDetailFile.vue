@@ -1,4 +1,6 @@
 <script>
+  import Cropper from 'cropperjs'
+  import 'cropperjs/dist/cropper.css'
   import { useAppStore, useAuthStore, useLanguageStore, useSideStore } from '../stores'
 
 
@@ -7,7 +9,15 @@
       'item': {type: Object, required: true}
     },
 
-    emits: ['update:item', 'error'],
+    emits: ['update:item', 'update:file', 'error'],
+
+    data() {
+      return {
+        cropper: null,
+        scaleX: 1,
+        scaleY: 1,
+      }
+    },
 
     setup() {
       const languages = useLanguageStore()
@@ -16,6 +26,29 @@
       const app = useAppStore()
 
       return { app, auth, languages, side }
+    },
+
+    mounted() {
+      if(!this.readonly && this.item.mime?.startsWith('image/')) {
+        this.cropper = new Cropper(this.$refs.image, {
+          aspectRatio: NaN,
+          background: true,
+          responsive: true,
+          dragMode: 'move',
+          movable: false,
+          autoCrop: false,
+          zoomable: true,
+          zoomOnWheel: false,
+          zoomOnTouch: false,
+          viewMode: 1,
+        })
+      }
+    },
+
+    beforeUnmount() {
+      if(this.cropper) {
+        this.cropper.destroy()
+      }
     },
 
     computed: {
@@ -43,6 +76,72 @@
     },
 
     methods: {
+      download() {
+        this.cropper.getCroppedCanvas().toBlob(blob => {
+          const url = URL.createObjectURL(blob)
+          const link = document.createElement('a')
+
+          link.href = url
+          link.download = this.item.name || 'download'
+          link.click()
+
+          URL.revokeObjectURL(url)
+        })
+      },
+
+
+      flipX() {
+        this.scaleX = -this.scaleX
+        this.cropper.scaleX(this.scaleX)
+        this.save()
+      },
+
+
+      flipY() {
+        this.scaleY = -this.scaleY
+        this.cropper.scaleY(this.scaleY)
+        this.save()
+      },
+
+
+      reset() {
+        this.$emit('update:file', null)
+        this.cropper.reset()
+        this.cropper.clear()
+        this.scaleX = 1
+        this.scaleY = 1
+      },
+
+
+      rotate(deg) {
+        this.cropper.rotate(deg)
+        this.save()
+
+        this.$nextTick(() => {
+          const container = this.cropper.getContainerData()
+          const image = this.cropper.getImageData()
+          let scaleX, scaleY
+
+          if(Math.abs(Math.abs(image.rotate) - 180) === 90) {
+            scaleX = container.width / image.naturalHeight
+            scaleY = container.height / image.naturalWidth
+          } else {
+            scaleX = container.width / image.naturalWidth
+            scaleY = container.height / image.naturalHeight
+          }
+
+          this.cropper.zoomTo(Math.min(scaleX, scaleY))
+        });
+      },
+
+
+      save() {
+        this.cropper.getCroppedCanvas().toBlob(blob => {
+          this.$emit('update:file', blob)
+        })
+      },
+
+
       update(what, value) {
         this.item[what] = value
         this.$emit('update:item', this.item)
@@ -105,11 +204,24 @@
       </v-row>
       <v-row>
         <v-col v-if="item" cols="12" class="preview">
-          <v-img v-if="item.mime?.startsWith('image/')"
-            :src="url(item.path)"
-            class="element"
-            contain
-          ></v-img>
+          <div v-if="item.mime?.startsWith('image/')" ref="editorContainer" class="editor-container">
+            <img ref="image" :src="url(item.path)" class="element" />
+
+            <div v-if="!readonly" class="floating-toolbar">
+              <div class="toolbar-group">
+                <v-btn icon="mdi-rotate-left" @click="rotate(-90)" title="Rotate counter-clockwise" />
+                <v-btn icon="mdi-rotate-right" @click="rotate(90)" title="Rotate clockwise" />
+              </div>
+              <div class="toolbar-group">
+                <v-btn icon="mdi-flip-horizontal" @click="flipX" title="Flip horizontally" />
+                <v-btn icon="mdi-flip-vertical" @click="flipY" title="Flip vertically" />
+              </div>
+              <div class="toolbar-group">
+                <v-btn icon="mdi-history" @click="reset()" title="Reset" />
+                <v-btn icon="mdi-download" @click="download()" title="Download" />
+              </div>
+            </div>
+          </div>
           <video v-else-if="item.mime?.startsWith('video/')"
             preload="metadata"
             crossorigin="anonymous"
@@ -134,6 +246,10 @@
 </template>
 
 <style scoped>
+  :deep(.cropper-bg) {
+    background-repeat: repeat;
+  }
+
   .preview {
     display: flex;
     justify-content: center;
@@ -149,4 +265,50 @@
     width: 5rem;
     height: 5rem;
   }
-</style>
+
+  .editor-container {
+    width: 100%;
+    max-height: 600px;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .editor-container img {
+    max-width: none !important;
+    max-height: none !important;
+    transform-origin: center center;
+  }
+
+  .floating-toolbar {
+    background-color: rgba(33, 33, 33, 0.5);
+    transform: translateX(-50%);
+    border-radius: 10px;
+    position: absolute;
+    z-index: 1000;
+    padding: 10px;
+    bottom: 30px;
+    left: 50%;
+    gap: 1rem;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    width: max-content;
+  }
+
+  .toolbar-group {
+    display: flex;
+    gap: 1rem;
+  }
+
+  @media (max-width: 480px) {
+  .floating-toolbar {
+    width: auto;
+  }
+
+  .toolbar-group {
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+}</style>

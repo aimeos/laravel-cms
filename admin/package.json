@@ -27,6 +27,7 @@
     "apollo-link-batch-http": "^1.2",
     "apollo-upload-client": "^18.0.1",
     "ckeditor5": "^45.0.0",
+    "cropperjs": "^1.5.13",
     "diff": "^7.0",
     "pinia": "^3.0",
     "sass": "^1.86",

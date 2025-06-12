@@ -22,8 +22,9 @@
     },
 
     data: () => ({
-      changed: false,
+      file: null,
       error: false,
+      changed: false,
       publishAt: null,
       pubmenu: false,
       vhistory: false,
@@ -99,8 +100,8 @@
         }
 
         return this.$apollo.mutate({
-          mutation: gql`mutation ($id: ID!, $input: FileInput!) {
-            saveFile(id: $id, input: $input) {
+          mutation: gql`mutation ($id: ID!, $input: FileInput!, $file: Upload) {
+            saveFile(id: $id, input: $input, file: $file) {
               id
             }
           }`,
@@ -110,7 +111,11 @@
               description: JSON.stringify(this.item.description || {}),
               name: this.item.name,
               lang: this.item.lang,
-            }
+            },
+            file: this.file
+          },
+          context: {
+            hasUpload: true
           }
         }).then(result => {
           if(result.errors) {
@@ -260,6 +265,7 @@
           <FileDetailFile
             :item="item"
             @update:item="this.$emit('update:item', item); changed = true"
+            @update:file="this.file = $event; changed = true"
             @error="error = $event"
           />
         </v-window-item>

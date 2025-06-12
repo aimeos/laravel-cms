@@ -37,29 +37,36 @@
 </script>
 
 <template>
-  <v-navigation-drawer v-model="drawer.aside" width="224" mobile-breakpoint="md" location="end">
+  <v-navigation-drawer v-model="drawer.aside" mobile-breakpoint="md" location="end">
 
-    <div class="title">Meta data</div>
+    <v-list :opened="[0]">
+      <v-list-group :value="0">
+        <template v-slot:activator="{ props }">
+          <v-list-item v-bind="props">Meta data</v-list-item>
+        </template>
 
-    <v-list>
-      <v-list-item v-for="(value, key) in values" :key="key">
-        <v-list-item-title class="name">{{ key }}</v-list-item-title>
-        <div>{{ value }}</div>
-      </v-list-item>
+        <v-list-item v-for="(value, key) in values" :key="key" rounded="lg">
+          <v-list-item-title class="name">{{ key }}</v-list-item-title>
+          <div>{{ value }}</div>
+        </v-list-item>
+      </v-list-group>
     </v-list>
 
   </v-navigation-drawer>
 </template>
 
 <style scoped>
-  .title {
-    padding: 10px 16px;
-    font-size: 1.25rem;
-    background-color: rgb(var(--v-theme-surface-light));
+  .v-navigation-drawer {
+    border-top-left-radius: 8px;
+  }
+
+  .v-locale--is-rtl .v-navigation-drawer {
+    border-top-left-radius: 0;
+    border-top-right-radius: 8px;
   }
 
   .v-list-item {
-    margin-bottom: 0.25rem;
+    margin-bottom: 4px;
   }
 
   .v-list-item .name {

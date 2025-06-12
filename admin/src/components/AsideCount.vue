@@ -4,7 +4,7 @@
   export default {
     data: () => ({
       active: {},
-      panel: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+      open: [0, 1, 2],
     }),
 
     setup() {
@@ -62,39 +62,46 @@
 </script>
 
 <template>
-  <v-navigation-drawer v-model="drawer.aside" width="224" mobile-breakpoint="md" location="end">
+  <v-navigation-drawer v-model="drawer.aside" mobile-breakpoint="md" location="end">
 
-    <v-expansion-panels variant="accordion" v-model="panel" multiple>
-      <v-expansion-panel v-for="(items, key) in stores" :key="key" v-show="Object.keys(items).length" :class="key" elevation="0">
-        <v-expansion-panel-title>
-          {{ key }}
-        </v-expansion-panel-title>
-        <v-expansion-panel-text>
-          <v-list density="compact">
-            <v-list-item v-for="(value, code) in items" :key="code" :active="isActive(key, code)" @click="toggle(key, code)" rounded="lg">
-              <span class="name">{{ code }}</span>
-              <span class="value">{{ value }}</span>
-            </v-list-item>
-          </v-list>
-        </v-expansion-panel-text>
-      </v-expansion-panel>
-    </v-expansion-panels>
+    <v-list v-model:opened="open">
+      <v-list-group v-for="(items, key) in stores" :key="key" :value="Object.keys(stores).indexOf(key)" v-show="Object.keys(items).length">
+        <template v-slot:activator="{ props }">
+          <v-list-item v-bind="props">{{ key }}</v-list-item>
+        </template>
+
+        <v-list-item v-for="(value, code) in items" :key="code"
+          :active="isActive(key, code)"
+          @click="toggle(key, code)"
+          rounded="lg"
+        >
+          <span class="name">{{ code }}</span>
+          <span class="value">{{ value }}</span>
+        </v-list-item>
+
+      </v-list-group>
+    </v-list>
 
   </v-navigation-drawer>
 </template>
 
 <style scoped>
-  .v-expansion-panel-title {
-    text-transform: capitalize;
-    min-height: 48px !important;
+  .v-navigation-drawer {
+    border-top-left-radius: 8px;
   }
 
-  .v-list {
-    padding: 0;
+  .v-locale--is-rtl .v-navigation-drawer {
+    border-top-left-radius: 0;
+    border-top-right-radius: 8px;
   }
 
-  .v-list-item {
-    margin-bottom: 0.25rem;
+  :deep(.v-list-item--active > .v-list-item__overlay) {
+    opacity: 0;
+  }
+
+  :deep(.v-list-item--active:not(.v-list-group__header) .v-list-item__content) {
+    color: rgba(var(--v-theme-on-surface-light), 0.5);
+    text-decoration: line-through;
   }
 
   .v-list-item .value::before {

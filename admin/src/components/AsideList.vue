@@ -13,29 +13,51 @@
       const drawer = useDrawerStore()
       return { drawer }
     },
+
+    data() {
+      return {
+        open: [0, 1, 2],
+      }
+    },
   }
 </script>
 
 <template>
-  <v-navigation-drawer v-model="drawer.aside" width="224" mobile-breakpoint="md" location="end">
+  <v-navigation-drawer v-model="drawer.aside" mobile-breakpoint="md" location="end">
 
-    <v-list v-for="(group, index) in content" :key="index" density="compact">
-      <v-list-item v-for="(item, idx) in (group.items || [])" @click="$emit('update:filter', item.value)" rounded="lg">
-        {{ item.title }}
-      </v-list-item>
+    <v-list v-model:opened="open">
+      <v-list-group v-for="(group, index) in content" :key="index" :value="index">
+        <template v-slot:activator="{ props }">
+          <v-list-item v-bind="props">{{ group.name }}</v-list-item>
+        </template>
+
+        <v-list-item
+          v-for="(item, idx) in (group.items || [])"
+          @click="$emit('update:filter', item.value)"
+          :active="JSON.stringify(item.value) === JSON.stringify(filter)"
+          :key="idx"
+          rounded="lg"
+        >
+          {{ item.title }}
+        </v-list-item>
+
+      </v-list-group>
     </v-list>
 
   </v-navigation-drawer>
 </template>
 
 <style scoped>
-  .title {
-    padding: 10px 16px;
-    font-size: 1.25rem;
-    background-color: rgb(var(--v-theme-surface-light));
+  .v-navigation-drawer {
+    border-top-left-radius: 8px;
   }
 
-  .v-list:not(:last-child) {
-    border-bottom: 1px solid rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
+  .v-locale--is-rtl .v-navigation-drawer {
+    border-top-left-radius: 0;
+    border-top-right-radius: 8px;
+  }
+
+  .v-list-item {
+    text-transform: capitalize;
   }
 </style>

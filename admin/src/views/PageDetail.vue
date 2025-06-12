@@ -3,7 +3,7 @@
   import AsideMeta from '../components/AsideMeta.vue'
   import AsideCount from '../components/AsideCount.vue'
   import HistoryDialog from '../components/HistoryDialog.vue'
-  import PageDetailPage from '../components/PageDetailPage.vue'
+  import PageDetailItem from '../components/PageDetailItem.vue'
   import PageDetailContent from '../components/PageDetailContent.vue'
   import PageDetailPreview from '../components/PageDetailPreview.vue'
   import { useAuthStore, useDrawerStore, useMessageStore } from '../stores'
@@ -14,7 +14,7 @@
       AsideMeta,
       AsideCount,
       HistoryDialog,
-      PageDetailPage,
+      PageDetailItem,
       PageDetailContent,
       PageDetailPreview
     },
@@ -512,7 +512,7 @@
       <v-window v-model="tab">
 
         <v-window-item value="page">
-          <PageDetailPage ref="page"
+          <PageDetailItem ref="page"
             :item="item"
             :assets="assets"
             @update:item="update('page', $event)"

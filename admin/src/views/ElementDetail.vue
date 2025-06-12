@@ -3,7 +3,7 @@
   import AsideMeta from '../components/AsideMeta.vue'
   import HistoryDialog from '../components/HistoryDialog.vue'
   import ElementDetailRefs from '../components/ElementDetailRefs.vue'
-  import ElementDetailElement from '../components/ElementDetailElement.vue'
+  import ElementDetailItem from '../components/ElementDetailItem.vue'
   import { useAuthStore, useDrawerStore, useMessageStore} from '../stores'
 
 
@@ -12,7 +12,7 @@
       AsideMeta,
       HistoryDialog,
       ElementDetailRefs,
-      ElementDetailElement
+      ElementDetailItem
     },
 
     inject: ['closeView'],
@@ -328,7 +328,7 @@
       <v-window v-model="tab">
 
         <v-window-item value="element">
-          <ElementDetailElement
+          <ElementDetailItem
             :item="item"
             :assets="assets"
             @update:item="this.$emit('update:item', item); changed = true"

@@ -3,7 +3,7 @@
   import AsideMeta from '../components/AsideMeta.vue'
   import HistoryDialog from '../components/HistoryDialog.vue'
   import FileDetailRefs from '../components/FileDetailRefs.vue'
-  import FileDetailFile from '../components/FileDetailFile.vue'
+  import FileDetailItem from '../components/FileDetailItem.vue'
   import { useAuthStore, useDrawerStore, useMessageStore } from '../stores'
 
 
@@ -11,7 +11,7 @@
     components: {
       AsideMeta,
       HistoryDialog,
-      FileDetailFile,
+      FileDetailItem,
       FileDetailRefs
     },
 
@@ -262,7 +262,7 @@
       <v-window v-model="tab">
 
         <v-window-item value="file">
-          <FileDetailFile
+          <FileDetailItem
             :item="item"
             @update:item="this.$emit('update:item', item); changed = true"
             @update:file="this.file = $event; changed = true"

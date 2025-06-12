@@ -29,7 +29,7 @@ const vuetify = createVuetify({
       light: {
         dark: false,
         colors: {
-          primary: '#40749b',
+          primary: '#0070E0',
           background: '#F8FAFC'
         }
       },

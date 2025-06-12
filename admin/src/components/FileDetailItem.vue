@@ -289,7 +289,7 @@
     padding: 10px;
     bottom: 30px;
     left: 50%;
-    gap: 1rem;
+    gap: 8px;
     display: flex;
     flex-wrap: nowrap;
     justify-content: center;
@@ -298,7 +298,7 @@
 
   .toolbar-group {
     display: flex;
-    gap: 1rem;
+    gap: 8px;
   }
 
   @media (max-width: 480px) {
@@ -309,6 +309,6 @@
   .toolbar-group {
     flex-direction: column;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 4px;
   }
 }</style>

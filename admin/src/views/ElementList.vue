@@ -51,7 +51,7 @@
 </script>
 
 <template>
-  <v-app-bar :elevation="1" density="compact">
+  <v-app-bar :elevation="0" density="compact">
     <template #prepend>
       <v-btn @click="drawer.toggle('nav')">
         <v-icon size="x-large">
@@ -84,19 +84,19 @@
   </v-main>
 
   <AsideList v-model:filter="filter" :content="[{
-      group: 'trashed',
+      name: 'trashed',
       items: [
-        { title: 'Non-trashed', value: {'trashed': 'WITHOUT'} },
+        { title: 'Available only', value: {'trashed': 'WITHOUT'} },
         { title: 'Include trashed', value: {'trashed': 'WITH'} },
         { title: 'Only trashed', value: {'trashed': 'ONLY'} }
       ]
     }, {
-      group: 'editor',
+      name: 'editor',
       items: [
         { title: 'Edited by me', value: {'editor': this.auth.me.email} },
       ]
     }, {
-      group: 'language',
+      name: 'language',
       items: languages()
     }]"
   />

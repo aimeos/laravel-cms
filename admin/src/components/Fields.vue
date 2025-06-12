@@ -89,7 +89,7 @@
 <style scoped>
   .item {
     margin: 1.5rem 0;
-    padding-inline-start: 1rem;
+    padding-inline-start: 8px;
     border-inline-start: 3px solid #D0D8E0;
   }
 
@@ -100,6 +100,6 @@
   label {
     font-weight: bold;
     text-transform: capitalize;
-    margin-bottom: 0.5rem;
+    margin-bottom: 4px;
   }
 </style>

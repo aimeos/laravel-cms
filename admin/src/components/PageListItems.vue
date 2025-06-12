@@ -1011,10 +1011,10 @@
   }
 
   .tree-node-inner {
-    display: flex;
+    border-bottom: 1px solid rgba(var(--v-border-color), 0.38);
     align-items: center;
-    border-bottom: 1px solid rgb(var(--v-theme-primary));
-    padding: 0.5rem 0;
+    display: flex;
+    padding: 4px 0;
     user-select: none;
   }
 
@@ -1045,7 +1045,7 @@
 
   @media (min-width: 600px) {
     .tree-node-inner {
-      padding: 0.25rem 0;
+      padding: 4px 0;
     }
   }
 </style>

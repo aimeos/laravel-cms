@@ -556,8 +556,8 @@
 
 <style scoped>
   .items .v-list-item {
-    border-bottom: 1px solid rgb(var(--v-theme-primary));
-    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(var(--v-border-color), 0.38);
+    padding: 4px 0;
   }
 
   .items .v-list-item > * {

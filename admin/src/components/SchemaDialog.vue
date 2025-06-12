@@ -43,6 +43,6 @@
 <style scoped>
   .v-tabs {
     background-color: rgb(var(--v-theme-background));
-    margin-bottom: 1rem;
+    margin-bottom: 8px;
   }
 </style>

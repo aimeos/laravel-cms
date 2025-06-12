@@ -66,7 +66,7 @@
     background-color: rgb(var(--v-theme-surface));
     max-width: 100%;
     min-width: 50vw;
-    padding: 1rem !important;
+    padding: 8px !important;
   }
 
   .v-tabs {
@@ -74,7 +74,7 @@
   }
 
   .v-card {
-    padding: 1rem 0;
+    padding: 8px 0;
   }
 
   .v-btn {

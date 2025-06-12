@@ -195,9 +195,7 @@
             <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/>
           </svg>
           {{ file.name }}
-          <button class="delete" v-if="!readonly && file.path" @click.stop="remove()"
-            title="Remove file"
-            type="button">
+          <button v-if="!readonly && file.path" @click.stop="remove()" class="btn-overlay" title="Remove file" type="button">
             <v-icon icon="mdi-trash-can" role="img"></v-icon>
           </button>
         </div>
@@ -265,21 +263,20 @@
 
   .file-input .select-file .btn,
   .file-input .upload-file .btn {
-    background-color: rgba(var(--v-theme-secondary), 1);
-    color: rgb(var(--v-theme-on-secondary));
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
+    border: 1px solid rgb(var(--v-theme-primary));
+    background-color: rgb(var(--v-theme-primary));
+    color: rgb(var(--v-theme-on-primary));
+    border-radius: 4px;
+    padding: 3px 8px;
+    height: 32px;
+    margin: 8px;
     cursor: pointer;
   }
 
-  .files button.delete {
-    position: absolute;
-    background-color: rgba(var(--v-theme-primary), 0.75);
-    border-radius: 50%;
-    padding: 0.75rem;
-    color: #fff;
-    right: 0;
-    top: 0;
+  .file-input .upload-file .btn {
+    border: 1px solid rgb(var(--v-theme-on-surface));
+    background-color: rgb(var(--v-theme-surface));
+    color: rgb(var(--v-theme-on-surface));
   }
 
   .files .file .v-progress-linear {

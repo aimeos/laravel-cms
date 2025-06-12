@@ -28,9 +28,7 @@
             :draggable="false"
             :src="url(file.path)"
           ></video>
-          <button class="delete" v-if="!readonly && file.path" @click.stop="remove()"
-            title="Remove video"
-            type="button">
+          <button v-if="!readonly && file.path" @click.stop="remove()" class="btn-overlay" title="Remove video" type="button">
             <v-icon icon="mdi-trash-can" role="img"></v-icon>
           </button>
         </div>

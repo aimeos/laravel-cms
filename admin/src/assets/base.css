@@ -36,12 +36,22 @@ body {
   text-decoration: none;
 }
 
+.v-app-bar.v-toolbar {
+  background-color: rgb(var(--v-theme-background)) !important;
+}
+
+.v-toolbar .v-btn.error,
+.v-toolbar .v-btn-group.error {
+  background-color: rgb(var(--v-theme-error)) !important;
+  color: rgb(var(--v-theme-on-error)) !important;
+}
+
 .v-app-bar-title {
   text-align: center;
 }
 
-.v-tabs--density-compact {
-  --v-tabs-height: 48px !important;
+.v-tab .v-btn__overlay {
+  border-radius: 8px;
 }
 
 .v-tab.changed:before,
@@ -68,18 +78,23 @@ body {
 }
 
 .v-row  {
-  margin: 0.5rem 0 !important;
+  margin: 4px 0 !important;
 }
 
 .v-row > div[class*="v-col"] {
-  padding: 0 1rem;
+  padding: 0 8px;
 }
 
 .v-sheet {
   margin: 0;
-  padding: 1rem;
+  padding: 16px;
   background-color: rgb(var(--v-theme-surface));
   box-shadow: 0px 3px 9px 0px #A8B8C825 !important;
+}
+
+.v-sheet.box {
+  border-radius: 8px !important;
+  margin: 0 1%;
 }
 
 .v-selection-control {
@@ -92,6 +107,38 @@ body {
 
 .v-btn.v-btn--density-default:not(.v-btn--stacked) {
   height: 48px;
+}
+
+.v-list {
+  margin: 0 4px;
+}
+
+.v-list-group {
+  --list-indent-size: 12px !important;
+}
+
+.v-list-group:not(:last-child) {
+  border-bottom: 1px solid rgba(var(--v-theme-on-surface), var(--v-activated-opacity));
+}
+
+.v-list-group__header {
+  text-transform: capitalize;
+  color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity)) !important;
+  font-size: 90%;
+}
+
+.v-list-item {
+  border-radius: 8px;
+}
+
+.v-list-group__header {
+  color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+  border-radius: 8px !important;
+}
+
+.v-list-group:not(:last-child) {
+  border-bottom: 1px solid rgba(var(--v-theme-on-surface), var(--v-activated-opacity));
+  padding: 4px 0;
 }
 
 .list.v-expansion-panels {
@@ -115,7 +162,7 @@ body {
 }
 
 .list .v-expansion-panel-title .element-title {
-  margin-inline-start: 0.8rem;
+  margin-inline-start: 6px;
   font-weight: bold;
   flex-grow: 1;
   max-height: 48px;
@@ -124,30 +171,20 @@ body {
 }
 
 .list .v-expansion-panel-title .element-type {
-  margin-inline-start: 1rem;
+  margin-inline-start: 8px;
 }
 
 .list .v-expansion-panel-title__icon {
   margin-inline-start: unset;
-  padding: 0.8rem;
+  padding: 6px;
 }
 
 .list .v-expansion-panel-text__wrapper {
-  padding: 0 1rem;
-}
-
-.v-toolbar .v-btn.error,
-.v-toolbar .v-btn-group.error {
-  background-color: rgb(var(--v-theme-error)) !important;
-  color: rgb(var(--v-theme-on-error)) !important;
+  padding: 0 8px;
 }
 
 .v-btn.menu {
   width: 100%;
-}
-
-.box {
-  margin: 1rem 1%;
 }
 
 .header {
@@ -155,11 +192,11 @@ body {
   flex-wrap: wrap;
   align-items: flex-end;
   justify-content: space-between;
-  margin-bottom: 1rem;
+  margin-bottom: 8px;
 }
 
 .header > * {
-  margin: 0.5rem 0;
+  margin: 4px 0;
 }
 
 .bulk {
@@ -177,12 +214,12 @@ body {
 
 .search .v-select {
   max-width: 10rem;
-  margin: 0 0.5rem;
+  margin: 0 4px;
 }
 
 .search .v-text-field {
   min-width: 7.5rem;
-  margin: 0 0.5rem;
+  margin: 0 4px;
 }
 
 @media (min-width: 600px) {
@@ -191,6 +228,70 @@ body {
     width: unset;
     max-width: 30rem;
   }
+}
+
+.menu-save .v-btn__content,
+.menu-publish .v-btn__content {
+  height: 32px;
+}
+
+.menu-publish .button {
+  padding: 0;
+}
+
+.menu-publish .v-btn__content {
+  border: 1px solid rgb(var(--v-theme-primary));
+  background-color: rgb(var(--v-theme-primary));
+  color: rgb(var(--v-theme-on-primary));
+}
+
+.menu-publish .v-btn .v-btn__content {
+  border-bottom-left-radius: 4px;
+  border-top-left-radius: 4px;
+  padding: 8px;
+  padding-inline-end: 4px;
+}
+
+.menu-publish .v-btn ~ .v-btn .v-btn__content {
+  border-bottom-right-radius: 4px;
+  border-top-right-radius: 4px;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+  padding: 4px;
+}
+
+.v-locale-is-rtl .menu-publish .v-btn .v-btn__content {
+  border-bottom-right-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.v-locale-is-rtl .menu-publish .v-btn ~ .v-btn .v-btn__content {
+  border-bottom-left-radius: 4px;
+  border-top-left-radius: 4px;
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.menu-publish .v-btn--icon.v-btn--density-default {
+  width: auto;
+}
+
+.menu-content {
+  background-color: var(--v-theme-background);
+}
+
+.menu-content .v-btn {
+  width: 100%;
+}
+
+.menu-save.v-btn .v-btn__content {
+  padding: 4px;
+}
+
+.menu-save.v-btn:not(.v-btn--disabled) .v-btn__content {
+  background-color: rgb(var(--v-theme-surface));
+  border: 1px solid rgb(var(--v-theme-on-background));
+  border-radius: 4px;
 }
 
 .loading,
@@ -210,13 +311,6 @@ body {
   font-size: 20px;
 }
 
-.draft {
-  background-color: rgb(var(--v-theme-warning)) !important;
-  color: rgb(var(--v-theme-surface-variant)) !important;
-  border-radius: 50%;
-  opacity: 0.66;
-}
-
 .hidden {
   visibility: hidden;
 }
@@ -230,7 +324,26 @@ body {
 }
 
 .btn-group {
-  margin: 1rem;
+  margin: 8px;
+}
+
+.btn-overlay {
+  padding: 12px;
+  background: rgb(var(--v-theme-surface-variant)) !important;
+  color: rgb(var(--v-theme-surface)) !important;
+  position: absolute !important;
+  border-radius: 50%;
+  width: max-content;
+  opacity: 0.66;
+  right: 0;
+  top: 0;
+}
+
+.draft {
+  background-color: rgb(255, 192, 128) !important;
+  color: rgb(var(--v-theme-surface-variant)) !important;
+  border-radius: 50%;
+  opacity: 0.66;
 }
 
 .item-content {
@@ -245,7 +358,7 @@ body {
 
 .item-text {
   flex-grow: 1;
-  margin-inline-end: 0.5rem;
+  margin-inline-end: 4px;
 }
 
 .item-text,
@@ -260,28 +373,27 @@ body {
 
 .item-aux,
 .item-subtitle {
-  font-size: 0.8rem;
+  font-size: 90%;
   color: #808080;
 }
 
 .item-lang {
+  background-color: rgb(var(--v-theme-primary));
+  color: rgb(var(--v-theme-on-primary));
   display: inline-block;
-  margin-inline-end: 0.5rem;
+  margin-inline-end: 4px;
   text-transform: uppercase;
   vertical-align: middle;
-  border-radius: 0.625rem;
-  background-color: rgb(var(--v-theme-primary));
-  color: #FFFFFF;
+  border-radius: 8px;
   font-weight: bold;
   font-size: 60%;
-  height: 1.25rem;
-  padding: 0.2rem;
+  padding: 2px 4px;
 }
 
 .ck-editor {
   --ck-color-toolbar-background: #F8F9FA;
   --ck-color-base-border: #767676;
-  --ck-border-radius: 0.5rem;
+  --ck-border-radius: 4px;
 }
 
 .ck-toolbar {
@@ -299,10 +411,10 @@ body {
 
 .ck-content ul,
 .ck-content ol {
-  margin-inline-start: 1rem;
+  margin-inline-start: 8px;
 }
 
 .files {
   border: 1px dashed #767676;
-  border-radius: 0.5rem;
+  border-radius: 4px;
 }

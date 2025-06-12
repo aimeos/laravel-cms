@@ -144,6 +144,6 @@
   label {
     font-weight: bold;
     text-transform: capitalize;
-    margin-bottom: 0.5rem;
+    margin-bottom: 4px;
   }
 </style>

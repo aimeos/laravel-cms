@@ -116,7 +116,7 @@
 
   .login .v-card {
     width: 20rem;
-    padding: 1rem;
+    padding: 8px;
     background-color: #10446b;
     color: #fff;
     opacity: 0;

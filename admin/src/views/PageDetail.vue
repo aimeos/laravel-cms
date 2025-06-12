@@ -434,7 +434,7 @@
 </script>
 
 <template>
-  <v-app-bar :elevation="1" density="compact">
+  <v-app-bar :elevation="0" density="compact">
     <template v-slot:prepend>
       <v-btn icon="mdi-keyboard-backspace"
         @click="closeView()"
@@ -455,7 +455,7 @@
         elevation="0"
       ></v-btn>
 
-      <v-btn :class="{error: hasError}"
+      <v-btn :class="{error: hasError}" class="menu-save"
         :disabled="!hasChanged || hasError || !auth.can('page:save')"
         @click="save()"
         variant="text"
@@ -575,26 +575,5 @@
 <style scoped>
   .v-toolbar-title {
     margin-inline-start: 0;
-  }
-
-  .v-window {
-    margin: 0 1%;
-  }
-
-  .menu-publish {
-    margin-inline-start: 4px;
-  }
-
-  .menu-publish .button {
-    padding: 0;
-    padding-inline-start: 16px;
-  }
-
-  .menu-content {
-    background-color: var(--v-theme-background);
-  }
-
-  .menu-content .v-btn {
-    width: 100%;
   }
 </style>

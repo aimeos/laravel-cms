@@ -200,9 +200,7 @@
         :src="url(item.path)"
         draggable="false"
       ></v-img>
-      <button v-if="!readonly && item.id" @click.stop="remove(idx)"
-        title="Remove image"
-        type="button">
+      <button v-if="!readonly && item.id" @click.stop="remove(idx)" class="btn-overlay" title="Remove image" type="button">
         <v-icon icon="mdi-trash-can" role="img"></v-icon>
       </button>
     </div>
@@ -246,7 +244,7 @@
     align-items: center;
     justify-content: center;
     border: 1px solid #808080;
-    border-radius: 0.5rem;
+    border-radius: 4px;
     position: relative;
     height: 180px;
     width: 180px;
@@ -278,21 +276,20 @@
 
   .file-input .select-file .btn,
   .file-input .upload-file .btn {
-    background-color: rgba(var(--v-theme-secondary), 1);
-    color: rgb(var(--v-theme-on-secondary));
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
+    border: 1px solid rgb(var(--v-theme-primary));
+    background-color: rgb(var(--v-theme-primary));
+    color: rgb(var(--v-theme-on-primary));
+    border-radius: 4px;
+    padding: 3px 8px;
+    height: 32px;
+    margin: 8px;
     cursor: pointer;
   }
 
-  .image button {
-    position: absolute;
-    background-color: rgba(var(--v-theme-primary), 0.75);
-    border-radius: 50%;
-    padding: 0.75rem;
-    color: #fff;
-    right: 0;
-    top: 0;
+  .file-input .upload-file .btn {
+    border: 1px solid rgb(var(--v-theme-on-surface));
+    background-color: rgb(var(--v-theme-surface));
+    color: rgb(var(--v-theme-on-surface));
   }
 
   .v-progress-linear {

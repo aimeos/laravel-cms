@@ -38,7 +38,7 @@
     width: 100%;
     padding: 0;
     margin: 0;
-    border: none;
-    min-height: calc(100vh - 6.5rem);
+    border: 1px solid #ddd;
+    height: calc(100vh - 104px);
   }
 </style>

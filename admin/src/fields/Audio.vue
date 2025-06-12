@@ -26,9 +26,7 @@
             :draggable="false"
             :src="url(file.path)"
           ></audio>
-          <button class="delete" v-if="!readonly && file.path" @click.stop="remove()"
-            title="Remove audio"
-            type="button">
+          <button v-if="!readonly && file.path" @click.stop="remove()" class="btn-overlay" title="Remove audio" type="button">
             <v-icon icon="mdi-trash-can" role="img"></v-icon>
           </button>
         </div>

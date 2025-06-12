@@ -472,8 +472,8 @@ input FileFilter {
   "Mime type of the stored files"
   mime: String
 
-  "Tag to categorize the files"
-  tag: String
+  "ISO language code, e.g. 'en', 'en-GB' or empty for default language"
+  lang: String
 
   "Descriptive name of the stored files"
   name: String

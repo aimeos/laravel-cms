@@ -115,7 +115,7 @@ final class Query
                         ->where( 'cms_versions.versionable_type', Element::class )
                         ->orderByDesc( 'id' )
                         ->limit( 1 )
-                ] )->groupBy( 'id' )->having( 'published', true );
+                ] )->groupBy( 'id' )->havingRaw('published = 1 OR published IS NULL');
                 break;
             case 'DRAFT':
                 $builder->addSelect( [
@@ -235,7 +235,7 @@ final class Query
                         ->where( 'cms_versions.versionable_type', File::class )
                         ->orderByDesc( 'id' )
                         ->limit( 1 )
-                ] )->groupBy( 'id' )->having( 'published', true );
+                ] )->groupBy( 'id' )->havingRaw('published = 1 OR published IS NULL');
                 break;
             case 'DRAFT':
                 $builder->addSelect( [
@@ -436,7 +436,7 @@ final class Query
                         ->where( 'cms_versions.versionable_type', Page::class )
                         ->orderByDesc( 'id' )
                         ->limit( 1 )
-                ] )->groupBy( 'id' )->having( 'published', true );
+                ] )->groupBy( 'id' )->havingRaw('published = 1 OR published IS NULL');
                 break;
             case 'DRAFT':
                 $builder->addSelect( [

@@ -252,6 +252,9 @@
             item.published = true
             item._checked = false
           })
+
+          this.invalidate()
+          this.search()
         }).catch(error => {
           this.messages.add('Error publishing file', 'error')
           this.$log(`FileListItems::publish(): Error publishing file`, item, error)
@@ -302,9 +305,12 @@
           return Promise.resolve([])
         }
 
+        const publish = this.filter.publish || null
         const trashed = this.filter.trashed || 'WITHOUT'
         const filter = {...this.filter}
+
         delete filter.trashed
+        delete filter.publish
 
         if(this.term) {
           any: this.term
@@ -314,8 +320,8 @@
 
         return this.$apollo.query({
           query: gql`
-            query($filter: FileFilter, $sort: [QueryFilesSortOrderByClause!], $limit: Int!, $page: Int!, $trashed: Trashed) {
-              files(filter: $filter, sort: $sort, first: $limit, page: $page, trashed: $trashed) {
+            query($filter: FileFilter, $sort: [QueryFilesSortOrderByClause!], $limit: Int!, $page: Int!, $trashed: Trashed, $publish: Publish) {
+              files(filter: $filter, sort: $sort, first: $limit, page: $page, trashed: $trashed, publish: $publish) {
                 data {
                   id
                   lang
@@ -348,7 +354,8 @@
             page: this.page,
             limit: this.limit,
             sort: [this.sort],
-            trashed: trashed
+            trashed: trashed,
+            publish: publish,
           },
         }).then(result => {
           if(result.errors) {

@@ -210,6 +210,8 @@
               item.check = false
             })
           }
+
+          this.invalidate()
         }).catch(error => {
           this.messages.add('Error trashing page', 'error')
           this.$log(`PageList::drop(): Error trashing page`, list, error)
@@ -334,10 +336,19 @@
           if(parent) {
             parent.data.has = true
           }
+
+          this.invalidate()
         }).catch(error => {
           this.messages.add('Error inserting page', 'error')
           this.$log(`PageList::insert(): Error inserting page`, error)
         })
+      },
+
+
+      invalidate() {
+        const cache = this.$apollo.provider.defaultClient.cache
+        cache.evict({id: 'ROOT_QUERY', fieldName: 'pages'})
+        cache.gc()
       },
 
 
@@ -381,6 +392,8 @@
               }
             })
           }
+
+          this.invalidate()
         }).catch(error => {
           this.messages.add('Error restoring page', 'error')
           this.$log(`PageList::keep(): Error restoring page`, list, error)
@@ -447,6 +460,8 @@
             }
             parent.data.has = true
           }
+
+          this.invalidate()
         }).catch(error => {
           this.messages.add('Error moving page', 'error')
           this.$log(`PageList::move(): Error moving page`, stat, idx, error)
@@ -502,6 +517,8 @@
           if(parent) {
             parent.data.has = true
           }
+
+          this.invalidate()
         }).catch(error => {
           this.messages.add('Error copying page', 'error')
           this.$log(`PageList::paste(): Error copying page`, stat, idx, error)
@@ -543,6 +560,8 @@
             item.data.published = true
             item.check = false
           }
+
+          this.invalidate()
         }).catch(error => {
           this.messages.add('Error publishing page', 'error')
           this.$log(`PageList::publish(): Error publishing page`, list, error)
@@ -592,35 +611,26 @@
       },
 
 
-      reload(lang = null) {
-        this.loading = true
-        this.languages.current = lang
-
-        this.fetch().then(result => {
-          this.items = result.data
-        }).finally(() => {
-          this.loading = false
-        })
-      },
-
-
       search(page = 1, limit = 100) {
         if(!this.auth.can('page:view')) {
           this.messages.add('Permission denied', 'error')
           return Promise.resolve([])
         }
 
+        const publish = this.filter.publish || null
         const trashed = this.filter.trashed || 'WITHOUT'
         const filter = {...this.filter}
+
         delete filter.trashed
+        delete filter.publish
 
         if(this.term) {
           filter.any = this.term
         }
 
         return this.$apollo.query({
-          query: gql`query($filter: PageFilter, $limit: Int!, $page: Int!, $trashed: Trashed) {
-            pages(filter: $filter, first: $limit, page: $page, trashed: $trashed) {
+          query: gql`query($filter: PageFilter, $limit: Int!, $page: Int!, $trashed: Trashed, $publish: Publish) {
+            pages(filter: $filter, first: $limit, page: $page, trashed: $trashed, publish: $publish) {
               data {
                 ${this.fields()}
               }
@@ -634,7 +644,8 @@
             filter: filter,
             page: page,
             limit: limit,
-            trashed: trashed
+            trashed: trashed,
+            publish: publish
           }
         }).then(result => {
           if(result.errors) {

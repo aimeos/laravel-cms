@@ -36,7 +36,7 @@
         const list = []
 
         for(const key in this.languages.available) {
-          list.push({ title: this.languages.available[key], value: {lang: key} })
+          list.push({ title: this.languages.available[key], icon: 'mdi-translate', value: {lang: key} })
         }
 
         return list
@@ -84,16 +84,24 @@
   </v-main>
 
   <AsideList v-model:filter="filter" :content="[{
+      name: 'publish',
+      items: [
+        { title: 'All', icon: 'mdi-playlist-check', value: {'publish': null} },
+        { title: 'Published', icon: 'mdi-publish', value: {'publish': 'PUBLISHED'} },
+        { title: 'Scheduled', icon: 'mdi-clock-outline', value: {'publish': 'SCHEDULED'} },
+        { title: 'Drafts', icon: 'mdi-pencil', value: {'publish': 'DRAFT'} }
+      ]
+    }, {
       name: 'trashed',
       items: [
-        { title: 'Available only', value: {'trashed': 'WITHOUT'} },
-        { title: 'Include trashed', value: {'trashed': 'WITH'} },
-        { title: 'Only trashed', value: {'trashed': 'ONLY'} }
+        { title: 'Available only', icon: 'mdi-delete-off', value: {'trashed': 'WITHOUT'} },
+        { title: 'Include trashed', icon: 'mdi-delete-outline', value: {'trashed': 'WITH'} },
+        { title: 'Only trashed', icon: 'mdi-delete', value: {'trashed': 'ONLY'} }
       ]
     }, {
       name: 'editor',
       items: [
-        { title: 'Edited by me', value: {'editor': this.auth.me.email} },
+        { title: 'Edited by me', icon: 'mdi-account', value: {'editor': this.auth.me.email} },
       ]
     }, {
       name: 'language',

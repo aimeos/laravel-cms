@@ -38,6 +38,7 @@
           :key="idx"
           rounded="lg"
         >
+          <v-icon v-if="item.icon" :icon="item.icon" class="icon"></v-icon>
           {{ item.title }}
         </v-list-item>
 
@@ -59,5 +60,10 @@
 
   .v-list-item {
     text-transform: capitalize;
+  }
+
+  .v-list-item .icon {
+    margin-inline-end: 8px;
+    font-size: 100%;
   }
 </style>

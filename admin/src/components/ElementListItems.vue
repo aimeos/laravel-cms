@@ -243,6 +243,9 @@
             item.published = true
             item._checked = false
           })
+
+          this.invalidate()
+          this.search()
         }).catch(error => {
           this.messages.add('Error publishing shared element', 'error')
           this.$log(`ElementListItems::publish(): Error publishing shared element`, list, error)
@@ -293,8 +296,11 @@
           return Promise.resolve([])
         }
 
+        const publish = this.filter.publish || null
         const trashed = this.filter.trashed || 'WITHOUT'
         const filter = {...this.filter}
+
+        delete filter.publish
         delete filter.trashed
 
         if(this.term) {
@@ -305,8 +311,8 @@
 
         return this.$apollo.query({
           query: gql`
-            query($filter: ElementFilter, $sort: [QueryElementsSortOrderByClause!], $limit: Int!, $page: Int!, $trashed: Trashed) {
-              elements(filter: $filter, sort: $sort, first: $limit, page: $page, trashed: $trashed) {
+            query($filter: ElementFilter, $sort: [QueryElementsSortOrderByClause!], $limit: Int!, $page: Int!, $trashed: Trashed, $publish: Publish) {
+              elements(filter: $filter, sort: $sort, first: $limit, page: $page, trashed: $trashed, publish: $publish) {
                 data {
                   id
                   lang
@@ -337,7 +343,8 @@
             page: this.page,
             limit: this.limit,
             sort: [this.sort],
-            trashed: trashed
+            trashed: trashed,
+            publish: publish,
           },
         }).then(result => {
           if(result.errors) {

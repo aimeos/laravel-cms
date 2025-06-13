@@ -153,7 +153,41 @@ final class Query
         }
 
         if( !empty( $value = $filter['any'] ?? null ) ) {
-            $builder->whereAny( ['description', 'name', 'tag'], 'like', '%' . $value . '%' );
+            $builder->whereAny( ['description', 'name'], 'like', '%' . $value . '%' );
+        }
+
+        if( !empty( $filter ) )
+        {
+            $builder->orWhereHas('versions', function( $query ) use ( $filter ) {
+
+                if( !empty( $value = $filter['id'] ?? null ) ) {
+                    $query->whereIn( 'versionable_id', $value );
+                }
+
+                if( !empty( $value = $filter['lang'] ?? null ) ) {
+                    $query->where( 'lang', $value );
+                }
+
+                if( !empty( $value = $filter['editor'] ?? null ) ) {
+                    $query->where( 'editor', 'like', $value . '%' );
+                }
+
+                if( !empty( $value = $filter['mime'] ?? null ) ) {
+                    $query->where( 'data', 'like', '%"mime": "' . $value . '%' );
+                }
+
+                if( !empty( $value = $filter['name'] ?? null ) ) {
+                    $query->where( 'data', 'like', '%"name": "' . $value . '%' );
+                }
+
+                if( !empty( $value = $filter['description'] ?? null ) ) {
+                    $query->where( 'data', 'like', '%' . $value . '%' );
+                }
+
+                if( !empty( $value = $filter['any'] ?? null ) ) {
+                    $query->whereAny( ['description', 'name'], 'like', '%' . $value . '%' );
+                }
+            });
         }
 
         return $builder;

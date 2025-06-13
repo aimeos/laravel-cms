@@ -73,6 +73,8 @@ final class Query
         {
             $builder->orWhereHas('versions', function( $query ) use ( $filter ) {
 
+                $query->where( 'versionable_type', Element::class );
+
                 if( !empty( $value = $filter['id'] ?? null ) ) {
                     $query->whereIn( 'versionable_id', $value );
                 }
@@ -160,6 +162,8 @@ final class Query
         {
             $builder->orWhereHas('versions', function( $query ) use ( $filter ) {
 
+                $query->where( 'versionable_type', File::class );
+
                 if( !empty( $value = $filter['id'] ?? null ) ) {
                     $query->whereIn( 'versionable_id', $value );
                 }
@@ -216,12 +220,12 @@ final class Query
             case 'only': $builder->onlyTrashed(); break;
         }
 
-        if( $trashed !== 'only' ) {
-            $builder->where( 'parent_id', $filter['parent_id'] ?? null );
-        }
-
         if( !empty( $value = $filter['id'] ?? null ) ) {
             $builder->whereIn( 'id', $value );
+        }
+
+        if( !empty( $value = $filter['parent_id'] ?? null ) ) {
+            $builder->where( 'parent_id', $value );
         }
 
         if( !empty( $value = $filter['lang'] ?? null ) ) {
@@ -288,12 +292,14 @@ final class Query
         {
             $builder->orWhereHas('versions', function( $query ) use ( $filter, $trashed ) {
 
-                if( $trashed !== 'only' ) {
-                    $query->where( 'cms_pages.parent_id', $filter['parent_id'] ?? null );
-                }
+                $query->where( 'versionable_type', Page::class );
 
                 if( !empty( $value = $filter['id'] ?? null ) ) {
                     $query->whereIn( 'versionable_id', $value );
+                }
+
+                if( !empty( $value = $filter['parent_id'] ?? null ) ) {
+                    $query->where( 'cms_pages.parent_id', $value );
                 }
 
                 if( !empty( $value = $filter['lang'] ?? null ) ) {

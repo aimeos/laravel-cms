@@ -28,17 +28,7 @@ final class SaveElement
 
             $version->files()->sync( $args['files'] ?? [] );
 
-            // MySQL doesn't support offsets for DELETE
-            $ids = Version::where( 'versionable_id', $element->id )
-                ->where( 'versionable_type', Element::class )
-                ->orderBy( 'id', 'desc' )
-                ->skip( 10 )
-                ->take( 10 )
-                ->pluck( 'id' );
-
-            if( !$ids->isEmpty() ) {
-                Version::whereIn( 'id', $ids )->forceDelete();
-            }
+            $element->removeVersions();
 
         }, 3 );
 

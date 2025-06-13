@@ -318,7 +318,7 @@ class File extends Model
 
 
     /**
-     * Removes all versions of the file except the latest 10 versions and deletes the stored files
+     * Removes all versions of the file except the latest versions and deletes the stored files
      * of the older versions.
      *
      * @return self The current instance for method chaining

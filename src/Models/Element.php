@@ -188,6 +188,29 @@ class Element extends Model
 
 
     /**
+     * Removes all versions of the element except the latest versions.
+     *
+     * @return self The current instance for method chaining
+     */
+    public function removeVersions() : self
+    {
+        // MySQL doesn't support offsets for DELETE
+        $ids = Version::where( 'versionable_id', $this->id )
+            ->where( 'versionable_type', Element::class )
+            ->orderBy( 'id', 'desc' )
+            ->skip( 10 )
+            ->take( 10 )
+            ->pluck( 'id' );
+
+        if( !$ids->isEmpty() ) {
+            Version::whereIn( 'id', $ids )->forceDelete();
+        }
+
+        return $this;
+    }
+
+
+    /**
      * Get all of the element's versions.
      *
      * @return MorphMany Eloquent relationship to the versions of the element

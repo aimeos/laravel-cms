@@ -110,6 +110,17 @@ class Page extends Model
 
 
     /**
+     * Get the shared element for the page.
+     *
+     * @return BelongsToMany Eloquent relationship to the elements attached to the page
+     */
+    public function elements() : BelongsToMany
+    {
+        return $this->belongsToMany( Element::class, 'cms_page_element' );
+    }
+
+
+    /**
      * Get all files referenced by the versioned data.
      *
      * @return BelongsToMany Eloquent relationship to the files
@@ -239,13 +250,25 @@ class Page extends Model
 
 
     /**
-     * Get the shared element for the page.
+     * Removes all versions of the page except the latest versions.
      *
-     * @return BelongsToMany Eloquent relationship to the elements attached to the page
+     * @return self The current instance for method chaining
      */
-    public function elements() : BelongsToMany
+    public function removeVersions() : self
     {
-        return $this->belongsToMany( Element::class, 'cms_page_element' );
+        // MySQL doesn't support offsets for DELETE
+        $ids = Version::where( 'versionable_id', $this->id )
+            ->where( 'versionable_type', Page::class )
+            ->orderBy( 'id', 'desc' )
+            ->skip( 10 )
+            ->take( 10 )
+            ->pluck( 'id' );
+
+        if( !$ids->isEmpty() ) {
+            Version::whereIn( 'id', $ids )->forceDelete();
+        }
+
+        return $this;
     }
 
 

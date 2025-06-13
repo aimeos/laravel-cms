@@ -114,7 +114,7 @@ class GraphqlFileTest extends TestAbstract
                 name: "Test"
                 editor: "seeder"
                 any: "test"
-            }, sort: [{column: MIME, order: ASC}], first: 10, trashed: WITH) {
+            }, sort: [{column: MIME, order: ASC}], first: 10, trashed: WITH, publish: DRAFT) {
                 data {
                     id
                     lang
@@ -137,6 +137,68 @@ class GraphqlFileTest extends TestAbstract
             'data' => [
                 'files' => [
                     'data' => $expected,
+                    'paginatorInfo' => [
+                        'currentPage' => 1,
+                        'lastPage' => 1,
+                    ]
+                ],
+            ]
+        ] );
+    }
+
+
+    public function testFilesPublished()
+    {
+        $this->seed( CmsSeeder::class );
+
+        $this->expectsDatabaseQueryCount( 1 );
+        $response = $this->actingAs( $this->user )->graphQL( '{
+            files(publish: PUBLISHED) {
+                data {
+                    id
+                }
+                paginatorInfo {
+                    currentPage
+                    lastPage
+                }
+            }
+        }' )->assertJson( [
+            'data' => [
+                'files' => [
+                    'data' => [],
+                    'paginatorInfo' => [
+                        'currentPage' => 1,
+                        'lastPage' => 1,
+                    ]
+                ],
+            ]
+        ] );
+    }
+
+
+    public function testFilesScheduled()
+    {
+        $this->seed( CmsSeeder::class );
+
+        $file = File::where( 'lang', 'en' )->get()->first();
+
+        $this->expectsDatabaseQueryCount( 2 );
+        $response = $this->actingAs( $this->user )->graphQL( '{
+            files(publish: SCHEDULED) {
+                data {
+                    id
+                }
+                paginatorInfo {
+                    currentPage
+                    lastPage
+                }
+            }
+        }' )->assertJson( [
+            'data' => [
+                'files' => [
+                    'data' => [[
+                        'id' => (string) $file->id,
+                    ]],
                     'paginatorInfo' => [
                         'currentPage' => 1,
                         'lastPage' => 1,

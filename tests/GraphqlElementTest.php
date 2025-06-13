@@ -107,7 +107,7 @@ class GraphqlElementTest extends TestAbstract
                 editor: "seeder"
                 data: "Powered by Laravel"
                 any: "Laravel"
-            }, sort: [{column: TYPE, order: ASC}], first: 10, trashed: WITH) {
+            }, sort: [{column: TYPE, order: ASC}], first: 10, trashed: WITH, publish: DRAFT) {
                 data {
                     id
                     lang
@@ -129,6 +129,68 @@ class GraphqlElementTest extends TestAbstract
             'data' => [
                 'elements' => [
                     'data' => $expected,
+                    'paginatorInfo' => [
+                        'currentPage' => 1,
+                        'lastPage' => 1,
+                    ]
+                ],
+            ]
+        ] );
+    }
+
+
+    public function testElementsPublished()
+    {
+        $this->seed( CmsSeeder::class );
+
+        $this->expectsDatabaseQueryCount( 1 );
+        $response = $this->actingAs( $this->user )->graphQL( '{
+            elements(publish: PUBLISHED) {
+                data {
+                    id
+                }
+                paginatorInfo {
+                    currentPage
+                    lastPage
+                }
+            }
+        }' )->assertJson( [
+            'data' => [
+                'elements' => [
+                    'data' => [],
+                    'paginatorInfo' => [
+                        'currentPage' => 1,
+                        'lastPage' => 1,
+                    ]
+                ],
+            ]
+        ] );
+    }
+
+
+    public function testElementsScheduled()
+    {
+        $this->seed( CmsSeeder::class );
+
+        $element = Element::where( 'type', 'footer' )->get()->first();
+
+        $this->expectsDatabaseQueryCount( 2 );
+        $response = $this->actingAs( $this->user )->graphQL( '{
+            elements(publish: SCHEDULED) {
+                data {
+                    id
+                }
+                paginatorInfo {
+                    currentPage
+                    lastPage
+                }
+            }
+        }' )->assertJson( [
+            'data' => [
+                'elements' => [
+                    'data' => [[
+                        'id' => (string) $element->id,
+                    ]],
                     'paginatorInfo' => [
                         'currentPage' => 1,
                         'lastPage' => 1,

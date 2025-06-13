@@ -105,6 +105,37 @@ final class Query
             });
         }
 
+        switch( $args['publish'] ?? null )
+        {
+            case 'PUBLISHED':
+                $builder->addSelect( [
+                    'published' => DB::table('cms_versions')
+                        ->select( 'published' )
+                        ->whereColumn( 'cms_versions.versionable_id', 'cms_elements.id' )
+                        ->where( 'cms_versions.versionable_type', Element::class )
+                        ->orderByDesc( 'id' )
+                        ->limit( 1 )
+                ] )->groupBy( 'id' )->having( 'published', true );
+                break;
+            case 'DRAFT':
+                $builder->addSelect( [
+                    'published' => DB::table('cms_versions')
+                        ->select( 'published' )
+                        ->whereColumn( 'cms_versions.versionable_id', 'cms_elements.id' )
+                        ->where( 'cms_versions.versionable_type', Element::class )
+                        ->orderByDesc( 'id' )
+                        ->limit( 1 )
+                ] )->groupBy( 'id' )->having( 'published', false );
+                break;
+            case 'SCHEDULED':
+                $builder->whereHas('versions', function( $query ) {
+                    $query->where( 'versionable_type', Element::class )
+                        ->where( 'publish_at', '!=', null )
+                        ->where( 'published', false );
+                });
+                break;
+        }
+
         return $builder;
     }
 
@@ -192,6 +223,37 @@ final class Query
                     $query->whereAny( ['description', 'name'], 'like', '%' . $value . '%' );
                 }
             });
+        }
+
+        switch( $args['publish'] ?? null )
+        {
+            case 'PUBLISHED':
+                $builder->addSelect( [
+                    'published' => DB::table('cms_versions')
+                        ->select( 'published' )
+                        ->whereColumn( 'cms_versions.versionable_id', 'cms_files.id' )
+                        ->where( 'cms_versions.versionable_type', File::class )
+                        ->orderByDesc( 'id' )
+                        ->limit( 1 )
+                ] )->groupBy( 'id' )->having( 'published', true );
+                break;
+            case 'DRAFT':
+                $builder->addSelect( [
+                    'published' => DB::table('cms_versions')
+                        ->select( 'published' )
+                        ->whereColumn( 'cms_versions.versionable_id', 'cms_files.id' )
+                        ->where( 'cms_versions.versionable_type', File::class )
+                        ->orderByDesc( 'id' )
+                        ->limit( 1 )
+                ] )->groupBy( 'id' )->having( 'published', false );
+                break;
+            case 'SCHEDULED':
+                $builder->whereHas('versions', function( $query ) {
+                    $query->where( 'versionable_type', File::class )
+                        ->where( 'publish_at', '!=', null )
+                        ->where( 'published', false );
+                });
+                break;
         }
 
         return $builder;
@@ -362,6 +424,37 @@ final class Query
                     $query->whereAny( ['contents', 'data'], 'like', '%' . $value . '%' );
                 }
             } );
+        }
+
+        switch( $args['publish'] ?? null )
+        {
+            case 'PUBLISHED':
+                $builder->addSelect( [
+                    'published' => DB::table('cms_versions')
+                        ->select( 'published' )
+                        ->whereColumn( 'cms_versions.versionable_id', 'cms_pages.id' )
+                        ->where( 'cms_versions.versionable_type', Page::class )
+                        ->orderByDesc( 'id' )
+                        ->limit( 1 )
+                ] )->groupBy( 'id' )->having( 'published', true );
+                break;
+            case 'DRAFT':
+                $builder->addSelect( [
+                    'published' => DB::table('cms_versions')
+                        ->select( 'published' )
+                        ->whereColumn( 'cms_versions.versionable_id', 'cms_pages.id' )
+                        ->where( 'cms_versions.versionable_type', Page::class )
+                        ->orderByDesc( 'id' )
+                        ->limit( 1 )
+                ] )->groupBy( 'id' )->having( 'published', false );
+                break;
+            case 'SCHEDULED':
+                $builder->whereHas('versions', function( $query ) {
+                    $query->where( 'versionable_type', Page::class )
+                        ->where( 'publish_at', '!=', null )
+                        ->where( 'published', false );
+                });
+                break;
         }
 
         return $builder;

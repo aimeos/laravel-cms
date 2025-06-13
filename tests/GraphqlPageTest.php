@@ -119,7 +119,7 @@ class GraphqlPageTest extends TestAbstract
                 config: "value"
                 contents: "Welcome"
                 any: "Laravel"
-            }, first: 10, page: 1, trashed: WITH) {
+            }, first: 10, page: 1, trashed: WITH, publish: PUBLISHED) {
                 data {
                     id
                     parent_id
@@ -151,6 +151,72 @@ class GraphqlPageTest extends TestAbstract
             'data' => [
                 'pages' => [
                     'data' => $expected,
+                    'paginatorInfo' => [
+                        'currentPage' => 1,
+                        'lastPage' => 1,
+                    ]
+                ],
+            ]
+        ] );
+    }
+
+
+    public function testPagesDraft()
+    {
+        $this->seed( CmsSeeder::class );
+
+        $page = Page::where('tag', 'hidden')->firstOrFail();
+
+        $this->expectsDatabaseQueryCount( 2 );
+        $response = $this->actingAs( $this->user )->graphQL( '{
+            pages(publish: DRAFT) {
+                data {
+                    id
+                }
+                paginatorInfo {
+                    currentPage
+                    lastPage
+                }
+            }
+        }' )->assertJson( [
+            'data' => [
+                'pages' => [
+                    'data' => [[
+                        'id' => (string) $page->id,
+                    ]],
+                    'paginatorInfo' => [
+                        'currentPage' => 1,
+                        'lastPage' => 1,
+                    ]
+                ],
+            ]
+        ] );
+    }
+
+
+    public function testPagesScheduled()
+    {
+        $this->seed( CmsSeeder::class );
+
+        $page = Page::where('tag', 'hidden')->firstOrFail();
+
+        $this->expectsDatabaseQueryCount( 2 );
+        $response = $this->actingAs( $this->user )->graphQL( '{
+            pages(publish: SCHEDULED) {
+                data {
+                    id
+                }
+                paginatorInfo {
+                    currentPage
+                    lastPage
+                }
+            }
+        }' )->assertJson( [
+            'data' => [
+                'pages' => [
+                    'data' => [[
+                        'id' => (string) $page->id,
+                    ]],
                     'paginatorInfo' => [
                         'currentPage' => 1,
                         'lastPage' => 1,

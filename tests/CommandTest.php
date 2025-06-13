@@ -21,6 +21,6 @@ class CommandTest extends TestAbstract
         $this->assertEquals( (object) [
             'en' => 'Test file description',
             'de' => 'Beschreibung der Testdatei',
-        ], File::where( 'tag', 'test' )->firstOrFail()?->description );
+        ], File::where( 'lang', 'en' )->firstOrFail()?->description );
     }
 }

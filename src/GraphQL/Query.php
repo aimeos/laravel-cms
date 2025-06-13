@@ -136,12 +136,12 @@ final class Query
             $builder->whereIn( 'id', $value );
         }
 
-        if( !empty( $value = $filter['mime'] ?? null ) ) {
-            $builder->where( 'mime', 'like', $value . '%' );
+        if( !empty( $value = $filter['lang'] ?? null ) ) {
+            $builder->where( 'lang', $value );
         }
 
-        if( !empty( $value = $filter['tag'] ?? null ) ) {
-            $builder->where( 'tag', 'like', $value . '%' );
+        if( !empty( $value = $filter['mime'] ?? null ) ) {
+            $builder->where( 'mime', 'like', $value . '%' );
         }
 
         if( !empty( $value = $filter['name'] ?? null ) ) {

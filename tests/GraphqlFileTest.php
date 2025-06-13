@@ -65,7 +65,7 @@ class GraphqlFileTest extends TestAbstract
         $response = $this->actingAs( $this->user )->graphQL( "{
             file(id: \"{$file->id}\") {
                 id
-                tag
+                lang
                 mime
                 name
                 path
@@ -100,7 +100,7 @@ class GraphqlFileTest extends TestAbstract
     {
         $this->seed( CmsSeeder::class );
 
-        $file = File::where( 'tag', 'test' )->get()->first();
+        $file = File::where( 'lang', 'en' )->get()->first();
 
         $attr = collect($file->getAttributes())->except(['tenant_id'])->all();
         $expected = [['id' => (string) $file->id] + $attr];
@@ -109,7 +109,7 @@ class GraphqlFileTest extends TestAbstract
         $response = $this->actingAs( $this->user )->graphQL( '{
             files(filter: {
                 id: ["' . $file->id . '"]
-                tag: "test"
+                lang: "en"
                 mime: "image/"
                 name: "Test"
                 editor: "seeder"
@@ -117,7 +117,7 @@ class GraphqlFileTest extends TestAbstract
             }, sort: [{column: MIME, order: ASC}], first: 10, trashed: WITH) {
                 data {
                     id
-                    tag
+                    lang
                     mime
                     name
                     path
@@ -158,10 +158,10 @@ class GraphqlFileTest extends TestAbstract
                     addFile(file: $file, input: {
                         description: "{\"en\": \"Test file description\"}"
                         name: "Test file name"
-                        tag: "test tag"
+                        lang: "en-GB"
                     }, preview: $preview) {
                         id
-                        tag
+                        lang
                         mime
                         name
                         path
@@ -194,7 +194,7 @@ class GraphqlFileTest extends TestAbstract
                 'addFile' => [
                     'id' => $file->id,
                     'mime' => 'application/pdf',
-                    'tag' => 'test tag',
+                    'lang' => 'en-GB',
                     'name' => 'Test file name',
                     'path' => $file->path,
                     'previews' => json_encode( $file->previews ),
@@ -214,17 +214,18 @@ class GraphqlFileTest extends TestAbstract
 
         $file = File::firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 5 );
+        $this->expectsDatabaseQueryCount( 6 );
         $response = $this->actingAs( $this->user )->multipartGraphQL( [
             'query' => '
                 mutation($preview: Upload) {
                     saveFile(id: "' . $file->id . '", input: {
                         description: "{\"en\": \"Test file description\"}"
                         name: "test file"
-                        tag: "test2"
+                        lang: "en-GB"
                     }, preview: $preview) {
                         id
-                        tag
+                        mime
+                        lang
                         name
                         path
                         previews
@@ -247,28 +248,26 @@ class GraphqlFileTest extends TestAbstract
         ] );
 
         $file = File::findOrFail( $file->id );
-        $content = json_decode( $response->getContent() );
-        $data = json_decode( $content->data->saveFile->latest->data, true );
+        $previews = json_encode( $file->latest->data->previews );
 
         $response->assertJson( [
             'data' => [
                 'saveFile' => [
                     'id' => $file->id,
+                    'mime' => 'image/jpeg',
+                    'lang' => 'en',
                     'name' => 'Test image',
-                    'tag' => 'test',
+                    'path' => $file->path,
+                    'previews' => json_encode( $file->previews ),
+                    'description' => json_encode( $file->description ),
                     'editor' => 'seeder',
-                    'previews' => '{"1000":"https:\\/\\/picsum.photos\\/id\\/0\\/1000\\/666","500":"https:\\/\\/picsum.photos\\/id\\/0\\/500\\/333"}',
                     'latest' => [
+                        'data' => '{"lang":"en-GB","name":"test file","mime":"image\\/jpeg","path":"https:\\/\\/picsum.photos\\/id\\/0\\/1500\\/1000","previews":' . $previews . ',"description":{"en":"Test file description"}}',
                         'editor' => 'Test editor',
-                    ],
+                    ]
                 ],
             ]
         ] );
-
-        $this->assertEquals( 'test2', $data['tag'] );
-        $this->assertEquals( 'test file', $data['name'] );
-        $this->assertEquals( ['en'=> 'Test file description'], $data['description'] );
-        $this->assertStringStartsWith( 'cms/demo/test-preview-1', $data['previews'][200] );
     }
 
 

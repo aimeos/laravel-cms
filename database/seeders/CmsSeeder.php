@@ -47,7 +47,7 @@ class CmsSeeder extends Seeder
         {
             $file = File::forceCreate( [
                 'mime' => 'image/jpeg',
-                'tag' => 'test',
+                'lang' => 'en',
                 'name' => 'Test image',
                 'path' => 'https://picsum.photos/id/0/1500/1000',
                 'previews' => ["1000" => "https://picsum.photos/id/0/1000/666", "500" => "https://picsum.photos/id/0/500/333"],
@@ -60,7 +60,7 @@ class CmsSeeder extends Seeder
             $version = $file->versions()->forceCreate([
                 'data' => [
                     'mime' => 'image/jpeg',
-                    'tag' => 'test',
+                    'lang' => 'en',
                     'name' => 'Test image',
                     'path' => 'https://picsum.photos/id/0/1500/1000',
                     'previews' => ["1000" => "https://picsum.photos/id/0/1000/666", "500" => "https://picsum.photos/id/0/500/333"],

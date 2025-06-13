@@ -15,9 +15,12 @@ final class SaveFile
      */
     public function __invoke( $rootValue, array $args ) : File
     {
+        $editor = Auth::user()?->name ?? request()->ip();
         $orig = File::withTrashed()->findOrFail( $args['id'] );
+
         $file = clone $orig;
         $file->fill( $args['input'] ?? [] );
+        $file->editor = $editor;
 
         $upload = $args['file'] ?? null;
 
@@ -43,12 +46,11 @@ final class SaveFile
             throw $t;
         }
 
-        $editor = Auth::user()?->name ?? request()->ip();
         $file->versions()->create( [
             'lang' => $args['input']['lang'] ?? null,
             'editor' => $editor,
             'data' => [
-                'tag' => $file->tag,
+                'lang' => $file->lang,
                 'name' => $file->name,
                 'mime' => $file->mime,
                 'path' => $file->path,

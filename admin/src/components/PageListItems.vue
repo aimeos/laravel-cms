@@ -789,8 +789,6 @@
         return this.app.urlpage
           .replace(/:domain/, node.domain || '')
           .replace(/:path/, node.path || '')
-          .replace(/xx-XX/, node.lang !== this.languages.default() ? node.lang : '')
-          .replace(/(\/){2,}/g, '/').replace(':/', '://')
       }
     },
 

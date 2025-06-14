@@ -17,13 +17,9 @@
 
     computed: {
       url() {
-        const url = this.app.urlpage
+        return this.app.urlpreview
           .replace(/:domain/, this.item.domain || '')
-          .replace(/:path/, this.item.path || '')
-          .replace(/xx-XX/, this.item.lang !== this.languages.default() ? this.item.lang : '')
-          .replace(/(\/){2,}/g, '/').replace(':/', '://')
-
-        return url + (url.includes('?') ? '&' : '?') + 'preview=true'
+          .replace(/:id/, this.item.id || '')
       }
     }
   }

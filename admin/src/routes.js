@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore, useMessageStore } from './stores'
 
 const router = createRouter({
-  history: createWebHistory(document.querySelector('#app')?.dataset?.urlbase || ''),
+  history: createWebHistory(document.querySelector('#app')?.dataset?.urladmin || ''),
   routes: [
     {
       path: '/',

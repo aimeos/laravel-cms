@@ -7,8 +7,9 @@ const app = document.querySelector('#app');
 
 export const useAppStore = defineStore('app', {
   state: () => ({
-    urlbase: app?.dataset.urlbase || '/admin',
-    urlpage: app?.dataset.urlpage || '/:path/xx-XX',
+    urladmin: app?.dataset.urladmin || '/cmsadmin',
+    urlpreview: app?.dataset.urlpreview || '/cmspreview/:id',
+    urlpage: app?.dataset.urlpage || '/:path',
     urlfile: app?.dataset.urlfile || '/storage',
   })
 })

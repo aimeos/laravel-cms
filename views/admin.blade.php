@@ -18,7 +18,8 @@
     <div id="app"
       data-graphql="{{ route('graphql') }}"
       data-languages='{"en": "English"}'
-      data-urlbase="{{ route('cms.admin', [], false) }}"
+      data-urladmin="{{ route('cms.admin', [], false) }}"
+      data-urlpreview="{{ route('cms.preview', ['id' => ':id']) }}"
       data-urlpage="{{ route('cms.page', ['path' => ':path']) }}"
       data-urlfile="{{ \Illuminate\Support\Facades\Storage::disk( config( 'cms.disk', 'public' ) )->url( '' ) }}"
       data-permissions="{{ \Aimeos\Cms\Permission::get( \Illuminate\Support\Facades\Auth::user() ) }}"

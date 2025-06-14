@@ -832,7 +832,7 @@
       <v-checkbox-btn v-model="checked" @click.stop="toggle()"></v-checkbox-btn>
       <v-menu>
         <template #activator="{ props }">
-          <v-btn append-icon="mdi-menu-down" variant="outlined" v-bind="props">Actions</v-btn>
+          <v-btn append-icon="mdi-menu-down" variant="text" v-bind="props">Actions</v-btn>
         </template>
         <v-list>
           <v-list-item v-if="isChecked && auth.can('page:publish')">

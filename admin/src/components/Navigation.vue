@@ -14,13 +14,16 @@
 <template>
   <v-navigation-drawer v-model="drawer.nav" location="start" mobile-breakpoint="lg">
     <v-list>
-      <v-list-item v-if="auth.can('page:view')" prepend-icon="mdi-file-tree" rounded="lg">
+      <v-list-item v-if="auth.can('page:view')" rounded="lg">
+        <v-icon icon="mdi-file-tree" class="icon"></v-icon>
         <router-link to="/pages" class="router-link">Pages</router-link>
       </v-list-item>
-      <v-list-item v-if="auth.can('element:view')" prepend-icon="mdi-share-variant" rounded="lg">
+      <v-list-item v-if="auth.can('element:view')" rounded="lg">
+        <v-icon icon="mdi-share-variant" class="icon"></v-icon>
         <router-link to="/elements" class="router-link">Shared elements</router-link>
       </v-list-item>
-      <v-list-item v-if="auth.can('file:view')" prepend-icon="mdi-folder-multiple-image" rounded="lg">
+      <v-list-item v-if="auth.can('file:view')" rounded="lg">
+        <v-icon icon="mdi-folder-multiple-image" class="icon"></v-icon>
         <router-link to="/files" class="router-link">Files</router-link>
       </v-list-item>
     </v-list>
@@ -37,8 +40,15 @@
     border-top-left-radius: 8px;
   }
 
-  .v-list-item {
-    margin: 0 4px;
+  :deep(.v-list-item__content) {
+    align-items: center;
+    display: flex;
+  }
+
+  .v-list-item .router-link {
+    display: block;
+    width: 100%;
+    padding: 8px;
   }
 
   .v-list-item:has(.router-link-active),
@@ -50,5 +60,9 @@
   a.router-link:focus,
   a.router-link:visited {
     color: rgb(var(--v-theme-on-surface-light));
+  }
+
+  .v-list-item .icon {
+    font-size: 100%;
   }
 </style>

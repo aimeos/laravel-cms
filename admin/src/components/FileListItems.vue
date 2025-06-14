@@ -461,7 +461,7 @@
       <v-checkbox-btn v-model="checked" @click.stop="toggle()"></v-checkbox-btn>
       <v-menu location="bottom left">
         <template #activator="{ props }">
-          <v-btn append-icon="mdi-menu-down" variant="outlined" v-bind="props">Actions</v-btn>
+          <v-btn append-icon="mdi-menu-down" variant="text" v-bind="props">Actions</v-btn>
         </template>
         <v-list>
           <v-list-item v-if="isChecked && auth.can('file:publish')">
@@ -500,7 +500,7 @@
 
       <v-menu>
         <template #activator="{ props }">
-          <v-btn append-icon="mdi-menu-down" prepend-icon="mdi-sort" variant="outlined" location="bottom right" v-bind="props">
+          <v-btn append-icon="mdi-menu-down" prepend-icon="mdi-sort" variant="text" location="bottom right" v-bind="props">
             {{ sort?.column === 'ID' ? (sort?.order === 'DESC' ? 'Latest' : 'Oldest' ) : (sort?.column || '') }}
           </v-btn>
         </template>

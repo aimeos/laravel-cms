@@ -239,7 +239,7 @@ body {
   padding: 0;
 }
 
-.menu-publish .v-btn__content {
+.menu-publish .v-btn:not(.v-btn--disabled) .v-btn__content {
   border: 1px solid rgb(var(--v-theme-primary));
   background-color: rgb(var(--v-theme-primary));
   color: rgb(var(--v-theme-on-primary));
@@ -308,7 +308,7 @@ body {
 .publish-at {
   color: rgb(var(--v-theme-warning));
   margin-inline-end: 4px;
-  font-size: 20px;
+  font-size: 20px !important;
 }
 
 .hidden {

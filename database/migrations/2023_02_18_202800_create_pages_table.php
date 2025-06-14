@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('tenant_id', 250);
             $table->string('name');
-            $table->string('slug');
+            $table->string('path');
             $table->string('to');
             $table->string('title');
             $table->string('domain');
@@ -35,7 +35,7 @@ return new class extends Migration
             $table->timestamps();
             $table->nestedSet();
 
-            $table->unique(['slug', 'domain', 'lang', 'tenant_id']);
+            $table->unique(['path', 'domain', 'tenant_id']);
             $table->index(['_lft', '_rgt', 'tenant_id', 'status']);
             $table->index(['tag', 'lang', 'tenant_id', 'status']);
             $table->index(['lang', 'tenant_id', 'status']);

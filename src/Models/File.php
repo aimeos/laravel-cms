@@ -175,7 +175,7 @@ class File extends Model
     public function bypages() : BelongsToMany
     {
         return $this->belongsToMany( Page::class, 'cms_page_file' )
-            ->select('id', 'slug', 'name' );
+            ->select('id', 'path', 'name' );
     }
 
 

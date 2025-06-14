@@ -45,7 +45,7 @@ The result will be a JSON:API response which looks like:
             "attributes": {
                 "parent_id": null,
                 "lang": "",
-                "slug": "",
+                "path": "",
                 "name": "Home",
                 "title": "Home | Laravel CMS",
                 "tag": "root",
@@ -119,7 +119,7 @@ The result will be a JSON:API response which looks like:
             "attributes": {
                 "parent_id": 1,
                 "lang": "",
-                "slug": "blog",
+                "path": "blog",
                 "name": "Blog",
                 "title": "Blog | Laravel CMS",
                 "tag": "blog",
@@ -143,7 +143,7 @@ The result will be a JSON:API response which looks like:
             "attributes": {
                 "parent_id": 1,
                 "lang": "",
-                "slug": "dev",
+                "path": "dev",
                 "name": "Dev",
                 "title": "For Developer | Laravel CMS",
                 "tag": "",
@@ -167,7 +167,7 @@ The result will be a JSON:API response which looks like:
             "attributes": {
                 "parent_id": 1,
                 "lang": "",
-                "slug": "hidden",
+                "path": "hidden",
                 "name": "Hidden",
                 "title": "Hidden page | Laravel CMS",
                 "tag": "hidden",

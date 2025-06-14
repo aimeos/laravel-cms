@@ -72,8 +72,8 @@
 
 
       updateSlug(focused) {
-        if(!focused && this.item.slug?.at(0) === '_') {
-          this.item.slug = this.item.name?.replace(/[ ]+/g, '-')?.toLowerCase()
+        if(!focused && this.item.path?.at(0) === '_') {
+          this.item.path = this.item.name?.replace(/[ ]+/g, '-')?.toLowerCase()
         }
       },
 
@@ -167,13 +167,13 @@
           ></v-text-field>
         </v-col>
         <v-col cols="12" md="6">
-          <v-text-field ref="slug"
+          <v-text-field ref="path"
             :rules="[
               v => !!v || `The field is required`,
             ]"
             :readonly="readonly"
-            :modelValue="item.slug"
-            @update:modelValue="update('slug', $event)"
+            :modelValue="item.path"
+            @update:modelValue="update('path', $event)"
             variant="underlined"
             label="URL path"
             counter="255"

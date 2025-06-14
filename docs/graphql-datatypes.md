@@ -45,7 +45,7 @@ parent_id (string, read-only)
 lang (string)
 : ISO language code, e.g. 'en', 'en_GB' or empty for default language
 
-slug (string)
+path (string)
 : URL segment of the page, unique in combination with the language
 
 domain (string)

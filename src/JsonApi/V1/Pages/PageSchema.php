@@ -78,7 +78,7 @@ class PageSchema extends Schema
             ID::make(),
             Str::make( 'parent_id' )->readOnly(),
             Str::make( 'lang' )->readOnly(),
-            Str::make( 'slug' )->readOnly(),
+            Str::make( 'path' )->readOnly(),
             Str::make( 'name' )->readOnly(),
             Str::make( 'title' )->readOnly(),
             Str::make( 'theme' )->readOnly(),

@@ -19,7 +19,7 @@
       url() {
         const url = this.app.urlpage
           .replace(/:domain/, this.item.domain || '')
-          .replace(/:slug/, this.item.slug || '')
+          .replace(/:path/, this.item.path || '')
           .replace(/xx-XX/, this.item.lang !== this.languages.default() ? this.item.lang : '')
           .replace(/(\/){2,}/g, '/').replace(':/', '://')
 

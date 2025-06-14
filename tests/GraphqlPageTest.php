@@ -63,7 +63,7 @@ class GraphqlPageTest extends TestAbstract
                 id
                 parent_id
                 lang
-                slug
+                path
                 name
                 title
                 domain
@@ -105,7 +105,7 @@ class GraphqlPageTest extends TestAbstract
                 id: [' . $page->id . ']
                 parent_id: null
                 name: "Home"
-                slug: ""
+                path: ""
                 to: ""
                 title: "Home"
                 domain: "mydomain"
@@ -124,7 +124,7 @@ class GraphqlPageTest extends TestAbstract
                     id
                     parent_id
                     lang
-                    slug
+                    path
                     name
                     title
                     domain
@@ -249,7 +249,7 @@ class GraphqlPageTest extends TestAbstract
                     id
                     parent_id
                     lang
-                    slug
+                    path
                     name
                     title
                     domain
@@ -401,7 +401,7 @@ class GraphqlPageTest extends TestAbstract
                     'versions' => [
                         [
                             'lang' => $page->lang,
-                            'data' => '{"name":"Home","title":"Home | Laravel CMS","slug":"","tag":"root","domain":"mydomain.tld","status":1,"cache":5,"editor":"seeder","meta":{"meta":{"type":"meta","text":"Laravel CMS is outstanding"}},"config":{"test":{"type":"test","data":{"key":"value"}}}}',
+                            'data' => '{"name":"Home","title":"Home | Laravel CMS","path":"","tag":"root","domain":"mydomain.tld","status":1,"cache":5,"editor":"seeder","meta":{"meta":{"type":"meta","text":"Laravel CMS is outstanding"}},"config":{"test":{"type":"test","data":{"key":"value"}}}}',
                             'contents' => '[{"type":"heading","text":"Welcome to Laravel CMS"},{"type":"ref","id":"' . $element->id . '"}]',
                             'editor' => 'seeder'
                         ],
@@ -496,7 +496,7 @@ class GraphqlPageTest extends TestAbstract
             mutation {
                 addPage(input: {
                     lang: "en"
-                    slug: "test"
+                    path: "test"
                     name: "test"
                     domain: "test.com"
                     title: "Test page"
@@ -511,7 +511,7 @@ class GraphqlPageTest extends TestAbstract
                     id
                     parent_id
                     lang
-                    slug
+                    path
                     domain
                     name
                     title
@@ -561,7 +561,7 @@ class GraphqlPageTest extends TestAbstract
             mutation {
                 addPage(input: {
                     lang: "en"
-                    slug: "test"
+                    path: "test"
                     name: "test"
                     domain: "test.com"
                     title: "Test page"
@@ -601,7 +601,7 @@ class GraphqlPageTest extends TestAbstract
             mutation {
                 addPage(input: {
                     lang: "en"
-                    slug: "test"
+                    path: "test"
                     name: "test"
                     domain: ""
                     title: "Test page"
@@ -738,7 +738,7 @@ class GraphqlPageTest extends TestAbstract
             mutation {
                 savePage(id: "' . $root->id . '", input: {
                     lang: "de"
-                    slug: "test"
+                    path: "test"
                     domain: "test.com"
                     name: "test"
                     title: "Test page"
@@ -753,7 +753,7 @@ class GraphqlPageTest extends TestAbstract
                     id
                     parent_id
                     lang
-                    slug
+                    path
                     domain
                     name
                     title
@@ -800,7 +800,7 @@ class GraphqlPageTest extends TestAbstract
                     'id' => (string) $root->id,
                     'parent_id' => null,
                     'lang' => 'en',
-                    'slug' => '',
+                    'path' => '',
                     'domain' => 'mydomain.tld',
                     'name' => 'Home',
                     'title' => 'Home | Laravel CMS',
@@ -818,7 +818,7 @@ class GraphqlPageTest extends TestAbstract
                     'updated_at' => (string) $page->updated_at,
                     'latest' => [
                         'lang' => 'de',
-                        'data' => '{"lang":"de","slug":"test","domain":"test.com","name":"test","title":"Test page","to":"\\/to\\/page","tag":"test","meta":{"canonical":"to\\/page"},"config":{"key":"test"},"status":0,"cache":5}',
+                        'data' => '{"lang":"de","path":"test","domain":"test.com","name":"test","title":"Test page","to":"\\/to\\/page","tag":"test","meta":{"canonical":"to\\/page"},"config":{"key":"test"},"status":0,"cache":5}',
                         'contents' => '[{"type":"heading","text":"Welcome to Laravel CMS"}]',
                         'published' => false,
                         'publish_at' => null,
@@ -826,7 +826,7 @@ class GraphqlPageTest extends TestAbstract
 
                     ],
                     'published' => [
-                        'data' => '{"name":"Home","title":"Home | Laravel CMS","slug":"","tag":"root","domain":"mydomain.tld","status":1,"cache":5,"editor":"seeder","meta":{"meta":{"type":"meta","text":"Laravel CMS is outstanding"}},"config":{"test":{"type":"test","data":{"key":"value"}}}}',
+                        'data' => '{"name":"Home","title":"Home | Laravel CMS","path":"","tag":"root","domain":"mydomain.tld","status":1,"cache":5,"editor":"seeder","meta":{"meta":{"type":"meta","text":"Laravel CMS is outstanding"}},"config":{"test":{"type":"test","data":{"key":"value"}}}}',
                         'contents' => '[{"type":"heading","text":"Welcome to Laravel CMS"},{"type":"ref","id":"' . $element->id . '"}]',
                     ]
                 ],

@@ -143,7 +143,7 @@
 
       create(attr = {}) {
         return Object.assign({
-          slug: '_' + Math.floor(Math.random() * 10000),
+          path: '_' + Math.floor(Math.random() * 10000),
           lang: this.languages.current || this.languages.default(),
           status: 0,
           cache: 5
@@ -262,7 +262,7 @@
         return `id
           parent_id
           lang
-          slug
+          path
           domain
           name
           title
@@ -483,7 +483,7 @@
         const node = {...this.clip.node}
         let refid = null
 
-        node.slug = node.slug + '_' + Math.floor(Math.random() * 10000)
+        node.path = node.path + '_' + Math.floor(Math.random() * 10000)
         node.status = 0
         node.children = null
         node.has = false
@@ -788,7 +788,7 @@
       url(node) {
         return this.app.urlpage
           .replace(/:domain/, node.domain || '')
-          .replace(/:slug/, node.slug || '')
+          .replace(/:path/, node.path || '')
           .replace(/xx-XX/, node.lang !== this.languages.default() ? node.lang : '')
           .replace(/(\/){2,}/g, '/').replace(':/', '://')
       }
@@ -987,7 +987,7 @@
         </div>
         <a class="item-aux" :href="url(node) + '?preview=true'" target="_blank" draggable="false">
           <div class="item-domain">{{ node.domain }}</div>
-          <span class="item-slug item-subtitle">{{ url(node) }}</span>
+          <span class="item-path item-subtitle">{{ url(node) }}</span>
           <span v-if="node.to" class="item-to item-subtitle"> ➔ {{ node.to }}</span>
         </a>
       </div>

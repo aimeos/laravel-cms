@@ -114,7 +114,7 @@ class CmsSeeder extends Seeder
             'lang' => 'en',
             'name' => 'Home',
             'title' => 'Home | Laravel CMS',
-            'slug' => '',
+            'path' => '',
             'tag' => 'root',
             'domain' => 'mydomain.tld',
             'status' => 1,
@@ -132,7 +132,7 @@ class CmsSeeder extends Seeder
             'data' => [
                 'name' => 'Home',
                 'title' => 'Home | Laravel CMS',
-                'slug' => '',
+                'path' => '',
                 'tag' => 'root',
                 'domain' => 'mydomain.tld',
                 'status' => 1,
@@ -161,7 +161,7 @@ class CmsSeeder extends Seeder
         $page = Page::forceCreate([
             'name' => 'Blog',
             'title' => 'Blog | Laravel CMS',
-            'slug' => 'blog',
+            'path' => 'blog',
             'tag' => 'blog',
             'status' => 1,
             'editor' => 'seeder',
@@ -213,7 +213,7 @@ mutation {
         $data = [
             'name' => 'Welcome to Laravel CMS',
             'title' => 'Welcome to Laravel CMS | Laravel CMS',
-            'slug' => 'welcome-to-laravelcms',
+            'path' => 'welcome-to-laravelcms',
             'tag' => 'article',
             'status' => 1,
             'editor' => 'seeder'
@@ -243,7 +243,7 @@ mutation {
         $page = Page::forceCreate([
             'name' => 'Dev',
             'title' => 'For Developer | Laravel CMS',
-            'slug' => 'dev',
+            'path' => 'dev',
             'status' => 1,
             'editor' => 'seeder',
             'contents' => [[
@@ -276,7 +276,7 @@ This is content created using [markdown syntax](https://www.markdownguide.org/ba
         $page = Page::forceCreate([
             'name' => 'Disabled',
             'title' => 'Disabled page | Laravel CMS',
-            'slug' => 'disabled',
+            'path' => 'disabled',
             'tag' => 'disabled',
             'status' => 0,
             'editor' => 'seeder',
@@ -286,7 +286,7 @@ This is content created using [markdown syntax](https://www.markdownguide.org/ba
         $child = Page::forceCreate([
             'name' => 'Disabled child',
             'title' => 'Disabled child | Laravel CMS',
-            'slug' => 'disabled-child',
+            'path' => 'disabled-child',
             'tag' => 'disabled-child',
             'status' => 1,
             'editor' => 'seeder',
@@ -302,7 +302,7 @@ This is content created using [markdown syntax](https://www.markdownguide.org/ba
         $page = Page::forceCreate([
             'name' => 'Hidden',
             'title' => 'Hidden page | Laravel CMS',
-            'slug' => 'hidden',
+            'path' => 'hidden',
             'tag' => 'hidden',
             'status' => 2,
             'editor' => 'seeder',
@@ -313,7 +313,7 @@ This is content created using [markdown syntax](https://www.markdownguide.org/ba
             'data' => [
                 'name' => 'Hidden',
                 'title' => 'Hidden page | Laravel CMS',
-                'slug' => 'hidden',
+                'path' => 'hidden',
                 'tag' => 'hidden',
                 'status' => 1,
                 'editor' => 'seeder',

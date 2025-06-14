@@ -45,7 +45,7 @@ The available page properties are:
     "attributes": {
         "parent_id": null,
         "lang": "",
-        "slug": "",
+        "path": "",
         "name": "Home",
         "title": "Home | Laravel CMS",
         "tag": "root",
@@ -77,7 +77,7 @@ parent_id
 lang
 : ISO language code, either two letters in lower case (e.g. "en") or five characters for country specific languages (e.g. "en_US")
 
-slug
+path
 : URL segment of the page (must not contain any slashes)
 
 name
@@ -221,10 +221,10 @@ In the last case, use the [link](#links) instead of constructing the URL yoursel
 
 Most often, you don't need all page or shared content properties and you can reduce the amount of data returned in the response by using the `fields` parameter. The requested fields can be limited for pages and shared content elements separately and the property names must be concatenated by comma.
 
-To retrieve the `slug` and `lang` of the root pages only and the `data` property of the shared content elements, use:
+To retrieve the `path` and `lang` of the root pages only and the `data` property of the shared content elements, use:
 
 ```
-http://mydomain.tld/api/cms/pages?include=elements&fields[pages]=slug,lang&fields[elements]=data
+http://mydomain.tld/api/cms/pages?include=elements&fields[pages]=path,lang&fields[elements]=data
 ```
 
 Then, the attributes of the returned pages in the [data section](#data) will contain only:
@@ -236,7 +236,7 @@ Then, the attributes of the returned pages in the [data section](#data) will con
         "id": "1",
         "attributes": {
             "lang": "",
-            "slug": ""
+            "path": ""
         },
         "links": {
             "self": "http:\/\/mydomain.tld\/cms\/pages\/1"
@@ -328,7 +328,7 @@ Using a request which returns a single page, then the response is like:
     "attributes": {
         "parent_id": null,
         "lang": "",
-        "slug": "",
+        "path": "",
         "name": "Home",
         "title": "Home | Laravel CMS",
         "tag": "root",
@@ -382,7 +382,7 @@ For request returning multiple items, the `data` section will be similar to:
         "attributes": {
             "parent_id": null,
             "lang": "",
-            "slug": "",
+            "path": "",
             "name": "Home",
             "title": "Home | Laravel CMS",
             "tag": "root",

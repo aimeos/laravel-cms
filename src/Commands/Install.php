@@ -278,11 +278,11 @@ Made with <fg=green>love</> by the Laravel CMS community. Be a part of it!
     ->name('cms.admin');";
         }
 
-        if( strpos( $content, '{slug' ) === false )
+        if( strpos( $content, 'cms.page' ) === false )
         {
             $content .= "\n\nRoute::group([/* uncomment for multi-domain routing: 'domain' => '{domain}'*/], function() {
-    Route::get('{slug?}/{lang?}', [\Aimeos\Cms\Http\Controllers\PageController::class, 'index'])
-        ->where(['lang' => '[a-z]{2}(\_[A-Z]{2})?'])
+    Route::get('{path?}', [\Aimeos\Cms\Http\Controllers\PageController::class, 'index'])
+        ->where(['path' => '.*'])
         ->name('cms.page');
 });";
         }

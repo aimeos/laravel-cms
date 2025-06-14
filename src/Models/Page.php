@@ -43,7 +43,7 @@ class Page extends Model
         'tenant_id' => '',
         'tag' => '',
         'lang' => '',
-        'slug' => '',
+        'path' => '',
         'domain' => '',
         'to' => '',
         'name' => '',
@@ -66,7 +66,7 @@ class Page extends Model
     protected $casts = [
         'tag' => 'string',
         'lang' => 'string',
-        'slug' => 'string',
+        'path' => 'string',
         'domain' => 'string',
         'to' => 'string',
         'name' => 'string',
@@ -88,7 +88,7 @@ class Page extends Model
     protected $fillable = [
         'tag',
         'lang',
-        'slug',
+        'path',
         'domain',
         'to',
         'name',
@@ -156,18 +156,17 @@ class Page extends Model
     /**
      * Returns the cache key for the page.
      *
-     * @param Page|string $page Page object or URL slug
-     * @param string $lang ISO language code
+     * @param Page|string $page Page object or URL path
      * @param string $domain Domain name
      * @return string Cache key
      */
-    public static function key( $page, string $lang = '', string $domain = '' ) : string
+    public static function key( $page, string $domain = '' ) : string
     {
         if( $page instanceof Page ) {
-            return md5( \Aimeos\Cms\Tenancy::value() . '/' . $page->domain . '/' . $page->slug . '/' . $page->lang );
+            return md5( \Aimeos\Cms\Tenancy::value() . '/' . $page->domain . '/' . $page->path );
         }
 
-        return md5( \Aimeos\Cms\Tenancy::value() . '/' . $domain . '/' . $page . '/' . $lang );
+        return md5( \Aimeos\Cms\Tenancy::value() . '/' . $domain . '/' . $page );
     }
 
 
@@ -292,7 +291,7 @@ class Page extends Model
             } )
             ->groupBy(
                 'id', 'tenant_id', 'lang', 'name', 'title',
-                'slug', 'to', 'tag', 'meta', 'config', 'status',
+                'path', 'to', 'tag', 'meta', 'config', 'status',
                 'cache', '_lft', '_rgt', 'parent_id', 'editor',
                 'created_at', 'updated_at', 'deleted_at'
             )
@@ -366,6 +365,19 @@ class Page extends Model
 
 
     /**
+     * Interact with the "path" property.
+     *
+     * @return Attribute Eloquent attribute for the "path" property
+     */
+    protected function path(): Attribute
+    {
+        return Attribute::make(
+            set: fn($value) => (string) $value,
+        );
+    }
+
+
+    /**
      * Prepare the model for pruning.
      */
     protected function pruning() : void
@@ -373,19 +385,6 @@ class Page extends Model
         Version::where( 'versionable_id', $this->id )
             ->where( 'versionable_type', Page::class )
             ->delete();
-    }
-
-
-    /**
-     * Interact with the "slug" property.
-     *
-     * @return Attribute Eloquent attribute for the "slug" property
-     */
-    protected function slug(): Attribute
-    {
-        return Attribute::make(
-            set: fn($value) => (string) $value,
-        );
     }
 
 

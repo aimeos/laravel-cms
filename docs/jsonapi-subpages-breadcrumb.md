@@ -29,7 +29,7 @@ The `included` section contains the list of shared element elements that should 
         "attributes": {
             "parent_id": 1,
             "lang": "",
-            "slug": "blog",
+            "path": "blog",
             "name": "Blog",
             "title": "Blog | Laravel CMS",
             "tag": "blog",
@@ -75,7 +75,7 @@ The `included` section contains the list of shared element elements that should 
             "attributes": {
                 "parent_id": null,
                 "lang": "",
-                "slug": "",
+                "path": "",
                 "name": "Home",
                 "title": "Home | Laravel CMS",
                 "tag": "root",

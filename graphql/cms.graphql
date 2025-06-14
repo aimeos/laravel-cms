@@ -159,7 +159,7 @@ type Page {
   lang: String!
 
   "URL segment of the page, unique in combination with the language"
-  slug: String
+  path: String
 
   "Domain name the root page (!) is responsible for"
   domain: String
@@ -248,7 +248,7 @@ input PageFilter {
   lang: String
 
   "URL segment of the page, unique in combination with the language"
-  slug: String
+  path: String
 
   "Domain name the root page (!) is responsible for"
   domain: String
@@ -298,7 +298,7 @@ input PageInput {
   lang: String!
 
   "URL segment of the page, unique in combination with the language"
-  slug: String
+  path: String
 
   "Domain name the page is assigned to"
   domain: String

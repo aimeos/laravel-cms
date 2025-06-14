@@ -35,7 +35,7 @@
                 id
                 bypages {
                   id
-                  slug
+                  path
                   name
                 }
                 byelements {
@@ -98,7 +98,7 @@
               <tbody>
                 <tr v-for="v in file.bypages" :key="v.id">
                   <td>{{ v.id }}</td>
-                  <td>{{ v.slug }}</td>
+                  <td>{{ v.path }}</td>
                   <td>{{ v.name }}</td>
                 </tr>
               </tbody>

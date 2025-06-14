@@ -83,7 +83,7 @@ class Element extends Model
     public function bypages() : BelongsToMany
     {
         return $this->belongsToMany( Page::class, 'cms_page_element' )
-            ->select('id', 'slug', 'name' );
+            ->select('id', 'path', 'name' );
     }
 
 

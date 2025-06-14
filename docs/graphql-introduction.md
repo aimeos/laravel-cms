@@ -80,7 +80,7 @@ const body = JSON.stringify({'query':
     name
     title
     status
-    slug
+    path
   }
 }`});
 
@@ -106,7 +106,7 @@ The response is a JSON data structure with the requested data:
         "name": "Home",
         "title": "Home | Laravel CMS",
         "status": 1,
-        "slug": "",
+        "path": "",
       }
     ]
   }
@@ -129,7 +129,7 @@ query {
     name
     title
     status
-    slug
+    path
   }
 }
 ```
@@ -148,7 +148,7 @@ The result is a batched query with a response like this one:
         "name": "Home",
         "title": "Home | Laravel CMS",
         "status": 1,
-        "slug": "",
+        "path": "",
       }
     ]
   }
@@ -169,7 +169,7 @@ const body = JSON.stringify({'query':
   addPage(input: {
     lang: ""
     domain: ""
-    slug: "test-url"
+    path: "test-url"
     name: "Test page"
     title: "Test page | Laravel CMS"
     to: ""
@@ -217,7 +217,7 @@ mutation {
   addPage(input: {
     lang: ""
     domain: ""
-    slug: "test-url"
+    path: "test-url"
     name: "Test page"
     title: "Test page | Laravel CMS"
     to: ""

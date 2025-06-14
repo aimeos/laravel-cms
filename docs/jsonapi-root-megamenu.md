@@ -47,7 +47,7 @@ Then, the page tree (up to three levels deep) including the shared content eleme
             "attributes": {
                 "parent_id": null,
                 "lang": "",
-                "slug": "",
+                "path": "",
                 "name": "Home",
                 "title": "Home | Laravel CMS",
                 "tag": "root",
@@ -125,7 +125,7 @@ Then, the page tree (up to three levels deep) including the shared content eleme
             "attributes": {
                 "parent_id": 1,
                 "lang": "",
-                "slug": "blog",
+                "path": "blog",
                 "name": "Blog",
                 "title": "Blog | Laravel CMS",
                 "tag": "blog",
@@ -149,7 +149,7 @@ Then, the page tree (up to three levels deep) including the shared content eleme
             "attributes": {
                 "parent_id": 2,
                 "lang": "",
-                "slug": "welcome-to-laravelcms",
+                "path": "welcome-to-laravelcms",
                 "name": "Welcome to Laravel CMS",
                 "title": "Welcome to Laravel CMS | Laravel CMS",
                 "tag": "article",
@@ -173,7 +173,7 @@ Then, the page tree (up to three levels deep) including the shared content eleme
             "attributes": {
                 "parent_id": 1,
                 "lang": "",
-                "slug": "dev",
+                "path": "dev",
                 "name": "Dev",
                 "title": "For Developer | Laravel CMS",
                 "tag": "",
@@ -197,7 +197,7 @@ Then, the page tree (up to three levels deep) including the shared content eleme
             "attributes": {
                 "parent_id": 1,
                 "lang": "",
-                "slug": "hidden",
+                "path": "hidden",
                 "name": "Hidden",
                 "title": "Hidden page | Laravel CMS",
                 "tag": "hidden",

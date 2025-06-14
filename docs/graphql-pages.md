@@ -39,7 +39,7 @@ query {
       id
       parent_id
       lang
-      slug
+      path
       domain
       name
       title
@@ -90,7 +90,7 @@ The result will be:
           "id": "1",
           "parent_id": null,
           "lang": "",
-          "slug": "",
+          "path": "",
           "domain": "mydomain.tld",
           "name": "Home",
           "title": "Home | Laravel CMS",
@@ -128,7 +128,7 @@ query {
     data {
       id
       lang
-      slug
+      path
       domain
       name
       title
@@ -178,7 +178,7 @@ The query returns:
         {
           "id": "2",
           "lang": "",
-          "slug": "blog",
+          "path": "blog",
           "domain": "",
           "name": "Blog",
           "title": "Blog | Laravel CMS",
@@ -199,7 +199,7 @@ The query returns:
         {
           "id": "4",
           "lang": "",
-          "slug": "dev",
+          "path": "dev",
           "domain": "",
           "name": "Dev",
           "title": "For Developer | Laravel CMS",
@@ -236,7 +236,7 @@ query {
   page(id: 1) {
     id
     lang
-    slug
+    path
     domain
     name
     title
@@ -270,7 +270,7 @@ The returned JSON data will contain all page properties without an additional `d
     "page": {
       "id": "1",
       "lang": "",
-      "slug": "",
+      "path": "",
       "domain": "mydomain.tld",
       "name": "Home",
       "title": "Home | Laravel CMS",
@@ -303,7 +303,7 @@ To add a new root page at the end of the list of root pages use:
 mutation {
   addPage(input: {
     lang: "en",
-    slug: "test-url",
+    path: "test-url",
     domain: "mydomain.tld",
     name: "Test page",
     title: "A Laravel CMS test page",
@@ -357,7 +357,7 @@ To add a new child page to an existing parent page at the end of the list of chi
 mutation {
   addPage(input: {
     lang: "en",
-    slug: "test-url-2",
+    path: "test-url-2",
     domain: "mydomain.tld",
     name: "Test page",
     title: "A Laravel CMS test page",
@@ -414,7 +414,7 @@ To insert a new page before an existing one use:
 mutation {
   addPage(input: {
     lang: "en",
-    slug: "test-url-3",
+    path: "test-url-3",
     domain: "mydomain.tld",
     name: "Test page",
     title: "A Laravel CMS test page",
@@ -578,7 +578,7 @@ Saving page properties can be done using:
 mutation {
   savePage(id: 5, input: {
     lang: "en",
-    slug: "test-url-5",
+    path: "test-url-5",
     domain: "mydomain.tld",
     name: "Test page",
     title: "A Laravel CMS test page",

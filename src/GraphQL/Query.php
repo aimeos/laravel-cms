@@ -339,8 +339,8 @@ final class Query
                     $builder->where( 'to', 'like', $value . '%' );
                 }
 
-                if( !empty( $value = $filter['slug'] ?? null ) ) {
-                    $builder->where( 'slug', 'like', $value . '%' );
+                if( !empty( $value = $filter['path'] ?? null ) ) {
+                    $builder->where( 'path', 'like', $value . '%' );
                 }
 
                 if( !empty( $value = $filter['domain'] ?? null ) ) {
@@ -411,8 +411,8 @@ final class Query
                         $builder->where( 'data', 'like', '%"to": "' . $value . '%' );
                     }
 
-                    if( !empty( $value = $filter['slug'] ?? null ) ) {
-                        $builder->where( 'data', 'like', '%"slug": "' . $value . '%' );
+                    if( !empty( $value = $filter['path'] ?? null ) ) {
+                        $builder->where( 'data', 'like', '%"path": "' . $value . '%' );
                     }
 
                     if( !empty( $value = $filter['domain'] ?? null ) ) {

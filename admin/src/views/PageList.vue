@@ -19,7 +19,12 @@
     inject: ['openView'],
 
     data: () => ({
-      filter: {'trashed': 'WITHOUT'},
+      filter: {
+        trashed: 'WITHOUT',
+        publish: null,
+        editor: null,
+        lang: null,
+      },
     }),
 
     setup() {
@@ -32,7 +37,7 @@
 
     methods: {
       languages() {
-        const list = []
+        const list = [{ title: 'All', icon: 'mdi-playlist-check', value: {lang: null} }]
 
         for(const key in this.languages.available) {
           list.push({ title: this.languages.available[key], icon: 'mdi-translate', value: {lang: key} })
@@ -83,7 +88,7 @@
   </v-main>
 
   <AsideList v-model:filter="filter" :content="[{
-      name: 'publish',
+      key: 'publish',
       items: [
         { title: 'All', icon: 'mdi-playlist-check', value: {'publish': null} },
         { title: 'Published', icon: 'mdi-publish', value: {'publish': 'PUBLISHED'} },
@@ -91,19 +96,20 @@
         { title: 'Drafts', icon: 'mdi-pencil', value: {'publish': 'DRAFT'} }
       ]
     }, {
-      name: 'trashed',
+      key: 'trashed',
       items: [
+        { title: 'All', icon: 'mdi-playlist-check', value: {'trashed': 'WITH'} },
         { title: 'Available only', icon: 'mdi-delete-off', value: {'trashed': 'WITHOUT'} },
-        { title: 'Include trashed', icon: 'mdi-delete-outline', value: {'trashed': 'WITH'} },
         { title: 'Only trashed', icon: 'mdi-delete', value: {'trashed': 'ONLY'} }
       ]
     }, {
-      name: 'editor',
+      key: 'editor',
       items: [
+        { title: 'All', icon: 'mdi-playlist-check', value: {'editor': null} },
         { title: 'Edited by me', icon: 'mdi-account', value: {'editor': this.auth.me.email} },
       ]
     }, {
-      name: 'language',
+      key: 'lang',
       items: languages()
     }]"
   />

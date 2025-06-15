@@ -27,7 +27,7 @@
     <body>
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
-                <a class="navbar-brand" href="{{ $page->ancestors?->first()?->to ?: route('cms.page', ['slug' => $page->ancestors?->first()?->slug, 'lang' => $page->ancestors?->first()?->lang]) }}">
+                <a class="navbar-brand" href="{{ $page->ancestors?->first()?->to ?: route('cms.page', ['path' => $page->ancestors?->first()?->path, 'lang' => $page->ancestors?->first()?->lang]) }}">
                     {{ config('app.name') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,7 +38,7 @@
                         @foreach($page->nav() as $item)
                             <li class="nav-item">
                                 <a class="nav-link {{ $item->children->count() ? 'dropdown-toggle' : '' }} {{ $page->isSelfOrDescendantOf($item) ? 'active' : '' }}"
-                                    href="{{ $item->to ?: route('cms.page', ['slug' => $item->slug, 'lang' => $item->lang]) }}"
+                                    href="{{ $item->to ?: route('cms.page', ['path' => $item->path, 'lang' => $item->lang]) }}"
                                     @if($item->children->count()) role="button" aria-expanded="false" data-bs-toggle="dropdown" @endif
                                     @if($page->is($item)) aria-current="page" @endif>
                                     {{ $item->name }}
@@ -48,7 +48,7 @@
                                         @foreach($item->children as $subItem)
                                             <li>
                                                 <a class="dropdown-item {{ $page->isSelfOrDescendantOf($subItem) ? 'active' : '' }}"
-                                                    href="{{ $subItem->to ?: route('cms.page', ['slug' => $subItem->slug, 'lang' => $subItem->lang]) }}"
+                                                    href="{{ $subItem->to ?: route('cms.page', ['path' => $subItem->path, 'lang' => $subItem->lang]) }}"
                                                     @if($page->is($subItem)) aria-current="page" @endif>
                                                     {{ $subItem->name }}
                                                 </a>
@@ -68,7 +68,7 @@
                 @foreach($page->ancestors ?? [] as $item)
                     @if($item->status === 1 )
                         <li class="breadcrumb-item">
-                            <a href="{{ route('cms.page', ['slug' => $item->to ?: $item->slug]) }}">
+                            <a href="{{ route('cms.page', ['path' => $item->to ?: $item->path]) }}">
                                 {{ $item->name }}
                             </a>
                         </li>
@@ -82,8 +82,8 @@
         </nav>
 
         <div class="container">
-            @foreach($page->content ?? [] as $content)
-                @includeFirst([$content['type'] ?? '', 'cms::invalid'], $content)
+            @foreach($page->contents ?? [] as $content)
+                @includeFirst([$page->theme . '::' . $content['type'] ?? 'invalid', $content['type'] ?? 'cms::invalid'], $content)
             @endforeach
         </div>
     </body>

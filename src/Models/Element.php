@@ -194,11 +194,13 @@ class Element extends Model
      */
     public function removeVersions() : self
     {
+        $num = config( 'cms.versions', 10 );
+
         // MySQL doesn't support offsets for DELETE
         $ids = Version::where( 'versionable_id', $this->id )
             ->where( 'versionable_type', Element::class )
             ->orderBy( 'id', 'desc' )
-            ->skip( 10 )
+            ->skip( $num )
             ->take( 10 )
             ->pluck( 'id' );
 

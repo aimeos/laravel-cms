@@ -325,26 +325,28 @@ class File extends Model
      */
     public function removeVersions() : self
     {
+        $num = config( 'cms.versions', 10 );
+
         $versions = Version::where( 'versionable_id', $this->id )
             ->where( 'versionable_type', File::class )
             ->orderBy( 'id', 'desc' )
-            ->take( 10 + 10 ) // keep 10 versions, delete up to 10 older versions
+            ->take( $num + 10 ) // keep $num versions, delete up to 10 older versions
             ->get();
 
-        if( $versions->count() <= 10 ) {
+        if( $versions->count() <= $num ) {
             return $this;
         }
 
         $paths = [$this->path => true];
 
-        foreach( $versions->slice( 10 ) as $version )
+        foreach( $versions->slice( $num ) as $version )
         {
             if( $version->data->path ) {
                 $paths[$version->data->path] = true;
             }
         }
 
-        $toDelete = $versions->skip( 10 );
+        $toDelete = $versions->skip( $num );
         $disk = Storage::disk( config( 'cms.storage.disk', 'public' ) );
 
         foreach( $toDelete as $version )

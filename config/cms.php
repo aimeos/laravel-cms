@@ -4,17 +4,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Database connection
-    |--------------------------------------------------------------------------
-    |
-    | Use the database connection defined in ./config/database.php to manage
-    | page, element and file records.
-    |
-    */
-    'db' => env( 'DB_CONNECTION', 'mysql' ),
-
-    /*
-    |--------------------------------------------------------------------------
     | Cache store
     |--------------------------------------------------------------------------
     |
@@ -23,6 +12,17 @@ return [
     |
     */
     'cache' => env( 'APP_DEBUG' ) ? 'array' : 'file',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Database connection
+    |--------------------------------------------------------------------------
+    |
+    | Use the database connection defined in ./config/database.php to manage
+    | page, element and file records.
+    |
+    */
+    'db' => env( 'DB_CONNECTION', 'mysql' ),
 
     /*
     |--------------------------------------------------------------------------
@@ -49,11 +49,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Page template
+    | Number of stored versions
     |--------------------------------------------------------------------------
     |
-    | The configured Blade template will be used for rendering all CMS pages.
+    | Number of versions to keep for each page, element and file. If the
+    | number of versions exceeds this value, the oldest versions will be
+    | deleted.
     |
     */
-    'view' => 'cms::page',
+    'versions' => 10,
 ];

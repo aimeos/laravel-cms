@@ -3,7 +3,7 @@
  *
  * @returns String Unique content ID
  */
-const contentid = (function () {
+const uid = (function () {
   const BASE64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_'
   const EPOCH = new Date('2025-01-01T00:00:00Z').getTime();
 
@@ -12,8 +12,8 @@ const contentid = (function () {
   return function() {
     counter = (counter + 1) % 16
 
-    // IDs will repeat after 45.3 years
-    const time = Math.floor(Date.now() - EPOCH) / 333
+    // IDs will repeat after ~35 years
+    const time = Math.floor(Date.now() - EPOCH) >> 8
     const value = (time << 4) | counter;
 
     return Array.from({ length: 6 }, (_, i) =>
@@ -22,4 +22,4 @@ const contentid = (function () {
   }
 })()
 
-export { contentid }
+export { uid }

@@ -1,6 +1,6 @@
 <script>
   import { useSchemaStore } from '../stores'
-  import { contentid } from '../utils'
+  import { uid } from '../utils'
 
   export default {
     props: {
@@ -34,7 +34,7 @@
 
     methods: {
       add(item) {
-        this.$emit('add', {cid: contentid(), type: item.type, data: {}})
+        this.$emit('add', {cid: uid(), type: item.type, data: {}})
       }
     }
   }

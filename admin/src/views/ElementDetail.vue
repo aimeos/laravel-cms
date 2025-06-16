@@ -191,7 +191,6 @@
             this.messages.add('Element saved successfully', 'success')
           }
 
-          this.closeView()
           return true
         }).catch(error => {
           this.messages.add('Error saving element', 'error')

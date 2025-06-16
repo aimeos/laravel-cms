@@ -129,7 +129,6 @@
             this.messages.add('File saved successfully', 'success')
           }
 
-          this.closeView()
           return true
         }).catch(error => {
           this.messages.add('Error saving file', 'error')

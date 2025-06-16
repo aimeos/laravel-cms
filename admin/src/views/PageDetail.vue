@@ -336,7 +336,6 @@
               this.messages.add('Page saved successfully', 'success')
             }
 
-            this.closeView()
             return true
           }).catch(error => {
             this.messages.add('Error saving page', 'error')

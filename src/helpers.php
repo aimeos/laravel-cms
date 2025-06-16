@@ -37,6 +37,6 @@ if( !function_exists( 'cmsasset' ) )
 {
     function cmsasset( string $path ): string
     {
-        return asset( $path ) . '?v=' . filemtime( public_path( $path ) );
+        return asset( $path ) . '?v=' . ( file_exists( public_path( $path ) ) ? filemtime( public_path( $path ) ) : 0 );
     }
 }

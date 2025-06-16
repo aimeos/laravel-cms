@@ -279,6 +279,10 @@ final class Query
         $limit = (int) ( $args['first'] ?? 100 );
         $trashed = $args['trashed'] ?? null;
 
+        if( array_key_exists( 'parent_id', $args['filter'] ?? [] ) ) {
+            $filter['parent_id'] = $args['filter']['parent_id']; // Re-add parent_id if NULL
+        }
+
         $builder = Page::skip( max( ( $args['page'] ?? 1 ) - 1, 0 ) * $limit )
             ->take( min( max( $limit, 1 ), 100 ) );
 
@@ -323,12 +327,12 @@ final class Query
         {
             $builder->where( function( $builder ) use ( $filter ) {
 
-                if( !empty( $value = $filter['id'] ?? null ) ) {
-                    $builder->whereIn( 'id', $value );
+                if( array_key_exists( 'parent_id', $filter ) ) {
+                    $builder->where( 'parent_id', $filter['parent_id'] );
                 }
 
-                if( !empty( $value = $filter['parent_id'] ?? null ) ) {
-                    $builder->where( 'parent_id', $value );
+                if( !empty( $value = $filter['id'] ?? null ) ) {
+                    $builder->whereIn( 'id', $value );
                 }
 
                 if( !empty( $value = $filter['lang'] ?? null ) ) {
@@ -395,12 +399,12 @@ final class Query
 
                     $builder->where( 'versionable_type', Page::class );
 
-                    if( !empty( $value = $filter['id'] ?? null ) ) {
-                        $builder->whereIn( 'versionable_id', $value );
+                    if( array_key_exists( 'parent_id', $filter ) ) {
+                        $builder->where( 'cms_pages.parent_id', $filter['parent_id'] );
                     }
 
-                    if( !empty( $value = $filter['parent_id'] ?? null ) ) {
-                        $builder->where( 'cms_pages.parent_id', $value );
+                    if( !empty( $value = $filter['id'] ?? null ) ) {
+                        $builder->whereIn( 'versionable_id', $value );
                     }
 
                     if( !empty( $value = $filter['lang'] ?? null ) ) {

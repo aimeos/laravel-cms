@@ -795,11 +795,13 @@
     watch: {
       filter: {
         deep: true,
-        handler(val) {
+        handler(filter) {
           this.items = []
           this.loading = true
 
-          this.search().then(result => {
+          const promise = filter.publish ? this.search() : this.fetch()
+
+          promise.then(result => {
             this.items = result.data
             this.loading = false
           })

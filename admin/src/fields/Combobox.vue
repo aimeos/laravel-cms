@@ -25,6 +25,7 @@
     density="comfortable"
     hide-details="auto"
     variant="outlined"
+    item-title="label"
     item-value="value"
   ></v-combobox>
 </template>

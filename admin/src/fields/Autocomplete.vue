@@ -3,7 +3,7 @@
 
   export default {
     props: {
-      'modelValue': {type: [Array, String, Number, null], default: null},
+      'modelValue': {type: [Object, String, Number, Boolean, null], default: null},
       'config': {type: Object, default: () => {}},
       'assets': {type: Object, default: () => {}},
       'readonly': {type: Boolean, default: false},
@@ -164,7 +164,7 @@
     :loading="loading"
     :readonly="readonly"
     :clearable="!readonly"
-    :items="list || []"
+    :items="list"
     :no-data-text="config['empty-text'] || 'No data available'"
     :placeholder="config.placeholder || ''"
     :return-object="!!config['item-title']"

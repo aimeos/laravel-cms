@@ -124,7 +124,7 @@
   </div>
 
   <div class="btn-group">
-    <v-btn v-if="!readonly && config.max && +items.length < +config.max" icon="mdi-view-grid-plus" @click="add()"></v-btn>
+    <v-btn v-if="!readonly && (!config.max || config.max && +items.length < +config.max)" icon="mdi-view-grid-plus" @click="add()"></v-btn>
   </div>
 </template>
 

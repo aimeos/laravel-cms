@@ -14,6 +14,7 @@
 		"nuwave/lighthouse": "^6.54",
 		"ezyang/htmlpurifier": "^4.18",
 		"league/commonmark": "^2.6",
+		"league/csv": "^9.23",
 		"kalnoy/nestedset": "^6.0",
 		"symfony/uid": "^7.0",
 		"intervention/image": "^3.11"

@@ -1,3 +1,3 @@
-<h{{ (int) ($level ?? 1) }} class="cms-heading">
-	{{ $text ?? '' }}
-</h{{ (int) ($level ?? 1) }}>
+<h{{ (int) ($data['level'] ?? 1) }} data-cid="{{ $cid ?? '' }}" class="cms-heading">
+	{{ $data['text'] ?? '' }}
+</h{{ (int) ($data['level'] ?? 1) }}>

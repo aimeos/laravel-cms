@@ -57,7 +57,18 @@ class PageController extends Controller
             return !str_starts_with( $page->to, 'http' ) ? redirect( $page->to ) : redirect()->away( $page->to );
         }
 
-        $html = view( config( 'cms.view', 'cms::page' ), ['page' => $page] )->render();
+        $data = $page->toArray();
+        $data['files'] = ( $page->latest?->files ?? $page->files )->pluck( null, 'id');
+        $data['elements'] = ( $page->latest?->elements ?? $page->elements )->pluck( null, 'id');
+        $data['page'] = $page;
+
+        $views = [
+            $data['theme'] && $data['type'] ? $data['theme'] . '::' . $data['type'] : null,
+            $data['theme'] ? $data['theme'] . '::page' : null,
+            'cms::page'
+        ];
+
+        $html = view()->first( array_filter( $views ), $data )->render();
 
         if( $page->cache ) {
             $cache->put( $key, $html, now()->addMinutes( (int) $page->cache ) );
@@ -81,16 +92,23 @@ class PageController extends Controller
 
         $page = Page::findOrFail( $id );
 
-        $data = (array) $page->latest->data;
-        $data['contents'] = (array) $page->latest->contents;
-
-        $page->fill( $data );
-        $page->cache = 0; // don't cache sub-parts in preview requests
-
         if( $page->to ) {
             return !str_starts_with( $page->to, 'http' ) ? redirect( $page->to ) : redirect()->away( $page->to );
         }
 
-        return view( config( 'cms.view', 'cms::page' ), ['page' => $page] )->render();
+        $data = (array) $page->latest?->data ?? $page->toArray();
+        $data['contents'] = $page->latest?->contents ?? $page->contents;
+        $data['files'] = ( $page->latest?->files ?? $page->files )->pluck( null, 'id');
+        $data['elements'] = ( $page->latest?->elements ?? $page->elements )->pluck( null, 'id');
+        $data['cache'] = 0; // don't cache sub-parts in preview requests
+        $data['page'] = $page;
+
+        $views = [
+            $data['theme'] && $data['type'] ? $data['theme'] . '::' . $data['type'] : null,
+            $data['theme'] ? $data['theme'] . '::page' : null,
+            'cms::page'
+        ];
+
+        return view()->first( array_filter( $views ), $data )->render();
     }
 }

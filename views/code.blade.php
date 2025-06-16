@@ -1,11 +1,11 @@
 @pushOnce('css')
-<link type="text/css" rel="stylesheet" href="{{ asset('vendor/cms/prism.css') }}">
+<link type="text/css" rel="stylesheet" href="{{ cmsasset('vendor/cms/prism.css') }}">
 @endPushOnce
 
 @pushOnce('js')
-<script defer src="{{ asset('vendor/cms/prism.js') }}"></script>
+<script defer src="{{ cmsasset('vendor/cms/prism.js') }}"></script>
 @endPushOnce
 
-<pre><code class="language-{{ $lang ?? '' }}">
-{{ $text ?? '' }}
-</code></pre>
+<pre data-cid="{{ $cid ?? '' }}">
+<code class="language-{{ $data['lang']['value']  ?? '' }}">{{ $data['text'] ?? '' }}</code>
+</pre>

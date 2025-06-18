@@ -143,6 +143,18 @@ class Page extends Model
 
 
     /**
+     * Maps the files by ID automatically.
+     *
+     * @return Collection List files with ID as keys and file models as values
+     */
+    public function getFilesAttribute() : Collection
+    {
+        $files = $this->relationLoaded( 'files' ) ? $this->getRelation( 'files' ) : $this->load( 'files' )->getRelation( 'files' );
+        return $files->pluck( null, 'id' );
+    }
+
+
+    /**
      * Tests if node has children.
      *
      * @return bool TRUE if node has children, FALSE if not
@@ -191,7 +203,8 @@ class Page extends Model
      */
     public function nav() : \Kalnoy\Nestedset\Collection
     {
-        return $this->ancestors->first()?->subtree->toTree() ?: new \Kalnoy\Nestedset\Collection();
+        $root = $this->ancestors->first() ?: $this;
+        return $root?->subtree?->toTree() ?: new \Kalnoy\Nestedset\Collection();
     }
 
 

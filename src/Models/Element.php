@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Collection;
 
 
 /**
@@ -118,6 +119,18 @@ class Element extends Model
     public function getConnectionName() : string
     {
         return config( 'cms.db', 'sqlite' );
+    }
+
+
+    /**
+     * Maps the files by ID automatically.
+     *
+     * @return Collection List files with ID as keys and file models as values
+     */
+    public function getFilesAttribute() : Collection
+    {
+        $files = $this->relationLoaded( 'files' ) ? $this->getRelation( 'files' ) : $this->load( 'files' )->getRelation( 'files' );
+        return $files->pluck( null, 'id' );
     }
 
 

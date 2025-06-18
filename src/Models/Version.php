@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 
 /**
@@ -94,6 +95,18 @@ class Version extends Model
     public function getConnectionName()
     {
         return config( 'cms.db', 'sqlite' );
+    }
+
+
+    /**
+     * Maps the files by ID automatically.
+     *
+     * @return Collection List files with ID as keys and file models as values
+     */
+    public function getFilesAttribute() : Collection
+    {
+        $files = $this->relationLoaded( 'files' ) ? $this->getRelation( 'files' ) : $this->load( 'files' )->getRelation( 'files' );
+        return $files->pluck( null, 'id' );
     }
 
 

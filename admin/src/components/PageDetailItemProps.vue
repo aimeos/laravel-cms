@@ -71,7 +71,7 @@
       },
 
 
-      updateSlug(focused) {
+      updatePath(focused) {
         if(!focused && this.item.path?.at(0) === '_') {
           this.item.path = this.item.name?.replace(/[ ]+/g, '-')?.toLowerCase()
         }
@@ -150,7 +150,7 @@
             :readonly="readonly"
             :modelValue="item.name"
             @update:modelValue="update('name', $event)"
-            @update:focused="updateSlug($event)"
+            @update:focused="updatePath($event)"
             variant="underlined"
             label="Page name"
             counter="255"

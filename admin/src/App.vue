@@ -54,7 +54,7 @@
                   'footer',
                 ]
               },
-              blog: {
+              'blog': {
               }
             }
           },
@@ -193,12 +193,23 @@
           }
         },
 
+        'hero': {
+          type: 'hero',
+          group: 'content',
+          label: 'Hero section',
+          icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>page-layout-header</title><path d="M6,2H18A2,2 0 0,1 20,4V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V4A2,2 0 0,1 6,2M6,4V8H18V4H6Z" /></svg>',
+          fields: {
+            'title': {type: 'string', min: 1},
+            'subtitle': {type: 'string'},
+          }
+        },
         'cards': {
           type: 'cards',
           group: 'content',
           label: 'List of cards',
           icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>card-multiple-outline</title><path d="M21 16V6H7V16H21M21 4C21.53 4 22.04 4.21 22.41 4.59C22.79 4.96 23 5.47 23 6V16C23 16.53 22.79 17.04 22.41 17.41C22.04 17.79 21.53 18 21 18H7C5.89 18 5 17.1 5 16V6C5 4.89 5.89 4 7 4H21M3 20H18V22H3C2.47 22 1.96 21.79 1.59 21.41C1.21 21.04 1 20.53 1 20V9H3V20Z" /></svg>',
           fields: {
+            'title': {type: 'string'},
             'cards': {type: 'items', item: {
               'title': {type: 'string', min: 1},
               'file': {type: 'image'},

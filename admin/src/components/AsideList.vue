@@ -40,6 +40,7 @@
         for(const key in item.value) {
           this.filter[key] = item.value[key]
         }
+
         this.$emit('update:filter', this.filter)
       },
     }

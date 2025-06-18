@@ -44,9 +44,9 @@
 
       config.data = {
         themes: {
-          'default': {
+          '': {
             types: {
-              'default': {
+              '': {
                 sections: [
                   'main',
                   'header',

@@ -25,10 +25,10 @@ final class SavePage
             unset( $data['contents'] );
 
             $version = $page->versions()->create([
+                'data' => array_map( fn( $v ) => is_null( $v ) ? (string) $v : $v, $data ),
                 'editor' => Auth::user()?->name ?? request()->ip(),
                 'contents' => $args['input']['contents'] ?? null,
                 'lang' => $args['input']['lang'] ?? null,
-                'data' => $data,
             ]);
 
             $version->elements()->sync( $args['elements'] ?? [] );

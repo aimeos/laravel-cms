@@ -21,9 +21,9 @@ final class SaveElement
         DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( function() use ( $element, $args ) {
 
             $version = $element->versions()->create( [
+                'data' => array_map( fn( $v ) => is_null( $v ) ? (string) $v : $v, $args['input'] ?? [] ),
                 'editor' => Auth::user()?->name ?? request()->ip(),
                 'lang' => $args['input']['lang'] ?? null,
-                'data' => $args['input'] ?? [],
             ] );
 
             $version->files()->sync( $args['files'] ?? [] );

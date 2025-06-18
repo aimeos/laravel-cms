@@ -195,15 +195,15 @@
         <v-col cols="12" md="6">
           <v-select ref="theme"
             :readonly="readonly"
-            :items="Object.keys(config.get('themes', {'default': null}))"
+            :items="Object.keys(config.get('themes', {'default': ''}))"
             :modelValue="item.theme"
-            @update:modelValue="update('theme', $event); item.type = null"
+            @update:modelValue="update('theme', $event); item.type = ''"
             variant="underlined"
             label="Theme"
           ></v-select>
           <v-select ref="type"
             :readonly="readonly"
-            :items="Object.keys(config.get(`themes.${item.theme || 'default'}.types`, {'default': null}))"
+            :items="Object.keys(config.get(`themes.${item.theme || ''}.types`, {'default': ''}))"
             :modelValue="item.type"
             @update:modelValue="update('type', $event)"
             variant="underlined"

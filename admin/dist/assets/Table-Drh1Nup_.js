@@ -1,2 +1,0 @@
-import{_ as t,c as r,g as d,G as n,o as u}from"../index.js";const s={props:["modelValue","config"],emits:["update:modelValue"]};function m(e,a,l,p,c,i){return e.field.type==="table"?(u(),r(n,{key:0,placeholder:`val;val;val
-val;val;val`,"auto-grow":!0,modelValue:l.modelValue,"onUpdate:modelValue":a[0]||(a[0]=o=>e.$emit("update:modelValue",o)),variant:"underlined",density:"comfortable",clearable:""},null,8,["modelValue"])):d("",!0)}const V=t(s,[["render",m]]);export{V as default};

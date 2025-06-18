@@ -6,12 +6,18 @@ $uri = urldecode(
     parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? ''
 );
 
+$mime = match(pathinfo($uri, PATHINFO_EXTENSION)) {
+    'js' => 'application/javascript',
+    'css' => 'text/css',
+    default => null
+};
+
 // This file allows us to emulate Apache's "mod_rewrite" functionality from the
 // built-in PHP web server. This provides a convenient way to test a Laravel
 // application without having installed a "real" web server software here.
 if (($path = realpath($publicPath.$uri)) && is_file($path)) {
+    header("Content-type: ". $mime ?: mime_content_type($publicPath.$uri));
     header('Access-Control-Allow-Origin: *');
-    header("Content-type: ".mime_content_type($publicPath.$uri));
     readfile($publicPath.$uri);
     return;
 }

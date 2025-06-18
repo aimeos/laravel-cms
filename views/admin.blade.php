@@ -16,13 +16,14 @@
   </head>
   <body>
     <div id="app"
-      data-graphql="{{ route('graphql') }}"
+      data-language="en"
       data-languages='{"en": "English"}'
+      data-urlgraphql="{{ route('graphql') }}"
       data-urladmin="{{ route('cms.admin', [], false) }}"
-      data-urlpreview="{{ route('cms.preview', ['id' => ':id']) }}"
       data-urlpage="{{ route('cms.page', ['path' => ':path']) }}"
+      data-urlpreview="{{ route('cms.preview', ['id' => ':id']) }}"
       data-urlfile="{{ \Illuminate\Support\Facades\Storage::disk( config( 'cms.disk', 'public' ) )->url( '' ) }}"
-      data-permissions="{{ \Aimeos\Cms\Permission::get( \Illuminate\Support\Facades\Auth::user() ) }}"
+      data-permissions="{{ json_encode( \Aimeos\Cms\Permission::get( \Illuminate\Support\Facades\Auth::user() ) ) }}"
     </div>
   </body>
 </html>

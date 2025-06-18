@@ -9,7 +9,9 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Routing\Controller;
+use Aimeos\Cms\Models\Version;
 use Aimeos\Cms\Models\Page;
+use Aimeos\Cms\Permission;
 
 
 class PageController extends Controller
@@ -22,7 +24,7 @@ class PageController extends Controller
      * @return \Illuminate\View\View
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function admin(): View
+    public function admin()
     {
         return view('cms::admin');
     }
@@ -31,18 +33,39 @@ class PageController extends Controller
     /**
      * Show the page for a given URL.
      *
-     * @param string $slug Page URL segment
+     * @param string $path Page URL segment
      * @param string $domain Requested domain
-     * @return string HTML code
+     * @return View|Response|RedirectResponse|string Response of the controller action
      */
-    public function index( Request $request, string $slug, $domain = '' ): string
+    public function index( Request $request, string $path, $domain = '' )
     {
-        if( empty( $slug ) ) {
-            $slug = '/';
+        $path = trim( $path, '/' ) ?: '/';
+
+        if( Permission::can( 'page:view', $request->user() ) )
+        {
+            $version = Version::where( 'versionable_type', Page::class )
+                ->where( 'data->domain', $domain )
+                ->where( 'data->path', $path )
+                ->orderByDesc( 'id' )
+                ->take( 1 )
+                ->first();
+
+            $page = $version
+                ? Page::where( 'id', $version->versionable_id )->firstOrFail()
+                : Page::where( 'domain', $domain )->where( 'path', $path )->firstOrFail();
+
+            $page->cache = 0; // don't cache sub-parts in preview requests
+
+            if( $to = $version?->data?->to ?? $page->to ) {
+                return str_starts_with( $to, 'http' ) ? redirect()->away( $to ) : redirect( $to );
+            }
+
+            $views = [( cms( $page, 'theme' ) ?: 'cms' ) . '::' . ( cms( $page, 'type' ) ?: 'page' ), 'cms::page'];
+            return view()->first( $views, ['page' => $page] );
         }
 
         $cache = Cache::store( config( 'cms.cache', 'file' ) );
-        $key = Page::key( $slug, $domain );
+        $key = Page::key( $path, $domain );
 
         if( $html = $cache->get( $key ) ) {
             return $html;
@@ -53,62 +76,17 @@ class PageController extends Controller
             ->where( 'status', '>', 0 )
             ->firstOrFail();
 
-        if( $page->to ) {
-            return !str_starts_with( $page->to, 'http' ) ? redirect( $page->to ) : redirect()->away( $page->to );
+        if( $to = $page->to ) {
+            return str_starts_with( $to, 'http' ) ? redirect()->away( $to ) : redirect( $to );
         }
 
-        $data = $page->toArray();
-        $data['files'] = ( $page->latest?->files ?? $page->files )->pluck( null, 'id');
-        $data['elements'] = ( $page->latest?->elements ?? $page->elements )->pluck( null, 'id');
-        $data['page'] = $page;
-
-        $views = [
-            $data['theme'] && $data['type'] ? $data['theme'] . '::' . $data['type'] : null,
-            $data['theme'] ? $data['theme'] . '::page' : null,
-            'cms::page'
-        ];
-
-        $html = view()->first( array_filter( $views ), $data )->render();
+        $views = [( cms( $page, 'theme' ) ?: 'cms' ) . '::' . ( cms( $page, 'type' ) ?: 'page' ), 'cms::page'];
+        $html = view()->first( $views, ['page' => $page] )->render();
 
         if( $page->cache ) {
             $cache->put( $key, $html, now()->addMinutes( (int) $page->cache ) );
         }
 
         return $html;
-    }
-
-
-    /**
-     * Preview the page for a given page ID.
-     *
-     * @param string $id Page ID
-     * @return string HTML code
-     */
-    public function preview( Request $request, string $id ): string
-    {
-        if( !Gate::allowIf( fn( $user ) => $user->cmseditor > 0 ) ) {
-            abort( 401 );
-        }
-
-        $page = Page::findOrFail( $id );
-
-        if( $page->to ) {
-            return !str_starts_with( $page->to, 'http' ) ? redirect( $page->to ) : redirect()->away( $page->to );
-        }
-
-        $data = (array) $page->latest?->data ?? $page->toArray();
-        $data['contents'] = $page->latest?->contents ?? $page->contents;
-        $data['files'] = ( $page->latest?->files ?? $page->files )->pluck( null, 'id');
-        $data['elements'] = ( $page->latest?->elements ?? $page->elements )->pluck( null, 'id');
-        $data['cache'] = 0; // don't cache sub-parts in preview requests
-        $data['page'] = $page;
-
-        $views = [
-            $data['theme'] && $data['type'] ? $data['theme'] . '::' . $data['type'] : null,
-            $data['theme'] ? $data['theme'] . '::page' : null,
-            'cms::page'
-        ];
-
-        return view()->first( array_filter( $views ), $data )->render();
     }
 }

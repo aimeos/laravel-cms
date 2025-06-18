@@ -5,6 +5,19 @@
  */
 
 
+if( !function_exists( 'cms' ) )
+{
+    function cms( \Aimeos\Cms\Models\Page $page, string $prop )
+    {
+        if( \Aimeos\Cms\Permission::can( 'page:view', auth()->user() ) ) {
+            return $page->latest?->data?->{$prop} ?? $page->latest?->{$prop} ?? null;
+        }
+
+        return $page->{$prop} ?? null;
+    }
+}
+
+
 if( !function_exists( 'cmsimage' ) )
 {
     function cmsimage( array $data ): string
@@ -16,6 +29,19 @@ if( !function_exists( 'cmsimage' ) )
         }
 
         return implode( ',', $list );
+    }
+}
+
+
+if( !function_exists( 'cmsroute' ) )
+{
+    function cmsroute( \Aimeos\Cms\Models\Page $page ): string
+    {
+        if( \Aimeos\Cms\Permission::can( 'page:view', auth()->user() ) ) {
+            return $page->latest?->data?->to ?: route( 'cms.page', ['path' => $page->latest?->data?->path] );
+        }
+
+        return $page->to ?: route( 'cms.page', ['path' => $page->path] );
     }
 }
 

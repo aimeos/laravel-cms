@@ -1,39 +1,35 @@
 <!DOCTYPE html>
-<html class="no-js" lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ in_array(app()->getLocale(), ['ar', 'az', 'dv', 'fa', 'he', 'ku', 'ur']) ? 'rtl' : 'ltr' }}">
+<html class="no-js" lang="{{ $page->lang }}" dir="{{ in_array($page->lang, ['ar', 'az', 'dv', 'fa', 'he', 'ku', 'ur']) ? 'rtl' : 'ltr' }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ $title }}</title>
+        <title>{{ cms($page, 'title') }}</title>
 
-@if( in_array(app()->getLocale(), ['ar', 'az', 'dv', 'fa', 'he', 'ku', 'ur']) )
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.rtl.min.css" rel="stylesheet" crossorigin="anonymous">
-@else
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-@endif
-        <link type="text/css" rel="stylesheet" href="{{ asset('vendor/cms/cms.css?v=1') }}">
+        @if( in_array(app()->getLocale(), ['ar', 'az', 'dv', 'fa', 'he', 'ku', 'ur']) )
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.rtl.min.css" rel="stylesheet" crossorigin="anonymous">
+        @else
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+        @endif
+        <link href="{{ cmsasset('vendor/cms/cms.css') }}" rel="stylesheet">
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="{{ asset('vendor/cms/cms.js?v=1') }}" crossorigin="anonymous"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script defer src="{{ cmsasset('vendor/cms/cms.js') }}"></script>
 
-@stack('css')
-@stack('js')
-
-@foreach($meta ?? [] as $type => $item)
-    @includeFirst([
-        $item['type'] ?? '',
-        $theme . '::' . ( $item['type'] ?? '' ),
-        'cms::' . ( $item['type'] ?? '' ),
-        'cms::invalid'
-    ], ['files' => $files] + $item )
-@endforeach
-
+        @foreach(cms($page, 'meta') ?? [] as $type => $item)
+            @includeFirst([
+                $item['type'] ?? '',
+                $theme . '::' . ( $item['type'] ?? '' ),
+                'cms::' . ( $item['type'] ?? '' ),
+                'cms::invalid'
+            ], ['files' => $files] + $item )
+        @endforeach
     </head>
-    <body>
+    <body class="theme-{{ cms($page, 'theme') }} type-{{ cms($page, 'type') }}">
         <nav class="navbar navbar-expand-lg">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="{{ $page->ancestors?->first()?->to ?: route('cms.page', ['path' => $page->ancestors?->first()?->path]) }}">
+            <div class="container">
+                <a class="navbar-brand" href="{{ cmsroute($page->ancestors?->first() ?? $page) }}">
                     {{ config('app.name') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,57 +37,64 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbar">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-@foreach($page->nav() as $item)
-                        <li class="nav-item">
-                            <a class="nav-link {{ $item->children->count() ? 'dropdown-toggle' : '' }} {{ $page->isSelfOrDescendantOf($item) ? 'active' : '' }}"
-                                href="{{ $item->to ?: route('cms.page', ['path' => $item->path]) }}"
-                                @if($item->children->count()) role="button" aria-expanded="false" data-bs-toggle="dropdown" @endif
-                                @if($page->is($item)) aria-current="page" @endif>
-                                {{ $item->name }}
-                            </a>
-    @if($item->children->count())
-                            <ul class="dropdown-menu">
-        @foreach($item->children as $subItem)
-                                <li>
-                                    <a class="dropdown-item {{ $page->isSelfOrDescendantOf($subItem) ? 'active' : '' }}"
-                                        href="{{ $subItem->to ?: route('cms.page', ['path' => $subItem->path]) }}"
-                                        @if($page->is($subItem)) aria-current="page" @endif>
-                                        {{ $subItem->name }}
-                                    </a>
-                                </li>
-        @endforeach
-                            </ul>
-    @endif
-                        </li>
-@endforeach
+                        @foreach($page->nav() as $item)
+                            <li class="nav-item">
+                                <a class="nav-link {{ $item->children->count() ? 'dropdown-toggle' : '' }} {{ $page->isSelfOrDescendantOf( $item ) ? 'active' : '' }}"
+                                    href="{{ cmsroute($item) }}"
+                                    @if($item->children->count()) role="button" aria-expanded="false" data-bs-toggle="dropdown" @endif
+                                    @if($page->is($item)) aria-current="page" @endif>
+                                    {{ cms($item, 'name') }}
+                                </a>
+                                @if($item->children->count())
+                                    <ul class="dropdown-menu">
+                                        @foreach($item->children as $subItem)
+                                            <li>
+                                                <a class="dropdown-item {{ $page->isSelfOrDescendantOf( $subItem ) ? 'active' : '' }}"
+                                                    href="{{ cmsroute($subItem) }}"
+                                                    @if($page->is($subItem)) aria-current="page" @endif>
+                                                    {{ cms($subItem, 'name') }}
+                                                </a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                @endif
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>
         </nav>
 
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-@foreach($page->ancestors ?? [] as $item)
-    @if($item->status === 1 )
-                <li class="breadcrumb-item">
-                    <a href="{{ $item->to ?: route('cms.page', ['path' => $item->path]) }}">{{ $item->name }}</a>
-                </li>
-    @endif
-@endforeach
+        @if($page->ancestors->count() > 1)
+            <nav class="container" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    @foreach($page->ancestors ?? [] as $item)
+                        @if(cms($item, 'status') === 1 )
+                            <li class="breadcrumb-item">
+                                <a href="{{ cmsroute($item) }}">{{ cms($item, 'name') }}</a>
+                            </li>
+                        @endif
+                    @endforeach
+                    <li class="breadcrumb-item active" aria-current="page">{{ cms($page, 'name') }}</li>
+                </ol>
+            </nav>
+        @endif
 
-                <li class="breadcrumb-item active">{{ $name }}</li>
-            </ol>
-        </nav>
-
-        <div class="container">
-@foreach($contents ?? [] as $item)
-    @includeFirst([
-        $item['type'] ?? '',
-        $theme . '::' . ( $item['type'] ?? '' ),
-        'cms::' . ( $item['type'] ?? '' ),
-        'cms::invalid'
-    ], ['files' => $files] + $item )
-@endforeach
+        <div class="content">
+            @foreach(cms($page, 'contents') ?? [] as $item)
+                <div data-cid="{{ $item['cid'] ?? '' }}" class="{{ str_replace( '::', '-', $item['type'] ) }}">
+                    <div class="container">
+                        @includeFirst([
+                            $item['type'] ?? '',
+                            (cms($page, 'theme') ?: 'cms') . '::' . ($item['type'] ?? 'page'),
+                            'cms::invalid'
+                        ], ['files' => cms($page, 'files')] + $item )
+                    </div>
+                </div>
+            @endforeach
         </div>
+
+        @stack('css')
+        @stack('js')
     </body>
 </html>

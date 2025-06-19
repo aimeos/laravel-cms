@@ -294,6 +294,7 @@ Made with <fg=green>love</> by the Laravel CMS community. Be a part of it!
     $server->resource('pages', \Aimeos\Cms\JsonApi\V1\Controllers\JsonapiController::class)->readOnly()
         ->relationships(function (\$relationships) {
             \$relationships->hasMany('elements')->readOnly();
+            \$relationships->hasMany('files')->readOnly();
         });
 });";
         }

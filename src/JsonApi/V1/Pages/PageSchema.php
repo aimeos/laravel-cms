@@ -90,10 +90,13 @@ class PageSchema extends Schema
             Number::make( 'cache' )->readOnly(),
             ArrayHash::make( 'meta' )->readOnly(),
             ArrayHash::make( 'config' )->readOnly(),
-            ArrayList::make( 'element' )->readOnly(),
+            ArrayList::make( 'contents' )->readOnly(),
             DateTime::make( 'createdAt' )->readOnly(),
             DateTime::make( 'updatedAt' )->readOnly(),
             HasMany::make( 'elements' )->type( 'elements' )->readOnly()->serializeUsing(
+                static fn($relation) => $relation->withoutLinks()
+            ),
+            HasMany::make( 'files' )->type( 'files' )->readOnly()->serializeUsing(
                 static fn($relation) => $relation->withoutLinks()
             ),
             HasOne::make( 'parent' )->type( 'pages' )->readOnly()->serializeUsing( function( $relation ) {
@@ -145,10 +148,10 @@ class PageSchema extends Schema
             Where::make( 'domain' )->deserializeUsing(
                 fn($value) => (string) $value
             ),
-            Where::make( 'tag' )->deserializeUsing(
+            Where::make( 'path' )->deserializeUsing(
                 fn($value) => (string) $value
             ),
-            Where::make( 'lang' )->deserializeUsing(
+            Where::make( 'tag' )->deserializeUsing(
                 fn($value) => (string) $value
             ),
             WhereIdIn::make( $this ),

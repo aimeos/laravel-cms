@@ -25,6 +25,7 @@ class JsonapiTest extends TestAbstract
             $server->resource( "pages", \Aimeos\Cms\JsonApi\V1\Controllers\JsonapiController::class )->readOnly()
                 ->relationships( function( $relationships ) {
                     $relationships->hasMany( 'elements' )->readOnly();
+                    $relationships->hasMany( 'files' )->readOnly();
                 });
             });
     }
@@ -60,7 +61,7 @@ class JsonapiTest extends TestAbstract
 
         $this->expectsDatabaseQueryCount( 2 ); // pages + page count
         $response = $this->jsonApi()->expects( 'pages' )
-            ->filter( ['domain' => 'mydomain.tld', 'tag' => 'root', 'lang' => 'en'] )
+            ->filter( ['domain' => 'mydomain.tld', 'path' => '/', 'tag' => 'root'] )
             ->get( "cms/pages" );
 
         $response->assertFetchedMany( $pages );
@@ -94,6 +95,22 @@ class JsonapiTest extends TestAbstract
         $response->assertFetchedManyInOrder( $elements );
         $this->assertGreaterThanOrEqual( 1, count( $elements ) );
         $response->assertJsonPath( 'meta.baseurl', '/storage/' );
+    }
+
+
+    public function testPageFiles()
+    {
+        $this->seed( \Database\Seeders\CmsSeeder::class );
+
+        $page = \Aimeos\Cms\Models\Page::where('tag', 'article')->firstOrFail();
+        $files = $page->files;
+
+        $this->expectsDatabaseQueryCount( 2 ); // page + shared files
+        $response = $this->jsonApi()->expects( 'files' )->get( "cms/pages/{$page->id}/files" );
+
+        $response->assertFetchedManyInOrder( $files );
+        $this->assertGreaterThanOrEqual( 1, count( $files ) );
+        // $response->assertJsonPath( 'meta.baseurl', '/storage/' );
     }
 
 
@@ -185,7 +202,7 @@ class JsonapiTest extends TestAbstract
 
         $this->expectsDatabaseQueryCount( 3 ); // page + count + page subtree
         $response = $this->jsonApi()->expects( 'pages' )
-            ->filter( ['domain' => 'mydomain.tld', 'tag' => 'root', 'lang' => 'en'] )
+            ->filter( ['domain' => 'mydomain.tld', 'path' => '/', 'tag' => 'root'] )
             ->includePaths( 'subtree' )->get( "cms/pages" );
 
         $response->assertFetchedMany( $pages )->assertIncluded( $expected );

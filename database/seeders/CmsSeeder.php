@@ -114,7 +114,7 @@ class CmsSeeder extends Seeder
             'lang' => 'en',
             'name' => 'Home',
             'title' => 'Home | Laravel CMS',
-            'path' => '',
+            'path' => '/',
             'tag' => 'root',
             'domain' => 'mydomain.tld',
             'status' => 1,
@@ -132,7 +132,7 @@ class CmsSeeder extends Seeder
             'data' => [
                 'name' => 'Home',
                 'title' => 'Home | Laravel CMS',
-                'path' => '',
+                'path' => '/',
                 'tag' => 'root',
                 'domain' => 'mydomain.tld',
                 'status' => 1,
@@ -222,6 +222,7 @@ mutation {
         $page = Page::forceCreate($data + ['contents' => $contents]);
         $page->appendToNode( $blog )->save();
         $page->elements()->attach( $elementId );
+        $page->files()->attach( $fileId );
 
         $version = $page->versions()->forceCreate([
             'data' => $data,

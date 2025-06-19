@@ -105,7 +105,7 @@ class GraphqlPageTest extends TestAbstract
                 id: [' . $page->id . ']
                 parent_id: null
                 name: "Home"
-                path: ""
+                path: "/"
                 to: ""
                 title: "Home"
                 domain: "mydomain"
@@ -401,7 +401,7 @@ class GraphqlPageTest extends TestAbstract
                     'versions' => [
                         [
                             'lang' => $page->lang,
-                            'data' => '{"name":"Home","title":"Home | Laravel CMS","path":"","tag":"root","domain":"mydomain.tld","status":1,"cache":5,"editor":"seeder","meta":{"meta":{"type":"meta","text":"Laravel CMS is outstanding"}},"config":{"test":{"type":"test","data":{"key":"value"}}}}',
+                            'data' => '{"name":"Home","title":"Home | Laravel CMS","path":"\\/","tag":"root","domain":"mydomain.tld","status":1,"cache":5,"editor":"seeder","meta":{"meta":{"type":"meta","text":"Laravel CMS is outstanding"}},"config":{"test":{"type":"test","data":{"key":"value"}}}}',
                             'contents' => '[{"type":"heading","text":"Welcome to Laravel CMS"},{"type":"ref","id":"' . $element->id . '"}]',
                             'editor' => 'seeder'
                         ],
@@ -800,7 +800,7 @@ class GraphqlPageTest extends TestAbstract
                     'id' => (string) $root->id,
                     'parent_id' => null,
                     'lang' => 'en',
-                    'path' => '',
+                    'path' => '/',
                     'domain' => 'mydomain.tld',
                     'name' => 'Home',
                     'title' => 'Home | Laravel CMS',
@@ -826,7 +826,7 @@ class GraphqlPageTest extends TestAbstract
 
                     ],
                     'published' => [
-                        'data' => '{"name":"Home","title":"Home | Laravel CMS","path":"","tag":"root","domain":"mydomain.tld","status":1,"cache":5,"editor":"seeder","meta":{"meta":{"type":"meta","text":"Laravel CMS is outstanding"}},"config":{"test":{"type":"test","data":{"key":"value"}}}}',
+                        'data' => '{"name":"Home","title":"Home | Laravel CMS","path":"\\/","tag":"root","domain":"mydomain.tld","status":1,"cache":5,"editor":"seeder","meta":{"meta":{"type":"meta","text":"Laravel CMS is outstanding"}},"config":{"test":{"type":"test","data":{"key":"value"}}}}',
                         'contents' => '[{"type":"heading","text":"Welcome to Laravel CMS"},{"type":"ref","id":"' . $element->id . '"}]',
                     ]
                 ],

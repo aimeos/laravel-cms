@@ -1,0 +1,31 @@
+.hero {
+    background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
+    color: var(--color-light);
+    text-align: center;
+    padding: 100px 0;
+}
+
+.hero h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.hero .text {
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.hero .url {
+    background: var(--color-light);
+    color: var(--color-primary);
+    display: inline-block;
+    padding: 12px 24px;
+    border-radius: 5px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.hero .url:hover {
+    background: var(--color-background);
+}

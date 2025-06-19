@@ -1,0 +1,19 @@
+@media (min-width: 992px) {
+    body.type-blog .cms-content .container {
+        max-width: 960px !important;
+    }
+}
+
+.article h1 {
+    margin-top: 48px;
+}
+
+.article .cover {
+    display: block;
+    margin-bottom: 48px
+}
+
+.article .cover source,
+.article .cover img {
+    width: 100%;
+}

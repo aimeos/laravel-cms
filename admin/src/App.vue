@@ -97,7 +97,7 @@
           label: 'Text with image',
           icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M7 4.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0m-.861 1.542 1.33.886 1.854-1.855a.25.25 0 0 1 .289-.047l1.888.974V7.5a.5.5 0 0 1-.5.5H5a.5.5 0 0 1-.5-.5V7s1.54-1.274 1.639-1.208M5 9a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1z"/><path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1"/></svg>',
           fields: {
-            'file': {type: 'image'},
+            'file': {type: 'image', required: true},
             'position': {type: 'select', options: [
               {value: 'auto', label: 'Auto'},
               {value: 'start', label: 'Start'},
@@ -161,7 +161,7 @@
           label: 'Image',
           icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/><path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1z"/></svg>',
           fields: {
-            'file': {type: 'image'},
+            'file': {type: 'image', required: true},
             'main': {type: 'switch', label: 'Main image', default: false},
           }
         },
@@ -171,7 +171,7 @@
           label: 'Video',
           icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>youtube</title><path d="M10,15L15.19,12L10,9V15M21.56,7.17C21.69,7.64 21.78,8.27 21.84,9.07C21.91,9.87 21.94,10.56 21.94,11.16L22,12C22,14.19 21.84,15.8 21.56,16.83C21.31,17.73 20.73,18.31 19.83,18.56C19.36,18.69 18.5,18.78 17.18,18.84C15.88,18.91 14.69,18.94 13.59,18.94L12,19C7.81,19 5.2,18.84 4.17,18.56C3.27,18.31 2.69,17.73 2.44,16.83C2.31,16.36 2.22,15.73 2.16,14.93C2.09,14.13 2.06,13.44 2.06,12.84L2,12C2,9.81 2.16,8.2 2.44,7.17C2.69,6.27 3.27,5.69 4.17,5.44C4.64,5.31 5.5,5.22 6.82,5.16C8.12,5.09 9.31,5.06 10.41,5.06L12,5C16.19,5 18.8,5.16 19.83,5.44C20.73,5.69 21.31,6.27 21.56,7.17Z" /></svg>',
           fields: {
-            'file': {type: 'video'},
+            'file': {type: 'video', required: true},
           }
         },
         'audio': {
@@ -180,7 +180,7 @@
           label: 'Audio',
           icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>music</title><path d="M21,3V15.5A3.5,3.5 0 0,1 17.5,19A3.5,3.5 0 0,1 14,15.5A3.5,3.5 0 0,1 17.5,12C18.04,12 18.55,12.12 19,12.34V6.47L9,8.6V17.5A3.5,3.5 0 0,1 5.5,21A3.5,3.5 0 0,1 2,17.5A3.5,3.5 0 0,1 5.5,14C6.04,14 6.55,14.12 7,14.34V6L21,3Z" /></svg>',
           fields: {
-            'file': {type: 'audio'},
+            'file': {type: 'audio', required: true},
           }
         },
         'file': {
@@ -189,7 +189,7 @@
           label: 'File',
           icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>file-download-outline</title><path d="M14,2L20,8V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V4A2,2 0 0,1 6,2H14M18,20V9H13V4H6V20H18M12,19L8,15H10.5V12H13.5V15H16L12,19Z" /></svg>',
           fields: {
-            'file': {type: 'file'},
+            'file': {type: 'file', required: true},
           }
         },
 
@@ -200,7 +200,9 @@
           icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>page-layout-header</title><path d="M6,2H18A2,2 0 0,1 20,4V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V4A2,2 0 0,1 6,2M6,4V8H18V4H6Z" /></svg>',
           fields: {
             'title': {type: 'string', min: 1},
-            'subtitle': {type: 'string'},
+            'text': {type: 'markdown'},
+            'url': {type: 'url'},
+            'button-text': {type: 'string', min: 1, max: 255, label: 'Button text'},
           }
         },
         'cards': {

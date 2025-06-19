@@ -1,0 +1,28 @@
+.code-box {
+    position: relative;
+}
+
+.code-box .code-copy {
+    color: var(--color-light);
+    background: inherit;
+    padding: 0.75em 1rem;
+    position: absolute;
+    right: 0;
+    top: 0;
+    border: none;
+    cursor: pointer;
+    opacity: 0.75;
+}
+
+.code-box .code-copy:hover {
+    opacity: 1;
+}
+
+.code-box svg {
+  color: currentColor;
+  pointer-events: none;
+}
+
+.code-box pre[class*=language-] {
+    border: none;
+}

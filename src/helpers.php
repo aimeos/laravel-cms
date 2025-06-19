@@ -18,17 +18,11 @@ if( !function_exists( 'cms' ) )
 }
 
 
-if( !function_exists( 'cmsimage' ) )
+if( !function_exists( 'cmsasset' ) )
 {
-    function cmsimage( array $data ): string
+    function cmsasset( string $path ): string
     {
-        $list = [];
-
-        foreach( $data as $width => $path ) {
-            $list[] = cmsurl( $path ) . ' ' . $width . 'w';
-        }
-
-        return implode( ',', $list );
+        return asset( $path ) . '?v=' . ( file_exists( public_path( $path ) ) ? filemtime( public_path( $path ) ) : 0 );
     }
 }
 
@@ -46,6 +40,21 @@ if( !function_exists( 'cmsroute' ) )
 }
 
 
+if( !function_exists( 'cmssrcset' ) )
+{
+    function cmssrcset( array $data ): string
+    {
+        $list = [];
+
+        foreach( $data as $width => $path ) {
+            $list[] = cmsurl( $path ) . ' ' . $width . 'w';
+        }
+
+        return implode( ',', $list );
+    }
+}
+
+
 if( !function_exists( 'cmsurl' ) )
 {
     function cmsurl( string $path ): string
@@ -55,14 +64,5 @@ if( !function_exists( 'cmsurl' ) )
         }
 
         return \Illuminate\Support\Facades\Storage::disk( config( 'cms.disk', 'public' ) )->url( $path );
-    }
-}
-
-
-if( !function_exists( 'cmsasset' ) )
-{
-    function cmsasset( string $path ): string
-    {
-        return asset( $path ) . '?v=' . ( file_exists( public_path( $path ) ) ? filemtime( public_path( $path ) ) : 0 );
     }
 }

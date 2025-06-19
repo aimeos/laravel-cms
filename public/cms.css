@@ -1,0 +1,164 @@
+:root {
+  --color-primary: #0080f0;
+  --color-secondary: #00c0f0;
+  --color-accent: #0060d0;
+  --color-background: #e8f4fc;
+  --color-light: #ffffff;
+  --color-dark: #2b2b2b;
+  --color-text: #333333;
+  --color-muted: #d8ecff;
+  --color-border: #88bcf0;
+  --color-input-border: #60a0e0;
+  --bs-breadcrumb-divider: '>';
+}
+
+body {
+    line-height: 1.6;
+    color: var(--color-text);
+    background-color: var(--color-light);
+}
+
+body:not(.type-blog) .cms-content .container {
+    padding: 60px 0;
+}
+
+body .cms-content > :nth-of-type(3n) {
+    background-color: var(--color-background);
+}
+
+.navbar {
+    background: var(--color-light);
+}
+
+#navbar {
+    flex: none;
+}
+
+.navbar-brand {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--color-dark);
+}
+
+.navbar-nav .nav-item {
+    position: relative;
+}
+
+.navbar-nav .nav-link {
+    text-decoration: none;
+    color: var(--color-text);
+    font-weight: 400;
+    transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--color-primary);
+}
+
+.breadcrumb {
+  background-color: var(--color-light);
+  color: var(--color-text);
+  font-size: 14px;
+}
+
+.breadcrumb a {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.breadcrumb a:hover {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+.breadcrumb .active {
+  font-weight: 500;
+  color: var(--color-dark)
+}
+
+.hidden {
+    display: none;
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+h1 {
+    font-size: 42px;
+    margin-bottom: 48px;
+}
+
+h2 {
+    font-size: 36px;
+    margin-bottom: 40px;
+}
+
+p {
+    font-size: 20px;
+    margin-bottom: 32px;
+}
+
+strong {
+    font-weight: bold;
+}
+
+.file,
+.audio,
+.video,
+.image,
+.image > img,
+.image > source {
+    max-width: 100%;
+    text-align: center;
+    display: block;
+    margin: auto;
+}
+
+.video video {
+    max-width: 960px;
+    max-height: 540px;
+    border-radius: 10px;
+}
+
+.text {
+    text-align: center;
+}
+
+.image .main > img,
+.image .main > source {
+    width: 100%;
+}
+
+.image-text::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.image-text .image {
+    margin-bottom: 1.5rem;
+    max-width: 25%;
+}
+
+.image-text:nth-of-type(2n) .image.auto,
+.image-text .image.start {
+    margin-inline-end: 2rem;
+    float: inline-start;
+}
+
+.image-text:nth-of-type(2n+1) .image.auto,
+.image-text .image.end {
+    margin-inline-start: 2rem;
+    float: inline-end;
+}
+
+.table p {
+    margin-bottom: 0;
+}
+
+.table caption {
+    text-align: center;
+}

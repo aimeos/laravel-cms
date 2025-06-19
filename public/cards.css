@@ -1,0 +1,22 @@
+.cards .card-list {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.cards .card-item {
+    background: var(--color-muted);
+    padding: 30px;
+    border-radius: 8px;
+    width: 300px;
+}
+
+.cards .title {
+    margin: 15px 0;
+    font-size: 22px;
+}
+
+.cards .text {
+    text-align: left;
+}

@@ -1,7 +1,11 @@
-<video data-cid="{{ $cid ?? '' }}" class="cms-video" preload="metadata" controls
-	src="{{ cmsurl( $files[$data['file']['id']]->path ?? '' ) }}"
-@if( current( $files[$data['file']['id']]->previews ) ?? '' ) )
-	poster="{{ cmsurl( current( $files[$data['file']['id']]->previews ) ?? '' ) }}">
+@if($file = $files[$data['file']['id']] ?? null)
+	<video preload="metadata" controls playsinline
+		src="{{ cmsurl($file->path ?? '') }}"
+		@if($preview = current($file->previews))
+			poster="{{ cmsurl($preview) }}">
+		@endif
+		{{ __('Download') }}: <a href="{{ cmsurl($file->path ?? '') }}">{{ cmsurl($file->path ?? '') }}</a>
+	</video>
+@else
+	<!-- no video file -->
 @endif
-	{{ __('Download') }}: <a href="{{ cmsurl( $files[$data['file']['id']]->path ?? '' ) }}">{{ cmsurl( $files[$data['file']['id']]->path ?? '' ) }}</a>
-</video>

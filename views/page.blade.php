@@ -80,9 +80,9 @@
             </nav>
         @endif
 
-        <div class="content">
+        <div class="cms-content">
             @foreach(cms($page, 'contents') ?? [] as $item)
-                <div data-cid="{{ $item['cid'] ?? '' }}" class="{{ str_replace( '::', '-', $item['type'] ) }}">
+                <div id="{{ $item['cid'] ?? '' }}" class="{{ str_replace( '::', '-', $item['type'] ) }}">
                     <div class="container">
                         @includeFirst([
                             $item['type'] ?? '',

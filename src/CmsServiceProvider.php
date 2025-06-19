@@ -27,6 +27,7 @@ class CmsServiceProvider extends ServiceProvider
 	{
 		$basedir = dirname( __DIR__ );
 
+		$this->loadBladeDirectives();
 		$this->loadViewsFrom( $basedir . '/views', 'cms' );
 		$this->loadMigrationsFrom( $basedir . '/database/migrations' );
 
@@ -57,5 +58,22 @@ class CmsServiceProvider extends ServiceProvider
 	 */
 	public function register()
 	{
+	}
+
+
+	/**
+	 * Register Blade directives
+	 */
+	protected function loadBladeDirectives()
+	{
+		Blade::directive('markdown', function( $expression ) {
+			return "<?php
+				echo (new \League\CommonMark\GithubFlavoredMarkdownConverter([
+					'html_input' => 'escape',
+					'allow_unsafe_links' => false,
+					'max_nesting_level' => 25
+				]))->convert($expression);
+			?>";
+		});
 	}
 }

@@ -789,6 +789,7 @@
         return this.app.urlpage
           .replace(/:domain/, node.domain || '')
           .replace(/:path/, node.path || '')
+          .replace(/\/+$/, '/')
       }
     },
 
@@ -985,7 +986,7 @@
           <span class="item-title">{{ node.name || 'New' }}</span>
           <div v-if="node.title" class="item-subtitle">{{ node.title }}</div>
         </div>
-        <a class="item-aux" :href="url(node) + '?preview=true'" target="_blank" draggable="false">
+        <a class="item-aux" :href="url(node)" target="_blank" draggable="false">
           <div class="item-domain">{{ node.domain }}</div>
           <span class="item-path item-subtitle">{{ url(node) }}</span>
           <span v-if="node.to" class="item-to item-subtitle"> ➔ {{ node.to }}</span>

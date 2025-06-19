@@ -23,10 +23,9 @@
         }
 
         return v
-          ? (new RegExp(`^(${allowed.join('|')})://([^\\s/:@]+(:[^\\s/:@]+)?@)?([0-9a-z]+(\\.|-))*[0-9a-z]+\\.[a-z]{2,}(:[0-9]{1,5})?(/[^\\s]*)*$`)).test(v)
+          ? (new RegExp(`^((${allowed.join('|')}:\/\/)?([^\/\s@:]+(:[^\/\s@:]+)?@)?([0-9a-z]+[.-])*[0-9a-z]+\.[a-z]{2,}(:[0-9]{1,5})?)?\/.*$`)).test(v)
           : true
       },
-
 
       update(value) {
         this.$emit('update:modelValue', value)

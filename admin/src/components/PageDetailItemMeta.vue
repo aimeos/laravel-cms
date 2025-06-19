@@ -48,7 +48,7 @@
           return
         }
 
-        this.item.meta[item.type] = {cid: uid(), type: item.type, data: {}}
+        this.item.meta[item.type] = {id: uid(), type: item.type, data: {}}
         this.panel.push(Object.keys(this.item.meta).length - 1)
         this.vschemas = false
       },

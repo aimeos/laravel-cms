@@ -34,7 +34,7 @@
 
     methods: {
       add(item) {
-        this.$emit('add', {cid: uid(), type: item.type, data: {}})
+        this.$emit('add', {id: uid(), type: item.type, data: {}})
       }
     }
   }

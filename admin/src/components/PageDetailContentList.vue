@@ -53,7 +53,7 @@
     methods: {
       add(item, idx) {
         let entry = {
-          cid: uid(),
+          id: uid(),
           group: this.section || 'main'
         }
 
@@ -222,7 +222,7 @@
           element.files = element.files.map(file => file.id)
 
           this.$emit('update:elements', Object.assign(this.elements, {[element.id]: element}))
-          this.list[idx] = {cid: uid(), group: this.section || 'main', type: 'reference', refid: element.id}
+          this.list[idx] = {id: uid(), group: this.section || 'main', type: 'reference', refid: element.id}
           this.store()
         }).catch(error => {
           this.messages.add('Unable to make element shared', 'error')

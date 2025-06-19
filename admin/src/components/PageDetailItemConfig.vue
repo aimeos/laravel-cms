@@ -48,7 +48,7 @@
           return
         }
 
-        this.item.config[item.type] = {cid: uid(), type: item.type, data: {}}
+        this.item.config[item.type] = {id: uid(), type: item.type, data: {}}
         this.panel.push(Object.keys(this.item.config).length - 1)
         this.vschemas = false
       },

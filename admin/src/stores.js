@@ -120,9 +120,7 @@ export const useAuthStore = defineStore('auth', {
 
 
 export const useConfigStore = defineStore('config', {
-  state: () => ({
-    data: {}
-  }),
+  state: () => (JSON.parse(app?.dataset.config || '{}')),
 
   actions: {
     get(key, defval = null) {
@@ -132,7 +130,7 @@ export const useConfigStore = defineStore('config', {
 
       const val = key.split('.').reduce((part, key) => {
         return typeof part === 'object' && part !== null ? part[key] : part
-      }, this.data)
+      }, this)
 
       return typeof val === 'undefined' ? defval : val
     }
@@ -192,11 +190,7 @@ export const useMessageStore = defineStore('message', {
  * Available element schemas
  */
 export const useSchemaStore = defineStore('schema', {
-  state: () => ({
-    content: {},
-    meta: {},
-    config: {}
-  })
+  state: () => (JSON.parse(app?.dataset.schemas || '{}')),
 })
 
 

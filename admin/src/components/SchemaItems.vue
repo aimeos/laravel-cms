@@ -22,8 +22,11 @@
       groups() {
         const map = {}
 
-        for(const el of Object.values(this.schemas[this.type] || {})) {
+        for(const type in this.schemas[this.type] || {}) {
+          const el = this.schemas[this.type][type]
           const name = el.group || 'uncategorized'
+
+          el.type = type
           map[name] = map[name] || []
           map[name].push(el)
         }

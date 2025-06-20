@@ -23,6 +23,8 @@
       data-urlpage="{{ route('cms.page', ['path' => ':path']) }}"
       data-urlfile="{{ \Illuminate\Support\Facades\Storage::disk( config( 'cms.disk', 'public' ) )->url( '' ) }}"
       data-permissions="{{ json_encode( \Aimeos\Cms\Permission::get( \Illuminate\Support\Facades\Auth::user() ) ) }}"
-    </div>
+      data-config="{{ json_encode( config( 'cms.config' ) ) }}"
+      data-schemas="{{ json_encode( config( 'cms.schemas' ) ) }}"
+    ></div>
   </body>
 </html>

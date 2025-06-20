@@ -79,9 +79,6 @@ Made with <fg=green>love</> by the Laravel CMS community. Be a part of it!
             $result += $this->call( 'db:seed', ['--class' => 'CmsSeeder'] );
         }
 
-        $this->comment( '  Adding Laravel CMS routes ...' );
-        $result += $this->route();
-
         $this->comment( '  Link public storage folder ...' );
         $result += $this->call( 'storage:link', ['--force' => null] );
 
@@ -252,56 +249,6 @@ Made with <fg=green>love</> by the Laravel CMS community. Be a part of it!
             $this->line( sprintf( '  File [%1$s] already up to date' . PHP_EOL, $filename ) );
         }
 
-        return 0;
-    }
-
-
-    /**
-     * Updates routes file
-     *
-     * @return int 0 on success, 1 on failure
-     */
-    protected function route() : int
-    {
-        $filename = 'routes/web.php';
-        $abspath = base_path( $filename );
-
-        if( ( $content = file_get_contents( $abspath ) ) === false )
-        {
-            $this->error( sprintf( '  Reading file [%1$s] failed!' . PHP_EOL, $filename ) );
-            return 1;
-        }
-
-        if( strpos( $content, 'cms.admin' ) === false ) {
-            $content .= "\n\nRoute::get('cmsadmin/{path?}', [\Aimeos\Cms\Http\Controllers\PageController::class, 'admin'])
-    ->where(['path' => '.*'])
-    ->name('cms.admin');";
-        }
-
-        if( strpos( $content, 'cms.page' ) === false )
-        {
-            $content .= "\n\nRoute::group([/* uncomment for multi-domain routing: 'domain' => '{domain}'*/], function() {
-    Route::get('{path?}', [\Aimeos\Cms\Http\Controllers\PageController::class, 'index'])
-        ->where(['path' => '.*'])
-        ->name('cms.page');
-});";
-        }
-
-        if( strpos( $content, "->resource('pages'" ) === false )
-        {
-            $content .= "\n\n
-\LaravelJsonApi\Laravel\Facades\JsonApiRoute::server('cms')->prefix('cms')->resources(function($server) {
-    $server->resource('pages', \Aimeos\Cms\JsonApi\V1\Controllers\JsonapiController::class)->readOnly();
-});";
-        }
-
-        if( file_put_contents( $abspath, $content ) === false )
-        {
-            $this->error( sprintf( '  Updating file [%1$s] failed!' . PHP_EOL, $filename ) );
-            return 1;
-        }
-
-        $this->line( sprintf( '  File [%1$s] updated' . PHP_EOL, $filename ) );
         return 0;
     }
 

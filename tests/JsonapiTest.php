@@ -15,15 +15,6 @@ class JsonapiTest extends TestAbstract
         parent::defineEnvironment( $app );
 
         $app['config']->set( 'cms.jsonapi_maxdepth', 2 );
-        $app['config']->set( 'jsonapi.servers.cms', \Aimeos\Cms\JsonApi\V1\Server::class );
-    }
-
-
-    protected function defineRoutes( $router )
-    {
-        \LaravelJsonApi\Laravel\Facades\JsonApiRoute::server( "cms" )->prefix( "cms" )->resources( function( $server ) {
-            $server->resource( "pages", \Aimeos\Cms\JsonApi\V1\Controllers\JsonapiController::class )->readOnly();
-        });
     }
 
 

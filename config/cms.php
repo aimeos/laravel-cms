@@ -38,6 +38,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Multi-domain support
+    |--------------------------------------------------------------------------
+    |
+    | If enabled, the CMS will use the domain name to determine the pages to
+    | display. If disabled, the pages are shared across all domains.
+    |
+    */
+    'multidomain' => env( 'CMS_MULTIDOMAIN', false ),
+
+    /*
+    |--------------------------------------------------------------------------
     | Prune deleted records
     |--------------------------------------------------------------------------
     |
@@ -45,7 +56,7 @@ return [
     | removed. Disable pruning with FALSE as value.
     |
     */
-    'prune' => 30,
+    'prune' => env( 'CMS_PRUNE', 30 ),
 
     /*
     |--------------------------------------------------------------------------
@@ -57,5 +68,5 @@ return [
     | deleted.
     |
     */
-    'versions' => 10,
+    'versions' => env( 'CMS_VERSIONS', 10 ),
 ];

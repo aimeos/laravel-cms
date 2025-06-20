@@ -29,6 +29,7 @@ class CmsServiceProvider extends ServiceProvider
 
 		$this->loadBladeDirectives();
 		$this->loadViewsFrom( $basedir . '/views', 'cms' );
+		$this->loadRoutesFrom( $basedir . '/routes/web.php');
 		$this->loadMigrationsFrom( $basedir . '/database/migrations' );
 
 		$this->publishes( [$basedir . '/public' => public_path( 'vendor/cms' )], 'public' );
@@ -58,6 +59,10 @@ class CmsServiceProvider extends ServiceProvider
 	 */
 	public function register()
 	{
+		config(['jsonapi.servers' => array_merge(
+			config('jsonapi.servers', []) ,
+			['cms' => \Aimeos\Cms\JsonApi\V1\Server::class]),
+		]);
 	}
 
 

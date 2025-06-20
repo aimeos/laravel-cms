@@ -11,5 +11,5 @@
 @endif
 
 @if($data['url'] ?? null)
-    <a class="btn url" href="{{ $data['url'] }}">{{ $data['button-text'] ?? '' }}</a>
+    <a class="btn url" href="{{ $data['url'] }}">{{ $data['button'] ?? '' }}</a>
 @endif

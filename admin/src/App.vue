@@ -202,7 +202,7 @@
             'title': {type: 'string', min: 1},
             'text': {type: 'markdown'},
             'url': {type: 'url'},
-            'button-text': {type: 'string', min: 1, max: 255, label: 'Button text'},
+            'button': {type: 'string', min: 1, max: 255, label: 'Button text'},
           }
         },
         'cards': {

@@ -21,7 +21,6 @@
       data-urlgraphql="{{ route('graphql') }}"
       data-urladmin="{{ route('cms.admin', [], false) }}"
       data-urlpage="{{ route('cms.page', ['path' => ':path']) }}"
-      data-urlpreview="{{ route('cms.preview', ['id' => ':id']) }}"
       data-urlfile="{{ \Illuminate\Support\Facades\Storage::disk( config( 'cms.disk', 'public' ) )->url( '' ) }}"
       data-permissions="{{ json_encode( \Aimeos\Cms\Permission::get( \Illuminate\Support\Facades\Auth::user() ) ) }}"
     </div>

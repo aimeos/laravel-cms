@@ -45,7 +45,10 @@
     display: flex;
   }
 
-  .v-list-item .router-link {
+  a.router-link,
+  a.router-link:focus,
+  a.router-link:visited {
+    color: rgb(var(--v-theme-on-surface-light));
     display: block;
     width: 100%;
     padding: 8px;
@@ -54,12 +57,6 @@
   .v-list-item:has(.router-link-active),
   .v-list-item:has(.router-link-active) a {
     background-color: rgb(var(--v-theme-surface-light));
-    color: rgb(var(--v-theme-on-surface-light));
-  }
-
-  a.router-link:focus,
-  a.router-link:visited {
-    color: rgb(var(--v-theme-on-surface-light));
   }
 
   .v-list-item .icon {

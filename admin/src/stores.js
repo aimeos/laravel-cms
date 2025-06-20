@@ -19,12 +19,11 @@ export const useAuthStore = defineStore('auth', {
   state: () => ({
     me: null,
     urlintended: null,
-    permissions: JSON.parse(app?.dataset.permissions || '{}'),
   }),
 
   actions: {
     can(action) {
-      return this.permissions[action] || false
+      return this.me.permission[action] || false
     },
 
 
@@ -41,7 +40,7 @@ export const useAuthStore = defineStore('auth', {
       await apolloClient.query({
         query: gql`query{
           me {
-            cmseditor
+            permission
             email
             name
           }
@@ -52,6 +51,11 @@ export const useAuthStore = defineStore('auth', {
         }
 
         this.me = response.data.me || null
+
+        if(this.me && this.me.permission) {
+          this.me.permission = JSON.parse(this.me.permission)
+        }
+
         return !!this.me
       }).catch(() => {
         this.me = null
@@ -65,7 +69,7 @@ export const useAuthStore = defineStore('auth', {
       return apolloClient.mutate({
         mutation: gql`mutation ($email: String!, $password: String!) {
           cmsLogin(email: $email, password: $password) {
-            cmseditor
+            permission
             email
             name
           }
@@ -79,7 +83,13 @@ export const useAuthStore = defineStore('auth', {
           throw response.errors
         }
 
-        return this.me = response.data.cmsLogin || false
+        this.me = response.data.cmsLogin || false
+
+        if(this.me && this.me.permission) {
+          this.me.permission = JSON.parse(this.me.permission)
+        }
+
+        return this.me
       }).catch(error => {
         this.me = false
         throw error
@@ -91,7 +101,6 @@ export const useAuthStore = defineStore('auth', {
       return apolloClient.mutate({
         mutation: gql`mutation {
           cmsLogout {
-            cmseditor
             email
             name
           }

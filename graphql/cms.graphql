@@ -13,8 +13,8 @@ enum Publish {
 union RemoveableUpload = Upload | Boolean
 
 extend type User {
-    "CMS editor capability"
-    cmseditor: Int!
+    "CMS editor capabilities"
+    permission: JSON! @field(resolver: "\\Aimeos\\Cms\\GraphQL\\Resolvers\\UserResolver@permission")
 }
 
 extend type Query {

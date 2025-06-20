@@ -44,7 +44,7 @@
         this.loading = true
 
         this.auth.login(this.creds.email, this.creds.password).then(user => {
-          if(user.cmseditor) {
+          if(Object.values(user.permission || {}).some(perm => perm === true)) {
             router.replace(this.next())
           } else {
             this.error = 'Not a CMS editor'

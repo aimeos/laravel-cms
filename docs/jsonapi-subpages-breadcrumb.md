@@ -4,13 +4,13 @@ permalink: /jsonapi/subpages-breadcrumb/
 excerpt: "How to retrieve the sub-pages with content and ancestors from Laravel CMS using the JSON:API to build page with breadcrumb"
 ---
 
-To retrieve a specific page whose URL you've gotten from one of the previous responses (in the `links/self` attribute of the item) with its ancestor pages for the breadcrumb and its shared content elements (add `?include=ancestors,elements` to the page URL):
+To retrieve a specific page whose URL you've gotten from one of the previous responses (in the `links/self` attribute of the item) with its ancestor pages for the breadcrumb and its shared content elements and files (add `?include=ancestors,elements,files` to the page URL):
 
 ```
-http://mydomain.tld/api/cms/pages/2?include=ancestors,elements
+http://mydomain.tld/api/cms/pages/2?include=ancestors,elements,files
 ```
 
-The `included` section contains the list of shared element elements that should be displayed at the page if `include=elements` is added as parameter to the JSON:API URL the anchestor pages if the `include` parameter also contains `ancestors`, e.g.:
+The `included` section contains the list of shared element elements and files that should be displayed at the page if `include=elements,files` is added as parameter to the JSON:API URL the anchestor pages if the `include` parameter also contains `ancestors`, e.g.:
 
 ```json
 {
@@ -28,7 +28,7 @@ The `included` section contains the list of shared element elements that should 
         "id": "2",
         "attributes": {
             "parent_id": 1,
-            "lang": "",
+            "lang": "en",
             "path": "blog",
             "name": "Blog",
             "title": "Blog | Laravel CMS",
@@ -74,8 +74,8 @@ The `included` section contains the list of shared element elements that should 
             "id": "1",
             "attributes": {
                 "parent_id": null,
-                "lang": "",
-                "path": "",
+                "lang": "en",
+                "path": "/",
                 "name": "Home",
                 "title": "Home | Laravel CMS",
                 "tag": "root",

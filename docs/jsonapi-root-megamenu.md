@@ -9,16 +9,10 @@ excerpt: "How to retrieve the root page with descendents from Laravel CMS using 
 Retrieve the root page with all shared content elements and sub-pages up to three levels to build a mega-menu:
 
 ```
-http://mydomain.tld/api/cms/pages?filter[tag]=root&include=subtree,elements
+http://mydomain.tld/api/cms/pages?filter[path]=/&include=subtree,elements,files
 ```
 
-For multi-language sites, the `lang` filter parameter must be added:
-
-```
-http://mydomain.tld/api/cms/pages?filter[tag]=root&filter[lang]=en&include=subtree,elements
-```
-
-Then, the page tree (up to three levels deep) including the shared content elements for the root page will be returned:
+Then, the page tree (up to three levels deep) including the shared content elements and files for the root page will be returned:
 
 ```json
 {
@@ -37,8 +31,8 @@ Then, the page tree (up to three levels deep) including the shared content eleme
         "version": "1.0"
     },
     "links": {
-        "first": "http:\/\/mydomain.tld\/cms\/pages?filter%5Btag%5D=root&include=subtree%2Celements&page%5Bnumber%5D=1&page%5Bsize%5D=15",
-        "last": "http:\/\/mydomain.tld\/cms\/pages?filter%5Btag%5D=root&include=subtree%2Celements&page%5Bnumber%5D=1&page%5Bsize%5D=15"
+        "first": "http:\/\/mydomain.tld\/cms\/pages?filter%5Bpath%5D=/&include=subtree%2Celements%2Cfiles&page%5Bnumber%5D=1&page%5Bsize%5D=15",
+        "last": "http:\/\/mydomain.tld\/cms\/pages?filter%5Bpath%5D=/&include=subtree%2Celements%2Cfiles&page%5Bnumber%5D=1&page%5Bsize%5D=15"
     },
     "data": [
         {
@@ -46,8 +40,8 @@ Then, the page tree (up to three levels deep) including the shared content eleme
             "id": "1",
             "attributes": {
                 "parent_id": null,
-                "lang": "",
-                "path": "",
+                "lang": "en",
+                "path": "/",
                 "name": "Home",
                 "title": "Home | Laravel CMS",
                 "tag": "root",
@@ -111,7 +105,7 @@ Then, the page tree (up to three levels deep) including the shared content eleme
             "type": "elements",
             "id": "0187d6ab-b76d-75ee-8830-ab00b4259aa5",
             "attributes": {
-                "lang": "",
+                "lang": "en",
                 "data": {
                     "text": "Welcome to Laravel CMS",
                     "type": "cms::heading"
@@ -124,7 +118,7 @@ Then, the page tree (up to three levels deep) including the shared content eleme
             "id": "2",
             "attributes": {
                 "parent_id": 1,
-                "lang": "",
+                "lang": "en",
                 "path": "blog",
                 "name": "Blog",
                 "title": "Blog | Laravel CMS",
@@ -148,7 +142,7 @@ Then, the page tree (up to three levels deep) including the shared content eleme
             "id": "3",
             "attributes": {
                 "parent_id": 2,
-                "lang": "",
+                "lang": "en",
                 "path": "welcome-to-laravelcms",
                 "name": "Welcome to Laravel CMS",
                 "title": "Welcome to Laravel CMS | Laravel CMS",
@@ -172,7 +166,7 @@ Then, the page tree (up to three levels deep) including the shared content eleme
             "id": "4",
             "attributes": {
                 "parent_id": 1,
-                "lang": "",
+                "lang": "en",
                 "path": "dev",
                 "name": "Dev",
                 "title": "For Developer | Laravel CMS",
@@ -196,7 +190,7 @@ Then, the page tree (up to three levels deep) including the shared content eleme
             "id": "5",
             "attributes": {
                 "parent_id": 1,
-                "lang": "",
+                "lang": "en",
                 "path": "hidden",
                 "name": "Hidden",
                 "title": "Hidden page | Laravel CMS",

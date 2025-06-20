@@ -4,16 +4,10 @@ permalink: /jsonapi/root-navigation/
 excerpt: "How to retrieve the root page and children from Laravel CMS using the JSON:API to build a page with navigation"
 ---
 
-Retrieve the root page with shared content elements and first level sub-pages to build the navigation:
+Retrieve the root page with shared content elements and files and first level sub-pages to build the navigation:
 
 ```
-http://mydomain.tld/api/cms/pages?filter[tag]=root&include=children,elements
-```
-
-In case the site uses more than one language and sets the `lang` property for each page:
-
-```
-http://mydomain.tld/api/cms/pages?filter[tag]=root&filter[lang]=en&include=children,elements
+http://mydomain.tld/api/cms/pages?filter[path]=/&include=children,elements,files
 ```
 
 The result will be a JSON:API response which looks like:
@@ -35,8 +29,8 @@ The result will be a JSON:API response which looks like:
         "version": "1.0"
     },
     "links": {
-        "first": "http:\/\/mydomain.tld\/cms\/pages?filter%5Btag%5D=root&include=children%2Celements&page%5Bnumber%5D=1&page%5Bsize%5D=15",
-        "last": "http:\/\/mydomain.tld\/cms\/pages?filter%5Btag%5D=root&include=children%2Celements&page%5Bnumber%5D=1&page%5Bsize%5D=15"
+        "first": "http:\/\/mydomain.tld\/cms\/pages?filter%5Bpath%5D=/&include=children%2Celements%2Cfiles&page%5Bnumber%5D=1&page%5Bsize%5D=15",
+        "last": "http:\/\/mydomain.tld\/cms\/pages?filter%5Bpath%5D=/&include=children%2Celements%2Cfiles&page%5Bnumber%5D=1&page%5Bsize%5D=15"
     },
     "data": [
         {
@@ -44,8 +38,8 @@ The result will be a JSON:API response which looks like:
             "id": "1",
             "attributes": {
                 "parent_id": null,
-                "lang": "",
-                "path": "",
+                "lang": "en",
+                "path": "/",
                 "name": "Home",
                 "title": "Home | Laravel CMS",
                 "tag": "root",
@@ -53,7 +47,7 @@ The result will be a JSON:API response which looks like:
                 "domain": "mydomain.tld",
                 "has": true,
                 "cache": 5,
-                "data": [
+                "contents": [
                     {
                         "text": "Welcome to Laravel CMS",
                         "type": "cms::heading"
@@ -105,7 +99,7 @@ The result will be a JSON:API response which looks like:
             "type": "elements",
             "id": "0187d6ab-b76d-75ee-8830-ab00b4259aa5",
             "attributes": {
-                "lang": "",
+                "lang": "en",
                 "data": {
                     "text": "Welcome to Laravel CMS",
                     "type": "cms::heading"
@@ -118,7 +112,7 @@ The result will be a JSON:API response which looks like:
             "id": "2",
             "attributes": {
                 "parent_id": 1,
-                "lang": "",
+                "lang": "en",
                 "path": "blog",
                 "name": "Blog",
                 "title": "Blog | Laravel CMS",
@@ -127,9 +121,9 @@ The result will be a JSON:API response which looks like:
                 "domain": "",
                 "has": true,
                 "cache": 5,
-                "data": null,
                 "meta": null,
                 "config": null,
+                "contents": null,
                 "createdAt": "2023-05-01T09:36:30.000000Z",
                 "updatedAt": "2023-05-01T09:36:30.000000Z"
             },
@@ -142,7 +136,7 @@ The result will be a JSON:API response which looks like:
             "id": "4",
             "attributes": {
                 "parent_id": 1,
-                "lang": "",
+                "lang": "en",
                 "path": "dev",
                 "name": "Dev",
                 "title": "For Developer | Laravel CMS",
@@ -151,9 +145,9 @@ The result will be a JSON:API response which looks like:
                 "domain": "",
                 "has": false,
                 "cache": 5,
-                "data": null,
                 "meta": null,
                 "config": null,
+                "contents": null,
                 "createdAt": "2023-05-01T09:36:30.000000Z",
                 "updatedAt": "2023-05-01T09:36:30.000000Z"
             },
@@ -166,7 +160,7 @@ The result will be a JSON:API response which looks like:
             "id": "5",
             "attributes": {
                 "parent_id": 1,
-                "lang": "",
+                "lang": "en",
                 "path": "hidden",
                 "name": "Hidden",
                 "title": "Hidden page | Laravel CMS",
@@ -175,9 +169,9 @@ The result will be a JSON:API response which looks like:
                 "domain": "",
                 "has": false,
                 "cache": 5,
-                "data": null,
                 "meta": null,
                 "config": null,
+                "contents": null,
                 "createdAt": "2023-05-01T09:36:30.000000Z",
                 "updatedAt": "2023-05-01T09:36:30.000000Z"
             },

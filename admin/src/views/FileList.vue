@@ -106,7 +106,7 @@
       key: 'editor',
       items: [
         { title: 'All', icon: 'mdi-playlist-check', value: {'editor': null} },
-        { title: 'Edited by me', icon: 'mdi-account', value: {'editor': this.auth.me.email} },
+        { title: 'Edited by me', icon: 'mdi-account', value: {'editor': this.auth.me?.email} },
       ]
     }, {
       key: 'lang',

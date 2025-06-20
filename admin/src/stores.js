@@ -23,7 +23,7 @@ export const useAuthStore = defineStore('auth', {
 
   actions: {
     can(action) {
-      return this.me.permission[action] || false
+      return this.me?.permission[action] || false
     },
 
 
@@ -52,7 +52,7 @@ export const useAuthStore = defineStore('auth', {
 
         this.me = response.data.me || null
 
-        if(this.me && this.me.permission) {
+        if(this.me?.permission) {
           this.me.permission = JSON.parse(this.me.permission)
         }
 
@@ -85,7 +85,7 @@ export const useAuthStore = defineStore('auth', {
 
         this.me = response.data.cmsLogin || false
 
-        if(this.me && this.me.permission) {
+        if(this.me?.permission) {
           this.me.permission = JSON.parse(this.me.permission)
         }
 

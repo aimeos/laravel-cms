@@ -152,6 +152,9 @@ type Page {
   "Unique page ID"
   id: ID!
 
+  "Translation ID of all pages with the same content in different languages"
+  translation_id: ID
+
   "ID of the parent page or NULL if it's a root page"
   parent_id: ID
 
@@ -241,6 +244,9 @@ input PageFilter {
   "Unique page IDs"
   id: [ID!]
 
+  "Translation ID of all pages with the same content in different languages"
+  translation_id: ID
+
   "ID of the parent page or NULL if it's a root page"
   parent_id: ID
 
@@ -294,6 +300,9 @@ input PageFilter {
 }
 
 input PageInput {
+  "Translation ID of all pages with the same content in different languages"
+  translation_id: ID
+
   "ISO language code, e.g. 'en', 'en-GB' or empty for default language"
   lang: String!
 

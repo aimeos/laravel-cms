@@ -40,6 +40,7 @@ class Page extends Model
      * @var array
      */
     protected $attributes = [
+        'translation_id' => '',
         'tenant_id' => '',
         'tag' => '',
         'lang' => '',
@@ -64,6 +65,7 @@ class Page extends Model
      * @var array
      */
     protected $casts = [
+        'translation_id' => 'string',
         'tag' => 'string',
         'lang' => 'string',
         'path' => 'string',
@@ -86,6 +88,7 @@ class Page extends Model
      * @var array
      */
     protected $fillable = [
+        'translation_id',
         'tag',
         'lang',
         'path',
@@ -149,8 +152,8 @@ class Page extends Model
      */
     public function getFilesAttribute() : Collection
     {
-        $files = $this->relationLoaded( 'files' ) ? $this->getRelation( 'files' ) : $this->load( 'files' )->getRelation( 'files' );
-        return $files->pluck( null, 'id' );
+        $this->relationLoaded( 'files' ) ?: $this->load( 'files' );
+        return $this->getRelation( 'files' )->pluck( null, 'id' );
     }
 
 
@@ -305,7 +308,7 @@ class Page extends Model
                     ->where( 'parent.status', '<=', 0 );
             } )
             ->groupBy(
-                'id', 'tenant_id', 'lang', 'name', 'title',
+                'id', 'tenant_id', 'translation_id', 'lang', 'name', 'title',
                 'path', 'to', 'tag', 'meta', 'config', 'status',
                 'cache', '_lft', '_rgt', 'parent_id', 'editor',
                 'created_at', 'updated_at', 'deleted_at'

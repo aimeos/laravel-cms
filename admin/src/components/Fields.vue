@@ -88,7 +88,7 @@
 
 <style scoped>
   .item {
-    margin: 1.5rem 0;
+    margin: 24px 0;
     padding-inline-start: 8px;
     border-inline-start: 3px solid #D0D8E0;
   }

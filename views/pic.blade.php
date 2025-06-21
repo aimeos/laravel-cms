@@ -6,7 +6,7 @@
 			width="{{ $width }}">
 	@endforeach
     @if($preview = current($file?->previews ?? []))
-        <img itemprop="contentUrl" {{ ( $main ?? null ) ? '' : 'loading="lazy"' }}
+        <img class="img-fluid" itemprop="contentUrl" {{ ( $main ?? null ) ? '' : 'loading="lazy"' }}
             src="{{ cmsurl($preview) }}"
             width="{{ key($file?->previews ?? []) }}"
             alt="{{ $file?->description?->{$page->lang ?? 'en'} ?? '' }}">

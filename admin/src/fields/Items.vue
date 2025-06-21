@@ -138,7 +138,7 @@
   }
 
   .field {
-    margin: 1.5rem 0;
+    margin: 24px 0;
   }
 
   label {

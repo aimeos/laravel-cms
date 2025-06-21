@@ -66,8 +66,7 @@
 
   .view-scroll {
     width: 100%;
-    overflow-y: auto; /* Only this scrolls */
-    -webkit-overflow-scrolling: touch; /* Smooth scroll on mobile */
+    overflow-y: auto;
   }
 
 

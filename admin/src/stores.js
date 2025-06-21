@@ -50,14 +50,9 @@ export const useAuthStore = defineStore('auth', {
           throw response
         }
 
-        this.me = response.data.me || null
-
-        if(this.me?.permission) {
-          this.me.permission = JSON.parse(this.me.permission)
-        }
-
-        return !!this.me
-      }).catch(() => {
+        this.me = {...response.data.me, permission: JSON.parse(response.data.me.permission || '{}')}
+      }).catch(error => {
+        console.error('Failed to fetch user data', error)
         this.me = null
       })
 

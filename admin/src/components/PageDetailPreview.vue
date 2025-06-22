@@ -62,8 +62,8 @@
         this.vschemas = false
 
         if(item.id) {
-          this.element = {id: uid(), group: group, type: 'reference', refid: item.id}
           this.$emit('update:elements', Object.assign(this.elements, {[item.id]: item}))
+          this.element = {id: uid(), group: group, type: 'reference', refid: item.id}
           this.update()
         } else {
           this.element = {id: uid(), group: group, type: item.type, data: {}}

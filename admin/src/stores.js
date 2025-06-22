@@ -23,7 +23,7 @@ export const useAuthStore = defineStore('auth', {
 
   actions: {
     can(action) {
-      return this.me?.permission[action] || false
+      return this.me?.permission && this.me.permission[action] || false
     },
 
 
@@ -46,14 +46,14 @@ export const useAuthStore = defineStore('auth', {
           }
         }`,
       }).then(response => {
-        if(response.errors || !response.data.me) {
+        if(response.errors) {
           throw response
         }
 
-        this.me = {...response.data.me, permission: JSON.parse(response.data.me.permission || '{}')}
+        this.me = response.data.me ? {...response.data.me, permission: JSON.parse(response.data.me.permission || '{}')} : false
       }).catch(error => {
         console.error('Failed to fetch user data', error)
-        this.me = null
+        this.me = false
       })
 
       return !!this.me

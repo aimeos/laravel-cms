@@ -533,7 +533,15 @@
         </v-window-item>
 
         <v-window-item value="preview">
-          <PageDetailPreview :item="item" />
+          <PageDetailPreview
+            :save="save"
+            :item="item"
+            :assets="assets"
+            :elements="elements"
+            :contents="contents"
+            @update:contents="update('contents', $event)"
+            @update:elements="update('elements', $event)"
+          />
         </v-window-item>
 
       </v-window>

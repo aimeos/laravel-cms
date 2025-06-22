@@ -17,6 +17,11 @@
         <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script defer src="{{ cmsasset('vendor/cms/cms.js') }}"></script>
 
+        @if(\Aimeos\Cms\Permission::can('page:save', auth()->user()))
+            <script defer src="{{ cmsasset('vendor/cms/admin.js') }}"></script>
+        @endif
+
+
         @foreach(cms($page, 'meta') ?? [] as $type => $item)
             @includeFirst([
                 $item['type'] ?? '',

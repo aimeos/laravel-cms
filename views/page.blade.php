@@ -7,7 +7,7 @@
 
         <title>{{ cms($page, 'title') }}</title>
 
-        @if( in_array(app()->getLocale(), ['ar', 'az', 'dv', 'fa', 'he', 'ku', 'ur']) )
+        @if(in_array(app()->getLocale(), ['ar', 'az', 'dv', 'fa', 'he', 'ku', 'ur']))
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.rtl.min.css" rel="stylesheet" crossorigin="anonymous">
         @else
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
@@ -39,7 +39,7 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         @foreach($page->nav() as $item)
                             <li class="nav-item">
-                                <a class="nav-link {{ $item->children->count() ? 'dropdown-toggle' : '' }} {{ $page->isSelfOrDescendantOf( $item ) ? 'active' : '' }}"
+                                <a class="nav-link {{ $item->children->count() ? 'dropdown-toggle' : '' }} {{ $page->isSelfOrDescendantOf($item) ? 'active' : '' }}"
                                     href="{{ cmsroute($item) }}"
                                     @if($item->children->count()) role="button" aria-expanded="false" data-bs-toggle="dropdown" @endif
                                     @if($page->is($item)) aria-current="page" @endif>
@@ -49,7 +49,7 @@
                                     <ul class="dropdown-menu">
                                         @foreach($item->children as $subItem)
                                             <li>
-                                                <a class="dropdown-item {{ $page->isSelfOrDescendantOf( $subItem ) ? 'active' : '' }}"
+                                                <a class="dropdown-item {{ $page->isSelfOrDescendantOf($subItem) ? 'active' : '' }}"
                                                     href="{{ cmsroute($subItem) }}"
                                                     @if($page->is($subItem)) aria-current="page" @endif>
                                                     {{ cms($subItem, 'name') }}
@@ -82,15 +82,27 @@
 
         <div class="cms-content">
             @foreach(cms($page, 'contents') ?? [] as $item)
-                <div id="{{ $item['id'] ?? '' }}" class="{{ str_replace( '::', '-', $item['type'] ) }}">
-                    <div class="container">
-                        @includeFirst([
-                            $item['type'] ?? '',
-                            (cms($page, 'theme') ?: 'cms') . '::' . ($item['type'] ?? 'page'),
-                            'cms::invalid'
-                        ], ['files' => cms($page, 'files')] + $item )
+                @if(($item['type'] ?? '') === 'reference' && ($refid = $item['refid'] ?? null) && ($element = cms($page,'elements')[$refid] ?? null))
+                    <div id="{{ $item['id'] ?? '' }}" class="{{ str_replace('::', '-', $element->type ?? '') }}">
+                        <div class="container">
+                            @includeFirst([
+                                $element->type ?? '',
+                                (cms($page, 'theme') ?: 'cms') . '::' . ($element->type ?? 'page'),
+                                'cms::invalid'
+                            ], ['files' => cms($page, 'files')] +  ['data' => (array) $element->data])
+                        </div>
                     </div>
-                </div>
+                @else
+                    <div id="{{ $item['id'] ?? '' }}" class="{{ str_replace('::', '-', $item['type'] ?? '') }}">
+                        <div class="container">
+                            @includeFirst([
+                                $item['type'] ?? '',
+                                (cms($page, 'theme') ?: 'cms') . '::' . ($item['type'] ?? 'page'),
+                                'cms::invalid'
+                            ], ['files' => cms($page, 'files')] + $item)
+                        </div>
+                    </div>
+                @endif
             @endforeach
         </div>
 

@@ -146,6 +146,18 @@ class Page extends Model
 
 
     /**
+     * Maps the elements by ID automatically.
+     *
+     * @return Collection List elements with ID as keys and element models as values
+     */
+    public function getElementsAttribute() : Collection
+    {
+        $this->relationLoaded( 'elements' ) ?: $this->load( 'elements' );
+        return $this->getRelation( 'elements' )->pluck( null, 'id' );
+    }
+
+
+    /**
      * Maps the files by ID automatically.
      *
      * @return Collection List files with ID as keys and file models as values

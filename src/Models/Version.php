@@ -99,14 +99,26 @@ class Version extends Model
 
 
     /**
+     * Maps the elements by ID automatically.
+     *
+     * @return Collection List elements with ID as keys and element models as values
+     */
+    public function getElementsAttribute() : Collection
+    {
+        $this->relationLoaded( 'elements' ) ?: $this->load( 'elements' );
+        return $this->getRelation( 'elements' )->pluck( null, 'id' );
+    }
+
+
+    /**
      * Maps the files by ID automatically.
      *
      * @return Collection List files with ID as keys and file models as values
      */
     public function getFilesAttribute() : Collection
     {
-        $files = $this->relationLoaded( 'files' ) ? $this->getRelation( 'files' ) : $this->load( 'files' )->getRelation( 'files' );
-        return $files->pluck( null, 'id' );
+        $this->relationLoaded( 'files' ) ?: $this->load( 'files' );
+        return $this->getRelation( 'files' )->pluck( null, 'id' );
     }
 
 

@@ -21,7 +21,6 @@
             <script defer src="{{ cmsasset('vendor/cms/admin.js') }}"></script>
         @endif
 
-
         @foreach(cms($page, 'meta') ?? [] as $type => $item)
             @includeFirst([
                 $item['type'] ?? '',
@@ -74,7 +73,7 @@
             <nav class="container" aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     @foreach($page->ancestors ?? [] as $item)
-                        @if(cms($item, 'status') === 1 )
+                        @if(cms($item, 'status') === 1)
                             <li class="breadcrumb-item">
                                 <a href="{{ cmsroute($item) }}">{{ cms($item, 'name') }}</a>
                             </li>

@@ -61,7 +61,7 @@ class GraphqlPageTest extends TestAbstract
         $response = $this->actingAs( $this->user )->graphQL( "{
             page(id: {$page->id}) {
                 id
-                translation_id
+                related_id
                 parent_id
                 lang
                 path
@@ -123,7 +123,7 @@ class GraphqlPageTest extends TestAbstract
             }, first: 10, page: 1, trashed: WITH, publish: PUBLISHED) {
                 data {
                     id
-                    translation_id
+                    related_id
                     parent_id
                     lang
                     path
@@ -249,7 +249,7 @@ class GraphqlPageTest extends TestAbstract
             }, first: 10, page: 1) {
                 data {
                     id
-                    translation_id
+                    related_id
                     parent_id
                     lang
                     path
@@ -512,7 +512,7 @@ class GraphqlPageTest extends TestAbstract
                     cache: 0
                 }, elements: ["' . $element->id . '"], files: ["' . $file->id . '"]) {
                     id
-                    translation_id
+                    related_id
                     parent_id
                     lang
                     path

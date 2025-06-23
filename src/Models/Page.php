@@ -40,7 +40,7 @@ class Page extends Model
      * @var array
      */
     protected $attributes = [
-        'translation_id' => '',
+        'related_id' => null,
         'tenant_id' => '',
         'tag' => '',
         'lang' => '',
@@ -65,7 +65,6 @@ class Page extends Model
      * @var array
      */
     protected $casts = [
-        'translation_id' => 'string',
         'tag' => 'string',
         'lang' => 'string',
         'path' => 'string',
@@ -88,7 +87,7 @@ class Page extends Model
      * @var array
      */
     protected $fillable = [
-        'translation_id',
+        'related_id',
         'tag',
         'lang',
         'path',
@@ -320,7 +319,7 @@ class Page extends Model
                     ->where( 'parent.status', '<=', 0 );
             } )
             ->groupBy(
-                'id', 'tenant_id', 'translation_id', 'lang', 'name', 'title',
+                'id', 'tenant_id', 'related_id', 'lang', 'name', 'title',
                 'path', 'to', 'tag', 'meta', 'config', 'status',
                 'cache', '_lft', '_rgt', 'parent_id', 'editor',
                 'created_at', 'updated_at', 'deleted_at'

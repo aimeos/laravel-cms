@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::connection(config('cms.db', 'sqlite'))->create('cms_pages', function (Blueprint $table) {
             $table->id();
             $table->string('tenant_id', 250);
-            $table->string('translation_id', 8);
             $table->string('name');
             $table->string('path');
             $table->string('to');
@@ -28,6 +27,7 @@ return new class extends Migration
             $table->string('theme', 30);
             $table->smallInteger('cache');
             $table->smallInteger('status');
+            $table->integer('related_id')->nullable();
             $table->json('meta');
             $table->json('config');
             $table->json('contents');
@@ -40,7 +40,7 @@ return new class extends Migration
             $table->index(['_lft', '_rgt', 'tenant_id', 'status']);
             $table->index(['tag', 'lang', 'tenant_id', 'status']);
             $table->index(['lang', 'tenant_id', 'status']);
-            $table->index(['translation_id', 'tenant_id']);
+            $table->index(['related_id', 'tenant_id']);
             $table->index(['parent_id', 'tenant_id']);
             $table->index(['domain', 'tenant_id']);
             $table->index(['to', 'tenant_id']);

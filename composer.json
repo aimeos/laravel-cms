@@ -1,6 +1,6 @@
 {
-	"name": "aimeos/laravel-cms",
-	"description": "Laravel CMS",
+	"name": "aimeos/pagible",
+	"description": "Pagible CMS",
 	"keywords": ["laravel", "cms", "package", "api", "graphql", "jsonapi", "multi-tenant", "multi-language"],
 	"homepage": "https://laravel-cms.org",
 	"type": "library",

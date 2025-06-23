@@ -483,45 +483,85 @@
         const node = {...this.clip.node}
         let refid = null
 
-        node.path = node.path + '_' + Math.floor(Math.random() * 10000)
-        node.status = 0
-        node.children = null
-        node.has = false
-        node.id = null
-
         switch(idx) {
           case 0: refid = stat.data.id; break
           case null: refid = stat.children && stat.children[0] ? stat.children[0].data.id : null; break
           case 1: refid = siblings[pos + 1] ? siblings[pos + 1].data.id : null; break
         }
 
-        this.$apollo.mutate({
-          mutation: gql`mutation ($id: ID!, $parent: ID, $ref: ID) {
-            addPage(id: $id, parent: $parent, ref: $ref) {
-              id
+        return this.$apollo.query({
+          query: gql`query($id: ID!) {
+            page(id: $id) {
+              contents
+              files {
+                id
+              }
+              elements {
+                id
+              }
             }
           }`,
           variables: {
-            id: this.clip.node.id,
-            parent: parent ? parent.data.id : null,
-            ref: refid
+            id:  node.id
           }
         }).then(result => {
           if(result.errors) {
             throw result.errors
           }
 
-          const index = idx !== null ? this.$refs.tree.getSiblings(stat).indexOf(stat) + idx : 0
-          this.$refs.tree.add(node, parent, index)
+          this.$apollo.mutate({
+            mutation: gql`mutation ($input: PageInput!, $parent: ID, $ref: ID, $elements: [ID!], $files: [ID!]) {
+              addPage(input: $input, parent: $parent, ref: $ref, elements: $elements, files: $files) {
+                ${this.fields()}
+              }
+            }`,
+            variables: {
+              input: {
+                status: 0,
+                to: node.to,
+                tag: node.tag,
+                type: node.type,
+                theme: node.theme,
+                lang: node.lang,
+                name: node.name,
+                title: node.title,
+                cache: node.cache,
+                domain: node.domain,
+                related_id: node.id,
+                meta: JSON.stringify(node.meta || {}),
+                config: JSON.stringify(node.config || {}),
+                contents: result?.data?.page?.contents || '{}',
+                path: node.path + '_' + Math.floor(Math.random() * 10000),
+              },
+              parent: parent ? parent.data.id : null,
+              ref: refid,
+              elements: result?.data?.page?.elements.map(el => el.id) || [],
+              files: result?.data?.page?.files.map(file => file.id) || []
+            }
+          }).then(result => {
+            if(result.errors) {
+              throw result.errors
+            }
 
-          if(parent) {
-            parent.data.has = true
-          }
+            if(!result.data.addPage) {
+              throw new Error('No page data returned')
+            }
 
-          this.invalidate()
+            const index = idx !== null ? this.$refs.tree.getSiblings(stat).indexOf(stat) + idx : 0
+            const item = result.data.addPage
+
+            item.meta = JSON.parse(item.meta || '{}')
+            item.config = JSON.parse(item.config || '{}')
+
+            this.$refs.tree.add(item, parent, index)
+            this.invalidate()
+          }).catch(error => {
+            this.messages.add('Error copying page', 'error')
+            this.$log(`PageList::paste(): Error copying page`, stat, idx, error)
+          })
         }).catch(error => {
-          this.messages.add('Error copying page', 'error')
-          this.$log(`PageList::paste(): Error copying page`, stat, idx, error)
+          this.messages.add('Error fetching page', 'error')
+          this.$log(`PageList::paste(): Error fetching page`, node.id, error)
         })
 
         this.show()

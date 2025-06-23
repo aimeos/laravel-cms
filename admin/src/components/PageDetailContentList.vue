@@ -206,11 +206,11 @@
               type: entry.type,
               lang: this.item.lang,
               name: this.title(entry),
-              data: JSON.stringify(this.clean(entry)),
+              data: JSON.stringify(entry.data || {}),
             },
-            files: entry.files.filter((fileid, idx, self) => {
+            files: entry.files?.filter((fileid, idx, self) => {
               return self.indexOf(fileid) === idx
-            })
+            }) || []
           }
         }).then(result => {
           if(result.errors) {
@@ -304,7 +304,10 @@
           this.assets[file.id] = file
         }
 
-        this.list[idx] = this.elements[entry.refid].data || {}
+        this.list[idx].type = this.elements[entry.refid].type || null
+        this.list[idx].data = this.elements[entry.refid].data || {}
+        delete this.list[idx].refid
+
         this.store()
       },
 

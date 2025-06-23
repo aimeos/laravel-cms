@@ -33,7 +33,7 @@ It can be installed into any existing Laravel application.
 Run this command within your Laravel application directory:
 
 ```bash
-composer req aimeos/laravel-cms
+composer req aimeos/pagible
 php artisan cms:install --seed
 ```
 
@@ -43,10 +43,9 @@ Add a line in the "post-update-cmd" section of your `composer.json` file to upda
 
 ```json
 "post-update-cmd": [
-    "@php artisan vendor:publish --force --tag=admin",
+    "@php artisan vendor:publish --force --tag=admin --tag=public"
     ...
 ],
-
 ```
 
 ### Authorization
@@ -91,19 +90,11 @@ To clean up soft-deleted pages, elements and files regularly, add these lines to
 ])->daily();
 ```
 
-You can configure the timeframe after soft-deleted items will be removed permantently by setting the [cms.purge](https://github.com/aimeos/laravel-cms/blob/master/config/cms.php) option. It's value must be the number of days after the items will be removed permanently or FALSE if the soft-deleted items shouldn't be removed at all.
+You can configure the timeframe after soft-deleted items will be removed permantently by setting the [CMS_PURGE](https://github.com/aimeos/pagible/blob/master/config/cms.php) option in your `.env` file. It's value must be the number of days after the items will be removed permanently or FALSE if the soft-deleted items shouldn't be removed at all.
 
 ### Multi-domain
 
-Using multiple page trees with different domains is possible by changing the `cms.page` route in your `./routes/web.php` to:
-
-```php
-Route::group(['domain' => '{domain}'], function() {
-    Route::get('{slug?}/{lang?}', [\Aimeos\Cms\Http\Controllers\PageController::class, 'index'])->name('cms.page');
-});
-```
-
-The `domain` property in the pages must then match the request domain.
+Using multiple page trees with different domains is possible by adding `CMS_MULTIDOMAIN=true` to your `.env` file.
 
 ### Multi-tenancy
 
@@ -145,17 +136,17 @@ Available actions which access can be granted to are:
 * page:purge (delete pages permanently)
 * page:publish (publish page meta data)
 * page:move (move pages in the tree)
-* element:view (show element elements)
-* element:save (update existing element elements)
-* element:add (add new element elements)
-* element:drop (soft-delete element elements)
-* element:keep (restore soft-deleted element elements)
-* element:purge (delete element elements permanently)
-* element:publish (publish element elements)
-* element:move (move element elements within a page)
+* element:view (show elements)
+* element:save (update existing elements)
+* element:add (add new elements)
+* element:drop (soft-delete elements)
+* element:keep (restore soft-deleted elements)
+* element:purge (delete elements permanently)
+* element:publish (publish elements)
 * file:view (show uploaded files)
 * file:save (update existing files)
 * file:add (add new files)
 * file:drop (soft-delete files)
 * file:keep (restore soft-deleted files)
 * file:purge (delete files permanently)
+* file:publish (publish files)

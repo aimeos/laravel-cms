@@ -407,18 +407,24 @@
                 <v-list-item v-if="!el._error">
                   <v-btn prepend-icon="mdi-content-cut" variant="text" @click="cut(idx)">Cut</v-btn>
                 </v-list-item>
-                <v-list-item v-if="!el._error">
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(idx)">Insert before</v-btn>
-                </v-list-item>
-                <v-list-item v-if="!el._error">
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(idx + 1)">Insert after</v-btn>
+
+                <v-divider></v-divider>
+
+                <v-list-item v-if="!el._error && clip">
+                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(idx)">🠕 Paste before</v-btn>
                 </v-list-item>
                 <v-list-item v-if="!el._error && clip">
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(idx)">Paste before</v-btn>
+                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(idx + 1)">🠗 Paste after</v-btn>
                 </v-list-item>
-                <v-list-item v-if="!el._error && clip">
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(idx + 1)">Paste after</v-btn>
+                <v-list-item v-if="!el._error">
+                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(idx)">🠕 Insert before</v-btn>
                 </v-list-item>
+                <v-list-item v-if="!el._error">
+                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(idx + 1)">🠗 Insert after</v-btn>
+                </v-list-item>
+
+                <v-divider></v-divider>
+
                 <v-list-item>
                   <v-btn prepend-icon="mdi-delete" variant="text" @click="remove(idx)">Delete</v-btn>
                 </v-list-item>

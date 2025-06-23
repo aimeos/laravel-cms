@@ -845,6 +845,9 @@
           <v-list-item v-if="isChecked && auth.can('page:save')">
             <v-btn prepend-icon="mdi-eye-off" variant="text" @click="status(null, 0)">Disable</v-btn>
           </v-list-item>
+
+          <v-divider></v-divider>
+
           <v-list-item v-if="canTrash && auth.can('page:drop')">
             <v-btn prepend-icon="mdi-delete" variant="text" @click="drop()">Trash</v-btn>
           </v-list-item>
@@ -900,30 +903,15 @@
           <v-list-item v-if="node.status !== 2 && auth.can('page:save')">
             <v-btn prepend-icon="mdi-eye-off-outline" variant="text" @click="status(stat, 2)">Hide in menu</v-btn>
           </v-list-item>
+
+          <v-divider></v-divider>
+
           <v-list-item v-if="auth.can('page:move')">
             <v-btn prepend-icon="mdi-content-cut" variant="text" @click="cut(stat, node)">Cut</v-btn>
           </v-list-item>
           <v-list-item v-if="!this.embed && auth.can('page:add')">
             <v-btn prepend-icon="mdi-content-copy" variant="text" @click="copy(stat, node)">Copy</v-btn>
           </v-list-item>
-          <v-list-item v-if="!this.embed && auth.can('page:add')">
-            <v-btn prepend-icon="mdi-content-paste" variant="text" @click.stop="show('insert')">Insert</v-btn>
-          </v-list-item>
-          <v-fade-transition v-if="menu.insert && !this.embed && auth.can('page:add')">
-            <v-list-item>
-              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(stat, 0)">🠕 Before</v-btn>
-            </v-list-item>
-          </v-fade-transition>
-          <v-fade-transition v-if="menu.insert && !this.embed && auth.can('page:add')">
-            <v-list-item>
-              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(stat)">🠖 Into</v-btn>
-            </v-list-item>
-          </v-fade-transition>
-          <v-fade-transition v-if="menu.insert && !this.embed && auth.can('page:add')">
-            <v-list-item>
-              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(stat, 1)">🠗 After</v-btn>
-            </v-list-item>
-          </v-fade-transition>
           <v-list-item v-if="clip && clip.type == 'copy' && !this.embed && auth.can('page:add')">
             <v-btn prepend-icon="mdi-content-paste" variant="text" @click.stop="show('paste')">Paste</v-btn>
           </v-list-item>
@@ -960,6 +948,27 @@
               <v-btn prepend-icon="mdi-content-paste" variant="text" @click="move(stat, 1)">🠗 After</v-btn>
             </v-list-item>
           </v-fade-transition>
+          <v-list-item v-if="!this.embed && auth.can('page:add')">
+            <v-btn prepend-icon="mdi-content-paste" variant="text" @click.stop="show('insert')">Insert</v-btn>
+          </v-list-item>
+          <v-fade-transition v-if="menu.insert && !this.embed && auth.can('page:add')">
+            <v-list-item>
+              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(stat, 0)">🠕 Before</v-btn>
+            </v-list-item>
+          </v-fade-transition>
+          <v-fade-transition v-if="menu.insert && !this.embed && auth.can('page:add')">
+            <v-list-item>
+              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(stat)">🠖 Into</v-btn>
+            </v-list-item>
+          </v-fade-transition>
+          <v-fade-transition v-if="menu.insert && !this.embed && auth.can('page:add')">
+            <v-list-item>
+              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(stat, 1)">🠗 After</v-btn>
+            </v-list-item>
+          </v-fade-transition>
+
+          <v-divider></v-divider>
+
           <v-list-item v-if="!node.deleted_at && auth.can('page:drop')">
             <v-btn prepend-icon="mdi-delete" variant="text" @click="drop(stat)">Trash</v-btn>
           </v-list-item>

@@ -38,12 +38,12 @@
     },
 
     methods: {
-      add(type) {
+      add(item) {
         if(!this.item.meta) {
           this.item.meta = {}
         }
 
-        if(this.item.meta[el.type]) {
+        if(this.item.meta[item.type]) {
           this.messages.add('Element is already available', 'error')
           return
         }

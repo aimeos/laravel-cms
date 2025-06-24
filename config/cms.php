@@ -414,7 +414,11 @@ return [
                         'min' => 1,
                         'max' => 255,
                     ],
-                    'image' => [
+                    'description' => [
+                        'type' => 'string',
+                        'max' => 255,
+                    ],
+                    'file' => [
                         'type' => 'image',
                     ],
                 ],

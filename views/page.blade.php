@@ -23,11 +23,11 @@
 
         @foreach(cms($page, 'meta') ?? [] as $type => $item)
             @includeFirst([
-                $item['type'] ?? '',
-                $theme . '::' . ( $item['type'] ?? '' ),
-                'cms::' . ( $item['type'] ?? '' ),
+                $type,
+                (cms($page, 'theme') ?: 'cms') . '::' . $type,
+                'cms::' . $type,
                 'cms::invalid'
-            ], ['files' => $files] + $item )
+            ], ['files' => cms($page, 'files')] + ['data' => (array) $item->data] )
         @endforeach
     </head>
     <body class="theme-{{ cms($page, 'theme') }} type-{{ cms($page, 'type') }}">
@@ -93,7 +93,7 @@
                                 $element->type ?? '',
                                 (cms($page, 'theme') ?: 'cms') . '::' . ($element->type ?? 'page'),
                                 'cms::invalid'
-                            ], ['files' => cms($page, 'files')] +  ['data' => (array) $element->data])
+                            ], ['files' => cms($page, 'files')] + ['data' => (array) $element->data])
                         </div>
                     </div>
                 @else

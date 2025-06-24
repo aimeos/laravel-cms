@@ -158,7 +158,7 @@ export const useDrawerStore = defineStore('drawer', {
 
 export const useLanguageStore = defineStore('language', {
   state: () => ({
-    available: JSON.parse(app?.dataset.languages || '{}'),
+    available: useConfigStore().get('languages', {en: 'English'}),
     current: null,
   }),
 

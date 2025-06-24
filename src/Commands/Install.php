@@ -13,15 +13,16 @@ use Illuminate\Console\Command;
 class Install extends Command
 {
 	private static $template = '<fg=blue>
-    __                                __   ________  ________
-   / /   ____ __________ __   _____  / /  / ____/  |/  / ___/
-  / /   / __ `/ ___/ __ `/ | / / _ \/ /  / /   / /|_/ /\__ \
- / /___/ /_/ / /  / /_/ /| |/ /  __/ /  / /___/ /  / /___/ /
-/_____/\__,_/_/   \__,_/ |___/\___/_/   \____/_/  /_//____/
+    ____              _ __    __        _____ __  ___ ____
+   / __ \____  ____  (_) /_  / /__     / ____/  |/  / ___/
+  / /_/ / __ \/ __ \/ / __ \/ / _ \   / /   / /|_/ /\__ \
+ / ____/ /_/ / /_/ / / /_/ / /  __/  / /___/ /  / /___/ /
+/_/    \__,_/\__, /_/_.___/_/\___/   \____/_/  /_/_____/
+            /____/
 </>
-Congratulations! You successfully set up <fg=green>Laravel CMS</>!
-<fg=cyan>Give a star and contribute</>: https://github.com/aimeos/laravel-cms
-Made with <fg=green>love</> by the Laravel CMS community. Be a part of it!
+Congratulations! You successfully set up <fg=green>Pagible CMS</>!
+<fg=cyan>Give a star and contribute</>: https://github.com/aimeos/pagible
+Made with <fg=green>love</> by the Pagible CMS community. Be a part of it!
 ';
 
 
@@ -33,7 +34,7 @@ Made with <fg=green>love</> by the Laravel CMS community. Be a part of it!
     /**
      * Command description
      */
-    protected $description = 'Installing Laravel CMS package';
+    protected $description = 'Installing Pagible CMS package';
 
 
     /**
@@ -66,6 +67,9 @@ Made with <fg=green>love</> by the Laravel CMS community. Be a part of it!
 
         $this->comment( '  Adding Laravel CMS GraphQL schema ...' );
         $result += $this->schema();
+
+        $this->comment( '  Updating services configuration ...' );
+        $result += $this->services();
 
         $this->comment( '  Creating database ...' );
         $result += $this->db();
@@ -272,6 +276,39 @@ Made with <fg=green>love</> by the Laravel CMS community. Be a part of it!
         }
         else
         {
+            $this->line( sprintf( '  File [%1$s] already up to date' . PHP_EOL, $filename ) );
+        }
+
+        return 0;
+    }
+
+
+    /**
+     * Updates the services configuration file
+     *
+     * @return int 0 on success, 1 on failure
+     */
+    protected function services() : int
+    {
+        $done = 0;
+        $filename = 'config/services.php';
+        $content = file_get_contents( base_path( $filename ) );
+
+
+        if( strpos( $content, 'deepl' ) === false && ( $pos = strrpos( $content, '],' ) ) !== false && ++$done )
+        {
+            $content = substr_replace( $content, "
+
+    'deepl' => [
+        'key' => env('DEEPL_API_KEY'),
+        'url' => env('DEEPL_API_URL', 'https://api-free.deepl.com/v2/translate'),
+    ],", $pos + 2, 0 );
+            $this->line( sprintf( '  Added DeepL service configuration to [%1$s]' . PHP_EOL, $filename ) );
+        }
+
+        if( $done ) {
+            file_put_contents( base_path( $filename ), $content );
+        } else {
             $this->line( sprintf( '  File [%1$s] already up to date' . PHP_EOL, $filename ) );
         }
 

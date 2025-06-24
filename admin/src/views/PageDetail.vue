@@ -6,7 +6,7 @@
   import PageDetailItem from '../components/PageDetailItem.vue'
   import PageDetailContent from '../components/PageDetailContent.vue'
   import PageDetailPreview from '../components/PageDetailPreview.vue'
-  import { useAuthStore, useDrawerStore, useMessageStore } from '../stores'
+  import { useAuthStore, useDrawerStore, useLanguageStore, useMessageStore, useSchemaStore } from '../stores'
 
 
   export default {
@@ -37,15 +37,18 @@
       latest: null,
       pubmenu: null,
       publishAt: null,
+      translating: false,
       vhistory: false,
     }),
 
     setup() {
+      const languages = useLanguageStore()
       const messages = useMessageStore()
+      const schemas = useSchemaStore()
       const drawer = useDrawerStore()
       const auth = useAuthStore()
 
-      return { auth, drawer, messages }
+      return { auth, drawer, languages, messages, schemas }
     },
 
     computed: {
@@ -55,7 +58,24 @@
 
       hasError() {
         return Object.values(this.errors).some(entry => entry)
-      }
+      },
+
+      langs() {
+        const list = []
+        const supported = [
+          'ar', 'bg', 'cs', 'da', 'de', 'el', 'en', 'en-GB', 'en_US', 'es', 'et', 'fi', 'fr',
+          'he', 'hu', 'id', 'it', 'ja', 'ko', 'lt', 'lv', 'nb', 'nl', 'pl', 'pt', 'pt-BR',
+          'ro', 'ru', 'sk', 'sl', 'sv', 'th', 'tr', 'uk', 'vi', 'zh', 'zh-HANS', 'zh-HANT'
+        ]
+
+        Object.entries(this.languages.available).forEach(pair => {
+          if(supported.includes(pair[0]) && pair[0] !== this.item.lang) {
+            list.push({code: pair[0], name: pair[1]})
+          }
+        })
+
+        return list
+      },
     },
 
     created() {
@@ -345,6 +365,85 @@
       },
 
 
+      translate(lang) {
+        if(!this.schemas.content) {
+          this.messages.add('No page schema for "content" found', 'error')
+          return
+        }
+
+        const allowed = ['text', 'markdown', 'plaintext', 'string']
+        const list = [
+          {item: this.item, key: 'title', text: this.item.title},
+          {item: this.item, key: 'name', text: this.item.name},
+          {item: this.item, key: 'path', text: this.item.path}
+        ]
+
+        for(const el of Object.values(this.item.meta)) {
+          for(const name in el.data) {
+            const fieldtype = this.schemas.meta[el.type]?.fields?.[name]?.type
+
+            if(el.data[name] && allowed.includes(fieldtype)) {
+              list.push({item: el.data, key: name, text: el.data[name]})
+            }
+          }
+        }
+
+        this.contents.forEach(el => {
+          for(const name in el.data) {
+            const fields = this.schemas.content[el.type]?.fields
+            const fieldtype = fields?.[name]?.type
+
+            if(fieldtype === 'items') {
+              for(const idx in el.data[name]) {
+                const item = el.data[name][idx]
+
+                for(const key in item) {
+                  if(allowed.includes(fields[name]?.item?.[key]?.type)) {
+                    list.push({item: item, key: key, text: item[key]})
+                  }
+                }
+              }
+            } else if(el.type !== 'code' && el.data[name] && allowed.includes(fieldtype)) {
+              list.push({item: el.data, key: name, text: el.data[name]})
+            }
+          }
+        })
+
+        this.translating = true
+
+        this.$apollo.mutate({
+          mutation: gql`mutation($texts: [String!]!, $to: String!, $from: String) {
+            translate(texts: $texts, to: $to, from: $from)
+          }`,
+          variables: {
+            texts: list.map(entry => entry.text),
+            from: this.item.lang.toUpperCase(),
+            to: lang.toUpperCase(),
+          }
+        }).then(result => {
+          if(result.errors) {
+            throw result
+          }
+
+          result.data?.translate?.forEach((text, index) => {
+            if(list[index]) {
+              list[index].item[list[index].key] = text
+            }
+          })
+
+          this.changed['contents'] = true
+          this.changed['page'] = true
+
+          this.item.lang = lang
+        }).catch(error => {
+          this.messages.add('Error translating page', 'error')
+          this.$log(`PageDetail::translate(): Error translating page`, error)
+        }).finally(() => {
+          this.translating = false
+        })
+      },
+
+
       update(what, value) {
         if(what === 'page') {
           Object.assign(this.item, value)
@@ -448,6 +547,17 @@
     </v-app-bar-title>
 
     <template v-slot:append>
+      <v-menu>
+        <template #activator="{ props }">
+          <v-btn :loading="translating" icon="mdi-translate" elevation="0" v-bind="props" />
+        </template>
+        <v-list>
+          <v-list-item v-for="lang in langs" :key="lang.code">
+            <v-btn variant="text" @click="translate(lang.code)">🠖 {{ lang.name }} ({{lang.code}})</v-btn>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+
       <v-btn icon="mdi-history"
         :class="{hidden: item.published && !hasChanged && !latest}"
         @click="vhistory = true"

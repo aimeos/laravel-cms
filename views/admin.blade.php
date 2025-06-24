@@ -16,8 +16,6 @@
   </head>
   <body>
     <div id="app"
-      data-language="en"
-      data-languages='{"en": "English"}'
       data-urlgraphql="{{ route('graphql') }}"
       data-urladmin="{{ route('cms.admin', [], false) }}"
       data-urlpage="{{ route('cms.page', ['path' => ':path']) }}"

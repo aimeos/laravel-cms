@@ -81,6 +81,17 @@ return [
     |
     */
     'config' => [
+        'languages' => [
+            'ar' => 'Arabic',
+            'zh' => 'Chinese',
+            'en' => 'English',
+            'fr' => 'French',
+            'de' => 'German',
+            'es' => 'Spanish',
+            'pt' => 'Portugese',
+            'pt-BR' => 'Portugese (Brasil)',
+            'ru' => 'Russian',
+        ],
         'themes' => [
             '' => [
                 'types' => [

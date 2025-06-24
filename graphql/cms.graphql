@@ -68,6 +68,9 @@ extend type Mutation {
   "Log out authenticated user"
   cmsLogout: User @guard
 
+  "Translate texts"
+  translate(texts: [String!]!, to: String!, from: String): [String!]!
+
 
   "Add a new page below the page referenced by 'parent' and before the page referenced by 'ref' (or append if NULL)"
   addPage(input: PageInput!, parent: ID, ref: ID, elements: [ID!], files: [ID!]): Page

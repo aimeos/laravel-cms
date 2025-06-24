@@ -68,6 +68,9 @@ Made with <fg=green>love</> by the Pagible CMS community. Be a part of it!
         $this->comment( '  Adding Laravel CMS GraphQL schema ...' );
         $result += $this->schema();
 
+        $this->comment( '  Publishing Prism PHP configuration ...' );
+        $result += $this->call( 'vendor:publish', ['--tag' => 'prism-config'] );
+
         $this->comment( '  Updating services configuration ...' );
         $result += $this->services();
 

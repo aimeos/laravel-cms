@@ -68,6 +68,9 @@ extend type Mutation {
   "Log out authenticated user"
   cmsLogout: User @guard
 
+  "Generate texts from prompts"
+  compose(prompt: String!, lang: String!, context: String): String
+
   "Translate texts"
   translate(texts: [String!]!, to: String!, from: String): [String!]!
 

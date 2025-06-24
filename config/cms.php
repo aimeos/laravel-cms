@@ -4,6 +4,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Prism AI providers
+    |--------------------------------------------------------------------------
+    |
+    | Use the Prism AI providers defined in ./config/prism.php to
+    | generate content for pages and elements. The default provider is
+    | OpenAI, but you can use any other provider that is supported by Prism.
+    |
+    */
+    'ai' => [
+        'text' => env( 'CMS_AI_TEXT', 'openai' ),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Cache store
     |--------------------------------------------------------------------------
     |

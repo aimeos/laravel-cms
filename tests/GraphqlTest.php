@@ -53,7 +53,7 @@ class GraphqlTest extends TestAbstract
 
         $response = $this->actingAs( $this->user )->graphQL( "
             mutation {
-                compose(prompt: \"Generate content\", lang: \"en\", context: \"This is a test context.\")
+                compose(prompt: \"Generate content\", context: \"This is a test context.\")
             }
         " )->assertJson( [
             'data' => [

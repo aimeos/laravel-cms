@@ -18,18 +18,13 @@ final class Compose
             throw new Exception( 'Prompt must not be empty' );
         }
 
-        if( empty( $args['lang'] ) ) {
-            throw new Exception( 'Language must not be empty' );
-        }
-
-        $prism = Prism::text()->using( config( 'cms.ai.text', 'openai' ), '' );
+        $prism = Prism::text()->using( config( 'cms.ai.text', 'openai' ), config( 'cms.ai.text-model', 'chatgpt-4o-latest' ) );
 
         if( !empty( $args['context'] ) ) {
             $prism->withSystemPrompt( $args['context'] );
         }
 
         $response = $prism->withSystemPrompt( view( 'cms::prompts.compose' ) )
-            ->withSystemPrompt( 'Output must be in language with code "' . $args['lang'] . '"' )
             ->withPrompt( $args['prompt'] )
             ->asText();
 

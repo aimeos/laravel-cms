@@ -458,6 +458,7 @@
               v-model:files="el.files"
               :readonly="!auth.can('page:save')"
               :fields="fields(el.type)"
+              :lang="item.lang"
               :assets="assets"
               @error="error(el, $event)"
               @change="update(el)"

@@ -1,4 +1,7 @@
 <script>
+  import gql from 'graphql-tag'
+  import { useMessageStore } from '../stores'
+
   export default {
     props: {
       'data': {type: Object, default: () => {}},
@@ -6,14 +9,21 @@
       'assets': {type: Object, default: () => {}},
       'readonly': {type: Boolean, default: false},
       'fields': {type: Object, required: true},
+      'lang': {type: [String, null], default: null},
     },
 
     emits: ['change', 'error', 'update:files'],
 
     data() {
       return {
+        composing: {},
         errors: {},
       }
+    },
+
+    setup() {
+      const messages = useMessageStore()
+      return { messages }
     },
 
     methods: {
@@ -23,6 +33,47 @@
 
         files.push(...ids)
         this.$emit('update:files', files)
+      },
+
+
+      compose(code) {
+        const info = Object.entries(this.data).map(([key, value]) => {
+          return key !== code && typeof value === 'string' || value instanceof String ? key + '="' + value.trim() + '"' : null
+        }).filter(v => !!v).join(' | ')
+
+        const context = [
+          'label: ' + (this.fields[code].label || code),
+          'required output format: ' + this.fields[code].type,
+          'required output language: ' + (this.lang || 'en'),
+          this.fields[code].min ? 'minimum characters: ' + this.fields[code].min : null,
+          this.fields[code].max ? 'maximum characters: ' + this.fields[code].max : null,
+          this.fields[code].placeholder ? 'hint text: ' + this.fields[code].placeholder : null,
+          'contextual information: ' + info,
+        ]
+
+        this.composing[code] = true
+
+        this.$apollo.mutate({
+          mutation: gql`mutation($prompt: String!, $lang: String!, $context: String) {
+            compose(prompt: $prompt, lang: $lang, context: $context)
+          }`,
+          variables: {
+            prompt: this.data[code],
+            context: context.filter(v => !!v).join(', '),
+            lang: this.lang || 'en',
+          }
+        }).then(result => {
+          if(result.errors) {
+            throw result
+          }
+
+          this.update(code, result.data?.compose)
+        }).catch(error => {
+          this.messages.add('Error composing text', 'error')
+          this.$log(`Fields::compose(): Error composing text`, code, error)
+        }).finally(() => {
+          this.composing[code] = false
+        })
       },
 
 
@@ -71,7 +122,10 @@
 
 <template>
   <div v-for="(field, code) in fields" :key="code" class="item" :class="{error: errors[code]}">
-    <v-label>{{ field.label || code }}</v-label>
+    <v-label>
+      {{ field.label || code }}
+      <v-btn :loading="composing[code]" icon="mdi-creation" variant="flat" @click="compose(code)" />
+    </v-label>
     <component ref="field"
       :is="field.type?.charAt(0)?.toUpperCase() + field.type?.slice(1)"
       :assets="assets"
@@ -95,6 +149,12 @@
 
   .item.error {
     border-inline-start: 3px solid rgb(var(--v-theme-error));
+  }
+
+  .v-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   label {

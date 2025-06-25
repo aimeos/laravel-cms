@@ -13,10 +13,11 @@
 
     emits: ['change', 'error', 'update:files'],
 
-    inject: ['compose'],
+    inject: ['compose', 'translate', 'txlanguages'],
 
     data() {
       return {
+        translating: {},
         composing: {},
         errors: {},
       }
@@ -37,7 +38,7 @@
       },
 
 
-      generate(code) {
+      composeText(code) {
         const context = [
           'generate for: ' + (this.fields[code].label || code),
           'required output format: ' + this.fields[code].type,
@@ -79,6 +80,18 @@
       },
 
 
+      translateText(code, lang) {
+
+        this.translating[code] = true
+
+        this.translate([this.data[code]], lang).then(result => {
+          this.update(code, result[0] || '')
+        }).finally(() => {
+          this.translating[code] = false
+        })
+      },
+
+
       update(code, value) {
         this.data[code] = value
         this.$emit('change', this.data[code])
@@ -104,12 +117,24 @@
   <div v-for="(field, code) in fields" :key="code" class="item" :class="{error: errors[code]}">
     <v-label>
       {{ field.label || code }}
-      <v-btn v-if="!readonly && ['markdown', 'plaintext', 'string', 'text'].includes(field.type)"
-        :loading="composing[code]"
-        icon="mdi-creation"
-        variant="flat"
-        @click="generate(code)"
-      />
+      <div v-if="!readonly && ['markdown', 'plaintext', 'string', 'text'].includes(field.type)" class="actions">
+        <v-menu>
+          <template #activator="{ props }">
+            <v-btn :loading="translating[code] || false" icon="mdi-translate" elevation="0" v-bind="props" />
+          </template>
+          <v-list>
+            <v-list-item v-for="lang in txlanguages()" :key="lang.code">
+              <v-btn variant="text" @click="translateText(code, lang.code)">🠖 {{ lang.name }} ({{lang.code}})</v-btn>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+        <v-btn
+          :loading="composing[code] || false"
+          icon="mdi-creation"
+          variant="flat"
+          @click="composeText(code)"
+        />
+      </div>
     </v-label>
     <component ref="field"
       :is="field.type?.charAt(0)?.toUpperCase() + field.type?.slice(1)"
@@ -140,11 +165,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-  }
-
-  label {
-    font-weight: bold;
     text-transform: capitalize;
+    font-weight: bold;
     margin-bottom: 4px;
   }
 </style>

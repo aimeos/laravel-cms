@@ -1,7 +1,7 @@
 <script>
   import gql from 'graphql-tag'
-  import { useMessageStore } from './stores'
   import { computed, markRaw, provide } from 'vue'
+  import { useLanguageStore, useMessageStore } from './stores'
 
   export default {
     data() {
@@ -14,13 +14,16 @@
       return {
         openView: this.open,
         closeView: this.close,
-        compose: this.composeText
+        compose: this.composeText,
+        translate: this.translateText,
+        txlanguages: this.txlangs,
       }
     },
 
     setup() {
+      const languages = useLanguageStore()
       const messages = useMessageStore()
-      return { messages }
+      return { languages, messages }
     },
 
     methods: {
@@ -72,9 +75,62 @@
           return result.data?.compose?.replace(/^"(.*)"$/, '$1') || ''
         }).catch(error => {
           this.messages.add('Error generating text', 'error')
-          this.$log(`App::compose(): Error generating text`, error)
+          this.$log(`App::composeText(): Error generating text`, error)
         })
       },
+
+
+      translateText(texts, to, from = null) {
+        if(!Array.isArray(texts)) {
+          texts = [texts].filter(v => !!v)
+        }
+
+        if(!texts.length) {
+          return Promise.resolve([])
+        }
+
+        if(!to) {
+          return Promise.reject(new Error('Target language is required'))
+        }
+
+        return this.$apollo.mutate({
+          mutation: gql`mutation($texts: [String!]!, $to: String!, $from: String) {
+            translate(texts: $texts, to: $to, from: $from)
+          }`,
+          variables: {
+            texts: texts,
+            to: to.toUpperCase(),
+            from: from?.toUpperCase(),
+          }
+        }).then(result => {
+          if(result.errors) {
+            throw result
+          }
+
+          return result.data?.translate || []
+        }).catch(error => {
+          this.messages.add('Error translating texts', 'error')
+          this.$log(`App::translateText(): Error translating texts`, error)
+        })
+      },
+
+
+      txlangs(current = null) {
+        const list = []
+        const supported = [
+          'ar', 'bg', 'cs', 'da', 'de', 'el', 'en', 'en-GB', 'en_US', 'es', 'et', 'fi', 'fr',
+          'he', 'hu', 'id', 'it', 'ja', 'ko', 'lt', 'lv', 'nb', 'nl', 'pl', 'pt', 'pt-BR',
+          'ro', 'ru', 'sk', 'sl', 'sv', 'th', 'tr', 'uk', 'vi', 'zh', 'zh-HANS', 'zh-HANT'
+        ]
+
+        Object.entries(this.languages.available).forEach(pair => {
+          if(supported.includes(pair[0]) && pair[0] !== current) {
+            list.push({code: pair[0], name: pair[1]})
+          }
+        })
+
+        return list
+      }
     }
   }
 </script>

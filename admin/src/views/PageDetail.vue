@@ -19,15 +19,16 @@
       PageDetailPreview
     },
 
-    inject: ['closeView', 'compose'],
+    inject: ['closeView', 'compose', 'translate', 'txlanguages'],
 
     props: {
       'item': {type: Object, required: true}
     },
 
     provide() {
-      return {
-        compose: this.composeText // re-provide custom method
+      return { // re-provide custom methods
+        compose: this.composeText,
+        translate: this.translateText
       }
     },
 
@@ -241,8 +242,8 @@
           context = [context]
         }
 
-        context.push('required output language: ' + (this.item.lang || 'en'))
         context.push('page content as JSON: ' + JSON.stringify(this.contents))
+        context.push('required output language: ' + (this.item.lang || 'en'))
 
         return this.$options._compose(prompt, context)
       },
@@ -391,7 +392,7 @@
       },
 
 
-      translate(lang) {
+      translatePage(lang) {
         if(!this.schemas.content) {
           this.messages.add('No page schema for "content" found', 'error')
           return
@@ -437,21 +438,8 @@
 
         this.translating = true
 
-        this.$apollo.mutate({
-          mutation: gql`mutation($texts: [String!]!, $to: String!, $from: String) {
-            translate(texts: $texts, to: $to, from: $from)
-          }`,
-          variables: {
-            texts: list.map(entry => entry.text),
-            from: this.item.lang.toUpperCase(),
-            to: lang.toUpperCase(),
-          }
-        }).then(result => {
-          if(result.errors) {
-            throw result
-          }
-
-          result.data?.translate?.forEach((text, index) => {
+        this.translate(list.map(entry => entry.text), lang, this.item.lang).then(result => {
+          result.forEach((text, index) => {
             if(list[index]) {
               list[index].item[list[index].key] = text
             }
@@ -461,12 +449,14 @@
           this.changed['page'] = true
 
           this.item.lang = lang
-        }).catch(error => {
-          this.messages.add('Error translating page', 'error')
-          this.$log(`PageDetail::translate(): Error translating page`, error)
         }).finally(() => {
           this.translating = false
         })
+      },
+
+
+      translateText(texts, to, from = null) {
+        return this.translate(texts, to, from || this.item.lang)
       },
 
 
@@ -578,8 +568,8 @@
           <v-btn :loading="translating" icon="mdi-translate" elevation="0" v-bind="props" />
         </template>
         <v-list>
-          <v-list-item v-for="lang in langs" :key="lang.code">
-            <v-btn variant="text" @click="translate(lang.code)">🠖 {{ lang.name }} ({{lang.code}})</v-btn>
+          <v-list-item v-for="lang in txlanguages(item.lang)" :key="lang.code">
+            <v-btn variant="text" @click="translatePage(lang.code)">🠖 {{ lang.name }} ({{lang.code}})</v-btn>
           </v-list-item>
         </v-list>
       </v-menu>

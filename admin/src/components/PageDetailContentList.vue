@@ -14,17 +14,16 @@
     },
 
     props: {
-      'section': {type: [String, null], default: null},
       'item': {type: Object, required: true},
+      'assets': {type: Object, required: true},
       'contents': {type: Array, required: true},
       'elements': {type: Object, required: true},
-      'assets': {type: Object, default: () => ({})}
+      'section': {type: [String, null], default: null}
     },
 
-    emits: ['error', 'update:contents',  'update:elements'],
+    emits: ['error', 'update:contents'],
 
     data: () => ({
-      list: [],
       panel: [],
       menu: {},
       clip: null,
@@ -46,7 +45,7 @@
 
     computed: {
       changed() {
-        return this.list.some(el => el._changed)
+        return this.contents.some(el => el._changed)
       }
     },
 
@@ -58,20 +57,21 @@
         }
 
         if(item.id) {
+          this.elements[item.id] = item
           entry = Object.assign(entry, {type: 'reference', refid: item.id})
-          this.$emit('update:elements', Object.assign(this.elements, {[item.id]: item}))
         } else {
           entry = Object.assign(entry, {type: item.type, data: {}})
         }
 
         if(idx !== null) {
-          this.list.splice(idx, 0, entry)
+          this.contents.splice(idx, 0, entry)
           this.panel.push(this.panel.includes(idx) ? idx + 1 : idx)
         } else {
-          this.list.push(entry)
-          this.panel.push(this.list.length - 1)
+          this.contents.push(entry)
+          this.panel.push(this.contents.length - 1)
         }
 
+        this.$emit('update:contents', this.contents)
         this.vschemas = false
         this.store()
       },
@@ -89,7 +89,7 @@
 
 
       copy(idx) {
-        const entry = JSON.parse(JSON.stringify(this.list[idx]))
+        const entry = JSON.parse(JSON.stringify(this.contents[idx]))
         entry['id'] = null
 
         this.clip = {type: 'copy', index: idx, content: entry}
@@ -97,15 +97,15 @@
 
 
       cut(idx) {
-        this.clip = {type: 'cut', index: idx, content: this.list[idx]}
-        this.list.splice(idx, 1)
+        this.clip = {type: 'cut', index: idx, content: this.contents[idx]}
+        this.contents.splice(idx, 1)
         this.store()
       },
 
 
       error(el, value) {
         el._error = value
-        this.$emit('error', this.list.some(el => el._error))
+        this.$emit('error', this.contents.some(el => el._error))
         this.store()
       },
 
@@ -127,32 +127,36 @@
 
 
       paste(idx) {
-        this.list.splice(idx, 0, this.clip.content)
+        this.contents.splice(idx, 0, this.clip.content)
+        this.$emit('update:contents', this.contents)
         this.clip = null
         this.store()
       },
 
 
       purge() {
-        for(let i = this.list.length - 1; i >= 0; i--) {
-          if(this.list[i]._checked) {
-            this.remove(i)
+        for(let i = this.contents.length - 1; i >= 0; i--) {
+          if(this.contents[i]._checked) {
+            this.contents.splice(i, 1)
           }
         }
+
+        this.$emit('update:contents', this.contents)
         this.checked = false
+        this.store()
       },
 
 
       remove(idx) {
-        this.list.splice(idx, 1)
-        this.$emit('update:contents', this.list)
-        this.$emit('error', this.list.some(el => el._error))
+        this.contents.splice(idx, 1)
+        this.$emit('error', this.contents.some(el => el._error))
+        this.$emit('update:contents', this.contents)
         this.store()
       },
 
 
       reset() {
-        for(const el of this.list) {
+        for(const el of this.contents) {
           delete el._changed
           delete el._error
         }
@@ -160,9 +164,14 @@
 
 
       search(term) {
-        this.list.forEach(el => {
-          el._hide = term !== '' && !JSON.stringify(el).toLocaleLowerCase().includes(term)
-        })
+        if(term) {
+          term = term.toLocaleLowerCase().trim()
+
+          this.contents.forEach(el => {
+            el = (el.type === 'reference') ? this.elements[el.refid] || {} : el
+            el._hide = !JSON.stringify(Object.values(el?.data || {})).toLocaleLowerCase().includes(term)
+          })
+        }
       },
 
 
@@ -172,7 +181,7 @@
           return
         }
 
-        const entry = this.list[idx]
+        const entry = this.contents[idx]
 
         if(!entry) {
           this.messages.add('Element not found', 'error')
@@ -221,8 +230,9 @@
           element.data = JSON.parse(element.data)
           element.files = element.files.map(file => file.id)
 
-          this.$emit('update:elements', Object.assign(this.elements, {[element.id]: element}))
-          this.list[idx] = {id: uid(), group: this.section || 'main', type: 'reference', refid: element.id}
+          this.elements[element.id] = element
+          this.contents[idx] = {id: uid(), group: this.section || 'main', type: 'reference', refid: element.id}
+          this.$emit('update:contents', this.contents)
           this.store()
         }).catch(error => {
           this.messages.add('Unable to make element shared', 'error')
@@ -250,7 +260,7 @@
         const types = {}
         const state = {}
 
-        this.list.forEach(el => {
+        this.contents.forEach(el => {
           if(el.type) {
             types[el.type] = (types[el.type] || 0) + 1
           }
@@ -279,7 +289,7 @@
 
 
       toggle() {
-        this.list.forEach(el => {
+        this.contents.forEach(el => {
           if(this.shown(el)) {
             el._checked = !el._checked
           }
@@ -288,12 +298,12 @@
 
 
       unshare(idx) {
-        if(!this.list[idx]) {
+        if(!this.contents[idx]) {
           this.messages.add('Content element not found', 'error')
           return
         }
 
-        const entry = this.list[idx]
+        const entry = this.contents[idx]
 
         if(entry.type !== 'reference' || !this.elements[entry.refid]) {
           this.messages.add('Element is not shared', 'error')
@@ -304,10 +314,11 @@
           this.assets[file.id] = file
         }
 
-        this.list[idx].type = this.elements[entry.refid].type || null
-        this.list[idx].data = this.elements[entry.refid].data || {}
-        delete this.list[idx].refid
+        this.contents[idx].type = this.elements[entry.refid].type || null
+        this.contents[idx].data = this.elements[entry.refid].data || {}
+        delete this.contents[idx].refid
 
+        this.$emit('change', 'contents')
         this.store()
       },
 
@@ -316,9 +327,8 @@
         el._changed = true
         el.group = this.section || 'main'
 
-        this.$emit('update:contents', this.list)
-        this.$emit('error', this.list.some(el => el._error))
-
+        this.$emit('error', this.contents.some(el => el._error))
+        this.$emit('update:contents', this.contents)
         this.store()
       },
 
@@ -333,30 +343,6 @@
         return Promise.all(list).then(result => {
           return result.every(r => r)
         });
-      }
-    },
-
-    watch: {
-      contents: {
-        immediate: true,
-        handler(contents, old) {
-          const a = (old || [])
-          const b = (contents || [])
-
-          if(a.length === b.length && a.every((el, idx) => el === b[idx])) {
-            return
-          }
-
-          this.list = this.contents
-          this.store()
-        }
-      },
-
-
-      list: {
-        handler(list) {
-          this.$emit('update:contents', list)
-        }
       }
     }
   }
@@ -393,9 +379,14 @@
     </div>
 
     <v-expansion-panels class="list" v-model="panel" elevation="0" multiple>
-      <VueDraggable v-model="list" :disabled="!auth.can('page:save')" draggable=".content" group="contents">
+      <VueDraggable
+        @update:modelValue="$emit('update:contents', $event)"
+        :disabled="!auth.can('page:save')"
+        :modelValue="contents"
+        draggable=".content"
+        group="contents">
 
-        <v-expansion-panel v-for="(el, idx) in list" :key="idx" v-show="shown(el)" class="content" :class="{changed: el._changed, error: el._error}">
+        <v-expansion-panel v-for="(el, idx) in contents" :key="idx" v-show="shown(el)" class="content" :class="{changed: el._changed, error: el._error}">
           <v-expansion-panel-title expand-icon="mdi-pencil">
             <v-checkbox-btn v-if="auth.can('page:save')" v-model="el._checked" @click.stop=""></v-checkbox-btn>
 

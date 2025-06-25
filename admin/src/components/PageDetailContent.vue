@@ -9,12 +9,11 @@
 
     props: {
       'item': {type: Object, required: true},
-      'contents': {type: Array, required: true},
-      'elements': {type: Object, required: true},
-      'assets': {type: Object, default: () => ({})}
+      'assets': {type: Object, required: true},
+      'elements': {type: Object, required: true}
     },
 
-    emits: ['error', 'update:contents',  'update:elements'],
+    emits: ['change', 'error'],
 
     data: () => ({
       changed: {},
@@ -47,7 +46,7 @@
           sections[name] = []
         }
 
-        for(const item of this.contents) {
+        for(const item of this.item.contents) {
           const name = item.group || 'main'
 
           if(!sections[name]) {
@@ -80,11 +79,10 @@
         const sections = this.sections
         sections[section] = list
 
-        const contents = Object.values(sections).reduce((acc, entries) => {
+        this.item.contents = Object.values(sections).reduce((acc, entries) => {
           return acc.concat(entries)
         }, [])
 
-        this.$emit('update:contents', contents)
         this.changed[section] = true
       },
 
@@ -119,12 +117,11 @@
             <PageDetailContentList
               :section="section"
               :item="item"
+              :assets="assets"
               :contents="list"
               :elements="elements"
-              :assets="assets"
-              @update:contents="update(section, $event)"
-              @update:elements="$emit('update:elements', $event)"
               @error="error(section, $event)"
+              @update:contents="update(section, $event); this.$emit('change', 'contents')"
             />
           </v-window-item>
         </v-window>
@@ -132,12 +129,11 @@
 
       <PageDetailContentList v-else
         :item="item"
-        :contents="contents"
-        :elements="elements"
         :assets="assets"
-        @update:contents="$emit('update:contents', $event)"
-        @update:elements="$emit('update:elements', $event)"
+        :contents="item.contents"
+        :elements="elements"
         @error="$emit('error', $event)"
+        @update:contents="item.contents = $event; this.$emit('change', 'contents')"
       />
     </v-sheet>
   </v-container>

@@ -13,12 +13,11 @@
     props: {
       'save': {type: Function, required: true},
       'item': {type: Object, required: true},
-      'contents': {type: Array, required: true},
       'elements': {type: Object, required: true},
       'assets': {type: Object, default: () => ({})}
     },
 
-    emits: ['update:item', 'update:contents', 'update:elements'],
+    emits: ['change'],
 
     setup() {
       const auth = useAuthStore()
@@ -62,7 +61,7 @@
         this.vschemas = false
 
         if(item.id) {
-          this.$emit('update:elements', Object.assign(this.elements, {[item.id]: item}))
+          this.elements[item.id] = item
           this.element = {id: uid(), group: group, type: 'reference', refid: item.id}
           this.update()
         } else {
@@ -73,7 +72,7 @@
 
 
       edit() {
-        this.element = this.contents[this.index] || null
+        this.element = this.item.contents[this.index] || null
         this.vedit = this.element ? true : false
       },
 
@@ -109,7 +108,7 @@
             setTimeout(() => { this.vpreview = false }, 3000)
             break
           default:
-            this.index = this.contents.findIndex(c => c.id === msg.data) ?? null
+            this.index = this.item.contents.findIndex(c => c.id === msg.data) ?? null
         }
       },
 
@@ -117,8 +116,8 @@
       remove() {
         if(this.index === null) return
 
-        this.contents.splice(this.index, 1)
-        this.$emit('update:contents', this.contents)
+        this.item.contents.splice(this.index, 1)
+        this.$emit('change', 'contents')
         this.index = null
 
         this.save(true).then(() => {
@@ -129,14 +128,14 @@
 
       update() {
         if(this.pos !== null) {
-          this.contents.splice(this.index + this.pos, 0, this.element)
+          this.item.contents.splice(this.index + this.pos, 0, this.element)
         }
 
-        this.$emit('update:contents', this.contents)
         this.vedit = false
         this.index = null
         this.pos = null
 
+        this.$emit('change', 'contents')
         this.save(true).then(() => {
           this.$refs.iframe.contentWindow.postMessage('reload', this.url)
         })

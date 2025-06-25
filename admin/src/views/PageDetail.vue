@@ -32,23 +32,6 @@
       }
     },
 
-
-    data: () => ({
-      tab: 'page',
-      aside: 'meta',
-      asidePage: 'meta',
-      changed: {},
-      errors: {},
-      assets: {},
-      elements: {},
-      contents: [],
-      latest: null,
-      pubmenu: null,
-      publishAt: null,
-      translating: false,
-      vhistory: false,
-    }),
-
     setup() {
       const languages = useLanguageStore()
       const messages = useMessageStore()
@@ -59,6 +42,20 @@
       return { auth, drawer, languages, messages, schemas }
     },
 
+    data: () => ({
+      tab: 'page',
+      aside: 'meta',
+      asidePage: 'meta',
+      changed: {},
+      errors: {},
+      assets: {},
+      elements: {},
+      latest: null,
+      pubmenu: null,
+      publishAt: null,
+      translating: false,
+      vhistory: false,
+    }),
 
     computed: {
       hasChanged() {
@@ -182,7 +179,7 @@
         this.assets = {}
         this.elements = {}
         this.latest = page.latest
-        this.contents = JSON.parse(this.latest?.contents || page.contents || '[]')
+        this.item.contents = JSON.parse(this.latest?.contents || page.contents || '[]')
 
         for(const entry of (this.latest?.elements || page.elements || [])) {
           this.elements[entry.id] = {
@@ -206,7 +203,7 @@
           }
         }
 
-        for(const entry of this.contents) {
+        for(const entry of this.item.contents) {
           if(entry.files && Array.isArray(entry.files)) {
             entry.files = entry.files.filter(id => {
               return typeof this.assets[id] !== 'undefined'
@@ -242,7 +239,7 @@
           context = [context]
         }
 
-        context.push('page content as JSON: ' + JSON.stringify(this.contents))
+        context.push('page content as JSON: ' + JSON.stringify(this.item.contents))
         context.push('required output language: ' + (this.item.lang || 'en'))
 
         return this.$options._compose(prompt, context)
@@ -318,7 +315,7 @@
           }
 
           const files = []
-          for(const entry of (this.contents || [])) {
+          for(const entry of (this.item.contents || [])) {
             files.push(...(entry.files || []))
           }
 
@@ -364,7 +361,7 @@
                 theme: this.item.theme || '',
                 meta: JSON.stringify(this.clean(meta)),
                 config: JSON.stringify(this.clean(config)),
-                contents: JSON.stringify(this.clean(this.contents))
+                contents: JSON.stringify(this.clean(this.item.contents))
               },
               elements: Object.keys(this.elements),
               files: files.filter((id, idx, self) => {
@@ -415,7 +412,7 @@
           }
         }
 
-        this.contents.forEach(el => {
+        this.item.contents.forEach(el => {
           for(const name in el.data) {
             const fields = this.schemas.content[el.type]?.fields
             const fieldtype = fields?.[name]?.type
@@ -473,7 +470,7 @@
 
       use(version) {
         Object.assign(this.item, version.data)
-        this.contents = version.contents
+        this.item.contents = version.contents
 
         this.changed['contents'] = true
         this.changed['page'] = true
@@ -640,7 +637,7 @@
           <PageDetailItem ref="page"
             :item="item"
             :assets="assets"
-            @update:item="update('page', $event)"
+            @update:item="Object.assign(item, $event); changed.page = true"
             @update:aside="asidePage = $event"
             @error="errors.page = $event"
           />
@@ -651,10 +648,8 @@
             :item="item"
             :assets="assets"
             :elements="elements"
-            :contents="contents"
-            @update:contents="update('contents', $event)"
-            @update:elements="update('elements', $event)"
             @error="errors.contents = $event"
+            @change="changed.contents = true"
           />
         </v-window-item>
 
@@ -664,9 +659,7 @@
             :item="item"
             :assets="assets"
             :elements="elements"
-            :contents="contents"
-            @update:contents="update('contents', $event)"
-            @update:elements="update('elements', $event)"
+            @change="changed.contents = true"
           />
         </v-window-item>
 
@@ -696,7 +689,7 @@
           meta: clean(item.meta),
           config: clean(item.config)
         },
-        contents: clean(contents),
+        contents: clean(item.contents),
       }"
       :load="() => versions(item.id)"
       @use="use($event)"

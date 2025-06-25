@@ -9,10 +9,11 @@
       'assets': {type: Object, default: () => {}},
       'readonly': {type: Boolean, default: false},
       'fields': {type: Object, required: true},
-      'lang': {type: [String, null], default: null},
     },
 
     emits: ['change', 'error', 'update:files'],
+
+    inject: ['compose'],
 
     data() {
       return {
@@ -36,41 +37,20 @@
       },
 
 
-      compose(code) {
-        const info = Object.entries(this.data).map(([key, value]) => {
-          return key !== code && typeof value === 'string' || value instanceof String ? key + '="' + value.trim() + '"' : null
-        }).filter(v => !!v).join(' | ')
-
+      generate(code) {
         const context = [
-          'label: ' + (this.fields[code].label || code),
+          'generate for: ' + (this.fields[code].label || code),
           'required output format: ' + this.fields[code].type,
-          'required output language: ' + (this.lang || 'en'),
           this.fields[code].min ? 'minimum characters: ' + this.fields[code].min : null,
           this.fields[code].max ? 'maximum characters: ' + this.fields[code].max : null,
           this.fields[code].placeholder ? 'hint text: ' + this.fields[code].placeholder : null,
-          'contextual information: ' + info,
+          'context information as JSON: ' + JSON.stringify(this.data),
         ]
 
         this.composing[code] = true
 
-        this.$apollo.mutate({
-          mutation: gql`mutation($prompt: String!, $lang: String!, $context: String) {
-            compose(prompt: $prompt, lang: $lang, context: $context)
-          }`,
-          variables: {
-            prompt: this.data[code],
-            context: context.filter(v => !!v).join(', '),
-            lang: this.lang || 'en',
-          }
-        }).then(result => {
-          if(result.errors) {
-            throw result
-          }
-
-          this.update(code, result.data?.compose)
-        }).catch(error => {
-          this.messages.add('Error composing text', 'error')
-          this.$log(`Fields::compose(): Error composing text`, code, error)
+        this.compose(this.data[code] ?? '', context).then(result => {
+          this.update(code, result)
         }).finally(() => {
           this.composing[code] = false
         })
@@ -124,7 +104,12 @@
   <div v-for="(field, code) in fields" :key="code" class="item" :class="{error: errors[code]}">
     <v-label>
       {{ field.label || code }}
-      <v-btn :loading="composing[code]" icon="mdi-creation" variant="flat" @click="compose(code)" />
+      <v-btn v-if="!readonly && ['markdown', 'plaintext', 'string', 'text'].includes(field.type)"
+        :loading="composing[code]"
+        icon="mdi-creation"
+        variant="flat"
+        @click="generate(code)"
+      />
     </v-label>
     <component ref="field"
       :is="field.type?.charAt(0)?.toUpperCase() + field.type?.slice(1)"

@@ -1,10 +1,7 @@
 <script>
+  import gql from 'graphql-tag'
+  import { useMessageStore } from './stores'
   import { computed, markRaw, provide } from 'vue'
-  import { useConfigStore, useSchemaStore } from './stores'
-  import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
-
-  loadDevMessages()
-  loadErrorMessages()
 
   export default {
     data() {
@@ -17,7 +14,13 @@
       return {
         openView: this.open,
         closeView: this.close,
+        compose: this.composeText
       }
+    },
+
+    setup() {
+      const messages = useMessageStore()
+      return { messages }
     },
 
     methods: {
@@ -36,6 +39,41 @@
 
       close() {
         this.viewStack.pop()
+      },
+
+
+      composeText(prompt, context = []) {
+        prompt = prompt ? prompt.trim() : (Array.isArray(context) && context.length ? 'Generate text based on context' : null)
+
+        if(!prompt) {
+          this.messages.add('Prompt is required for generating text', 'error')
+          return Promise.reject(new Error('Prompt is required'))
+        }
+
+        if(!Array.isArray(context)) {
+          context = [context]
+        }
+
+        context.push('only return the requested data without any additional information')
+
+        return this.$apollo.mutate({
+          mutation: gql`mutation($prompt: String!, $context: String) {
+            compose(prompt: $prompt, context: $context)
+          }`,
+          variables: {
+            prompt: prompt,
+            context: context.filter(v => !!v).join(', ')
+          }
+        }).then(result => {
+          if(result.errors) {
+            throw result
+          }
+
+          return result.data?.compose?.replace(/^"(.*)"$/, '$1') || ''
+        }).catch(error => {
+          this.messages.add('Error generating text', 'error')
+          this.$log(`App::compose(): Error generating text`, error)
+        })
       },
     }
   }

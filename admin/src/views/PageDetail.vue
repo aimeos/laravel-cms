@@ -19,11 +19,18 @@
       PageDetailPreview
     },
 
-    inject: ['closeView'],
+    inject: ['closeView', 'compose'],
 
     props: {
       'item': {type: Object, required: true}
     },
+
+    provide() {
+      return {
+        compose: this.composeText // re-provide custom method
+      }
+    },
+
 
     data: () => ({
       tab: 'page',
@@ -50,6 +57,7 @@
 
       return { auth, drawer, languages, messages, schemas }
     },
+
 
     computed: {
       hasChanged() {
@@ -79,6 +87,8 @@
     },
 
     created() {
+      this.$options._compose = this.compose
+
       if(!this.item?.id || !this.auth.can('page:view')) {
         return
       }
@@ -219,6 +229,22 @@
         }
 
         return data
+      },
+
+
+      composeText(prompt, context = []) {
+        if(!this.$options._compose) {
+          return Promise.reject(new Error('Compose method is not available in PageDetail component'))
+        }
+
+        if(!Array.isArray(context)) {
+          context = [context]
+        }
+
+        context.push('required output language: ' + (this.item.lang || 'en'))
+        context.push('page content as JSON: ' + JSON.stringify(this.contents))
+
+        return this.$options._compose(prompt, context)
       },
 
 

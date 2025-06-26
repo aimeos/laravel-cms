@@ -6,7 +6,7 @@
 <script defer src="{{ cmsasset('vendor/cms/contact.js') }}"></script>
 @endPushOnce
 
-<h2 class="title">{{ $data['title'] ?? '' }}</h2>
+<h2 class="title">{{ $data->title }}</h2>
 
 <form action="{{ route('cms.api.contact') }}" method="POST">
     @csrf

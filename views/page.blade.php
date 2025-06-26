@@ -27,7 +27,7 @@
                 (cms($page, 'theme') ?: 'cms') . '::' . $type,
                 'cms::' . $type,
                 'cms::invalid'
-            ], ['files' => cms($page, 'files')] + ['data' => (array) $item->data] )
+            ], ['files' => cms($page, 'files')] + (array) $item )
         @endforeach
     </head>
     <body class="theme-{{ cms($page, 'theme') }} type-{{ cms($page, 'type') }}">
@@ -86,8 +86,8 @@
 
         <div class="cms-content">
             @foreach(cms($page, 'content') ?? [] as $item)
-                @if(($item['type'] ?? '') === 'reference' && ($refid = $item['refid'] ?? null) && ($element = cms($page,'elements')[$refid] ?? null))
-                    <div id="{{ $item['id'] ?? '' }}" class="{{ str_replace('::', '-', $element->type ?? '') }}">
+                @if(($item->type ?? '') === 'reference' && ($refid = $item->refid ?? null) && ($element = cms($page,'elements')?->{$refid} ?? null))
+                    <div id="{{ $item->id ?? '' }}" class="{{ str_replace('::', '-', $element->type ?? '') }}">
                         <div class="container">
                             @includeFirst([
                                 $element->type ?? '',
@@ -97,13 +97,13 @@
                         </div>
                     </div>
                 @else
-                    <div id="{{ $item['id'] ?? '' }}" class="{{ str_replace('::', '-', $item['type'] ?? '') }}">
+                    <div id="{{ $item->id ?? '' }}" class="{{ str_replace('::', '-', $item->type ?? '') }}">
                         <div class="container">
                             @includeFirst([
-                                $item['type'] ?? '',
-                                (cms($page, 'theme') ?: 'cms') . '::' . ($item['type'] ?? 'page'),
+                                $item->type ?? '',
+                                (cms($page, 'theme') ?: 'cms') . '::' . ($item->type ?? 'page'),
                                 'cms::invalid'
-                            ], ['files' => cms($page, 'files')] + $item)
+                            ], ['files' => cms($page, 'files')] + (array) $item)
                         </div>
                     </div>
                 @endif

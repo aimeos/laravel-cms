@@ -1,4 +1,4 @@
-@if($file = $files[$data['file']['id']] ?? null)
+@if($file = $files[$data->file?->id] ?? null)
 	<video preload="metadata" controls playsinline
 		src="{{ cmsurl($file->path ?? '') }}"
 		@if($preview = current($file->previews))

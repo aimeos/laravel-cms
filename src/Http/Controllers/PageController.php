@@ -60,8 +60,10 @@ class PageController extends Controller
                 return str_starts_with( $to, 'http' ) ? redirect()->away( $to ) : redirect( $to );
             }
 
+            $content = collect( $version->aux?->content ?? $page->content ?? [] )->groupBy( 'group' );
+
             $views = [( cms( $page, 'theme' ) ?: 'cms' ) . '::' . ( cms( $page, 'type' ) ?: 'page' ), 'cms::page'];
-            return view()->first( $views, ['page' => $page] );
+            return view()->first( $views, ['page' => $page, 'content' => $content] );
         }
 
         $cache = Cache::store( config( 'cms.cache', 'file' ) );
@@ -80,8 +82,10 @@ class PageController extends Controller
             return str_starts_with( $to, 'http' ) ? redirect()->away( $to ) : redirect( $to );
         }
 
+        $content = collect( $page->content ?? [] )->groupBy( 'group' );
+
         $views = [( cms( $page, 'theme' ) ?: 'cms' ) . '::' . ( cms( $page, 'type' ) ?: 'page' ), 'cms::page'];
-        $html = view()->first( $views, ['page' => $page] )->render();
+        $html = view()->first( $views, ['page' => $page, 'content' => $content] )->render();
 
         if( $page->cache ) {
             $cache->put( $key, $html, now()->addMinutes( (int) $page->cache ) );

@@ -12,14 +12,10 @@
 
     data: () => ({
       list: [],
+      latest: null,
+      loading: false,
       show: false,
     }),
-
-    mounted() {
-      this.load().then(versions => {
-        this.list = versions
-      })
-    },
 
     computed: {
       versions() {
@@ -46,6 +42,30 @@
         }
 
         return diffJson(v1.data || {}, v2.data || {}).length !== 1
+      },
+
+
+      reset() {
+        this.list = []
+        this.latest = null
+      }
+    },
+
+    watch: {
+      modelValue: {
+        immediate: true,
+        handler(val) {
+          if(val && !this.latest) {
+            this.loading = true
+
+            this.load().then(versions => {
+              this.latest = versions.shift()
+              this.list = versions
+            }).finally(() => {
+              this.loading = false
+            })
+          }
+        }
       }
     }
   }
@@ -65,17 +85,28 @@
 
       <v-card-text>
         <v-timeline side="end" align="start">
-          <v-timeline-item v-if="isModified(list[0], current)" size="small" dot-color="blue">
+          <v-timeline-item v-if="loading" size="small" dot-color="grey-lighten-1">
+            <div class="loading">
+              Loading
+              <svg class="spinner" width="32" height="32" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle class="spin1" cx="4" cy="12" r="3"/><circle class="spin1 spin2" cx="12" cy="12" r="3"/><circle class="spin1 spin3" cx="20" cy="12" r="3"/></svg>
+            </div>
+          </v-timeline-item>
+
+          <v-timeline-item v-if="!loading && !(latest && isModified(latest, current) || versions.length)" size="small" dot-color="grey-lighten-1">
+            No changes
+          </v-timeline-item>
+
+          <v-timeline-item v-if="!loading && latest && isModified(latest, current)" size="small" dot-color="blue">
 
             <v-card class="elevation-2" @click="show = !show">
               <v-card-title>Current</v-card-title>
               <v-card-text class="diff" :class="{show: show}">
-                <span v-for="part of diff(list[0]?.data, current.data)" :class="{added: part.added, removed: part.removed}">
+                <span v-for="part of diff(current.data, latest?.data)" :class="{added: part.added, removed: part.removed}">
                   {{ part.value || part }}
                 </span>
               </v-card-text>
               <v-card-actions>
-                <v-btn variant="outlined" @click="$emit('revert', list[0])">
+                <v-btn variant="outlined" @click.stop="$emit('revert', latest)">
                   Revert
                 </v-btn>
               </v-card-actions>
@@ -97,7 +128,7 @@
                 </v-card-text>
               </div>
               <v-card-actions>
-                <v-btn variant="outlined" @click="$emit('use', version)">
+                <v-btn variant="outlined" @click.stop="$emit('use', version)">
                   Use version
                 </v-btn>
               </v-card-actions>

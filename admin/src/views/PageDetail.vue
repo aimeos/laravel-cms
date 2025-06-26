@@ -95,9 +95,23 @@
         query: gql`query($id: ID!) {
           page(id: $id) {
             id
+            lang
+            path
+            domain
+            name
+            title
+            to
+            tag
+            type
+            theme
+            status
+            cache
             meta
             config
             content
+            editor
+            updated_at
+            deleted_at
             files {
               id
               lang
@@ -182,10 +196,16 @@
         this.elements = {}
         this.latest = page.latest
 
-        this.item.meta = page.meta
-        this.item.config = page.config
-        this.item.content = page.content
-        this.item = Object.assign(item, JSON.parse(this.latest?.aux || '{}'))
+        if(this.latest?.aux) {
+          const aux = JSON.parse(this.latest.aux)
+          this.item.content = aux.content ?? []
+          this.item.config = aux.config ?? {}
+          this.item.meta = aux.meta ?? {}
+        } else {
+          this.item.content = JSON.parse(page.content ?? '{}')
+          this.item.config = JSON.parse(page.config ?? '{}')
+          this.item.meta = JSON.parse(page.meta ?? '{}')
+        }
 
         for(const entry of (this.latest?.elements || page.elements || [])) {
           this.elements[entry.id] = {
@@ -384,6 +404,7 @@
             }
 
             this.item.published = false
+            this.$refs.history.reset()
             this.reset()
 
             if(!quiet) {
@@ -480,7 +501,6 @@
 
       use(version) {
         Object.assign(this.item, version.data)
-        this.item.content = version.content
 
         this.changed['content'] = true
         this.changed['page'] = true
@@ -533,10 +553,9 @@
           }
 
           return (result.data.page.versions || []).map(v => {
-            return {
-              ...v,
-              data: Object.assign(JSON.parse(v.data || '{}'), JSON.parse(v.aux || '{}'))
-            }
+            const item = {...v, data: Object.assign(JSON.parse(v.data || '{}'), JSON.parse(v.aux || '{}'))}
+            delete item.aux
+            return item
           }).reverse() // latest versions first
         }).catch(error => {
           this.messages.add('Error fetching page versions', 'error')
@@ -680,7 +699,7 @@
   <AsideCount v-if="aside === 'count'" />
 
   <Teleport to="body">
-    <HistoryDialog
+    <HistoryDialog ref="history"
       v-model="vhistory"
       :current="{
         data: {
@@ -696,7 +715,7 @@
           type: item.type,
           theme: item.theme,
           meta: clean(item.meta),
-          config: clean(item.config)
+          config: clean(item.config),
           content: clean(item.content),
         },
       }"

@@ -534,7 +534,7 @@ type Version {
   data: JSON!
 
   "Arbitrary versioned page config, content and meta data"
-  aux: JSON!
+  aux: JSON
 
   "List of shared content elements assigned to the version"
   elements: [Element!]! @belongsToMany

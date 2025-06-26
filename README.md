@@ -30,7 +30,14 @@ It can be installed into any existing Laravel application.
 
 ## Installation
 
-Run this command within your Laravel application directory:
+You need a working Laravel installation. If you don't have one, you can create it using:
+
+```bash
+composer create-project laravel/laravel pagible
+```
+
+The application will be available in the `./pagible` sub-directory.
+Then, run this command within your Laravel application directory:
 
 ```bash
 composer req aimeos/pagible
@@ -43,7 +50,7 @@ Add a line in the "post-update-cmd" section of your `composer.json` file to upda
 
 ```json
 "post-update-cmd": [
-    "@php artisan vendor:publish --force --tag=admin --tag=public"
+    "@php artisan vendor:publish --force --tag=admin --tag=public",
     ...
 ],
 ```

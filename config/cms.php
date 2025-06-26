@@ -96,9 +96,9 @@ return [
     */
     'config' => [
         'languages' => [
+            'en' => 'English',
             'ar' => 'Arabic',
             'zh' => 'Chinese',
-            'en' => 'English',
             'fr' => 'French',
             'de' => 'German',
             'es' => 'Spanish',
@@ -107,9 +107,9 @@ return [
             'ru' => 'Russian',
         ],
         'themes' => [
-            '' => [
+            'default' => [
                 'types' => [
-                    '' => [
+                    'default' => [
                         'sections' => [
                             'main',
                             'footer',

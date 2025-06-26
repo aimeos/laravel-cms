@@ -71,7 +71,9 @@
         this.changed = {}
         this.errors = {}
 
-        this.$refs.content.forEach(ref => ref.reset())
+        Array.isArray(this.$refs.content)
+          ? this.$refs.content.forEach(ref => ref.reset())
+          : this.$refs.content.reset()
       },
 
 
@@ -88,7 +90,8 @@
 
 
       validate() {
-        const promises = this.$refs.content.map(ref => ref.validate())
+        const refs = Array.isArray(this.$refs.content) ? this.$refs.content : [this.$refs.content]
+        const promises = refs.map(ref => ref.validate())
 
         return Promise.all(promises).then(results => {
           return results.every(result => result)

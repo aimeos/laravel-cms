@@ -197,6 +197,14 @@
                 updated_at
                 files {
                   id
+                  lang
+                  mime
+                  name
+                  path
+                  previews
+                  description
+                  updated_at
+                  editor
                 }
               }
             }
@@ -218,6 +226,12 @@
           }
 
           const element = result.data.addElement
+
+          for(const file of element.files || []) {
+            file.previews = JSON.parse(file.previews || '{}')
+            this.assets[file.id] = file
+          }
+
           element.data = JSON.parse(element.data)
           element.files = element.files.map(file => file.id)
 
@@ -309,7 +323,7 @@
         this.content[idx].data = this.elements[entry.refid].data || {}
         delete this.content[idx].refid
 
-        this.$emit('change', 'content')
+        this.$emit('update:content', this.content)
         this.store()
       },
 

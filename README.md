@@ -34,10 +34,10 @@ Run this command within your Laravel application directory:
 
 ```bash
 composer req aimeos/pagible
-php artisan cms:install --seed
+php artisan cms:install
 ```
 
-If you don't want to add any demo pages, remove the `--seed` option.
+Now, adapt the `.env` file of your application and change the `APP_URL` setting to your domain. If you are using `php artisan serve` for testing, add the port of the internal web server (`APP_URL=http://localhost:8000`). Otherwise, the uploading files will fail because they wouldn't be loaded!
 
 Add a line in the "post-update-cmd" section of your `composer.json` file to update the admin backend files after each update:
 

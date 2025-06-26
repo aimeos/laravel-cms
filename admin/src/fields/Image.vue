@@ -15,7 +15,7 @@
           const image = new Image()
           image.onload = resolve
           image.onerror = reject
-          image.src = this.url(Object.values(data.previews)[0] || data.path)
+          image.src = this.url(Object.values(data.previews).shift() || data.path)
         }).then(() => {
           return File.methods.handle.call(this, data, path)
         }).catch(error => {

@@ -45,10 +45,7 @@
           return false
         }
 
-        return (
-          diffJson(v1.data || {}, v2.data || {}).length !== 1 ||
-          diffJson(v1.content || {}, v2.content || {}).length !== 1
-        )
+        return diffJson(v1.data || {}, v2.data || {}).length !== 1
       }
     }
   }
@@ -76,10 +73,6 @@
                 <span v-for="part of diff(list[0]?.data, current.data)" :class="{added: part.added, removed: part.removed}">
                   {{ part.value || part }}
                 </span>
-                <div v-if="current.content" class="divider">Content:</div>
-                <span v-if="current.content" v-for="part of diff(list[0]?.content, current.content)" :class="{added: part.added, removed: part.removed}">
-                  {{ part.value || part }}
-                </span>
               </v-card-text>
               <v-card-actions>
                 <v-btn variant="outlined" @click="$emit('revert', list[0])">
@@ -99,10 +92,6 @@
                 <v-card-subtitle>{{ version.editor }}</v-card-subtitle>
                 <v-card-text class="diff" :class="{show: version._show}">
                   <span v-for="part of diff(version.data, current.data)" :class="{added: part.removed, removed: part.added}">
-                    {{ part.value || part }}
-                  </span>
-                  <div v-if="version.content" class="divider">Content:</div>
-                  <span v-if="version.content" v-for="part of diff(version.content, current.content)" :class="{added: part.removed, removed: part.added}">
                     {{ part.value || part }}
                   </span>
                 </v-card-text>

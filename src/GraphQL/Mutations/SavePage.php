@@ -22,13 +22,17 @@ final class SavePage
         DB::connection( config( 'cms.db', 'sqlite' ) )->transaction( function() use ( $page, $args ) {
 
             $data = $args['input'] ?? [];
-            unset( $data['content'] );
+            unset( $data['config'], $data['content'], $data['meta'] );
 
             $version = $page->versions()->create([
                 'data' => array_map( fn( $v ) => is_null( $v ) ? (string) $v : $v, $data ),
                 'editor' => Auth::user()?->name ?? request()->ip(),
-                'content' => $args['input']['content'] ?? null,
                 'lang' => $args['input']['lang'] ?? null,
+                'aux' => [
+                    'meta' => $args['input']['meta'] ?? new \stdClass(),
+                    'config' => $args['input']['config'] ?? new \stdClass(),
+                    'content' => $args['input']['content'] ?? [],
+                ]
             ]);
 
             $version->elements()->sync( $args['elements'] ?? [] );

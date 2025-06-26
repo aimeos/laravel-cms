@@ -95,6 +95,8 @@
         query: gql`query($id: ID!) {
           page(id: $id) {
             id
+            meta
+            config
             content
             files {
               id
@@ -129,7 +131,7 @@
               id
               published
               data
-              content
+              aux
               editor
               created_at
               files {
@@ -179,7 +181,11 @@
         this.assets = {}
         this.elements = {}
         this.latest = page.latest
-        this.item.content = JSON.parse(this.latest?.content || page.content || '[]')
+
+        this.item.meta = page.meta
+        this.item.config = page.config
+        this.item.content = page.content
+        this.item = Object.assign(item, JSON.parse(this.latest?.aux || '{}'))
 
         for(const entry of (this.latest?.elements || page.elements || [])) {
           this.elements[entry.id] = {
@@ -512,7 +518,7 @@
                 published
                 publish_at
                 data
-                content
+                aux
                 editor
                 created_at
               }
@@ -529,8 +535,7 @@
           return (result.data.page.versions || []).map(v => {
             return {
               ...v,
-              data: JSON.parse(v.data || '{}'),
-              content: v.content ? JSON.parse(v.content) : null
+              data: Object.assign(JSON.parse(v.data || '{}'), JSON.parse(v.aux || '{}'))
             }
           }).reverse() // latest versions first
         }).catch(error => {
@@ -692,8 +697,8 @@
           theme: item.theme,
           meta: clean(item.meta),
           config: clean(item.config)
+          content: clean(item.content),
         },
-        content: clean(item.content),
       }"
       :load="() => versions(item.id)"
       @use="use($event)"

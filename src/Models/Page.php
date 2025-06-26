@@ -246,8 +246,7 @@ class Page extends Model
             $this->files()->sync( $version->files ?? [] );
             $this->elements()->sync( $version->elements ?? [] );
 
-            $this->fill( (array) $version->data );
-            $this->content = (array) $version->content;
+            $this->fill( (array) $version->data + (array) $version->aux );
             $this->editor = $version->editor;
             $this->save();
 

@@ -10,7 +10,7 @@ if( !function_exists( 'cms' ) )
     function cms( \Aimeos\Cms\Models\Page $page, string $prop )
     {
         if( \Aimeos\Cms\Permission::can( 'page:view', auth()->user() ) ) {
-            return $page->latest?->data?->{$prop} ?? $page->latest?->{$prop} ?? $page->{$prop} ?? null;
+            return $page->latest?->data?->{$prop} ?? $page->latest?->aux?->{$prop} ?? $page->{$prop} ?? null;
         }
 
         return $page->{$prop} ?? null;

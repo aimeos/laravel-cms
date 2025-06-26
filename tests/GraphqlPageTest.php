@@ -393,7 +393,7 @@ class GraphqlPageTest extends TestAbstract
                 versions {
                     lang
                     data
-                    content
+                    aux
                     editor
                 }
             }
@@ -404,8 +404,8 @@ class GraphqlPageTest extends TestAbstract
                     'versions' => [
                         [
                             'lang' => $page->lang,
-                            'data' => '{"name":"Home","title":"Home | Laravel CMS","path":"\\/","tag":"root","domain":"mydomain.tld","status":1,"cache":5,"editor":"seeder","meta":{"meta":{"type":"meta","text":"Laravel CMS is outstanding"}},"config":{"test":{"type":"test","data":{"key":"value"}}}}',
-                            'content' => '[{"type":"heading","text":"Welcome to Laravel CMS"},{"type":"ref","id":"' . $element->id . '"}]',
+                            'data' => '{"name":"Home","title":"Home | Laravel CMS","path":"\\/","tag":"root","domain":"mydomain.tld","status":1,"cache":5,"editor":"seeder"}',
+                            'aux' => '{"meta":{"type":"meta","data":{"text":"Laravel CMS is outstanding"}},"config":{"test":{"type":"test","data":{"key":"value"}}},"content":[{"type":"heading","text":"Welcome to Laravel CMS"},{"type":"ref","id":"' . $element->id . '"}]}',
                             'editor' => 'seeder'
                         ],
                     ],
@@ -782,14 +782,14 @@ class GraphqlPageTest extends TestAbstract
                     latest {
                         lang
                         data
-                        content
+                        aux
                         published
                         publish_at
                         editor
                     }
                     published {
                         data
-                        content
+                        aux
                     }
                 }
             }
@@ -822,16 +822,16 @@ class GraphqlPageTest extends TestAbstract
                     'updated_at' => (string) $page->updated_at,
                     'latest' => [
                         'lang' => 'de',
-                        'data' => '{"lang":"de","path":"test","domain":"test.com","name":"test","title":"Test page","to":"\\/to\\/page","tag":"test","meta":{"canonical":"to\\/page"},"config":{"key":"test"},"status":0,"cache":5}',
-                        'content' => '[{"type":"heading","text":"Welcome to Laravel CMS"}]',
+                        'data' => '{"lang":"de","path":"test","domain":"test.com","name":"test","title":"Test page","to":"\\/to\\/page","tag":"test","status":0,"cache":5}',
+                        'aux' => '{"meta":{"canonical":"to\\/page"},"config":{"key":"test"},"content":[{"type":"heading","text":"Welcome to Laravel CMS"}]}',
                         'published' => false,
                         'publish_at' => null,
                         'editor' => 'Test editor',
 
                     ],
                     'published' => [
-                        'data' => '{"name":"Home","title":"Home | Laravel CMS","path":"\\/","tag":"root","domain":"mydomain.tld","status":1,"cache":5,"editor":"seeder","meta":{"meta":{"type":"meta","text":"Laravel CMS is outstanding"}},"config":{"test":{"type":"test","data":{"key":"value"}}}}',
-                        'content' => '[{"type":"heading","text":"Welcome to Laravel CMS"},{"type":"ref","id":"' . $element->id . '"}]',
+                        'data' => '{"name":"Home","title":"Home | Laravel CMS","path":"\\/","tag":"root","domain":"mydomain.tld","status":1,"cache":5,"editor":"seeder"}',
+                        'aux' => '{"meta":{"type":"meta","data":{"text":"Laravel CMS is outstanding"}},"config":{"test":{"type":"test","data":{"key":"value"}}},"content":[{"type":"heading","text":"Welcome to Laravel CMS"},{"type":"ref","id":"' . $element->id . '"}]}',
                     ]
                 ],
             ]

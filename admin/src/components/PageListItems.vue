@@ -270,8 +270,6 @@
           tag
           type
           theme
-          meta
-          config
           status
           cache
           editor
@@ -492,6 +490,8 @@
         return this.$apollo.query({
           query: gql`query($id: ID!) {
             page(id: $id) {
+              meta
+              config
               content
               files {
                 id
@@ -528,9 +528,9 @@
                 cache: node.cache,
                 domain: node.domain,
                 related_id: node.id,
-                meta: JSON.stringify(node.meta || {}),
-                config: JSON.stringify(node.config || {}),
-                content: result?.data?.page?.content || '{}',
+                meta: result?.data?.page?.meta || '{}',
+                config: result?.data?.page?.config || '{}',
+                content: result?.data?.page?.content || '[]',
                 path: node.path + '_' + Math.floor(Math.random() * 10000),
               },
               parent: parent ? parent.data.id : null,
@@ -549,9 +549,6 @@
 
             const index = idx !== null ? this.$refs.tree.getSiblings(stat).indexOf(stat) + idx : 0
             const item = result.data.addPage
-
-            item.meta = JSON.parse(item.meta || '{}')
-            item.config = JSON.parse(item.config || '{}')
 
             this.$refs.tree.add(item, parent, index)
             this.invalidate()
@@ -785,11 +782,7 @@
 
       transform(result) {
         const pages = result.data.map(entry => {
-          const item = entry.latest?.data ? JSON.parse(entry.latest?.data || '{}') : {
-            ...entry,
-            meta: JSON.parse(entry.meta || '{}'),
-            config: JSON.parse(entry.config || '{}'),
-          }
+          const item = entry.latest?.data ? JSON.parse(entry.latest.data) : {...entry}
 
           return Object.assign(item, {
             id: entry.id,

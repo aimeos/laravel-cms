@@ -138,12 +138,14 @@ class CmsSeeder extends Seeder
                 'status' => 1,
                 'cache' => 5,
                 'editor' => 'seeder',
-                'meta' => ['meta' => ['type' => 'meta', 'text' => 'Laravel CMS is outstanding']],
-                'config' => ['test' => ['type' => 'test', 'data' => ['key' => 'value']]],
             ],
-            'content' => [
-                ['type' => 'heading', 'text' => 'Welcome to Laravel CMS'],
-                ['type' => 'ref', 'id' => $elementId]
+            'aux' => [
+                'meta' => ['type' => 'meta', 'data' => ['text' => 'Laravel CMS is outstanding']],
+                'config' => ['test' => ['type' => 'test', 'data' => ['key' => 'value']]],
+                'content' => [
+                    ['type' => 'heading', 'text' => 'Welcome to Laravel CMS'],
+                    ['type' => 'ref', 'id' => $elementId]
+                ],
             ],
             'published' => true,
             'editor' => 'seeder',
@@ -226,7 +228,9 @@ mutation {
 
         $version = $page->versions()->forceCreate([
             'data' => $data,
-            'content' => $content,
+            'aux' => [
+                'content' => $content,
+            ],
             'published' => true,
             'editor' => 'seeder',
         ]);

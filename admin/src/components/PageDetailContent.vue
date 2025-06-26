@@ -71,7 +71,7 @@
         this.changed = {}
         this.errors = {}
 
-        Object.values(this.$refs).map(ref => ref.reset())
+        this.$refs.content.forEach(ref => ref.reset())
       },
 
 
@@ -88,7 +88,7 @@
 
 
       validate() {
-        const promises = Object.values(this.$refs).map(ref => ref.validate())
+        const promises = this.$refs.content.map(ref => ref.validate())
 
         return Promise.all(promises).then(results => {
           return results.every(result => result)
@@ -114,7 +114,7 @@
 
         <v-window v-model="tab">
           <v-window-item v-for="(list, section) in sections" :key="section" :value="section">
-            <PageDetailContentList
+            <PageDetailContentList ref="content"
               :section="section"
               :item="item"
               :assets="assets"
@@ -127,7 +127,7 @@
         </v-window>
       </div>
 
-      <PageDetailContentList v-else
+      <PageDetailContentList v-else ref="content"
         :item="item"
         :assets="assets"
         :content="item.content"

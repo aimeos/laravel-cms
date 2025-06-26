@@ -144,13 +144,23 @@
       },
 
 
+      reset() {
+        this.content.forEach(el => {
+          delete el._changed
+          delete el._error
+        })
+
+        this.store()
+      },
+
+
       search(term) {
         if(term) {
           term = term.toLocaleLowerCase().trim()
 
           this.content.forEach(el => {
-            el = (el.type === 'reference') ? this.elements[el.refid] || {} : el
-            el._hide = !JSON.stringify(Object.values(el?.data || {})).toLocaleLowerCase().includes(term)
+            const item = (el.type === 'reference') ? this.elements[el.refid] || {} : el
+            el._hide = !JSON.stringify(Object.values(item?.data || {})).toLocaleLowerCase().includes(term)
           })
         }
       },
@@ -261,10 +271,10 @@
 
 
       title(el) {
-        return Object.values(el.data || {})
+        return (el.data?.title || el.data?.text || Object.values(el.data || {})
           .map(v => v && typeof v !== 'object' && typeof v !== 'boolean' ? v : null)
           .filter(v => !!v)
-          .join(' - ')
+          .join(' - '))
           .substring(0, 50) || el.type || ''
       },
 

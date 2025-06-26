@@ -123,10 +123,10 @@
 
 
       title(el) {
-        return Object.values(el.data || {})
+        return (el.data?.title || el.data?.text || Object.values(el.data || {})
           .map(v => v && typeof v !== 'object' && typeof v !== 'boolean' ? v : null)
           .filter(v => !!v)
-          .join(' - ')
+          .join(' - '))
           .substring(0, 50) || ''
       },
 

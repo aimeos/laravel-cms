@@ -77,17 +77,6 @@
       },
 
 
-      clean(data) {
-        for(const k in data) {
-          if(k.startsWith('_')) {
-            delete data[k]
-          }
-        }
-
-        return data
-      },
-
-
       copy(idx) {
         const entry = JSON.parse(JSON.stringify(this.contents[idx]))
         entry['id'] = null
@@ -152,14 +141,6 @@
         this.$emit('error', this.contents.some(el => el._error))
         this.$emit('update:contents', this.contents)
         this.store()
-      },
-
-
-      reset() {
-        for(const el of this.contents) {
-          delete el._changed
-          delete el._error
-        }
       },
 
 

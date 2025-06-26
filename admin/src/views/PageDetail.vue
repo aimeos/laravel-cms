@@ -218,10 +218,14 @@
 
     methods: {
       clean(data) {
-        for(const key in data) {
-          for(const k in data[key]) {
-            if(k.startsWith('_')) {
-              delete data[key][k]
+        if(data) {
+          data = JSON.parse(JSON.stringify(data)) // deep copy
+
+          for(const key in data) {
+            for(const k in data[key]) {
+              if(k.startsWith('_')) {
+                delete data[key][k]
+              }
             }
           }
         }

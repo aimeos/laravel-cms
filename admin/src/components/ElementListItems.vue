@@ -304,7 +304,7 @@
         delete filter.trashed
 
         if(this.term) {
-          any: this.term
+          filter.any = this.term
         }
 
         this.loading = true

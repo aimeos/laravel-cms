@@ -313,7 +313,7 @@
         delete filter.publish
 
         if(this.term) {
-          any: this.term
+          filter.any = this.term
         }
 
         this.loading = true
@@ -518,7 +518,7 @@
             <v-btn variant="text" @click="sort = {column: 'MIME', order: 'ASC'}">Mime</v-btn>
           </v-list-item>
           <v-list-item>
-            <v-btn variant="text" @click="sort = {column: 'TAG', order: 'ASC'}">Tag</v-btn>
+            <v-btn variant="text" @click="sort = {column: 'LANG', order: 'ASC'}">Language</v-btn>
           </v-list-item>
           <v-list-item>
             <v-btn variant="text" @click="sort = {column: 'EDITOR', order: 'ASC'}">Editor</v-btn>

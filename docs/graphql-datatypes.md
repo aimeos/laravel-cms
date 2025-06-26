@@ -105,7 +105,7 @@ children (list of page objects, read-only)
 ancestors (list of page objects, read-only)
 : Relation to the ancestors of the current page up to the root page
 
-contents (list of [content objects](#content-properties), read-only)
+content (list of [content objects](#content-properties), read-only)
 : List of content elements assigned to the page
 
 versions (list of [version objects](#version-properties), read-only)

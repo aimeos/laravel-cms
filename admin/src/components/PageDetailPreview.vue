@@ -72,7 +72,7 @@
 
 
       edit() {
-        this.element = this.item.contents[this.index] || null
+        this.element = this.item.content[this.index] || null
         this.vedit = this.element ? true : false
       },
 
@@ -108,7 +108,7 @@
             setTimeout(() => { this.vpreview = false }, 3000)
             break
           default:
-            this.index = this.item.contents.findIndex(c => c.id === msg.data) ?? null
+            this.index = this.item.content.findIndex(c => c.id === msg.data) ?? null
         }
       },
 
@@ -116,8 +116,8 @@
       remove() {
         if(this.index === null) return
 
-        this.item.contents.splice(this.index, 1)
-        this.$emit('change', 'contents')
+        this.item.content.splice(this.index, 1)
+        this.$emit('change', 'content')
         this.index = null
 
         this.save(true).then(() => {
@@ -128,14 +128,14 @@
 
       update() {
         if(this.pos !== null) {
-          this.item.contents.splice(this.index + this.pos, 0, this.element)
+          this.item.content.splice(this.index + this.pos, 0, this.element)
         }
 
         this.vedit = false
         this.index = null
         this.pos = null
 
-        this.$emit('change', 'contents')
+        this.$emit('change', 'content')
         this.save(true).then(() => {
           this.$refs.iframe.contentWindow.postMessage('reload', this.url)
         })

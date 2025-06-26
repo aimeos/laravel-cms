@@ -492,7 +492,7 @@
         return this.$apollo.query({
           query: gql`query($id: ID!) {
             page(id: $id) {
-              contents
+              content
               files {
                 id
               }
@@ -530,7 +530,7 @@
                 related_id: node.id,
                 meta: JSON.stringify(node.meta || {}),
                 config: JSON.stringify(node.config || {}),
-                contents: result?.data?.page?.contents || '{}',
+                content: result?.data?.page?.content || '{}',
                 path: node.path + '_' + Math.floor(Math.random() * 10000),
               },
               parent: parent ? parent.data.id : null,

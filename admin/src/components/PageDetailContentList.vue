@@ -16,12 +16,12 @@
     props: {
       'item': {type: Object, required: true},
       'assets': {type: Object, required: true},
-      'contents': {type: Array, required: true},
+      'content': {type: Array, required: true},
       'elements': {type: Object, required: true},
       'section': {type: [String, null], default: null}
     },
 
-    emits: ['error', 'update:contents'],
+    emits: ['error', 'update:content'],
 
     data: () => ({
       panel: [],
@@ -45,7 +45,7 @@
 
     computed: {
       changed() {
-        return this.contents.some(el => el._changed)
+        return this.content.some(el => el._changed)
       }
     },
 
@@ -64,21 +64,21 @@
         }
 
         if(idx !== null) {
-          this.contents.splice(idx, 0, entry)
+          this.content.splice(idx, 0, entry)
           this.panel.push(this.panel.includes(idx) ? idx + 1 : idx)
         } else {
-          this.contents.push(entry)
-          this.panel.push(this.contents.length - 1)
+          this.content.push(entry)
+          this.panel.push(this.content.length - 1)
         }
 
-        this.$emit('update:contents', this.contents)
+        this.$emit('update:content', this.content)
         this.vschemas = false
         this.store()
       },
 
 
       copy(idx) {
-        const entry = JSON.parse(JSON.stringify(this.contents[idx]))
+        const entry = JSON.parse(JSON.stringify(this.content[idx]))
         entry['id'] = null
 
         this.clip = {type: 'copy', index: idx, content: entry}
@@ -86,15 +86,15 @@
 
 
       cut(idx) {
-        this.clip = {type: 'cut', index: idx, content: this.contents[idx]}
-        this.contents.splice(idx, 1)
+        this.clip = {type: 'cut', index: idx, content: this.content[idx]}
+        this.content.splice(idx, 1)
         this.store()
       },
 
 
       error(el, value) {
         el._error = value
-        this.$emit('error', this.contents.some(el => el._error))
+        this.$emit('error', this.content.some(el => el._error))
         this.store()
       },
 
@@ -116,30 +116,30 @@
 
 
       paste(idx) {
-        this.contents.splice(idx, 0, this.clip.content)
-        this.$emit('update:contents', this.contents)
+        this.content.splice(idx, 0, this.clip.content)
+        this.$emit('update:content', this.content)
         this.clip = null
         this.store()
       },
 
 
       purge() {
-        for(let i = this.contents.length - 1; i >= 0; i--) {
-          if(this.contents[i]._checked) {
-            this.contents.splice(i, 1)
+        for(let i = this.content.length - 1; i >= 0; i--) {
+          if(this.content[i]._checked) {
+            this.content.splice(i, 1)
           }
         }
 
-        this.$emit('update:contents', this.contents)
+        this.$emit('update:content', this.content)
         this.checked = false
         this.store()
       },
 
 
       remove(idx) {
-        this.contents.splice(idx, 1)
-        this.$emit('error', this.contents.some(el => el._error))
-        this.$emit('update:contents', this.contents)
+        this.content.splice(idx, 1)
+        this.$emit('error', this.content.some(el => el._error))
+        this.$emit('update:content', this.content)
         this.store()
       },
 
@@ -148,7 +148,7 @@
         if(term) {
           term = term.toLocaleLowerCase().trim()
 
-          this.contents.forEach(el => {
+          this.content.forEach(el => {
             el = (el.type === 'reference') ? this.elements[el.refid] || {} : el
             el._hide = !JSON.stringify(Object.values(el?.data || {})).toLocaleLowerCase().includes(term)
           })
@@ -162,7 +162,7 @@
           return
         }
 
-        const entry = this.contents[idx]
+        const entry = this.content[idx]
 
         if(!entry) {
           this.messages.add('Element not found', 'error')
@@ -212,8 +212,8 @@
           element.files = element.files.map(file => file.id)
 
           this.elements[element.id] = element
-          this.contents[idx] = {id: uid(), group: this.section || 'main', type: 'reference', refid: element.id}
-          this.$emit('update:contents', this.contents)
+          this.content[idx] = {id: uid(), group: this.section || 'main', type: 'reference', refid: element.id}
+          this.$emit('update:content', this.content)
           this.store()
         }).catch(error => {
           this.messages.add('Unable to make element shared', 'error')
@@ -241,7 +241,7 @@
         const types = {}
         const state = {}
 
-        this.contents.forEach(el => {
+        this.content.forEach(el => {
           if(el.type) {
             types[el.type] = (types[el.type] || 0) + 1
           }
@@ -270,7 +270,7 @@
 
 
       toggle() {
-        this.contents.forEach(el => {
+        this.content.forEach(el => {
           if(this.shown(el)) {
             el._checked = !el._checked
           }
@@ -279,12 +279,12 @@
 
 
       unshare(idx) {
-        if(!this.contents[idx]) {
+        if(!this.content[idx]) {
           this.messages.add('Content element not found', 'error')
           return
         }
 
-        const entry = this.contents[idx]
+        const entry = this.content[idx]
 
         if(entry.type !== 'reference' || !this.elements[entry.refid]) {
           this.messages.add('Element is not shared', 'error')
@@ -295,11 +295,11 @@
           this.assets[file.id] = file
         }
 
-        this.contents[idx].type = this.elements[entry.refid].type || null
-        this.contents[idx].data = this.elements[entry.refid].data || {}
-        delete this.contents[idx].refid
+        this.content[idx].type = this.elements[entry.refid].type || null
+        this.content[idx].data = this.elements[entry.refid].data || {}
+        delete this.content[idx].refid
 
-        this.$emit('change', 'contents')
+        this.$emit('change', 'content')
         this.store()
       },
 
@@ -308,8 +308,8 @@
         el._changed = true
         el.group = this.section || 'main'
 
-        this.$emit('error', this.contents.some(el => el._error))
-        this.$emit('update:contents', this.contents)
+        this.$emit('error', this.content.some(el => el._error))
+        this.$emit('update:content', this.content)
         this.store()
       },
 
@@ -361,13 +361,13 @@
 
     <v-expansion-panels class="list" v-model="panel" elevation="0" multiple>
       <VueDraggable
-        @update:modelValue="$emit('update:contents', $event)"
+        @update:modelValue="$emit('update:content', $event)"
         :disabled="!auth.can('page:save')"
-        :modelValue="contents"
+        :modelValue="content"
         draggable=".content"
-        group="contents">
+        group="content">
 
-        <v-expansion-panel v-for="(el, idx) in contents" :key="idx" v-show="shown(el)" class="content" :class="{changed: el._changed, error: el._error}">
+        <v-expansion-panel v-for="(el, idx) in content" :key="idx" v-show="shown(el)" class="content" :class="{changed: el._changed, error: el._error}">
           <v-expansion-panel-title expand-icon="mdi-pencil">
             <v-checkbox-btn v-if="auth.can('page:save')" v-model="el._checked" @click.stop=""></v-checkbox-btn>
 

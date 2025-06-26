@@ -95,7 +95,7 @@
         query: gql`query($id: ID!) {
           page(id: $id) {
             id
-            contents
+            content
             files {
               id
               lang
@@ -129,7 +129,7 @@
               id
               published
               data
-              contents
+              content
               editor
               created_at
               files {
@@ -179,7 +179,7 @@
         this.assets = {}
         this.elements = {}
         this.latest = page.latest
-        this.item.contents = JSON.parse(this.latest?.contents || page.contents || '[]')
+        this.item.content = JSON.parse(this.latest?.content || page.content || '[]')
 
         for(const entry of (this.latest?.elements || page.elements || [])) {
           this.elements[entry.id] = {
@@ -203,7 +203,7 @@
           }
         }
 
-        for(const entry of this.item.contents) {
+        for(const entry of this.item.content) {
           if(entry.files && Array.isArray(entry.files)) {
             entry.files = entry.files.filter(id => {
               return typeof this.assets[id] !== 'undefined'
@@ -243,7 +243,7 @@
           context = [context]
         }
 
-        context.push('page content as JSON: ' + JSON.stringify(this.item.contents))
+        context.push('page content as JSON: ' + JSON.stringify(this.item.content))
         context.push('required output language: ' + (this.item.lang || 'en'))
 
         return this.$options._compose(prompt, context)
@@ -295,7 +295,7 @@
 
       reset() {
         this.$refs.page?.reset()
-        this.$refs.contents?.reset()
+        this.$refs.content?.reset()
 
         this.changed = {}
         this.errors = {}
@@ -319,7 +319,7 @@
           }
 
           const files = []
-          for(const entry of (this.item.contents || [])) {
+          for(const entry of (this.item.content || [])) {
             files.push(...(entry.files || []))
           }
 
@@ -365,7 +365,7 @@
                 theme: this.item.theme || '',
                 meta: JSON.stringify(this.clean(meta)),
                 config: JSON.stringify(this.clean(config)),
-                contents: JSON.stringify(this.clean(this.item.contents))
+                content: JSON.stringify(this.clean(this.item.content))
               },
               elements: Object.keys(this.elements),
               files: files.filter((id, idx, self) => {
@@ -416,7 +416,7 @@
           }
         }
 
-        this.item.contents.forEach(el => {
+        this.item.content.forEach(el => {
           for(const name in el.data) {
             const fields = this.schemas.content[el.type]?.fields
             const fieldtype = fields?.[name]?.type
@@ -446,7 +446,7 @@
             }
           })
 
-          this.changed['contents'] = true
+          this.changed['content'] = true
           this.changed['page'] = true
 
           this.item.lang = lang
@@ -474,9 +474,9 @@
 
       use(version) {
         Object.assign(this.item, version.data)
-        this.item.contents = version.contents
+        this.item.content = version.content
 
-        this.changed['contents'] = true
+        this.changed['content'] = true
         this.changed['page'] = true
 
         this.vhistory = false
@@ -486,7 +486,7 @@
       validate() {
         return Promise.all([
           this.$refs.page?.validate(),
-          this.$refs.contents?.validate()
+          this.$refs.content?.validate()
         ].filter(v => v)).then(results => {
           return results.every(result => result)
         })
@@ -512,7 +512,7 @@
                 published
                 publish_at
                 data
-                contents
+                content
                 editor
                 created_at
               }
@@ -530,7 +530,7 @@
             return {
               ...v,
               data: JSON.parse(v.data || '{}'),
-              contents: v.contents ? JSON.parse(v.contents) : null
+              content: v.content ? JSON.parse(v.content) : null
             }
           }).reverse() // latest versions first
         }).catch(error => {
@@ -626,8 +626,8 @@
           :class="{changed: changed.page, error: errors.page}"
           @click="aside = asidePage"
         >Page</v-tab>
-        <v-tab value="contents"
-          :class="{changed: changed.contents, error: errors.contents}"
+        <v-tab value="content"
+          :class="{changed: changed.content, error: errors.content}"
           @click="aside = 'count'"
         >Content</v-tab>
         <v-tab value="preview"
@@ -647,13 +647,13 @@
           />
         </v-window-item>
 
-        <v-window-item value="contents">
-          <PageDetailContent ref="contents"
+        <v-window-item value="content">
+          <PageDetailContent ref="content"
             :item="item"
             :assets="assets"
             :elements="elements"
-            @error="errors.contents = $event"
-            @change="changed.contents = true"
+            @error="errors.content = $event"
+            @change="changed.content = true"
           />
         </v-window-item>
 
@@ -663,7 +663,7 @@
             :item="item"
             :assets="assets"
             :elements="elements"
-            @change="changed.contents = true"
+            @change="changed.content = true"
           />
         </v-window-item>
 
@@ -693,7 +693,7 @@
           meta: clean(item.meta),
           config: clean(item.config)
         },
-        contents: clean(item.contents),
+        content: clean(item.content),
       }"
       :load="() => versions(item.id)"
       @use="use($event)"

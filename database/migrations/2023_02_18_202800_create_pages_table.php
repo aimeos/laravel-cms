@@ -30,7 +30,7 @@ return new class extends Migration
             $table->integer('related_id')->nullable();
             $table->json('meta');
             $table->json('config');
-            $table->json('contents');
+            $table->json('content');
             $table->string('editor');
             $table->softDeletes();
             $table->timestamps();

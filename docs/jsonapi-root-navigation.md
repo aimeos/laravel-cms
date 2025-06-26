@@ -47,7 +47,7 @@ The result will be a JSON:API response which looks like:
                 "domain": "mydomain.tld",
                 "has": true,
                 "cache": 5,
-                "contents": [
+                "content": [
                     {
                         "text": "Welcome to Laravel CMS",
                         "type": "cms::heading"
@@ -123,7 +123,7 @@ The result will be a JSON:API response which looks like:
                 "cache": 5,
                 "meta": null,
                 "config": null,
-                "contents": null,
+                "content": null,
                 "createdAt": "2023-05-01T09:36:30.000000Z",
                 "updatedAt": "2023-05-01T09:36:30.000000Z"
             },
@@ -147,7 +147,7 @@ The result will be a JSON:API response which looks like:
                 "cache": 5,
                 "meta": null,
                 "config": null,
-                "contents": null,
+                "content": null,
                 "createdAt": "2023-05-01T09:36:30.000000Z",
                 "updatedAt": "2023-05-01T09:36:30.000000Z"
             },
@@ -171,7 +171,7 @@ The result will be a JSON:API response which looks like:
                 "cache": 5,
                 "meta": null,
                 "config": null,
-                "contents": null,
+                "content": null,
                 "createdAt": "2023-05-01T09:36:30.000000Z",
                 "updatedAt": "2023-05-01T09:36:30.000000Z"
             },

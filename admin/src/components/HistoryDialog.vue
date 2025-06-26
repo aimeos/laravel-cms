@@ -47,7 +47,7 @@
 
         return (
           diffJson(v1.data || {}, v2.data || {}).length !== 1 ||
-          diffJson(v1.contents || {}, v2.contents || {}).length !== 1
+          diffJson(v1.content || {}, v2.content || {}).length !== 1
         )
       }
     }
@@ -76,8 +76,8 @@
                 <span v-for="part of diff(list[0]?.data, current.data)" :class="{added: part.added, removed: part.removed}">
                   {{ part.value || part }}
                 </span>
-                <div v-if="current.contents" class="divider">Content:</div>
-                <span v-if="current.contents" v-for="part of diff(list[0]?.contents, current.contents)" :class="{added: part.added, removed: part.removed}">
+                <div v-if="current.content" class="divider">Content:</div>
+                <span v-if="current.content" v-for="part of diff(list[0]?.content, current.content)" :class="{added: part.added, removed: part.removed}">
                   {{ part.value || part }}
                 </span>
               </v-card-text>
@@ -101,8 +101,8 @@
                   <span v-for="part of diff(version.data, current.data)" :class="{added: part.removed, removed: part.added}">
                     {{ part.value || part }}
                   </span>
-                  <div v-if="version.contents" class="divider">Content:</div>
-                  <span v-if="version.contents" v-for="part of diff(version.contents, current.contents)" :class="{added: part.removed, removed: part.added}">
+                  <div v-if="version.content" class="divider">Content:</div>
+                  <span v-if="version.content" v-for="part of diff(version.content, current.content)" :class="{added: part.removed, removed: part.added}">
                     {{ part.value || part }}
                   </span>
                 </v-card-text>
@@ -134,7 +134,7 @@
     display: none;
   }
 
-  /* todo: Doesn't work when display:contents is used */
+  /* todo: Doesn't work when display:content is used */
   .v-timeline-item__body {
     justify-self: auto !important;
   }

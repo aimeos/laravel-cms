@@ -198,7 +198,7 @@ type Page {
   config: JSON!
 
   "List of content"
-  contents: JSON!
+  content: JSON!
 
   "Visibility status of the page, 0=inactive, 1=visible, 2=hidden in navigation"
   status: Int!
@@ -290,7 +290,7 @@ input PageFilter {
   config: String
 
   "List of content"
-  contents: String
+  content: String
 
   "Visibility status of the page, 0=inactive, 1=visible, 2=hidden in navigation"
   status: Int
@@ -343,7 +343,7 @@ input PageInput {
   config: JSON
 
   "List of content"
-  contents: JSON
+  content: JSON
 
   "Visibility status of the page, 0=inactive, 1=visible, 2=hidden in navigation"
   status: Int
@@ -533,13 +533,13 @@ type Version {
   "Arbitrary versioned data"
   data: JSON!
 
-  "Arbitrary versioned page contents"
-  contents: JSON
+  "Arbitrary versioned page content"
+  content: JSON
 
   "List of shared content elements assigned to the version"
   elements: [Element!]! @belongsToMany
 
-  "List of files used in the data or contents property"
+  "List of files used in the data or content property"
   files: [File!]
 
   "If versioned is currently published or not"

@@ -74,7 +74,7 @@ class GraphqlPageTest extends TestAbstract
                 theme
                 meta
                 config
-                contents
+                content
                 status
                 cache
                 editor
@@ -118,7 +118,7 @@ class GraphqlPageTest extends TestAbstract
                 status: 1
                 meta: "Laravel"
                 config: "value"
-                contents: "Welcome"
+                content: "Welcome"
                 any: "Laravel"
             }, first: 10, page: 1, trashed: WITH, publish: PUBLISHED) {
                 data {
@@ -136,7 +136,7 @@ class GraphqlPageTest extends TestAbstract
                     theme
                     meta
                     config
-                    contents
+                    content
                     status
                     cache
                     editor
@@ -262,7 +262,7 @@ class GraphqlPageTest extends TestAbstract
                     theme
                     meta
                     config
-                    contents
+                    content
                     status
                     cache
                     editor
@@ -393,7 +393,7 @@ class GraphqlPageTest extends TestAbstract
                 versions {
                     lang
                     data
-                    contents
+                    content
                     editor
                 }
             }
@@ -405,7 +405,7 @@ class GraphqlPageTest extends TestAbstract
                         [
                             'lang' => $page->lang,
                             'data' => '{"name":"Home","title":"Home | Laravel CMS","path":"\\/","tag":"root","domain":"mydomain.tld","status":1,"cache":5,"editor":"seeder","meta":{"meta":{"type":"meta","text":"Laravel CMS is outstanding"}},"config":{"test":{"type":"test","data":{"key":"value"}}}}',
-                            'contents' => '[{"type":"heading","text":"Welcome to Laravel CMS"},{"type":"ref","id":"' . $element->id . '"}]',
+                            'content' => '[{"type":"heading","text":"Welcome to Laravel CMS"},{"type":"ref","id":"' . $element->id . '"}]',
                             'editor' => 'seeder'
                         ],
                     ],
@@ -507,7 +507,7 @@ class GraphqlPageTest extends TestAbstract
                     tag: "test"
                     meta: "{\"canonical\":\"to\/page\"}"
                     config: "{\"key\":\"test\"}"
-                    contents: "[{\"type\":\"heading\",\"text\":\"Welcome to Laravel CMS\"}]"
+                    content: "[{\"type\":\"heading\",\"text\":\"Welcome to Laravel CMS\"}]"
                     status: 0
                     cache: 0
                 }, elements: ["' . $element->id . '"], files: ["' . $file->id . '"]) {
@@ -525,7 +525,7 @@ class GraphqlPageTest extends TestAbstract
                     theme
                     meta
                     config
-                    contents
+                    content
                     status
                     cache
                     editor
@@ -573,7 +573,7 @@ class GraphqlPageTest extends TestAbstract
                     tag: "test"
                     meta: "{}"
                     config: "{}"
-                    contents: "[]"
+                    content: "[]"
                     status: 0
                     cache: 0
                 }, parent: "' . $root->id . '") {
@@ -613,7 +613,7 @@ class GraphqlPageTest extends TestAbstract
                     tag: "test"
                     meta: "{}"
                     config: "{}"
-                    contents: "[]"
+                    content: "[]"
                     status: 0
                     cache: 0
                 }, parent: "' . $root->id . '", ref: "' . $ref->id .'") {
@@ -750,7 +750,7 @@ class GraphqlPageTest extends TestAbstract
                     tag: "test"
                     meta: "{\"canonical\":\"to\/page\"}"
                     config: "{\"key\":\"test\"}"
-                    contents: "[{\"type\":\"heading\",\"text\":\"Welcome to Laravel CMS\"}]"
+                    content: "[{\"type\":\"heading\",\"text\":\"Welcome to Laravel CMS\"}]"
                     status: 0
                     cache: 5
                 }, elements: ["' . $element->id . '"], files: ["' . $file->id . '"]) {
@@ -767,7 +767,7 @@ class GraphqlPageTest extends TestAbstract
                     theme
                     meta
                     config
-                    contents
+                    content
                     status
                     cache
                     editor
@@ -782,14 +782,14 @@ class GraphqlPageTest extends TestAbstract
                     latest {
                         lang
                         data
-                        contents
+                        content
                         published
                         publish_at
                         editor
                     }
                     published {
                         data
-                        contents
+                        content
                     }
                 }
             }
@@ -814,7 +814,7 @@ class GraphqlPageTest extends TestAbstract
                     'theme' => '',
                     'meta' => '{"meta":{"type":"meta","data":{"text":"Laravel CMS is outstanding"}}}',
                     'config' => '{"test":{"type":"test","data":{"key":"value"}}}',
-                    'contents' => '[{"type":"heading","text":"Welcome to Laravel CMS"},{"type":"ref","id":"' . $element->id . '"}]',
+                    'content' => '[{"type":"heading","text":"Welcome to Laravel CMS"},{"type":"ref","id":"' . $element->id . '"}]',
                     'status' => 1,
                     'cache' => 5,
                     'editor' => 'seeder',
@@ -823,7 +823,7 @@ class GraphqlPageTest extends TestAbstract
                     'latest' => [
                         'lang' => 'de',
                         'data' => '{"lang":"de","path":"test","domain":"test.com","name":"test","title":"Test page","to":"\\/to\\/page","tag":"test","meta":{"canonical":"to\\/page"},"config":{"key":"test"},"status":0,"cache":5}',
-                        'contents' => '[{"type":"heading","text":"Welcome to Laravel CMS"}]',
+                        'content' => '[{"type":"heading","text":"Welcome to Laravel CMS"}]',
                         'published' => false,
                         'publish_at' => null,
                         'editor' => 'Test editor',
@@ -831,7 +831,7 @@ class GraphqlPageTest extends TestAbstract
                     ],
                     'published' => [
                         'data' => '{"name":"Home","title":"Home | Laravel CMS","path":"\\/","tag":"root","domain":"mydomain.tld","status":1,"cache":5,"editor":"seeder","meta":{"meta":{"type":"meta","text":"Laravel CMS is outstanding"}},"config":{"test":{"type":"test","data":{"key":"value"}}}}',
-                        'contents' => '[{"type":"heading","text":"Welcome to Laravel CMS"},{"type":"ref","id":"' . $element->id . '"}]',
+                        'content' => '[{"type":"heading","text":"Welcome to Laravel CMS"},{"type":"ref","id":"' . $element->id . '"}]',
                     ]
                 ],
             ]

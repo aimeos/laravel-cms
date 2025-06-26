@@ -53,7 +53,7 @@ class Page extends Model
         'theme' => '',
         'meta' => '{}',
         'config' => '{}',
-        'contents' => '[]',
+        'content' => '[]',
         'status' => 0,
         'cache' => 5,
         'editor' => '',
@@ -78,7 +78,7 @@ class Page extends Model
         'cache' => 'integer',
         'meta' => 'object',
         'config' => 'object',
-        'contents' => 'array',
+        'content' => 'array',
     ];
 
     /**
@@ -98,7 +98,7 @@ class Page extends Model
         'type',
         'theme',
         'config',
-        'contents',
+        'content',
         'status',
         'cache',
     ];
@@ -247,7 +247,7 @@ class Page extends Model
             $this->elements()->sync( $version->elements ?? [] );
 
             $this->fill( (array) $version->data );
-            $this->contents = (array) $version->contents;
+            $this->content = (array) $version->content;
             $this->editor = $version->editor;
             $this->save();
 

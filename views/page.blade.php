@@ -85,7 +85,7 @@
         @endif
 
         <div class="cms-content">
-            @foreach(cms($page, 'contents') ?? [] as $item)
+            @foreach(cms($page, 'content') ?? [] as $item)
                 @if(($item['type'] ?? '') === 'reference' && ($refid = $item['refid'] ?? null) && ($element = cms($page,'elements')[$refid] ?? null))
                     <div id="{{ $item['id'] ?? '' }}" class="{{ str_replace('::', '-', $element->type ?? '') }}">
                         <div class="container">

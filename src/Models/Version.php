@@ -34,7 +34,7 @@ class Version extends Model
         'tenant_id' => '',
         'lang' => null,
         'data' => '{}',
-        'contents' => null,
+        'content' => null,
         'publish_at' => null,
         'published' => false,
         'editor' => '',
@@ -47,7 +47,7 @@ class Version extends Model
      */
     protected $casts = [
         'data' => 'object',
-        'contents' => 'array',
+        'content' => 'array',
     ];
 
     /**
@@ -57,7 +57,7 @@ class Version extends Model
      */
     protected $fillable = [
         'publish_at',
-        'contents',
+        'content',
         'editor',
         'data',
         'lang',

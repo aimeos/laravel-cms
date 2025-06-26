@@ -46,7 +46,7 @@
           sections[name] = []
         }
 
-        for(const item of this.item.contents) {
+        for(const item of this.item.content) {
           const name = item.group || 'main'
 
           if(!sections[name]) {
@@ -79,7 +79,7 @@
         const sections = this.sections
         sections[section] = list
 
-        this.item.contents = Object.values(sections).reduce((acc, entries) => {
+        this.item.content = Object.values(sections).reduce((acc, entries) => {
           return acc.concat(entries)
         }, [])
 
@@ -118,10 +118,10 @@
               :section="section"
               :item="item"
               :assets="assets"
-              :contents="list"
+              :content="list"
               :elements="elements"
               @error="error(section, $event)"
-              @update:contents="update(section, $event); this.$emit('change', 'contents')"
+              @update:content="update(section, $event); this.$emit('change', 'content')"
             />
           </v-window-item>
         </v-window>
@@ -130,10 +130,10 @@
       <PageDetailContentList v-else
         :item="item"
         :assets="assets"
-        :contents="item.contents"
+        :content="item.content"
         :elements="elements"
         @error="$emit('error', $event)"
-        @update:contents="item.contents = $event; this.$emit('change', 'contents')"
+        @update:content="item.content = $event; this.$emit('change', 'content')"
       />
     </v-sheet>
   </v-container>

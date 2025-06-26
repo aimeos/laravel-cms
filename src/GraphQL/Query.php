@@ -387,12 +387,12 @@ final class Query
                     $builder->where( 'config', 'like', '%' . $value . '%' );
                 }
 
-                if( !empty( $value = $filter['contents'] ?? null ) ) {
-                    $builder->where( 'contents', 'like', '%' . $value . '%' );
+                if( !empty( $value = $filter['content'] ?? null ) ) {
+                    $builder->where( 'content', 'like', '%' . $value . '%' );
                 }
 
                 if( !empty( $value = $filter['any'] ?? null ) ) {
-                    $builder->whereAny( ['config', 'contents', 'meta', 'name', 'title'], 'like', '%' . $value . '%' );
+                    $builder->whereAny( ['config', 'content', 'meta', 'name', 'title'], 'like', '%' . $value . '%' );
                 }
 
                 $builder->orWhereHas('versions', function( $builder ) use ( $filter ) {
@@ -459,12 +459,12 @@ final class Query
                         $builder->where( 'data', 'like', '%' . $value . '%' );
                     }
 
-                    if( !empty( $value = $filter['contents'] ?? null ) ) {
-                        $builder->where( 'contents', 'like', '%' . $value . '%' );
+                    if( !empty( $value = $filter['content'] ?? null ) ) {
+                        $builder->where( 'content', 'like', '%' . $value . '%' );
                     }
 
                     if( !empty( $value = $filter['any'] ?? null ) ) {
-                        $builder->whereAny( ['contents', 'data'], 'like', '%' . $value . '%' );
+                        $builder->whereAny( ['content', 'data'], 'like', '%' . $value . '%' );
                     }
                 } );
             } );

@@ -122,7 +122,7 @@ class CmsSeeder extends Seeder
             'editor' => 'seeder',
             'meta' => ['meta' => ['type' => 'meta', 'data' => ['text' => 'Laravel CMS is outstanding']]],
             'config' => ['test' => ['type' => 'test', 'data' => ['key' => 'value']]],
-            'contents' => [
+            'content' => [
                 ['type' => 'heading', 'text' => 'Welcome to Laravel CMS'],
                 ['type' => 'ref', 'id' => $elementId]
             ],
@@ -141,7 +141,7 @@ class CmsSeeder extends Seeder
                 'meta' => ['meta' => ['type' => 'meta', 'text' => 'Laravel CMS is outstanding']],
                 'config' => ['test' => ['type' => 'test', 'data' => ['key' => 'value']]],
             ],
-            'contents' => [
+            'content' => [
                 ['type' => 'heading', 'text' => 'Welcome to Laravel CMS'],
                 ['type' => 'ref', 'id' => $elementId]
             ],
@@ -165,7 +165,7 @@ class CmsSeeder extends Seeder
             'tag' => 'blog',
             'status' => 1,
             'editor' => 'seeder',
-            'contents' => [
+            'content' => [
                 ['type' => 'blog', 'data' => ['text' => 'Blog example']],
                 ['type' => 'ref', 'id' => $elementId]
             ],
@@ -182,7 +182,7 @@ class CmsSeeder extends Seeder
         $elementId = $this->element();
         $fileId = $this->file();
 
-        $contents = [
+        $content = [
             [
                 'type' => 'article',
                 'data' => [
@@ -219,14 +219,14 @@ mutation {
             'editor' => 'seeder'
         ];
 
-        $page = Page::forceCreate($data + ['contents' => $contents]);
+        $page = Page::forceCreate($data + ['content' => $content]);
         $page->appendToNode( $blog )->save();
         $page->elements()->attach( $elementId );
         $page->files()->attach( $fileId );
 
         $version = $page->versions()->forceCreate([
             'data' => $data,
-            'contents' => $contents,
+            'content' => $content,
             'published' => true,
             'editor' => 'seeder',
         ]);
@@ -247,7 +247,7 @@ mutation {
             'path' => 'dev',
             'status' => 1,
             'editor' => 'seeder',
-            'contents' => [[
+            'content' => [[
                 'type' => 'paragraph',
                 'data' => [
                     'text' => '# For Developers

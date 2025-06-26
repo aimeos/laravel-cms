@@ -21,7 +21,7 @@ return new class extends Migration
             $table->boolean('published');
             $table->datetime('publish_at')->nullable();
             $table->string('lang', 5)->nullable();
-            $table->json('contents')->nullable();
+            $table->json('content')->nullable();
             $table->json('data');
             $table->string('editor');
             $table->timestamp('created_at');

@@ -316,7 +316,7 @@ mutation {
     cache: 5,
     start: "2023-04-01 00:00:00",
     end: null,
-    contents: ["0187d6ab-b76d-75ee-8830-ab00b4259aa5", "0187d6ab-b76d-75ee-8840-7e8026251ba0"],
+    content: ["0187d6ab-b76d-75ee-8830-ab00b4259aa5", "0187d6ab-b76d-75ee-8840-7e8026251ba0"],
     files: ["0187d6ab-b76d-75ee-8b0d-1b59cc3a1ab7"]
   }) {
     id
@@ -331,7 +331,7 @@ input
 
 All properties are optional. The input parameter contains two additional parameters which must be passed if shared content elements or files are referenced in the `data` or `meta` property:
 
-contents (list of IDs)
+content (list of IDs)
 : List of IDs from the shared content elements which are referenced in `data` or `meta` sections
 
 files (list of IDs)
@@ -370,7 +370,7 @@ mutation {
     cache: 5,
     start: "2023-04-01 00:00:00",
     end: null,
-    contents: ["0187d6ab-b76d-75ee-8830-ab00b4259aa5", "0187d6ab-b76d-75ee-8840-7e8026251ba0"],
+    content: ["0187d6ab-b76d-75ee-8830-ab00b4259aa5", "0187d6ab-b76d-75ee-8840-7e8026251ba0"],
     files: ["0187d6ab-b76d-75ee-8b0d-1b59cc3a1ab7"]
   }, parent_id: 1) {
     id
@@ -386,9 +386,9 @@ input
 parent_id (optional)
 : ID of the parent where the new page will be inserted below
 
-The `contents` and `files` properties in the `input` parameter must be passed if shared content elements or files are referenced in the `data` or `meta` property:
+The `content` and `files` properties in the `input` parameter must be passed if shared content elements or files are referenced in the `data` or `meta` property:
 
-contents (list of IDs)
+content (list of IDs)
 : List of IDs from the shared content elements which are referenced in `data` or `meta` sections
 
 files (list of IDs)
@@ -427,7 +427,7 @@ mutation {
     cache: 5,
     start: "2023-04-01 00:00:00",
     end: null,
-    contents: ["0187d6ab-b76d-75ee-8830-ab00b4259aa5", "0187d6ab-b76d-75ee-8840-7e8026251ba0"],
+    content: ["0187d6ab-b76d-75ee-8830-ab00b4259aa5", "0187d6ab-b76d-75ee-8840-7e8026251ba0"],
     files: ["0187d6ab-b76d-75ee-8b0d-1b59cc3a1ab7"]
   }, parent: 1, ref: 2) {
     id
@@ -446,9 +446,9 @@ parent (optional)
 ref (optional)
 : ID of the page the new one will be inserted before
 
-The `contents` and `files` properties in the `input` parameter must be passed if shared content elements or files are referenced in the `data` or `meta` property:
+The `content` and `files` properties in the `input` parameter must be passed if shared content elements or files are referenced in the `data` or `meta` property:
 
-contents (list of IDs)
+content (list of IDs)
 : List of IDs from the shared content elements which are referenced in `data` or `meta` sections
 
 files (list of IDs)
@@ -591,7 +591,7 @@ mutation {
     cache: 5,
     start: "2023-04-01 00:00:00",
     end: null,
-    contents: ["0187d6ab-b76d-75ee-8830-ab00b4259aa5", "0187d6ab-b76d-75ee-8840-7e8026251ba0"],
+    content: ["0187d6ab-b76d-75ee-8830-ab00b4259aa5", "0187d6ab-b76d-75ee-8840-7e8026251ba0"],
     files: ["0187d6ab-b76d-75ee-8b0d-1b59cc3a1ab7"]
   }) {
     id
@@ -609,7 +609,7 @@ input
 
 All properties are optional. The input parameter contains two additional parameters which must be passed if shared content elements or files are referenced in the `data` or `meta` property:
 
-contents (list of IDs)
+content (list of IDs)
 : List of IDs from the shared content elements which are referenced in `data` or `meta` sections
 
 files (list of IDs)

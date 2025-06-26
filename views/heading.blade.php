@@ -1,3 +1,3 @@
 <h{{ (int) ($data->level ?? 1) }}>
-	{{ $data->text }}
+	{{ @$data->text }}
 </h{{ (int) ($data->level ?? 1) }}>

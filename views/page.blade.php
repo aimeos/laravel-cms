@@ -86,21 +86,21 @@
 
         <div class="cms-content">
             @foreach(cms($page, 'content') ?? [] as $item)
-                @if(($item->type ?? '') === 'reference' && ($refid = $item->refid ?? null) && ($element = cms($page,'elements')?->{$refid} ?? null))
-                    <div id="{{ $item->id ?? '' }}" class="{{ str_replace('::', '-', $element->type ?? '') }}">
+                @if(@$item->type === 'reference' && ($refid = @$item->refid) && ($element = @cms($page,'elements')?->{$refid}))
+                    <div id="{{ @$item->id }}" class="{{ str_replace('::', '-', @$element->type) }}">
                         <div class="container">
                             @includeFirst([
-                                $element->type ?? '',
+                                @$element->type,
                                 (cms($page, 'theme') ?: 'cms') . '::' . ($element->type ?? 'page'),
                                 'cms::invalid'
-                            ], ['files' => cms($page, 'files')] + ['data' => (array) $element->data])
+                            ], ['files' => cms($page, 'files')] + ['data' => (array) @$element->data])
                         </div>
                     </div>
                 @else
-                    <div id="{{ $item->id ?? '' }}" class="{{ str_replace('::', '-', $item->type ?? '') }}">
+                    <div id="{{ @$item->id }}" class="{{ str_replace('::', '-', @$item->type) }}">
                         <div class="container">
                             @includeFirst([
-                                $item->type ?? '',
+                                @$item->type,
                                 (cms($page, 'theme') ?: 'cms') . '::' . ($item->type ?? 'page'),
                                 'cms::invalid'
                             ], ['files' => cms($page, 'files')] + (array) $item)

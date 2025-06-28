@@ -32,6 +32,7 @@ final class Translate
             'preserve_formatting' => true,
             'target_lang' => strtoupper( $args['to'] ),
             'source_lang' => strtoupper( $args['from'] ?? '' ),
+            'context' => $args['context'] ?? '',
             'text' => $args['texts'],
         ];
 

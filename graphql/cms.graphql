@@ -72,7 +72,7 @@ extend type Mutation {
   compose(prompt: String!, context: String): String
 
   "Translate texts"
-  translate(texts: [String!]!, to: String!, from: String): [String!]!
+  translate(texts: [String!]!, to: String!, from: String, context: String): [String!]!
 
 
   "Add a new page below the page referenced by 'parent' and before the page referenced by 'ref' (or append if NULL)"

@@ -101,7 +101,7 @@
       },
 
 
-      translateText(texts, to, from = null) {
+      translateText(texts, to, from = null, context = null) {
         if(!Array.isArray(texts)) {
           texts = [texts].filter(v => !!v)
         }
@@ -115,13 +115,14 @@
         }
 
         return this.$apollo.mutate({
-          mutation: gql`mutation($texts: [String!]!, $to: String!, $from: String) {
-            translate(texts: $texts, to: $to, from: $from)
+          mutation: gql`mutation($texts: [String!]!, $to: String!, $from: String, $context: String) {
+            translate(texts: $texts, to: $to, from: $from, context: $context)
           }`,
           variables: {
             texts: texts,
             to: to.toUpperCase(),
             from: from?.toUpperCase(),
+            context: context
           }
         }).then(result => {
           if(result.errors) {

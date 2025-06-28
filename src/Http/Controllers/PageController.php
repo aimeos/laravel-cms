@@ -39,8 +39,6 @@ class PageController extends Controller
      */
     public function index( Request $request, string $path, $domain = '' )
     {
-        $path = trim( $path, '/' ) ?: '/';
-
         if( Permission::can( 'page:view', $request->user() ) )
         {
             $version = Version::where( 'versionable_type', Page::class )

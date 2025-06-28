@@ -1,4 +1,5 @@
 <script>
+  import gql from 'graphql-tag'
   import { useAppStore, useAuthStore, useConfigStore, useLanguageStore, useSideStore } from '../stores'
 
   export default {
@@ -9,8 +10,11 @@
 
     emits: ['change', 'error'],
 
+    inject: ['debounce'],
+
     data: () => ({
-      errors: {}
+      errors: {},
+      messages: {}
     }),
 
     setup() {
@@ -21,6 +25,10 @@
       const app = useAppStore()
 
       return { app, auth, side, config, languages }
+    },
+
+    created() {
+      this.checkPathd = this.debounce(this.checkPath, 500)
     },
 
     computed: {
@@ -41,46 +49,57 @@
     },
 
     methods: {
+      checkPath() {
+        return this.$apollo.query({
+          query: gql`query($filter: PageFilter) {
+            pages(filter: $filter) {
+              data {
+                id
+              }
+            }
+          }`,
+          variables: {
+            filter: {
+              path: this.item.path || '',
+              domain: this.item.domain || '',
+            }
+          }
+        }).then(result => {
+          if(result?.data?.pages?.data?.length > 0 && result?.data?.pages?.data?.some(page => page.id !== this.item.id)) {
+            this.messages.path = ['The path is already in use by another page']
+          } else {
+            this.messages.path = []
+          }
+
+          this.$emit('error', !!this.messages.path.length)
+          return this.messages.path
+        }).catch(error => {
+          console.error('PageDetailItemProps::checkPath: Error checking path', error)
+        })
+      },
+
+
       reset() {
         this.errors = {}
       },
 
 
-      store(isVisible = true) {
-        if(!isVisible) {
-          return
-        }
-
-        this.validate().then(res => {
-          let state = {}
-
-          if(res !== true) {
-            state = {error: res}
-          }
-
-          this.side.store = {state: state}
-        })
-      },
-
-
-      update(what, value) {
-        this.item[what] = value
-        this.$emit('change', true)
-        this.validate()
-        this.store()
-      },
-
-
-      updatePath(focused) {
+      setPath(focused) {
         if(!focused && this.item.path?.at(0) === '_') {
           this.item.path = this.item.name?.replace(/[ ]+/g, '-')?.toLowerCase()
         }
       },
 
 
-      async validate() {
+      update(what, value) {
+        this.item[what] = value.trim()
+        this.$emit('change', true)
+      },
+
+
+      async validate(lazy = false) {
         await this.$nextTick()
-        const list = []
+        const list = [lazy ? this.checkPathd() : this.checkPath()]
 
         Object.values(this.$refs).forEach(field => {
           list.push(field.validate())
@@ -99,7 +118,7 @@
         deep: true,
         immediate: true,
         handler(val) {
-          this.validate()
+          this.validate(true)
         }
       }
     }
@@ -107,7 +126,7 @@
 </script>
 
 <template>
-  <v-container v-observe-visibility="store">
+  <v-container>
     <v-sheet>
 
       <v-row>
@@ -150,7 +169,7 @@
             :readonly="readonly"
             :modelValue="item.name"
             @update:modelValue="update('name', $event)"
-            @update:focused="updatePath($event)"
+            @update:focused="setPath($event)"
             variant="underlined"
             label="Page name"
             counter="255"
@@ -169,17 +188,23 @@
         <v-col cols="12" md="6">
           <v-text-field ref="path"
             :rules="[
-              v => !!v || `The field is required`,
+              v => !v || v && v[0] !== '/' || `Path must not start with a slash (/)`,
             ]"
+            :error="!!(messages.path || []).length"
+            :error-messages="messages.path"
             :readonly="readonly"
             :modelValue="item.path"
-            @update:modelValue="update('path', $event)"
+            @update:modelValue="update('path', $event); messages.path = null"
+            @change="checkPath()"
             variant="underlined"
             label="URL path"
             counter="255"
             maxlength="255"
           ></v-text-field>
           <v-text-field ref="domain"
+            :rules="[
+              v => !v || v && /^([0-9a-z]+[.-])*[0-9a-z]+\.[a-z]{2,}$/.test(v) || `Domain name is invalid`,
+            ]"
             :readonly="readonly"
             :modelValue="item.domain"
             @update:modelValue="update('domain', $event)"

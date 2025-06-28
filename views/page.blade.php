@@ -21,13 +21,8 @@
             <script defer src="{{ cmsasset('vendor/cms/admin.js') }}"></script>
         @endif
 
-        @foreach(cms($page, 'meta') ?? [] as $type => $item)
-            @includeFirst([
-                $type,
-                (cms($page, 'theme') ?: 'cms') . '::' . $type,
-                'cms::' . $type,
-                'cms::invalid'
-            ], ['files' => cms($page, 'files')] + (array) $item )
+        @foreach(cms($page, 'meta') ?? [] as $item)
+            @includeFirst(cmsview($page, $item), ['files' => cms($page, 'files')] + (array) $item)
         @endforeach
     </head>
     <body class="theme-{{ cms($page, 'theme') }} type-{{ cms($page, 'type') }}">
@@ -89,21 +84,13 @@
                 @if(@$item->type === 'reference' && ($refid = @$item->refid) && ($element = @cms($page,'elements')?->{$refid}))
                     <div id="{{ @$item->id }}" class="{{ str_replace('::', '-', @$element->type) }}">
                         <div class="container">
-                            @includeFirst([
-                                @$element->type,
-                                (cms($page, 'theme') ?: 'cms') . '::' . ($element->type ?? 'page'),
-                                'cms::invalid'
-                            ], ['files' => cms($page, 'files')] + ['data' => (array) @$element->data])
+                            @includeFirst(cmsview($page, $element), ['files' => cms($page, 'files')] + ['data' => (array) @$element->data])
                         </div>
                     </div>
                 @else
                     <div id="{{ @$item->id }}" class="{{ str_replace('::', '-', @$item->type) }}">
                         <div class="container">
-                            @includeFirst([
-                                @$item->type,
-                                (cms($page, 'theme') ?: 'cms') . '::' . ($item->type ?? 'page'),
-                                'cms::invalid'
-                            ], ['files' => cms($page, 'files')] + (array) $item)
+                            @includeFirst(cmsview($page, $item), ['files' => cms($page, 'files')] + (array) $item)
                         </div>
                     </div>
                 @endif

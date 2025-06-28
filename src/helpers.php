@@ -70,3 +70,16 @@ if( !function_exists( 'cmsurl' ) )
         return \Illuminate\Support\Facades\Storage::disk( config( 'cms.disk', 'public' ) )->url( $path );
     }
 }
+
+
+if( !function_exists( 'cmsview' ) )
+{
+    function cmsview( \Aimeos\Cms\Models\Page $page, object $item ): array
+    {
+        return isset( $item->type ) ? [
+            $item->type,
+            (cms($page, 'theme') ?: 'cms') . '::' . $item->type,
+            'cms::invalid'
+        ] : 'cms::invalid';
+    }
+}

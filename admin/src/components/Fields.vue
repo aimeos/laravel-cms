@@ -120,7 +120,7 @@
       <div v-if="!readonly && ['markdown', 'plaintext', 'string', 'text'].includes(field.type)" class="actions">
         <v-menu>
           <template #activator="{ props }">
-            <v-btn :loading="translating[code] || false" icon="mdi-translate" elevation="0" v-bind="props" />
+            <v-btn :loading="translating[code] || false" icon="mdi-translate" variant="flat" v-bind="props" />
           </template>
           <v-list>
             <v-list-item v-for="lang in txlanguages()" :key="lang.code">

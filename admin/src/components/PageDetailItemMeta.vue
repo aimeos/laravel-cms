@@ -183,7 +183,7 @@
       </v-expansion-panels>
 
       <div v-if="available && auth.can('page:save')" class="btn-group">
-        <v-btn icon="mdi-view-grid-plus" color="primary" @click="vschemas = true" elevation="0"></v-btn>
+        <v-btn icon="mdi-view-grid-plus" color="primary" @click="vschemas = true" variant="flat"></v-btn>
       </div>
 
     </v-sheet>

@@ -1032,7 +1032,7 @@
     <v-btn @click="add()"
       icon="mdi-folder-plus"
       color="primary"
-      elevation="0"
+      variant="flat"
     ></v-btn>
   </div>
 </template>

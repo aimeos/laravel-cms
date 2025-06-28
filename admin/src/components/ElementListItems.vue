@@ -532,7 +532,7 @@
     <v-btn @click="vschemas = true"
       icon="mdi-view-grid-plus"
       color="primary"
-      elevation="0"
+      variant="flat"
     ></v-btn>
   </div>
 

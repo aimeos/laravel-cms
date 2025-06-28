@@ -306,7 +306,6 @@ class GraphqlElementTest extends TestAbstract
                     latest {
                         lang
                         data
-                        content
                         published
                         publish_at
                         editor
@@ -328,7 +327,6 @@ class GraphqlElementTest extends TestAbstract
                     'latest' => [
                         'lang' => 'de',
                         'data' => '{"type":"test","lang":"de","data":{"key":"value"}}',
-                        'content' => null,
                         'published' => false,
                         'publish_at' => null,
                         'editor' => 'Test editor',

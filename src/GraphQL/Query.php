@@ -25,7 +25,7 @@ final class Query
      */
     public function elements( $rootValue, array $args ) : Builder
     {
-        $filter = array_filter( $args['filter'] ?? [] );
+        $filter = $args['filter'] ?? [];
         $limit = (int) ( $args['first'] ?? 100 );
 
         $builder = Element::skip( max( ( $args['page'] ?? 1 ) - 1, 0 ) * $limit )
@@ -76,64 +76,62 @@ final class Query
         {
             $builder->where( function( $builder ) use ( $filter ) {
 
-                if( !empty( $value = $filter['id'] ?? null ) ) {
-                    $builder->whereIn( 'id', $value );
+                if( array_key_exists( 'id', $filter ) ) {
+                    $builder->whereIn( 'id', $filter['id'] );
                 }
 
-                if( !empty( $value = $filter['lang'] ?? null ) ) {
-                    $builder->where( 'lang', $value );
+                if( array_key_exists( 'lang', $filter ) ) {
+                    $builder->where( 'lang', $filter['lang'] );
                 }
 
-                if( !empty( $value = $filter['editor'] ?? null ) ) {
-                    $builder->where( 'editor', 'like', $value . '%' );
+                if( array_key_exists( 'type', $filter ) ) {
+                    $builder->where( 'type', (string) $filter['type'] );
                 }
 
-                if( !empty( $value = $filter['type'] ?? null ) ) {
-                    $builder->where( 'type', 'like', $value . '%' );
+                if( array_key_exists( 'name', $filter ) ) {
+                    $builder->where( 'name', 'like', $filter['name'] . '%' );
                 }
 
-                if( !empty( $value = $filter['name'] ?? null ) ) {
-                    $builder->where( 'name', 'like', $value . '%' );
+                if( array_key_exists( 'editor', $filter ) ) {
+                    $builder->where( 'editor', 'like', $filter['editor'] . '%' );
                 }
 
-                if( !empty( $value = $filter['data'] ?? null ) ) {
-                    $builder->where( 'data', 'like', '%' . $value . '%' );
+                if( array_key_exists( 'data', $filter ) ) {
+                    $builder->where( 'data', 'like', '%' . $filter['data'] . '%' );
                 }
 
-                if( !empty( $value = $filter['any'] ?? null ) ) {
-                    $builder->whereAny( ['name', 'data'], 'like', '%' . $value . '%' );
+                if( array_key_exists( 'any', $filter ) ) {
+                    $builder->whereAny( ['name', 'data'], 'like', '%' . $filter['any'] . '%' );
                 }
 
                 $builder->orWhereHas('versions', function( $builder ) use ( $filter ) {
 
-                    $builder->where( 'versionable_type', Element::class );
-
-                    if( !empty( $value = $filter['id'] ?? null ) ) {
-                        $builder->whereIn( 'versionable_id', $value );
+                    if( array_key_exists( 'id', $filter ) ) {
+                        $builder->whereIn( 'versionable_id', $filter['id'] );
                     }
 
-                    if( !empty( $value = $filter['lang'] ?? null ) ) {
-                        $builder->where( 'lang', $value );
+                    if( array_key_exists( 'lang', $filter ) ) {
+                        $builder->where( 'lang', $filter['lang'] );
                     }
 
-                    if( !empty( $value = $filter['editor'] ?? null ) ) {
-                        $builder->where( 'editor', 'like', $value . '%' );
+                    if( array_key_exists( 'editor', $filter ) ) {
+                        $builder->where( 'editor', 'like', $filter['editor'] . '%' );
                     }
 
-                    if( !empty( $value = $filter['type'] ?? null ) ) {
-                        $builder->where( 'data', 'like', '%"type": "' . $value . '%' );
+                    if( array_key_exists( 'type', $filter ) ) {
+                        $builder->where( 'data->type', (string) $filter['type'] );
                     }
 
-                    if( !empty( $value = $filter['name'] ?? null ) ) {
-                        $builder->where( 'data', 'like', '%"name": "' . $value . '%' );
+                    if( array_key_exists( 'name', $filter ) ) {
+                        $builder->where( 'data->name', 'like', $filter['name'] . '%' );
                     }
 
-                    if( !empty( $value = $filter['data'] ?? null ) ) {
-                        $builder->where( 'data', 'like', '%' . $value . '%' );
+                    if( array_key_exists( 'data', $filter ) ) {
+                        $builder->where( 'data', 'like', '%' . $filter['data'] . '%' );
                     }
 
-                    if( !empty( $value = $filter['any'] ?? null ) ) {
-                        $builder->whereAny( ['name', 'data'], 'like', '%' . $value . '%' );
+                    if( array_key_exists( 'any', $filter ) ) {
+                        $builder->whereAny( ['name', 'data'], 'like', '%' . $filter['any'] . '%' );
                     }
                 });
             });
@@ -152,7 +150,7 @@ final class Query
      */
     public function files( $rootValue, array $args ) : Builder
     {
-        $filter = array_filter( $args['filter'] ?? [] );
+        $filter = $args['filter'] ?? [];
         $limit = (int) ( $args['first'] ?? 100 );
 
         $builder = File::skip( max( ( $args['page'] ?? 1 ) - 1, 0 ) * $limit )
@@ -203,60 +201,58 @@ final class Query
         {
             $builder->where( function( $builder ) use ( $filter ) {
 
-                if( !empty( $value = $filter['id'] ?? null ) ) {
-                    $builder->whereIn( 'id', $value );
+                if( array_key_exists( 'id', $filter ) ) {
+                    $builder->whereIn( 'id', $filter['id'] );
                 }
 
-                if( !empty( $value = $filter['lang'] ?? null ) ) {
-                    $builder->where( 'lang', $value );
+                if( array_key_exists( 'lang', $filter ) ) {
+                    $builder->where( 'lang', $filter['lang'] );
                 }
 
-                if( !empty( $value = $filter['mime'] ?? null ) ) {
-                    $builder->where( 'mime', 'like', $value . '%' );
+                if( array_key_exists( 'mime', $filter ) ) {
+                    $builder->where( 'mime', 'like', $filter['mime'] . '%' );
                 }
 
-                if( !empty( $value = $filter['name'] ?? null ) ) {
-                    $builder->where( 'name', 'like', $value . '%' );
+                if( array_key_exists( 'name', $filter ) ) {
+                    $builder->where( 'name', 'like', $filter['name'] . '%' );
                 }
 
-                if( !empty( $value = $filter['editor'] ?? null ) ) {
-                    $builder->where( 'editor', 'like', $value . '%' );
+                if( array_key_exists( 'editor', $filter ) ) {
+                    $builder->where( 'editor', 'like', $filter['editor'] . '%' );
                 }
 
-                if( !empty( $value = $filter['any'] ?? null ) ) {
-                    $builder->whereAny( ['description', 'name'], 'like', '%' . $value . '%' );
+                if( array_key_exists( 'any', $filter ) ) {
+                    $builder->whereAny( ['description', 'name'], 'like', '%' . $filter['any'] . '%' );
                 }
 
                 $builder->orWhereHas('versions', function( $builder ) use ( $filter ) {
 
-                    $builder->where( 'versionable_type', File::class );
-
-                    if( !empty( $value = $filter['id'] ?? null ) ) {
-                        $builder->whereIn( 'versionable_id', $value );
+                    if( array_key_exists( 'id', $filter ) ) {
+                        $builder->whereIn( 'versionable_id', $filter['id'] );
                     }
 
-                    if( !empty( $value = $filter['lang'] ?? null ) ) {
-                        $builder->where( 'lang', $value );
+                    if( array_key_exists( 'lang', $filter ) ) {
+                        $builder->where( 'lang', $filter['lang'] );
                     }
 
-                    if( !empty( $value = $filter['editor'] ?? null ) ) {
-                        $builder->where( 'editor', 'like', $value . '%' );
+                    if( array_key_exists( 'editor', $filter ) ) {
+                        $builder->where( 'editor', 'like', $filter['editor'] . '%' );
                     }
 
-                    if( !empty( $value = $filter['mime'] ?? null ) ) {
-                        $builder->where( 'data', 'like', '%"mime": "' . $value . '%' );
+                    if( array_key_exists( 'mime', $filter ) ) {
+                        $builder->where( 'data->mime', 'like', $filter['mime'] . '%' );
                     }
 
-                    if( !empty( $value = $filter['name'] ?? null ) ) {
-                        $builder->where( 'data', 'like', '%"name": "' . $value . '%' );
+                    if( array_key_exists( 'name', $filter ) ) {
+                        $builder->where( 'data->name', 'like', $filter['name'] . '%' );
                     }
 
-                    if( !empty( $value = $filter['description'] ?? null ) ) {
-                        $builder->where( 'data', 'like', '%' . $value . '%' );
+                    if( array_key_exists( 'description', $filter ) ) {
+                        $builder->where( 'data->description', 'like', '%' . $filter['description'] . '%' );
                     }
 
-                    if( !empty( $value = $filter['any'] ?? null ) ) {
-                        $builder->whereAny( ['description', 'name'], 'like', '%' . $value . '%' );
+                    if( array_key_exists( 'any', $filter ) ) {
+                        $builder->whereAny( ['data'], 'like', '%' . $filter['any'] . '%' );
                     }
                 });
             });
@@ -275,13 +271,9 @@ final class Query
      */
     public function pages( $rootValue, array $args ) : \Kalnoy\Nestedset\QueryBuilder
     {
-        $filter = array_filter( $args['filter'] ?? [] );
+        $filter = $args['filter'] ?? [];
         $limit = (int) ( $args['first'] ?? 100 );
         $trashed = $args['trashed'] ?? null;
-
-        if( array_key_exists( 'parent_id', $args['filter'] ?? [] ) ) {
-            $filter['parent_id'] = $args['filter']['parent_id']; // Re-add parent_id if NULL
-        }
 
         $builder = Page::skip( max( ( $args['page'] ?? 1 ) - 1, 0 ) * $limit )
             ->take( min( max( $limit, 1 ), 100 ) );
@@ -331,140 +323,146 @@ final class Query
                     $builder->where( 'parent_id', $filter['parent_id'] );
                 }
 
-                if( !empty( $value = $filter['id'] ?? null ) ) {
-                    $builder->whereIn( 'id', $value );
+                if( array_key_exists( 'id', $filter ) ) {
+                    $builder->whereIn( 'id', $filter['id'] );
                 }
 
-                if( !empty( $value = $filter['lang'] ?? null ) ) {
-                    $builder->where( 'lang', $value );
+                if( array_key_exists( 'lang', $filter ) ) {
+                    $builder->where( 'lang', (string) $filter['lang'] );
                 }
 
-                if( !empty( $value = $filter['to'] ?? null ) ) {
-                    $builder->where( 'to', 'like', $value . '%' );
+                if( array_key_exists( 'to', $filter ) ) {
+                    $builder->where( 'to', (string) $filter['to'] );
                 }
 
-                if( !empty( $value = $filter['path'] ?? null ) ) {
-                    $builder->where( 'path', 'like', $value . '%' );
+                if( array_key_exists( 'path', $filter ) ) {
+                    $builder->where( 'path', (string) $filter['path'] );
                 }
 
-                if( !empty( $value = $filter['domain'] ?? null ) ) {
-                    $builder->where( 'domain', 'like', $value . '%' );
+                if( array_key_exists( 'domain', $filter ) ) {
+                    $builder->where( 'domain', (string) $filter['domain'] );
                 }
 
-                if( !empty( $value = $filter['name'] ?? null ) ) {
-                    $builder->where( 'name', 'like', $value . '%' );
+                if( array_key_exists( 'tag', $filter ) ) {
+                    $builder->where( 'tag', (string) $filter['tag'] );
                 }
 
-                if( !empty( $value = $filter['title'] ?? null ) ) {
-                    $builder->where( 'title', 'like', $value . '%' );
+                if( array_key_exists( 'theme', $filter ) ) {
+                    $builder->where( 'theme', (string) $filter['theme'] );
                 }
 
-                if( !empty( $value = $filter['theme'] ?? null ) ) {
-                    $builder->where( 'theme', 'like', $value . '%' );
+                if( array_key_exists( 'type', $filter ) ) {
+                    $builder->where( 'type', (string) $filter['type'] );
                 }
 
-                if( !empty( $value = $filter['tag'] ?? null ) ) {
-                    $builder->where( 'tag', 'like', $value . '%' );
+                if( array_key_exists( 'status', $filter ) ) {
+                    $builder->where( 'status', (int) $filter['status'] );
                 }
 
-                if( !empty( $value = $filter['editor'] ?? null ) ) {
-                    $builder->where( 'editor', 'like', $value . '%' );
+                if( array_key_exists( 'cache', $filter ) ) {
+                    $builder->where( 'cache', (int) $filter['cache'] );
                 }
 
-                if( !empty( $value = $filter['status'] ?? null ) ) {
-                    $builder->where( 'status', $value );
+                if( array_key_exists( 'name', $filter ) ) {
+                    $builder->where( 'name', 'like', $filter['name'] . '%' );
                 }
 
-                if( !empty( $value = $filter['cache'] ?? null ) ) {
-                    $builder->where( 'cache', $value );
+                if( array_key_exists( 'title', $filter ) ) {
+                    $builder->where( 'title', 'like', $filter['title'] . '%' );
                 }
 
-                if( !empty( $value = $filter['meta'] ?? null ) ) {
-                    $builder->where( 'meta', 'like', '%' . $value . '%' );
+                if( array_key_exists( 'editor', $filter ) ) {
+                    $builder->where( 'editor', 'like', $filter['editor'] . '%' );
                 }
 
-                if( !empty( $value = $filter['config'] ?? null ) ) {
-                    $builder->where( 'config', 'like', '%' . $value . '%' );
+                if( array_key_exists( 'meta', $filter ) ) {
+                    $builder->where( 'meta', 'like', '%' . $filter['meta'] . '%' );
                 }
 
-                if( !empty( $value = $filter['content'] ?? null ) ) {
-                    $builder->where( 'content', 'like', '%' . $value . '%' );
+                if( array_key_exists( 'config', $filter ) ) {
+                    $builder->where( 'config', 'like', '%' . $filter['config'] . '%' );
                 }
 
-                if( !empty( $value = $filter['any'] ?? null ) ) {
-                    $builder->whereAny( ['config', 'content', 'meta', 'name', 'title'], 'like', '%' . $value . '%' );
+                if( array_key_exists( 'content', $filter ) ) {
+                    $builder->where( 'content', 'like', '%' . $filter['content'] . '%' );
+                }
+
+                if( array_key_exists( 'any', $filter ) ) {
+                    $builder->whereAny( ['config', 'content', 'meta', 'name', 'title'], 'like', '%' . $filter['any'] . '%' );
                 }
 
                 $builder->orWhereHas('versions', function( $builder ) use ( $filter ) {
-
-                    $builder->where( 'versionable_type', Page::class );
 
                     if( array_key_exists( 'parent_id', $filter ) ) {
                         $builder->where( 'cms_pages.parent_id', $filter['parent_id'] );
                     }
 
-                    if( !empty( $value = $filter['id'] ?? null ) ) {
-                        $builder->whereIn( 'versionable_id', $value );
+                    if( array_key_exists( 'id', $filter ) ) {
+                        $builder->whereIn( 'versionable_id', $filter['id'] );
                     }
 
-                    if( !empty( $value = $filter['lang'] ?? null ) ) {
-                        $builder->where( 'lang', $value );
+                    if( array_key_exists( 'lang', $filter ) ) {
+                        $builder->where( 'lang', (string) $filter['lang'] );
                     }
 
-                    if( !empty( $value = $filter['to'] ?? null ) ) {
-                        $builder->where( 'data', 'like', '%"to": "' . $value . '%' );
+                    if( array_key_exists( 'editor', $filter ) ) {
+                        $builder->where( 'editor', 'like', $filter['editor'] . '%' );
                     }
 
-                    if( !empty( $value = $filter['path'] ?? null ) ) {
-                        $builder->where( 'data', 'like', '%"path": "' . $value . '%' );
+                    if( array_key_exists( 'to', $filter ) ) {
+                        $builder->where( 'data->to', (string) $filter['to'] );
                     }
 
-                    if( !empty( $value = $filter['domain'] ?? null ) ) {
-                        $builder->where( 'data', 'like', '%"domain": "' . $value . '%' );
+                    if( array_key_exists( 'path', $filter ) ) {
+                        $builder->where( 'data->path', (string) $filter['path'] );
                     }
 
-                    if( !empty( $value = $filter['name'] ?? null ) ) {
-                        $builder->where( 'data', 'like', '%"name": "' . $value . '%' );
+                    if( array_key_exists( 'domain', $filter ) ) {
+                        $builder->where( 'data->domain', (string) $filter['domain'] );
                     }
 
-                    if( !empty( $value = $filter['title'] ?? null ) ) {
-                        $builder->where( 'data', 'like', '%"title": "' . $value . '%' );
+                    if( array_key_exists( 'tag', $filter ) ) {
+                        $builder->where( 'data->tag', (string) $filter['tag'] );
                     }
 
-                    if( !empty( $value = $filter['theme'] ?? null ) ) {
-                        $builder->where( 'data', 'like', '%"theme": "' . $value . '%' );
+                    if( array_key_exists( 'theme', $filter ) ) {
+                        $builder->where( 'data->theme', (string) $filter['theme'] );
                     }
 
-                    if( !empty( $value = $filter['tag'] ?? null ) ) {
-                        $builder->where( 'data', 'like', '%"tag": "' . $value . '%' );
+                    if( array_key_exists( 'type', $filter ) ) {
+                        $builder->where( 'data->type', (string) $filter['type'] );
                     }
 
-                    if( !empty( $value = $filter['editor'] ?? null ) ) {
-                        $builder->where( 'data', 'like', $value . '%' );
+                    if( array_key_exists( 'status', $filter ) ) {
+                        $builder->where( 'data->status', (int) $filter['status'] );
                     }
 
-                    if( !empty( $value = $filter['status'] ?? null ) ) {
-                        $builder->where( 'data', 'like', '%"status": ' . $value );
+                    if( array_key_exists( 'cache', $filter ) ) {
+                        $builder->where( 'data->cache', (int) $filter['cache'] );
                     }
 
-                    if( !empty( $value = $filter['cache'] ?? null ) ) {
-                        $builder->where( 'data', 'like', '%"cache": ' . $value );
+                    if( array_key_exists( 'name', $filter ) ) {
+                        $builder->where( 'data->name', 'like', $filter['name'] . '%' );
                     }
 
-                    if( !empty( $value = $filter['meta'] ?? null ) ) {
-                        $builder->where( 'data', 'like', '%' . $value . '%' );
+                    if( array_key_exists( 'title', $filter ) ) {
+                        $builder->where( 'data->title', 'like', $filter['title'] . '%' );
                     }
 
-                    if( !empty( $value = $filter['config'] ?? null ) ) {
-                        $builder->where( 'data', 'like', '%' . $value . '%' );
+                    if( array_key_exists( 'meta', $filter ) ) {
+                        $builder->where( 'aux->meta', 'like', '%' . $filter['meta'] . '%' );
                     }
 
-                    if( !empty( $value = $filter['content'] ?? null ) ) {
-                        $builder->where( 'content', 'like', '%' . $value . '%' );
+                    if( array_key_exists( 'config', $filter ) ) {
+                        $builder->where( 'aux->config', 'like', '%' . $filter['config'] . '%' );
                     }
 
-                    if( !empty( $value = $filter['any'] ?? null ) ) {
-                        $builder->whereAny( ['content', 'data'], 'like', '%' . $value . '%' );
+                    if( array_key_exists( 'content', $filter ) ) {
+                        $builder->where( 'aux->content', 'like', '%' . $filter['content'] . '%' );
+                    }
+
+                    if( array_key_exists( 'any', $filter ) ) {
+                        $builder->whereAny( ['aux', 'data'], 'like', '%' . $filter['any'] . '%' );
                     }
                 } );
             } );

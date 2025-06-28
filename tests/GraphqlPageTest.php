@@ -105,13 +105,13 @@ class GraphqlPageTest extends TestAbstract
             pages(filter: {
                 id: [' . $page->id . ']
                 parent_id: null
-                name: "Home"
-                path: "/"
-                to: ""
-                title: "Home"
-                domain: "mydomain"
                 lang: "en"
+                name: "Home"
+                title: "Home"
+                path: "/"
                 tag: "root"
+                to: ""
+                domain: "mydomain.tld"
                 type: ""
                 theme: ""
                 cache: 5
@@ -119,6 +119,7 @@ class GraphqlPageTest extends TestAbstract
                 meta: "Laravel"
                 config: "value"
                 content: "Welcome"
+                editor: "seed"
                 any: "Laravel"
             }, first: 10, page: 1, trashed: WITH, publish: PUBLISHED) {
                 data {

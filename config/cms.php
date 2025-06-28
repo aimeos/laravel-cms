@@ -14,6 +14,7 @@ return [
     */
     'ai' => [
         'text' => env( 'CMS_AI_TEXT', 'openai' ),
+        'text-model' => env( 'CMS_AI_TEXT_MODEL', 'chatgpt-4o-latest' ),
     ],
 
     /*
@@ -49,6 +50,23 @@ return [
     |
     */
     'disk' => env( 'CMS_DISK', 'public' ),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Image settings
+    |--------------------------------------------------------------------------
+    |
+    | The "preview-sizes" array defines the maximum widths and heights of the
+    | preview images in pixel that are generated for the uploaded images.
+    |
+    */
+    'image' => [
+        'preview-sizes' => [
+            ['width' => 480, 'height' => 270],
+            ['width' => 960, 'height' => 540],
+            ['width' => 1920, 'height' => 1080],
+        ]
+    ],
 
     /*
     |--------------------------------------------------------------------------

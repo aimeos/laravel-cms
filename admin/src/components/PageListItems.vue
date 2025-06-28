@@ -16,6 +16,8 @@
 
     emits: ['select'],
 
+    inject: ['debounce'],
+
     data() {
       return {
         clip: null,
@@ -153,26 +155,6 @@
 
       cut(stat, node) {
         this.clip = {type: 'cut', node: node, stat: stat}
-      },
-
-
-      debounce(func, delay) {
-        let timer
-
-        return function(...args) {
-          return new Promise((resolve, reject) => {
-            const context = this
-
-            clearTimeout(timer)
-            timer = setTimeout(() => {
-              try {
-                resolve(func.apply(context, args))
-              } catch (error) {
-                reject(error)
-              }
-            }, delay)
-          })
-        }
       },
 
 

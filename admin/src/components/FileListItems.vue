@@ -11,6 +11,8 @@
 
     emits: ['select'],
 
+    inject: ['debounce'],
+
     data() {
       return {
         items: [],
@@ -112,26 +114,6 @@
         return Promise.all(promises).then(() => {
           this.invalidate()
         })
-      },
-
-
-      debounce(func, delay) {
-        let timer
-
-        return function(...args) {
-          return new Promise((resolve, reject) => {
-            const context = this
-
-            clearTimeout(timer)
-            timer = setTimeout(() => {
-              try {
-                resolve(func.apply(context, args))
-              } catch (error) {
-                reject(error)
-              }
-            }, delay)
-          })
-        }
       },
 
 

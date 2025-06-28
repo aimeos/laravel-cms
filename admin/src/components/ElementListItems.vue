@@ -15,6 +15,8 @@
 
     emits: ['select'],
 
+    inject: ['debounce'],
+
     data() {
       return {
         items: [],
@@ -103,26 +105,6 @@
         }).catch(error => {
           this.$log(`ElementListItems::add(): Error adding shared element`, error)
         })
-      },
-
-
-      debounce(func, delay) {
-        let timer
-
-        return function(...args) {
-          return new Promise((resolve, reject) => {
-            const context = this
-
-            clearTimeout(timer)
-            timer = setTimeout(() => {
-              try {
-                resolve(func.apply(context, args))
-              } catch (error) {
-                reject(error)
-              }
-            }, delay)
-          })
-        }
       },
 
 

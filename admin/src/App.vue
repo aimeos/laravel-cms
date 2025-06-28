@@ -12,6 +12,7 @@
 
     provide() {
       return {
+        debounce: this.debouncer,
         openView: this.open,
         closeView: this.close,
         compose: this.composeText,
@@ -27,6 +28,26 @@
     },
 
     methods: {
+      debouncer(func, delay) {
+        let timer
+
+        return function(...args) {
+          return new Promise((resolve, reject) => {
+            const context = this
+
+            clearTimeout(timer)
+            timer = setTimeout(() => {
+              try {
+                resolve(func.apply(context, args))
+              } catch (error) {
+                reject(error)
+              }
+            }, delay)
+          })
+        }
+      },
+
+
       open(component, props = {}) {
         if(!component) {
           console.error('Component is not defined')

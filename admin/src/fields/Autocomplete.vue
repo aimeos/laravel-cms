@@ -11,6 +11,8 @@
 
     emits: ['update:modelValue', 'error'],
 
+    inject: ['debounce'],
+
     data() {
       return {
         list: this.config.options || [],
@@ -24,26 +26,6 @@
     },
 
     methods: {
-      debounce(func, delay) {
-        let timer
-
-        return function(...args) {
-          return new Promise((resolve, reject) => {
-            const context = this
-
-            clearTimeout(timer)
-            timer = setTimeout(() => {
-              try {
-                resolve(func.apply(context, args))
-              } catch (error) {
-                reject(error)
-              }
-            }, delay)
-          })
-        }
-      },
-
-
       graphql(value) {
         if(!this.config.endpoint.url || !this.config.endpoint.query) {
           return

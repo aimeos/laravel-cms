@@ -11,8 +11,12 @@
 
     emits: ['update:item', 'update:file', 'error'],
 
+    inject: ['compose', 'translate', 'txlanguages'],
+
     data() {
       return {
+        translating: false,
+        composing: false,
         cropper: null,
         scaleX: 1,
         scaleY: 1,
@@ -76,6 +80,23 @@
     },
 
     methods: {
+      composeText() {
+        const lang = this.desclangs[0] || this.item.lang || 'en'
+        const prompt = 'Describe the content of the image in a few words in the language with the code "' + lang + '":'
+        const image = this.item.previews[Math.min(Object.keys(this.item.previews))] // use the smallest preview image
+
+        if(image) {
+          this.composing = true
+
+          this.compose(prompt, null, [image]).then(result => {
+            this.item.description[lang] = result
+          }).finally(() => {
+            this.composing = false
+          })
+        }
+      },
+
+
       download() {
         this.cropper.getCroppedCanvas().toBlob(blob => {
           const url = URL.createObjectURL(blob)
@@ -148,6 +169,30 @@
       },
 
 
+      translateText() {
+        const promises = []
+        const [lang, text] = Object.entries(this.item.description).find(([lang, text]) => {
+          return text ? true : false
+        })
+
+        this.translating = true
+
+        this.txlanguages(lang).map(lang => lang.code).forEach(lang => {
+          promises.push(this.translate(text, lang).then(result => {
+            if(result[0]) {
+              this.item.description[lang] = result[0]
+            }
+          }).catch(error => {
+            this.$log(`FileDetailItem::translateText(): Error translating text`, error)
+          }))
+        })
+
+        Promise.all(promises).then(() => {
+          this.translating = false
+        })
+      },
+
+
       url(path) {
         if(path.startsWith('http') || path.startsWith('blob:')) {
           return path
@@ -187,22 +232,6 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col v-for="lang in desclangs" cols="12" class="desc">
-          <v-textarea ref="description"
-            :readonly="readonly"
-            :modelValue="item.description?.[lang] || ''"
-            @update:modelValue="item.description[lang] = $event; $emit('update:item', item)"
-            :placeholder="`Description in ${lang}`"
-            :label="`Description (${lang})`"
-            variant="underlined"
-            counter="500"
-            rows="2"
-            auto-grow
-            clearable
-          ></v-textarea>
-        </v-col>
-      </v-row>
-      <v-row>
         <v-col v-if="item" cols="12" class="preview">
           <div v-if="item.mime?.startsWith('image/')" ref="editorContainer" class="editor-container">
             <img ref="image" :src="url(item.path)" class="element" />
@@ -239,6 +268,37 @@
             <path d="M7.05 11.885c0 1.415-.548 2.206-1.524 2.206C4.548 14.09 4 13.3 4 11.885c0-1.412.548-2.203 1.526-2.203.976 0 1.524.79 1.524 2.203m-1.524-1.612c-.542 0-.832.563-.832 1.612q0 .133.006.252l1.559-1.143c-.126-.474-.375-.72-.733-.72zm-.732 2.508c.126.472.372.718.732.718.54 0 .83-.563.83-1.614q0-.129-.006-.25zm6.061.624V14h-3v-.595h1.181V10.5h-.05l-1.136.747v-.688l1.19-.786h.69v3.633z"/>
             <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/>
           </svg>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12" class="desc">
+          <v-label>
+            Descriptions
+            <div v-if="!readonly" class="actions">
+              <v-btn v-if="Object.values(item.description).find(v => !!v)"
+                :loading="translating"
+                  icon="mdi-translate"
+                  variant="flat"
+                  @click="translateText()" />
+              <v-btn v-if="item.mime?.startsWith('image/')"
+                :loading="composing"
+                icon="mdi-creation"
+                variant="flat"
+                @click="composeText()"
+              />
+            </div>
+          </v-label>
+          <v-textarea v-for="lang in desclangs" ref="description"
+            :readonly="readonly"
+            :modelValue="item.description?.[lang] || ''"
+            @update:modelValue="item.description[lang] = $event; $emit('update:item', item)"
+            :label="`Description (${lang})`"
+            variant="underlined"
+            counter="500"
+            rows="2"
+            auto-grow
+            clearable
+          ></v-textarea>
         </v-col>
       </v-row>
     </v-sheet>
@@ -301,14 +361,25 @@
     gap: 8px;
   }
 
-  @media (max-width: 480px) {
-  .floating-toolbar {
-    width: auto;
+  .desc .v-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-transform: capitalize;
+    font-weight: bold;
+    margin-bottom: 4px;
+    margin-top: 40px;
   }
 
-  .toolbar-group {
-    flex-direction: column;
-    justify-content: center;
-    gap: 4px;
+  @media (max-width: 480px) {
+    .floating-toolbar {
+      width: auto;
+    }
+
+    .toolbar-group {
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
+    }
   }
-}</style>
+</style>

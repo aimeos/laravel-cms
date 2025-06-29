@@ -3,6 +3,8 @@
 namespace Aimeos\Cms\GraphQL\Mutations;
 
 use Prism\Prism\Prism;
+use Prism\Prism\ValueObjects\Messages\UserMessage;
+use Prism\Prism\ValueObjects\Messages\Support\Image;
 use Aimeos\Cms\GraphQL\Exception;
 
 
@@ -24,9 +26,24 @@ final class Compose
             $prism->withSystemPrompt( $args['context'] );
         }
 
-        $response = $prism->withSystemPrompt( view( 'cms::prompts.compose' ) )
-            ->withPrompt( $args['prompt'] )
-            ->asText();
+        if( !empty( $args['images'] ) )
+        {
+            $images = collect( $args['images'] )->map( function( $image ) {
+                if( str_starts_with( $image, 'http' ) ) {
+                    return Image::fromUrl( $image );
+                } else {
+                    return Image::fromStoragePath( $image, 'public' );
+                }
+            } )->toArray();
+
+            $prism->withMessages( [new UserMessage( $args['prompt'], $images )] );
+        }
+        else
+        {
+            $prism->withPrompt( $args['prompt'] );
+        }
+
+        $response = $prism->withSystemPrompt( view( 'cms::prompts.compose' ) )->asText();
 
         return $response->text;
     }

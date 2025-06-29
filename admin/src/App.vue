@@ -66,7 +66,7 @@
       },
 
 
-      composeText(prompt, context = []) {
+      composeText(prompt, context = [], images = []) {
         prompt = prompt ? prompt.trim() : (Array.isArray(context) && context.length ? 'Generate text based on context' : null)
 
         if(!prompt) {
@@ -81,12 +81,13 @@
         context.push('only return the requested data without any additional information')
 
         return this.$apollo.mutate({
-          mutation: gql`mutation($prompt: String!, $context: String) {
-            compose(prompt: $prompt, context: $context)
+          mutation: gql`mutation($prompt: String!, $context: String, $images: [String!]) {
+            compose(prompt: $prompt, context: $context, images: $images)
           }`,
           variables: {
             prompt: prompt,
-            context: context.filter(v => !!v).join(', ')
+            context: context.filter(v => !!v).join(', '),
+            images: images.filter(v => !!v)
           }
         }).then(result => {
           if(result.errors) {

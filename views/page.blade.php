@@ -7,7 +7,7 @@
 
         <title>{{ cms($page, 'title') }}</title>
 
-        @if(in_array(app()->getLocale(), ['ar', 'az', 'dv', 'fa', 'he', 'ku', 'ur']))
+        @if(in_array(cms($page, 'lang'), ['ar', 'az', 'dv', 'fa', 'he', 'ku', 'ur']))
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.rtl.min.css" rel="stylesheet" crossorigin="anonymous">
         @else
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
@@ -22,7 +22,7 @@
         @endif
 
         @foreach(cms($page, 'meta') ?? [] as $item)
-            @includeFirst(cmsview($page, $item), ['files' => cms($page, 'files')] + (array) $item)
+            @includeFirst(cmsviews($page, $item), ['files' => cms($page, 'files')] + (array) $item)
         @endforeach
     </head>
     <body class="theme-{{ cms($page, 'theme') }} type-{{ cms($page, 'type') }}">
@@ -84,13 +84,13 @@
                 @if(@$item->type === 'reference' && ($refid = @$item->refid) && ($element = @cms($page,'elements')?->{$refid}))
                     <div id="{{ @$item->id }}" class="{{ str_replace('::', '-', @$element->type) }}">
                         <div class="container">
-                            @includeFirst(cmsview($page, $element), ['files' => cms($page, 'files')] + ['data' => (array) @$element->data])
+                            @includeFirst(cmsviews($page, $element), ['files' => cms($page, 'files')] + ['data' => (array) @$element->data])
                         </div>
                     </div>
                 @else
                     <div id="{{ @$item->id }}" class="{{ str_replace('::', '-', @$item->type) }}">
                         <div class="container">
-                            @includeFirst(cmsview($page, $item), ['files' => cms($page, 'files')] + (array) $item)
+                            @includeFirst(cmsviews($page, $item), ['files' => cms($page, 'files')] + (array) $item)
                         </div>
                     </div>
                 @endif

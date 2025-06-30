@@ -72,9 +72,9 @@ if( !function_exists( 'cmsurl' ) )
 }
 
 
-if( !function_exists( 'cmsview' ) )
+if( !function_exists( 'cmsviews' ) )
 {
-    function cmsview( \Aimeos\Cms\Models\Page $page, object $item ): array
+    function cmsviews( \Aimeos\Cms\Models\Page $page, object $item ): array
     {
         return isset( $item->type ) ? [
             $item->type,

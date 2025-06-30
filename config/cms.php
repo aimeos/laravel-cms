@@ -15,6 +15,8 @@ return [
     'ai' => [
         'text' => env( 'CMS_AI_TEXT', 'openai' ),
         'text-model' => env( 'CMS_AI_TEXT_MODEL', 'chatgpt-4o-latest' ),
+        'image' => env( 'CMS_AI_IMAGE', 'openai' ),
+        'image-model' => env( 'CMS_AI_IMAGE_MODEL', 'dall-e-3' ),
     ],
 
     /*

@@ -71,6 +71,9 @@ extend type Mutation {
   "Generate texts from prompts and passed image URLs"
   compose(prompt: String!, context: String, images: [String!]): String
 
+  "Generate images from prompts and passed image URLs"
+  imagine(prompt: String!, context: String, images: [String!]): [String!]
+
   "Translate texts"
   translate(texts: [String!]!, to: String!, from: String, context: String): [String!]!
 

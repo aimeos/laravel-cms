@@ -4,8 +4,6 @@ namespace Aimeos\Cms\Http\Controllers;
 
 use Illuminate\View\View;
 use Illuminate\Http\Request;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Routing\Controller;
@@ -16,20 +14,6 @@ use Aimeos\Cms\Permission;
 
 class PageController extends Controller
 {
-    use AuthorizesRequests, ValidatesRequests;
-
-    /**
-     * Return the admin page view.
-     *
-     * @return \Illuminate\View\View
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     */
-    public function admin()
-    {
-        return view('cms::admin');
-    }
-
-
     /**
      * Show the page for a given URL.
      *

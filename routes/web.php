@@ -8,9 +8,13 @@ use Illuminate\Support\Facades\Route;
     $server->resource( "pages", \Aimeos\Cms\JsonApi\V1\Controllers\JsonapiController::class )->readOnly();
 });
 
-Route::get('cmsadmin/{path?}', [Controllers\PageController::class, 'admin'])
+Route::get('cmsadmin/{path?}', [Controllers\AdminController::class, 'index'])
     ->where(['path' => '.*'])
     ->name('cms.admin');
+
+Route::match(['GET', 'HEAD', 'OPTIONS'], 'cmsproxy', [Controllers\AdminController::class, 'proxy'])
+    ->middleware(config('cms.proxy.middleware', ['auth', 'throttle:20,1']))
+    ->name('cms.proxy');
 
 Route::post('cmsapi/contact', [Controllers\ApiController::class, 'contact'])
     ->middleware('throttle:2,1')

@@ -18,11 +18,12 @@
     <div id="app"
       data-urlgraphql="{{ route('graphql') }}"
       data-urladmin="{{ route('cms.admin', [], false) }}"
+      data-urlproxy="{{ route('cms.admin.proxy', ['url' => ':url']) }}"
       data-urlpage="{{ route('cms.page', ['path' => ':path']) }}"
       data-urlfile="{{ \Illuminate\Support\Facades\Storage::disk( config( 'cms.disk', 'public' ) )->url( '' ) }}"
       data-permissions="{{ json_encode( \Aimeos\Cms\Permission::get( \Illuminate\Support\Facades\Auth::user() ) ) }}"
-      data-config="{{ json_encode( config( 'cms.config' ) ) }}"
-      data-schemas="{{ json_encode( config( 'cms.schemas' ) ) }}"
+      data-config="{{ json_encode( config( 'cms.config', \stdClass ) ) }}"
+      data-schemas="{{ json_encode( config( 'cms.schemas', \stdClass ) ) }}"
     ></div>
   </body>
 </html>

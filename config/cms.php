@@ -81,6 +81,26 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Proxy settings
+    |--------------------------------------------------------------------------
+    |
+    | The proxy settings define the maximum length of the file that can be
+    | downloaded via the proxy in MB and the timeout for streaming the file
+    | in seconds. The default values are 10 MB and 30 seconds, respectively.
+    |
+    | The proxy is used to fetch external resources like images, videos or
+    | files that are linked in the content. The proxy will download the file
+    | and stream it to the client, so that the browser can display it without
+    | potential CORS issues.
+    |
+    */
+    'proxy' => [
+        'max-length' => env( 'CMS_PROXY_MAX_LENGTH', 10 ), // in MB
+        'stream_timeout' => env( 'CMS_PROXY_STREAM_TIMEOUT', 30 ), // in seconds
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Prune deleted records
     |--------------------------------------------------------------------------
     |

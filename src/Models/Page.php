@@ -78,7 +78,7 @@ class Page extends Model
         'cache' => 'integer',
         'meta' => 'object',
         'config' => 'object',
-        'content' => 'array',
+        'content' => 'object',
     ];
 
     /**

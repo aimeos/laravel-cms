@@ -50,16 +50,15 @@
     },
 
     methods: {
-      add(ev) {
+      add(files) {
         if(!this.auth.can('file:add')) {
           this.messages.add('Permission denied', 'error')
           return
         }
 
         const promises = []
-        const files = ev.target.files || ev.dataTransfer.files || []
 
-        if(!files.length) {
+        if(!files?.length) {
           return
         }
 
@@ -204,27 +203,27 @@
         <v-icon icon="mdi-trash-can" role="img"></v-icon>
       </button>
     </div>
-
-    <div v-if="!readonly" class="file-input">
-      <div class="select-file" v-if="auth.can('file:view')" @click="vfiles = true">
-        <label>
-          <span class="btn">Select file</span>
-        </label>
-      </div>
-      <div class="upload-file">
-        <input type="file"
-          @input="add($event)"
-          :accept="config.accept || 'image/*'"
-          :id="'images-' + index"
-          :value="selected"
-          multiple
-          hidden>
-        <label :for="'images-' + index">
-          <span class="btn">Add files</span>
-        </label>
-      </div>
-    </div>
   </VueDraggable>
+
+  <div v-if="!readonly" class="image">
+    <v-btn v-if="auth.can('file:view')"
+      icon="mdi-button-cursor"
+      variant="flat"
+      @click="vfiles = true"
+    ></v-btn>
+    <v-btn
+      icon="mdi-upload"
+      variant="flat">
+      <v-file-input
+        v-model="selected"
+        @update:modelValue="add($event)"
+        :accept="config.accept || 'image/*'"
+        :hide-input="true"
+        prepend-icon="mdi-upload"
+        multiple
+      ></v-file-input>
+    </v-btn>
+  </div>
 
   <Teleport to="body">
     <FileDialog v-model="vfiles" @add="select($event)" :filter="{mime: 'image/'}" grid />
@@ -237,59 +236,6 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: start;
-  }
-
-  .image, .file-input {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #808080;
-    border-radius: 4px;
-    position: relative;
-    height: 180px;
-    width: 180px;
-    margin: 1px;
-  }
-
-  .file-input {
-    flex-direction: column;
-  }
-
-  .file-input .select-file,
-  .file-input .upload-file {
-    width: 90%;
-  }
-
-  .file-input .select-file label,
-  .file-input .upload-file label {
-    justify-content: center;
-    align-content: center;
-    flex-wrap: wrap;
-    display: flex;
-    height: 90px;
-    width: 100%;
-  }
-
-  .file-input .select-file label {
-    border-bottom: 1px solid #808080;
-  }
-
-  .file-input .select-file .btn,
-  .file-input .upload-file .btn {
-    border: 1px solid rgb(var(--v-theme-primary));
-    background-color: rgb(var(--v-theme-primary));
-    color: rgb(var(--v-theme-on-primary));
-    border-radius: 4px;
-    padding: 3px 8px;
-    height: 32px;
-    margin: 8px;
-    cursor: pointer;
-  }
-
-  .file-input .upload-file .btn {
-    border: 1px solid rgb(var(--v-theme-on-surface));
-    background-color: rgb(var(--v-theme-surface));
-    color: rgb(var(--v-theme-on-surface));
   }
 
   .v-progress-linear {

@@ -47,15 +47,13 @@
     },
 
     methods: {
-      add(ev) {
+      add(files) {
         if(!this.auth.can('file:add')) {
           this.messages.add('Permission denied', 'error')
           return
         }
 
-        const files = ev.target.files || ev.dataTransfer.files || []
-
-        if(!files.length) {
+        if(!files?.length) {
           return
         }
 
@@ -199,24 +197,23 @@
             <v-icon icon="mdi-trash-can" role="img"></v-icon>
           </button>
         </div>
-        <div v-else class="file file-input">
-          <div class="select-file" v-if="auth.can('file:view')" @click="vfiles = true">
-            <label>
-              <span class="btn">Select file</span>
-            </label>
-          </div>
-          <div class="upload-file">
-            <input type="file"
-              @input="add($event)"
-              :disabled="readonly"
+        <div v-else-if="!readonly" class="file">
+          <v-btn v-if="auth.can('file:view')"
+            @click="vfiles = true"
+            icon="mdi-button-cursor"
+            variant="flat"
+          ></v-btn>
+          <v-btn
+            icon="mdi-upload"
+            variant="flat">
+            <v-file-input
+              v-model="selected"
+              @update:modelValue="add($event)"
               :accept="config.accept || '*'"
-              :id="'file-' + index"
-              :value="selected"
-              hidden>
-            <label :for="'file-' + index">
-              <span class="btn">Add file</span>
-            </label>
-          </div>
+              :hide-input="true"
+              prepend-icon="mdi-upload"
+            ></v-file-input>
+          </v-btn>
         </div>
       </div>
     </v-col>
@@ -246,37 +243,8 @@
     width: 100%;
   }
 
-  .file-input .select-file,
-  .file-input .upload-file {
-    width: 90%;
-  }
-
-  .file-input .select-file label,
-  .file-input .upload-file label {
-    justify-content: center;
-    align-content: center;
-    flex-wrap: wrap;
-    display: flex;
-    min-height: 48px;
-    width: 100%;
-  }
-
-  .file-input .select-file .btn,
-  .file-input .upload-file .btn {
-    border: 1px solid rgb(var(--v-theme-primary));
-    background-color: rgb(var(--v-theme-primary));
-    color: rgb(var(--v-theme-on-primary));
-    border-radius: 4px;
-    padding: 3px 8px;
-    height: 32px;
-    margin: 8px;
-    cursor: pointer;
-  }
-
-  .file-input .upload-file .btn {
-    border: 1px solid rgb(var(--v-theme-on-surface));
-    background-color: rgb(var(--v-theme-surface));
-    color: rgb(var(--v-theme-on-surface));
+  .files .v-input__prepend > .v-icon {
+    opacity: 1;
   }
 
   .files .file .v-progress-linear {

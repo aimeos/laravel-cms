@@ -30,24 +30,23 @@
             <v-icon icon="mdi-trash-can" role="img"></v-icon>
           </button>
         </div>
-        <div v-else class="file file-input">
-          <div class="select-file" v-if="auth.can('file:view')" @click="vfiles = true">
-            <label>
-              <span class="btn">Select audio</span>
-            </label>
-          </div>
-          <div class="upload-file">
-            <input type="file"
-              @input="add($event)"
-              :disabled="readonly"
+        <div v-else-if="!readonly" class="file">
+          <v-btn v-if="auth.can('file:view')"
+            icon="mdi-button-cursor"
+            variant="flat"
+            @click="vfiles = true"
+          ></v-btn>
+          <v-btn
+            icon="mdi-upload"
+            variant="flat">
+            <v-file-input
+              v-model="selected"
+              @update:modelValue="add($event)"
               :accept="config.accept || 'audio/*'"
-              :id="'audio-' + index"
-              :value="selected"
-              hidden>
-            <label :for="'audio-' + index">
-              <span class="btn">Add audio</span>
-            </label>
-          </div>
+              :hide-input="true"
+              prepend-icon="mdi-upload"
+            ></v-file-input>
+          </v-btn>
         </div>
       </div>
     </v-col>

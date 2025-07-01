@@ -534,7 +534,7 @@
         </v-list>
       </v-menu>
 
-      <div class="item-preview" @click="$emit('select', item)":title="title(item)">
+      <div class="item-preview" @click="$emit('select', item)" :title="title(item)">
         <v-img v-if="item.previews"
           :src="url(item.path)"
           :srcset="srcset(item.previews)"

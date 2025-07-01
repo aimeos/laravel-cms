@@ -179,12 +179,14 @@ export const useMessageStore = defineStore('message', {
   }),
 
   actions: {
-    add(msg, type = 'info') {
-      this.queue.push({
-        text: msg,
-        color: type,
-        timeout: type === 'error' ? 10000 : 3000
-      })
+    add(msg, type = 'info', timeout = null) {
+      if(this.queue.length < 5) {
+        this.queue.push({
+          text: msg,
+          color: type,
+          timeout: timeout || (type === 'error' ? 10000 : 3000)
+        })
+      }
     }
   }
 })

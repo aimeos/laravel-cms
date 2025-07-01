@@ -20,29 +20,35 @@ final class SaveFile
 
         $file = clone $orig;
         $file->fill( $args['input'] ?? [] );
+        $file->path = $args['input']['path'] ?? $orig->path;
         $file->editor = $editor;
 
         $upload = $args['file'] ?? null;
 
-        if( $upload instanceof UploadedFile ) {
+        if( $upload instanceof UploadedFile && $upload->isValid() ) {
             $file->addFile( $upload );
         }
 
         try
         {
+            $file->previews = [];
             $preview = $args['preview'] ?? null;
 
-            if( $preview instanceof UploadedFile ) {
+            if( $preview instanceof UploadedFile && $preview->isValid() && str_starts_with( $preview->getClientMimeType(), 'image/' ) ) {
                 $file->addPreviews( $preview );
-            } elseif( $upload instanceof UploadedFile ) {
+            } elseif( $upload instanceof UploadedFile && $upload->isValid() && str_starts_with( $upload->getClientMimeType(), 'image/' ) ) {
                 $file->addPreviews( $upload );
+            } elseif( $file->path !== $orig->path && str_starts_with( $file->path, 'http' ) ) {
+                $file->addPreviews( $file->path );
             } elseif( $preview === false ) {
                 $file->previews = [];
+            } else {
+                $file->previews = $orig->previews;
             }
         }
         catch( \Throwable $t )
         {
-            $file->removePreviews()->removeFile();
+            $file->removePreviews();
             throw $t;
         }
 

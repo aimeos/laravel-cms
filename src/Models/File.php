@@ -112,21 +112,11 @@ class File extends Model
     /**
      * Creates and adds the preview images
      *
-     * @param UploadedFile $upload File upload
+     * @param UploadedFile|string $resource File upload or URL to the file
      * @return self The current instance for method chaining
      */
-    public function addPreviews( UploadedFile $upload ) : self
+    public function addPreviews( $resource ) : self
     {
-        $this->previews = [];
-
-        if( !$upload->isValid() ) {
-            throw new \RuntimeException( 'Invalid file upload' );
-        }
-
-        if( !str_starts_with( $upload->getClientMimeType(), 'image/' ) ) {
-            return $this;
-        }
-
         $sizes = config( 'cms.image.preview-sizes', [[]] );
         $disk = Storage::disk( config( 'cms.disk', 'public' ) );
         $dir = rtrim( 'cms/' . \Aimeos\Cms\Tenancy::value(), '/' );
@@ -135,13 +125,15 @@ class File extends Model
         $manager = ImageManager::withDriver( '\\Intervention\\Image\\Drivers\\' . $driver . '\Driver' );
         $ext = $manager->driver()->supports( 'image/webp' ) ? 'webp' : 'jpg';
 
-        $file = $manager->read( $upload );
+        $file = $manager->read( $resource );
+
+        $this->previews = [];
         $map = [];
 
         foreach( $sizes as $size )
         {
             $image = ( clone $file )->scaleDown( $size['width'] ?? null, $size['height'] ?? null );
-            $path = $dir . '/' . $this->filename( $upload, $ext, $size );
+            $path = $dir . '/' . $this->filename( (string) $this->name, $ext, $size );
             $ptr = $image->encodeByExtension( $ext )->toFilePointer();
 
             if( $disk->put( $path, $ptr, 'public' ) ) {
@@ -243,7 +235,7 @@ class File extends Model
 
         $num = Version::where( 'versionable_id', $this->id )
             ->where( 'versionable_type', File::class )
-            ->where( 'data', 'like', '%"path": "' . $path . '"%' )
+            ->where( 'data->path', $path )
             ->count();
 
         if( $num === 0 )
@@ -291,7 +283,9 @@ class File extends Model
      */
     public function removeFile() : self
     {
-        Storage::disk( config( 'cms.disk', 'public' ) )->delete( $this->path );
+        if( $this->path && str_starts_with( $this->path, 'http' ) ) {
+            Storage::disk( config( 'cms.disk', 'public' ) )->delete( $this->path );
+        }
 
         $this->path = null;
         return $this;
@@ -410,14 +404,13 @@ class File extends Model
     /**
      * Returns the new name for the uploaded file
      *
-     * @param UploadedFile $file Uploaded file
+     * @param string $filename Name of the file
      * @param string|null $ext File extension to use, if not given, the original file extension is used
      * @param array $size Image width and height, if used
      * @return string New file name
      */
-    protected function filename( UploadedFile $file, ?string $ext = null, array $size = [] ) : string
+    protected function filename( string $filename, ?string $ext = null, array $size = [] ) : string
     {
-        $filename = $file->getClientOriginalName();
         $regex = '/[[:cntrl:]]|[[:blank:]]|\/|\./smu';
 
         $ext = $ext ?: preg_replace( $regex, '', pathinfo( $filename, PATHINFO_EXTENSION ) );

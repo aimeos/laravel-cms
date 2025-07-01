@@ -133,7 +133,7 @@ extend type Mutation {
 
 
   "Adds a new file upload, optionally with preview and the description of the file"
-  addFile(input: FileInput, file: Upload!, preview: Upload): File
+  addFile(input: FileInput, file: Upload, preview: Upload): File
     @canModel(ability: "add", model: "\\Aimeos\\Cms\\Models\\File")
 
   "Update an existing file"

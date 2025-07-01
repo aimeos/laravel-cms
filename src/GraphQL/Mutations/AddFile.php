@@ -93,7 +93,7 @@ final class AddFile
 
         try
         {
-            if( isset( $args['preview'] ) || !str_starts_with( $file->mime, 'image/' ) ) {
+            if( isset( $args['preview'] ) || str_starts_with( $file->mime, 'image/' ) ) {
                 $file->addPreviews( $args['preview'] ?? $url );
             }
         }

@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\UploadedFile;
 use Intervention\Image\ImageManager;
@@ -124,6 +125,10 @@ class File extends Model
         $driver = ucFirst( config( 'cms.image.driver', 'gd' ) );
         $manager = ImageManager::withDriver( '\\Intervention\\Image\\Drivers\\' . $driver . '\Driver' );
         $ext = $manager->driver()->supports( 'image/webp' ) ? 'webp' : 'jpg';
+
+        if( is_string( $resource ) && str_starts_with( $resource, 'http' ) ) {
+            $resource = Http::withOptions( ['stream' => true] )->get( $resource )->getBody()->detach();
+        }
 
         $file = $manager->read( $resource );
 

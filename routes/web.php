@@ -13,7 +13,7 @@ Route::get('cmsadmin/{path?}', [Controllers\AdminController::class, 'index'])
     ->name('cms.admin');
 
 Route::match(['GET', 'HEAD', 'OPTIONS'], 'cmsproxy', [Controllers\AdminController::class, 'proxy'])
-    ->middleware(config('cms.proxy.middleware', ['auth', 'throttle:20,1']))
+    ->middleware(config('cms.proxy.middleware', ['web', 'auth', 'throttle:20,1']))
     ->name('cms.proxy');
 
 Route::post('cmsapi/contact', [Controllers\ApiController::class, 'contact'])

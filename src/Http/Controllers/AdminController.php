@@ -1,7 +1,10 @@
 <?php
 
+namespace Aimeos\Cms\Http\Controllers;
+
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Illuminate\Http\Client\Response;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -26,7 +29,7 @@ class AdminController extends Controller
         $url = $request->query('url');
 
         if (!$this->isValidUrl($url)) {
-            return response('Invalid or missing URL', 400);
+            abort(400, 'Invalid or missing URL');
         }
 
         $method = strtoupper($request->method());
@@ -36,25 +39,19 @@ class AdminController extends Controller
         }
 
         if (!in_array($method, ['GET', 'HEAD'])) {
-            return response("Unsupported HTTP method: $method", 405);
+            abort(405, "Unsupported HTTP method: $method");
         }
 
-        try {
-            $range = $request->header('Range');
-            $response = $this->fetch($url, $method, $range);
-            $headers = $this->buildHeaders($response, $range);
+        $range = $request->header('Range');
+        $response = $this->fetch($url, $method, $range);
+        $headers = $this->buildHeaders($response, $range);
 
-            $statusCode = $headers['Content-Range'] ? 206 : $response->status();
-            $maxBytes = (int) $headers['Content-Length'];
+        $statusCode = isset( $headers['Content-Range'] ) ? 206 : $response->status();
+        $maxBytes = (int) $headers['Content-Length'];
 
-            return response()->stream(function () use ($response, $maxBytes) {
-                $this->stream($response->toPsrResponse()->getBody(), $maxBytes);
-            }, $statusCode, $headers);
-
-        } catch (\Throwable $e) {
-            Log::warning('Proxy failed', ['url' => $url, 'error' => $e->getMessage()]);
-            return response('Proxy request failed', 500);
-        }
+        return response()->stream(function () use ($response, $maxBytes) {
+            $this->stream($response->toPsrResponse()->getBody(), $maxBytes);
+        }, $statusCode, $headers);
     }
 
 
@@ -120,15 +117,16 @@ class AdminController extends Controller
         $query = parse_url($url, PHP_URL_QUERY);
 
         return Http::withHeaders([
-            'Host' => $host,
-            'Range' => $range,
-            'Accept-Encoding' => 'identity',
             'User-Agent' => 'Pagible-Proxy/1.0',
+            'Accept-Encoding' => 'identity',
+            'Range' => $range,
         ])
         ->timeout(10)
-        ->withOptions(['stream' => true, 'verify' => true])
-        ->baseUrl("$scheme://$ip")
-        ->send($method, $path . ($query ? '?' . $query : ''));
+        ->withOptions([
+            'stream' => true,
+            'verify' => true
+        ])
+        ->send($method, $url);
     }
 
 

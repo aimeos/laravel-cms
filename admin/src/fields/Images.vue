@@ -3,6 +3,7 @@
   import { VueDraggable } from 'vue-draggable-plus'
   import { useAppStore, useAuthStore } from '../stores'
   import FileListItems from '../components/FileListItems.vue'
+  import FileUrlDialog from '../components/FileUrlDialog.vue'
   import FileDialog from '../components/FileDialog.vue'
   import FileDetail from '../views/FileDetail.vue'
 
@@ -10,6 +11,7 @@
     components: {
       FileDetail,
       FileDialog,
+      FileUrlDialog,
       FileListItems,
       VueDraggable
     },
@@ -28,7 +30,6 @@
     setup() {
       const auth = useAuthStore()
       const app = useAppStore()
-
       return { app, auth }
     },
 
@@ -37,7 +38,8 @@
         images: [],
         index: Math.floor(Math.random() * 100000),
         selected: null,
-        vfiles: false
+        vfiles: false,
+        vurls: false,
       }
     },
 
@@ -138,10 +140,19 @@
       },
 
 
-      select(item) {
-          this.images[this.images.length] = item
+      select(items) {
+        if(!Array.isArray(items)) {
+          items = [items]
+        }
+
+        items.forEach(item => {
+          this.images.push(item)
           this.$emit('addFile', item.id)
-          this.vfiles = false
+        })
+
+        this.$emit('update:modelValue', this.images)
+        this.vfiles = false
+        this.vurls = false
       },
 
 
@@ -163,7 +174,10 @@
 
 
       async validate() {
-        return await true
+        const result = this.images.length >= this.config.min && this.images.length <= this.config.max
+
+        this.$emit('error', !result)
+        return await result
       }
     },
 
@@ -185,7 +199,7 @@
 </script>
 
 <template>
-  <VueDraggable v-model="images" :disabled="readonly" @change="change()" draggable=".image" group="images" class="files" animation="500">
+  <VueDraggable v-model="images" :disabled="readonly" @change="change()" draggable=".image" group="images" class="images" animation="500">
 
     <div v-for="(item, idx) in images" :key="idx" class="image" @click="open(item)">
       <v-progress-linear v-if="item.uploading"
@@ -203,39 +217,64 @@
         <v-icon icon="mdi-trash-can" role="img"></v-icon>
       </button>
     </div>
-  </VueDraggable>
 
-  <div v-if="!readonly" class="image">
-    <v-btn v-if="auth.can('file:view')"
-      icon="mdi-button-cursor"
-      variant="flat"
-      @click="vfiles = true"
-    ></v-btn>
-    <v-btn
-      icon="mdi-upload"
-      variant="flat">
-      <v-file-input
-        v-model="selected"
-        @update:modelValue="add($event)"
-        :accept="config.accept || 'image/*'"
-        :hide-input="true"
-        prepend-icon="mdi-upload"
-        multiple
-      ></v-file-input>
-    </v-btn>
-  </div>
+    <div v-if="!readonly" class="add">
+      <v-btn v-if="auth.can('file:view')"
+        icon="mdi-button-cursor"
+        variant="flat"
+        @click="vfiles = true"
+      ></v-btn>
+      <v-btn
+        @click="vurls = true"
+        icon="mdi-link-variant-plus"
+        variant="flat"
+      ></v-btn>
+      <v-btn
+        icon="mdi-upload"
+        variant="flat">
+        <v-file-input
+          v-model="selected"
+          @update:modelValue="add($event)"
+          :accept="config.accept || 'image/*'"
+          :hide-input="true"
+          prepend-icon="mdi-upload"
+          multiple
+        ></v-file-input>
+      </v-btn>
+    </div>
+  </VueDraggable>
 
   <Teleport to="body">
     <FileDialog v-model="vfiles" @add="select($event)" :filter="{mime: 'image/'}" grid />
   </Teleport>
+
+  <Teleport to="body">
+    <FileUrlDialog v-model="vurls" @add="select($event)" mime="image/" multiple />
+  </Teleport>
 </template>
 
 <style scoped>
-  .files,
-  .files .sortable {
+  .images {
     display: flex;
-    flex-wrap: wrap;
     justify-content: start;
+    flex-wrap: wrap;
+  }
+
+  .images .add,
+  .images .image {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #808080;
+    border-radius: 4px;
+    position: relative;
+    height: 180px;
+    width: 180px;
+    margin: 1px;
+  }
+
+  .images .add {
+    border: 1px dashed #808080;
   }
 
   .v-progress-linear {

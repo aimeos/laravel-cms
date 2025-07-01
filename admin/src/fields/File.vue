@@ -2,12 +2,14 @@
   import gql from 'graphql-tag'
   import { useAppStore, useAuthStore, useMessageStore } from '../stores'
   import FileListItems from '../components/FileListItems.vue'
+  import FileUrlDialog from '../components/FileUrlDialog.vue'
   import FileDialog from '../components/FileDialog.vue'
   import FileDetail from '../views/FileDetail.vue'
 
   export default {
     components: {
       FileListItems,
+      FileUrlDialog,
       FileDetail,
       FileDialog
     },
@@ -28,7 +30,8 @@
         file: {},
         index: Math.floor(Math.random() * 100000),
         selected: null,
-        vfiles: false
+        vfiles: false,
+        vurls: false,
       }
     },
 
@@ -137,6 +140,21 @@
       },
 
 
+      select(items) {
+        if(!Array.isArray(items) || !items.length) {
+          this.$log(`File::select(): Items must be a non-empty array`, items)
+          return
+        }
+
+        const item = items.shift()
+
+        this.file = {...item}
+        this.$emit('addFile', item.id)
+        this.$emit('update:modelValue', {id: item.id, type: 'file'})
+        this.validate()
+      },
+
+
       url(path) {
         if(path.startsWith('http') || path.startsWith('blob:')) {
           return path
@@ -204,6 +222,11 @@
             variant="flat"
           ></v-btn>
           <v-btn
+            @click="vurls = true"
+            icon="mdi-link-variant-plus"
+            variant="flat"
+          ></v-btn>
+          <v-btn
             icon="mdi-upload"
             variant="flat">
             <v-file-input
@@ -229,10 +252,18 @@
     <FileDialog v-model="vfiles" @add="handle($event)" />
   </Teleport>
 
+  <Teleport to="body">
+    <FileUrlDialog v-model="vurls" @add="select($event)" />
+  </Teleport>
 </template>
 
 <style>
-  .files, .files .file {
+  .files {
+    border: 1px dashed #767676;
+    border-radius: 8px;
+  }
+
+  .files .file {
     justify-content: center;
     align-items: center;
     position: relative;

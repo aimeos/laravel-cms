@@ -39,6 +39,11 @@
             @click="vfiles = true"
           ></v-btn>
           <v-btn
+            @click="vurls = true"
+            icon="mdi-link-variant-plus"
+            variant="flat"
+          ></v-btn>
+          <v-btn
             icon="mdi-upload"
             variant="flat">
             <v-file-input
@@ -62,6 +67,10 @@
 
   <Teleport to="body">
     <FileDialog v-model="vfiles" @add="handle($event)" :filter="{mime: 'video/'}" />
+  </Teleport>
+
+  <Teleport to="body">
+    <FileUrlDialog v-model="vurls" @add="select($event)" mime="video/" />
   </Teleport>
 </template>
 

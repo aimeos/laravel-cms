@@ -137,6 +137,7 @@
 
         this.images.splice(idx, 1)
         this.$emit('update:modelValue', this.images.map(item => ({id: item.id, type: 'file'})))
+        this.validate()
       },
 
 
@@ -153,6 +154,7 @@
         this.$emit('update:modelValue', this.images)
         this.vfiles = false
         this.vurls = false
+        this.validate()
       },
 
 
@@ -174,7 +176,7 @@
 
 
       async validate() {
-        const result = this.images.length >= this.config.min && this.images.length <= this.config.max
+        const result = this.images.length >= (this.config.min ?? 0) && this.images.length <= (this.config.max ?? 1000)
 
         this.$emit('error', !result)
         return await result

@@ -6,10 +6,10 @@
 <script defer src="{{ cmsasset('vendor/cms/slideshow.js') }}"></script>
 @endPushOnce
 
-if(@data->title)
+@if(@$data->title)
 	<h2>{{ $data->title }}</h2>
 @endif
-<div class="swiffy-slider slider-item-nogap slider-nav-animation slider-nav-autoplay slider-nav-autopause"
+<div class="swiffy-slider slider-item-nogap slider-nav-animation slider-nav-autoplay slider-nav-autopause slider-nav-round slider-nav-dark"
 	data-slider-nav-autoplay-interval="4000">
 
 	<div class="slider-container">
@@ -22,6 +22,6 @@ if(@data->title)
 		@endforeach
 	</div>
 
-	<button type="button" class="slider-nav" aria-label="Go to previous"></button>
+	<button type="button" class="slider-nav slider-nav-prev" aria-label="Go to previous"></button>
 	<button type="button" class="slider-nav slider-nav-next" aria-label="Go to next"></button>
 </div>

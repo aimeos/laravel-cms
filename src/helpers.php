@@ -46,11 +46,11 @@ if( !function_exists( 'cmsroute' ) )
 
 if( !function_exists( 'cmssrcset' ) )
 {
-    function cmssrcset( array $data ): string
+    function cmssrcset( $data ): string
     {
         $list = [];
 
-        foreach( $data as $width => $path ) {
+        foreach( (array) $data as $width => $path ) {
             $list[] = cmsurl( $path ) . ' ' . $width . 'w';
         }
 

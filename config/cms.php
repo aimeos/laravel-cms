@@ -455,7 +455,7 @@ return [
                             }
                           }
                         }',
-                        'list-key' => 'pages.data',
+                        'list-key' => 'pages/data',
                         'item-title' => 'title',
                         'item-value' => 'id',
                     ],

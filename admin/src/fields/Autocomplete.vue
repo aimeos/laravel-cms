@@ -99,7 +99,7 @@
 
       toList(result) {
         if(this.config['list-key']) {
-          return this.config['list-key'].split('.').reduce((part, key) => {
+          return this.config['list-key'].split('/').reduce((part, key) => {
             return typeof part === 'object' && part !== null ? part[key] : part
           }, result)
         }

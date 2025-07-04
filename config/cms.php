@@ -147,7 +147,7 @@ return [
             'ru' => 'Russian',
         ],
         'themes' => [
-            'default' => [
+            'cms' => [
                 'types' => [
                     'default' => [
                         'sections' => [
@@ -426,6 +426,7 @@ return [
                             ],
                             'file' => [
                                 'type' => 'image',
+                                'label' => 'Image',
                             ],
                             'text' => [
                                 'type' => 'text',
@@ -434,21 +435,55 @@ return [
                     ],
                 ],
             ],
+            'blog' => [
+                'group' => 'content',
+                'label' => 'List of blog articles',
+                'icon' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>format-list-text</title><path d="M2 14H8V20H2M16 8H10V10H16M2 10H8V4H2M10 4V6H22V4M10 20H16V18H10M10 16H22V14H10" /></svg>',
+                'fields' => [
+                    'action' => [
+                        'type' => 'hidden',
+                        'value' => '\Aimeos\Cms\Actions\Pages@list',
+                    ],
+                    'parent-page' => [
+                        'type' => 'autocomplete',
+                        'api-type' => 'GQL',
+                        'query' => 'query {
+                          pages(filter: {title: _term_}) {
+                            data {
+                              id
+                              title
+                            }
+                          }
+                        }',
+                        'list-key' => 'pages.data',
+                        'item-title' => 'title',
+                        'item-value' => 'id',
+                    ],
+                    'limit' => [
+                        'type' => 'number',
+                        'min' => 1,
+                        'max' => 100,
+                        'default' => 10,
+                    ],
+                ],
+            ],
             'article' => [
                 'group' => 'content',
                 'label' => 'Blog article',
                 'icon' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>post-outline</title><path d="M19 5V19H5V5H19M21 3H3V21H21V3M17 17H7V16H17V17M17 15H7V14H17V15M17 12H7V7H17V12Z" /></svg>',
                 'fields' => [
-                    'title' => [
-                        'type' => 'string',
-                        'min' => 1,
-                        'max' => 255,
-                    ],
                     'file' => [
                         'type' => 'image',
+                        'label' => 'Image',
+                    ],
+                    'lead' => [
+                        'type' => 'text',
+                        'label' => 'Introduction',
+                        'min' => 1,
+                        'max' => 1000,
                     ],
                     'text' => [
-                        'type' => 'text',
+                        'type' => 'markdown',
                         'min' => 1,
                     ],
                 ],

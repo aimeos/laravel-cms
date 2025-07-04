@@ -6,6 +6,7 @@ use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Routing\Controller;
 use Aimeos\Cms\Models\Version;
 use Aimeos\Cms\Models\Page;
@@ -42,9 +43,16 @@ class PageController extends Controller
                 return str_starts_with( $to, 'http' ) ? redirect()->away( $to ) : redirect( $to );
             }
 
+            $theme = cms( $page, 'theme' ) ?: 'cms';
+            $type = cms( $page, 'type' ) ?: 'page';
+
+            if( config( 'cms.config.themes.{$theme}.cms-framework' ) !== 'tailwind' ) {
+                Paginator::useBootstrap();
+            }
+
             $content = collect( $version->aux?->content ?? $page->content ?? [] )->groupBy( 'group' );
 
-            $views = [( cms( $page, 'theme' ) ?: 'cms' ) . '::' . ( cms( $page, 'type' ) ?: 'page' ), 'cms::page'];
+            $views = [$theme . '::layouts.' . $type, 'cms::layouts.page'];
             return view()->first( $views, ['page' => $page, 'content' => $content] );
         }
 
@@ -65,8 +73,14 @@ class PageController extends Controller
         }
 
         $content = collect( $page->content ?? [] )->groupBy( 'group' );
+        $theme = cms( $page, 'theme' ) ?: 'cms';
+        $type = cms( $page, 'type' ) ?: 'page';
 
-        $views = [( cms( $page, 'theme' ) ?: 'cms' ) . '::' . ( cms( $page, 'type' ) ?: 'page' ), 'cms::page'];
+        if( config( 'cms.config.themes.{$theme}.cms-framework' ) !== 'tailwind' ) {
+            Paginator::useBootstrap();
+        }
+
+        $views = [$theme . '::layouts.' . $type, 'cms::layouts.page'];
         $html = view()->first( $views, ['page' => $page, 'content' => $content] )->render();
 
         if( $page->cache ) {

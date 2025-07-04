@@ -1,4 +1,4 @@
-@extends('cms::layout')
+@extends('cms::layouts.main')
 
 @section('header')
     <nav class="navbar navbar-expand-lg">

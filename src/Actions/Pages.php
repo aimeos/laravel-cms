@@ -11,8 +11,8 @@ class Pages
 {
     public function list( Request $request, Page $page, object $item )
     {
-        $pid = $item->data?->{'parent-page'}?->value ?: $page->id;
-        $sort = $item->order ?: '-id';
+        $pid = @$item->data?->{'parent-page'}?->value ?: $page->id;
+        $sort = @$item->data?->order ?: '-id';
 
         $order = $sort[0] === '-' ? substr( $sort, 1 ) : $sort;
         $dir = $sort[0] === '-' ? 'desc' : 'asc';
@@ -23,6 +23,6 @@ class Pages
             $builder->where( 'status', '>', 0 );
         }
 
-        return $builder->paginate( $limit );
+        return $builder->paginate( @$item->data?->limit ?? 10 );
     }
 }

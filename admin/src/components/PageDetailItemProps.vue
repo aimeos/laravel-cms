@@ -220,7 +220,7 @@
         <v-col cols="12" md="6">
           <v-select ref="theme"
             :readonly="readonly"
-            :items="Object.keys(config.get('themes', {'default': ''}))"
+            :items="Object.keys(config.get('themes', {'cms': ''}))"
             :modelValue="item.theme"
             @update:modelValue="update('theme', $event); item.type = ''"
             variant="underlined"
@@ -228,7 +228,7 @@
           ></v-select>
           <v-select ref="type"
             :readonly="readonly"
-            :items="Object.keys(config.get(`themes.${item.theme || ''}.types`, {'default': ''}))"
+            :items="Object.keys(config.get(`themes.${item.theme || 'cms'}.types`, {'default': ''}))"
             :modelValue="item.type"
             @update:modelValue="update('type', $event)"
             variant="underlined"

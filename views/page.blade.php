@@ -62,13 +62,13 @@
             @if(@$item->type === 'reference' && ($refid = @$item->refid) && ($element = @cms($page,'elements')?->{$refid}))
                 <div id="{{ @$item->id }}" class="{{ str_replace('::', '-', @$element->type) }}">
                     <div class="container">
-                        @includeFirst(cmsviews($page, $element), ['files' => cms($page, 'files')] + ['data' => (array) @$element->data])
+                        @includeFirst(cmsviews($page, $element), cmsdata($page, @$element->data))
                     </div>
                 </div>
             @else
                 <div id="{{ @$item->id }}" class="{{ str_replace('::', '-', @$item->type) }}">
                     <div class="container">
-                        @includeFirst(cmsviews($page, $item), ['files' => cms($page, 'files')] + (array) $item)
+                        @includeFirst(cmsviews($page, $item), cmsdata($page, $item))
                     </div>
                 </div>
             @endif
@@ -83,13 +83,13 @@
             @if(@$item->type === 'reference' && ($refid = @$item->refid) && ($element = @cms($page,'elements')?->{$refid}))
                 <div id="{{ @$item->id }}" class="{{ str_replace('::', '-', @$element->type) }}">
                     <div class="container">
-                        @includeFirst(cmsviews($page, $element), ['files' => cms($page, 'files')] + ['data' => (array) @$element->data])
+                        @includeFirst(cmsviews($page, $element), cmsdata($page, @$element->data))
                     </div>
                 </div>
             @else
                 <div id="{{ @$item->id }}" class="{{ str_replace('::', '-', @$item->type) }}">
                     <div class="container">
-                        @includeFirst(cmsviews($page, $item), ['files' => cms($page, 'files')] + (array) $item)
+                        @includeFirst(cmsviews($page, $item), cmsdata($page, $item))
                     </div>
                 </div>
             @endif

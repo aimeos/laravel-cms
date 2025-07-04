@@ -31,6 +31,21 @@ if( !function_exists( 'cmsasset' ) )
 }
 
 
+if( !function_exists( 'cmsdata' ) )
+{
+    function cmsdata( \Aimeos\Cms\Models\Page $page, object $item ): array
+    {
+        $data = ['files' => cms($page, 'files')];
+
+        if( $action = $item->data?->action ?? null ) {
+            $data['action'] = app()->call( $action, ['page' => $page, 'item' => $item] );
+        }
+
+        return $data + (array) $item;
+    }
+}
+
+
 if( !function_exists( 'cmsroute' ) )
 {
     function cmsroute( \Aimeos\Cms\Models\Page $page ): string

@@ -27,11 +27,11 @@
 
     methods: {
       graphql(value) {
-        if(!this.config.endpoint.url || !this.config.endpoint.query) {
+        if(!this.config?.query) {
           return
         }
 
-        const query = this.config.endpoint.query.replace(/_term_/g, value ? JSON.stringify(value) : '""')
+        const query = this.config.query.replace(/_term_/g, value ? JSON.stringify(value) : '""')
 
         this.loading = true
         this.$apollo.query({
@@ -68,12 +68,12 @@
 
 
       rest(value) {
-        if(!this.config.endpoint.url) {
+        if(!this.config?.url) {
           return
         }
 
         this.loading = true
-        fetch(this.config.endpoint.url.replace(/_term_/g, value ? value : ''), {
+        fetch(this.config.url.replace(/_term_/g, value ? value : ''), {
           mode: 'cors',
         }).then(response => {
           if(!response.ok) {
@@ -90,11 +90,7 @@
 
 
       search(value) {
-        if(!this.config.endpoint) {
-          return
-        }
-
-        switch(this.config.endpoint.type) {
+        switch(this.config?.['api-type']) {
           case 'GQL': this.graphql(value); break
           case 'REST': this.rest(value); break
         }
@@ -103,7 +99,7 @@
 
       toList(result) {
         if(this.config['list-key']) {
-          return this.config['list-key'].split('/').reduce((part, key) => {
+          return this.config['list-key'].split('.').reduce((part, key) => {
             return typeof part === 'object' && part !== null ? part[key] : part
           }, result)
         }

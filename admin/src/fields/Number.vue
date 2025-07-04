@@ -55,7 +55,7 @@
     :min="config.min"
     :placeholder="config.placeholder || ''"
     :step="config.step || 1"
-    :modelValue="modelValue"
+    :modelValue="modelValue || config.default || 0"
     @update:modelValue="update($event)"
     density="comfortable"
     hide-details="auto"

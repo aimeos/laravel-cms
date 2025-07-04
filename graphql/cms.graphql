@@ -313,7 +313,7 @@ input PageInput {
   related_id: ID
 
   "ISO language code, e.g. 'en', 'en-GB' or empty for default language"
-  lang: String!
+  lang: String
 
   "URL segment of the page, unique in combination with the language"
   path: String

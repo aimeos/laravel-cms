@@ -33,15 +33,41 @@ if( !function_exists( 'cmsasset' ) )
 
 if( !function_exists( 'cmsdata' ) )
 {
-    function cmsdata( \Aimeos\Cms\Models\Page $page, object $item ): array
+    function cmsdata( \Aimeos\Cms\Models\Page $page, $item ): array
     {
+        if( $item instanceof \Aimeos\Cms\Models\Element ) {
+            $item = (object) $item->toArray();
+        }
+
         $data = ['files' => cms($page, 'files')];
 
-        if( $action = $item->data?->action ?? null ) {
+        if( $action = @$item->data?->action ) {
             $data['action'] = app()->call( $action, ['page' => $page, 'item' => $item] );
         }
 
         return $data + (array) $item;
+    }
+}
+
+
+if( !function_exists( 'cmsid' ) )
+{
+    function cmsid( string $name ): string
+    {
+        return preg_replace('/[^A-Za-z0-9\-\_]+/', '-', $name);
+    }
+}
+
+
+if( !function_exists( 'cmsref' ) )
+{
+    function cmsref( \Aimeos\Cms\Models\Page $page, object $item ): object
+    {
+        if(@$item->type === 'reference' && ($refid = @$item->refid) && ($element = @cms($page,'elements')[$refid] ?? null)) {
+            return (object) $element;
+        }
+
+        return $item;
     }
 }
 

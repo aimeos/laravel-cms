@@ -59,16 +59,10 @@
 @section('main')
     <div class="cms-content">
         @foreach($content['main'] ?? [] as $item)
-            @if(@$item->type === 'reference' && ($refid = @$item->refid) && ($element = @cms($page,'elements')?->{$refid}))
-                <div id="{{ @$item->id }}" class="{{ str_replace('::', '-', @$element->type) }}">
+            @if($el = cmsref($page, $item))
+                <div id="{{ cmsid(@$item->id) }}" class="{{ cmsid(@$el->type) }}">
                     <div class="container">
-                        @includeFirst(cmsviews($page, $element), cmsdata($page, @$element->data))
-                    </div>
-                </div>
-            @else
-                <div id="{{ @$item->id }}" class="{{ str_replace('::', '-', @$item->type) }}">
-                    <div class="container">
-                        @includeFirst(cmsviews($page, $item), cmsdata($page, $item))
+                        @includeFirst(cmsviews($page, $el), cmsdata($page, $el))
                     </div>
                 </div>
             @endif
@@ -80,16 +74,10 @@
 @section('footer')
     <footer class="cms-content">
         @foreach($content['footer'] ?? [] as $item)
-            @if(@$item->type === 'reference' && ($refid = @$item->refid) && ($element = @cms($page,'elements')?->{$refid}))
-                <div id="{{ @$item->id }}" class="{{ str_replace('::', '-', @$element->type) }}">
+            @if($el = cmsref($page, $item))
+                <div id="{{ cmsid(@$item->id) }}" class="{{ cmsid(@$el->type) }}">
                     <div class="container">
-                        @includeFirst(cmsviews($page, $element), cmsdata($page, @$element->data))
-                    </div>
-                </div>
-            @else
-                <div id="{{ @$item->id }}" class="{{ str_replace('::', '-', @$item->type) }}">
-                    <div class="container">
-                        @includeFirst(cmsviews($page, $item), cmsdata($page, $item))
+                        @includeFirst(cmsviews($page, $el), cmsdata($page, $el))
                     </div>
                 </div>
             @endif

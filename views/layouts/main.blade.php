@@ -8,7 +8,7 @@
         <title>{{ cms($page, 'title') }}</title>
 
         @foreach(cms($page, 'meta') ?? [] as $item)
-            @includeFirst(cmsviews($page, $item), ['files' => cms($page, 'files')] + (array) $item)
+            @includeFirst(cmsviews($page, $item), cmsdata($page, $item))
         @endforeach
 
         @if(in_array(cms($page, 'lang'), ['ar', 'az', 'dv', 'fa', 'he', 'ku', 'ur']))

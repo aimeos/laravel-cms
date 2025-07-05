@@ -86,7 +86,7 @@
 
       setPath(focused) {
         if(!focused && this.item.path?.at(0) === '_') {
-          this.item.path = this.item.name?.replace(/[ ]+/g, '-')?.toLowerCase()
+          this.updatePath(this.item.name)
         }
       },
 
@@ -94,6 +94,11 @@
       update(what, value) {
         this.item[what] = value.trim()
         this.$emit('change', true)
+      },
+
+
+      updatePath(value) {
+        this.update('path', value?.replace(/[?#%;&=+!"'()\[\]{}*<>|^]+/g, ' ').trim().replace(/[ ]+/g, '-')?.toLowerCase())
       },
 
 
@@ -194,7 +199,7 @@
             :error-messages="messages.path"
             :readonly="readonly"
             :modelValue="item.path"
-            @update:modelValue="update('path', $event); messages.path = null"
+            @update:modelValue="updatePath($event); messages.path = null"
             @change="checkPath()"
             variant="underlined"
             label="URL path"

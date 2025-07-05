@@ -17,7 +17,12 @@ class Pages
         $order = $sort[0] === '-' ? substr( $sort, 1 ) : $sort;
         $dir = $sort[0] === '-' ? 'desc' : 'asc';
 
-        $builder = Page::where( 'parent_id', $pid )->where( 'type', 'blog' )->orderBy( $order, $dir );
+        $builder = Page::where( 'parent_id', $pid )->where( function( $builder ) {
+            $builder->where( 'type', 'blog' )
+                ->orWhereHas( 'versions', function( $builder ) {
+                    $builder->where( 'data->type', 'blog' );
+                } );
+        } )->orderBy( $order, $dir );
 
         if( !Permission::can( 'page:view', $request->user() ) ) {
             $builder->where( 'status', '>', 0 );

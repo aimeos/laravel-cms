@@ -207,6 +207,10 @@ return [
                 'group' => 'basic',
                 'icon' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3,4H5V10H9V4H11V18H9V12H5V18H3V4M13,8H15.31L15.63,5H17.63L17.31,8H19.31L19.63,5H21.63L21.31,8H23V10H21.1L20.9,12H23V14H20.69L20.37,17H18.37L18.69,14H16.69L16.37,17H14.37L14.69,14H13V12H14.9L15.1,10H13V8M17.1,10L16.9,12H18.9L19.1,10H17.1Z" /></svg>',
                 'fields' => [
+                    'title' => [
+                        'type' => 'string',
+                        'min' => 1,
+                    ],
                     'level' => [
                         'type' => 'select',
                         'required' => true,
@@ -218,11 +222,6 @@ return [
                             ['value' => '5', 'label' => 'H5'],
                             ['value' => '6', 'label' => 'H6'],
                         ],
-                    ],
-                    'text' => [
-                        'type' => 'string',
-                        'min' => 1,
-                        'max' => 255,
                     ],
                 ],
             ],
@@ -440,6 +439,9 @@ return [
                 'label' => 'List of blog articles',
                 'icon' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>format-list-text</title><path d="M2 14H8V20H2M16 8H10V10H16M2 10H8V4H2M10 4V6H22V4M10 20H16V18H10M10 16H22V14H10" /></svg>',
                 'fields' => [
+                    'title' => [
+                        'type' => 'string',
+                    ],
                     'action' => [
                         'type' => 'hidden',
                         'value' => '\Aimeos\Cms\Actions\Pages@list',
@@ -495,8 +497,6 @@ return [
                 'fields' => [
                     'title' => [
                         'type' => 'string',
-                        'min' => 1,
-                        'max' => 255,
                     ],
                 ],
             ],

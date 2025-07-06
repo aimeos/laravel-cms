@@ -14,6 +14,14 @@
     resize: vertical;
 }
 
+.contact .errors {
+    color: #e63946;
+}
+
+.contact .error {
+    border-color: #e63946;
+}
+
 .contact button {
     padding: 15px;
     font-size: 16px;
@@ -28,6 +36,7 @@
     color: var(--color-primary);
 }
 
+.contact button:focus-visible,
 .contact button:hover {
     background-color: var(--color-accent);
     color: var(--color-light);

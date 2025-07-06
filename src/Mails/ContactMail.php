@@ -23,7 +23,7 @@ class ContactMail extends Mailable
     public function build(): self
     {
         return $this
-            ->subject('Contact mail from ' . config('app.name'))
-            ->markdown('cms:mails.contact');
+            ->subject( 'Contact mail from ' . config( 'app.name' ) )
+            ->markdown( 'cms::mails.contact' );
     }
 }

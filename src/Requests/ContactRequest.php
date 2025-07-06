@@ -11,11 +11,11 @@ class ContactRequest extends FormRequest
     {
         $rules = [
             'name'    => 'required|string|max:255',
-            'email'   => 'required|email',
+            'email'   => 'required|email:rfc,dns',
             'message' => 'required|string|max:5000',
         ];
 
-        if(!app()->environment('local') && config('services.hcaptcha.secret')) {
+        if( !app()->environment('local') && config('services.hcaptcha.secret') ) {
             $rules['h-captcha-response'] = ['required', new Hcaptcha];
         }
 

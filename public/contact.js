@@ -9,25 +9,38 @@ document.querySelectorAll('.contact form').forEach(form => {
         form.querySelector('.btn .send')?.classList?.add('hidden');
         form.querySelector('.btn .sending')?.classList?.remove('hidden');
 
+        const errors = form.querySelector('.errors');
+        if(errors) errors.textContent = '';
+
         fetch(form.getAttribute('action'), {
             method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content
+            },
             body: new FormData(e.target)
         }).then(response => {
-            if(!response.ok) {
-                throw new Error(response.statusText)
-            }
-
             return response.json();
         }).then(result => {
             if(!result.status) {
-                throw new Error(result.message)
+                throw result.errors || {};
             }
 
             form.querySelector('.btn .success')?.classList?.remove('hidden');
-        }).catch(err => {
+        }).catch(errors => {
             form.querySelector('.btn .failure')?.classList?.remove('hidden');
-        }).finally(() => {
-            form.querySelector('.btn .sending')?.classList?.add('hidden');
+            const container = form.querySelector('.errors');
+
+            Object.keys(errors || {}).forEach(key => {
+                const field = form.querySelector('[name="' + key + '"');
+
+                field?.classList?.add('error');
+                field?.addEventListener('change', () => {
+                    field?.classList?.remove('error');
+                })
+
+                container.innerHTML = [container.innerHTML, ...errors[key]].filter(v => !!v).join('<br/>')
+            })
 
             setTimeout(() => {
                 form.querySelectorAll('.btn span').forEach(el => {
@@ -35,7 +48,9 @@ document.querySelectorAll('.contact form').forEach(form => {
                 });
                 form.querySelector('.btn .send')?.classList?.remove('hidden');
                 form.querySelector('.btn').disabled = false;
-            }, 10000);
+            }, 5000);
+        }).finally(() => {
+            form.querySelector('.btn .sending')?.classList?.add('hidden');
         });
     })
 });

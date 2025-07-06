@@ -20,6 +20,8 @@
         <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
     @endif
 
+    <div class="errors"></div>
+
     <button type="submit" class="btn">
         <span class="send">{{ _('Send message') }}</span>
         <span class="sending hidden">{{ _('Sending message') }}</span>

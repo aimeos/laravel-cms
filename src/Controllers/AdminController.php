@@ -1,6 +1,6 @@
 <?php
 
-namespace Aimeos\Cms\Http\Controllers;
+namespace Aimeos\Cms\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Client\Response;

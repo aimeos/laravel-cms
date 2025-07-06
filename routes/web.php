@@ -1,6 +1,6 @@
 <?php
 
-use Aimeos\Cms\Http\Controllers;
+use Aimeos\Cms\Controllers;
 use Illuminate\Support\Facades\Route;
 
 
@@ -16,7 +16,7 @@ Route::match(['GET', 'HEAD', 'OPTIONS'], 'cmsproxy', [Controllers\AdminControlle
     ->middleware(config('cms.proxy.middleware', ['web', 'auth', 'throttle:20,1']))
     ->name('cms.proxy');
 
-Route::post('cmsapi/contact', [Controllers\ApiController::class, 'contact'])
+Route::post('cmsapi/contact', [Controllers\ContactController::class, 'send'])
     ->middleware('throttle:2,1')
     ->name('cms.api.contact');
 

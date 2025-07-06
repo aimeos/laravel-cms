@@ -12,15 +12,15 @@
         @endforeach
 
         @if(in_array(cms($page, 'lang'), ['ar', 'az', 'dv', 'fa', 'he', 'ku', 'ur']))
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.rtl.min.css" rel="stylesheet" crossorigin="anonymous">
+            <link href="{{ cmsasset('vendor/cms/bootstrap.rtl.min.css') }}" rel="stylesheet">
         @else
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+            <link href="{{ cmsasset('vendor/cms/bootstrap.min.css') }}" rel="stylesheet">
         @endif
         <link href="{{ cmsasset('vendor/cms/cms.css') }}" rel="stylesheet">
 
         @stack('css')
 
-        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script defer src="{{ cmsasset('vendor/cms/bootstrap.bundle.min.js') }}"></script>
         <script defer src="{{ cmsasset('vendor/cms/cms.js') }}"></script>
 
         @stack('js')

@@ -306,7 +306,18 @@ Made with <fg=green>love</> by the Pagible CMS community. Be a part of it!
         'key' => env('DEEPL_API_KEY'),
         'url' => env('DEEPL_API_URL', 'https://api-free.deepl.com/v2/translate'),
     ],", $pos + 2, 0 );
-            $this->line( sprintf( '  Added DeepL service configuration to [%1$s]' . PHP_EOL, $filename ) );
+            $this->line( sprintf( '  Added DeepL configuration to [%1$s]' . PHP_EOL, $filename ) );
+        }
+
+        if( strpos( $content, 'hcaptcha' ) === false && ( $pos = strrpos( $content, '],' ) ) !== false && ++$done )
+        {
+            $content = substr_replace( $content, "
+
+    'hcaptcha' => [
+        'sitekey' => env('HCAPTCHA_SITEKEY'),
+        'secret' => env('HCAPTCHA_SECRET'),
+    ],", $pos + 2, 0 );
+            $this->line( sprintf( '  Added HCaptcha configuration to [%1$s]' . PHP_EOL, $filename ) );
         }
 
         if( $done ) {

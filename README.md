@@ -23,6 +23,7 @@ It can be installed into any existing Laravel application.
 
 * [Installation](#installation)
 * [Authorization](#authorization)
+* [Configuration](#configuration)
 * [Clean up](#clean-up)
 * [Multi-domain](#multi-domain)
 * [Multi-tenancy](#multi-tenancy)
@@ -42,6 +43,7 @@ Then, run this command within your Laravel application directory:
 ```bash
 composer req aimeos/pagible
 php artisan cms:install
+php artisan migrate
 ```
 
 Now, adapt the `.env` file of your application and change the `APP_URL` setting to your domain. If you are using `php artisan serve` for testing, add the port of the internal web server (`APP_URL=http://localhost:8000`). Otherwise, the uploading files will fail because they wouldn't be loaded!
@@ -50,7 +52,9 @@ Add a line in the "post-update-cmd" section of your `composer.json` file to upda
 
 ```json
 "post-update-cmd": [
-    "@php artisan vendor:publish --force --tag=admin --tag=public",
+    "@php artisan vendor:publish --force --tag=admin",
+    "@php artisan vendor:publish --tag=public",
+    "@php artisan migrate",
     ...
 ],
 ```
@@ -74,6 +78,82 @@ The CMS admin backend is available at (replace "mydomain.tld" with your own one)
 ```
 http://mydomain.tld/cmsadmin
 ```
+
+### Configuration
+
+#### Captcha protection
+
+To protect forms like the contact form against misuse and spam, you can add the
+[HCaptcha service](https://www.hcaptcha.com/). Sign up at their web site and
+[create an account](https://dashboard.hcaptcha.com/signup).
+
+In the HCaptcha dashboard, go to the [Sites](https://dashboard.hcaptcha.com/sites)
+page and add an entry for your web site. When you click on the newly generated entry,
+the **sitekey** is shown on top. Add this to your `.env` file as:
+
+```
+HCAPTCHA_SITEKEY="..."
+```
+
+In the [account settings](https://dashboard.hcaptcha.com/settings/secrets), you will
+find the **secret** that is required too in your `.env` file as:
+
+```
+HCAPTCHA_SECRET="..."
+```
+
+#### DeepL translation
+
+For enabling translation of content to the supported languages by DeepL,
+[create an account](https://www.deepl.com/en/signup) at the DeepL web site first.
+
+In the DeepL dashboard, go to [API Keys & Limits](https://www.deepl.com/en/your-account/keys)
+and create a new API key. Copy the key and add it to your `.env` file as:
+
+```
+DEEPL_API_KEY="..."
+```
+
+If you signed up for a PRO account, also set the DeepL API URL to:
+
+```
+DEEPL_API_URL="https://api.deepl.com/"
+```
+
+#### AI support
+
+To generate texts/images from prompts, analyze image content, or execute actions based on
+your prompts, you have to configure one of the AI service providers supported by the
+[Prism](https://github.com/prism-php/prism/blob/main/config/prism.php) package.
+
+The best-known service provider is from [OpenAI](https://openai.com/) which is pre-configured
+in Pagible. The service provider with the best data protection is [Mistral](https://mistral.ai/)
+from France which you should use instead if you are operating within the EU.
+
+All service providers require to sign-up and create an account first. They will provide
+an API key which you need to add to your `.env` file as shown in the
+[Prism configuration](https://github.com/prism-php/prism/blob/main/config/prism.php) file, e.g.:
+
+```
+OPENAI_API_KEY="..."
+MISTRAL_API_KEY="..."
+DEEPSEEK_API_KEY="..."
+```
+
+**Note:** You only need to configure API keys for the AI service providers you are using, not for all!
+
+If you want to use an AI service different to OpenAI or a specific AI model offered by the
+AI service provider, you have to add this configuration:
+
+```
+CMS_AI_TEXT="openai"
+CMS_AI_TEXT_MODEL="chatgpt-4o-latest"
+
+CMS_AI_IMAGE="openai"
+CMS_AI_IMAGE_MODEL="dall-e-3"
+```
+
+For texts and images, you can use different AI service providers and models.
 
 ### Publishing
 

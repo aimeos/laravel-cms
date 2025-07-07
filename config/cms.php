@@ -444,7 +444,7 @@ return [
                     ],
                     'action' => [
                         'type' => 'hidden',
-                        'value' => '\Aimeos\Cms\Actions\Pages@list',
+                        'value' => '\Aimeos\Cms\Actions\Blog',
                     ],
                     'parent-page' => [
                         'type' => 'autocomplete',
@@ -478,15 +478,11 @@ return [
                         'type' => 'image',
                         'label' => 'Image',
                     ],
-                    'lead' => [
+                    'text' => [
                         'type' => 'text',
                         'label' => 'Introduction',
                         'min' => 1,
                         'max' => 1000,
-                    ],
-                    'text' => [
-                        'type' => 'markdown',
-                        'min' => 1,
                     ],
                 ],
             ],

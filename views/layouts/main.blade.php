@@ -4,6 +4,14 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta http-equiv="Content-Security-Policy" content="
+            base-uri 'self';
+            default-src 'self';
+            style-src 'self' https://hcaptcha.com, https://*.hcaptcha.com;
+            script-src 'self' https://hcaptcha.com, https://*.hcaptcha.com;
+            frame-src 'self' https://hcaptcha.com, https://*.hcaptcha.com;
+            connect-src 'self' https://hcaptcha.com, https://*.hcaptcha.com
+        ">
 
         <title>{{ cms($page, 'title') }}</title>
 

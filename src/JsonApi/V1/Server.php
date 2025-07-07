@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use LaravelJsonApi\Core\Server\Server as BaseServer;
 use LaravelJsonApi\Core\Document\JsonApi;
-use Aimeos\Cms\Scopes\Status;
 
 
 class Server extends BaseServer
@@ -27,7 +26,9 @@ class Server extends BaseServer
      */
     public function serving(): void
     {
-        \Aimeos\Cms\Models\Page::addGlobalScope( new Status() );
+        if( !\Aimeos\Cms\Permission::can( 'page:view', request()->user() ) ) {
+            \Aimeos\Cms\Models\Page::addGlobalScope( new \Aimeos\Cms\Scopes\Status() );
+        }
     }
 
 
@@ -58,5 +59,16 @@ class Server extends BaseServer
         }
 
         return $this->baseUri;
+    }
+
+
+    /**
+     * Returns the custom field resolver class.
+     *
+     * @return string Class name of the field resolver
+     */
+    protected function fieldResolver(): string
+    {
+        return \Aimeos\Cms\JsonApi\V1\Resolvers\CmsResolver::class;
     }
 }

@@ -18,6 +18,7 @@
 		"league/commonmark": "^2.6",
 		"league/csv": "^9.23",
 		"symfony/uid": "^7.0",
+		"doctrine/dbal": "^4.2",
 		"prism-php/prism": "^0.78"
 	},
 	"require-dev": {

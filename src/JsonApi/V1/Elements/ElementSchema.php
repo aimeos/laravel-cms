@@ -57,7 +57,12 @@ class ElementSchema extends Schema
             ID::make(),
             Str::make( 'type' )->readOnly(),
             Str::make( 'lang' )->readOnly(),
-            ArrayHash::make( 'data' )->readOnly(),
+            ArrayHash::make( 'data' )->readOnly()->extractUsing( function( $model, $column, $item ) {
+                if( isset( $item->data->action ) ) {
+                    $item->data->action = app()->call( $item->data->action, ['model' => $model, 'item' => $item] );
+                }
+                return $item;
+            } ),
             HasMany::make( 'files' )->type( 'files' )->readOnly()->serializeUsing(
                 static fn($relation) => $relation->withoutLinks()
             ),

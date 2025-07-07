@@ -88,9 +88,30 @@ class PageSchema extends Schema
             Str::make( 'domain' )->readOnly(),
             Boolean::make( 'has' )->readOnly(),
             Number::make( 'cache' )->readOnly(),
-            ArrayHash::make( 'meta' )->readOnly(),
-            ArrayHash::make( 'config' )->readOnly(),
-            ArrayList::make( 'content' )->readOnly(),
+            ArrayHash::make( 'meta' )->readOnly()->extractUsing( function( $model, $column, $list ) {
+                foreach( (array) $list as $item ) {
+                    if( isset( $item->data->action ) ) {
+                        $item->data->action = app()->call( $item->data->action, ['model' => $model, 'item' => $item] );
+                    }
+                }
+                return $list;
+            } ),
+            ArrayHash::make( 'config' )->readOnly()->extractUsing( function( $model, $column, $list ) {
+                foreach( (array) $list as $item ) {
+                    if( isset( $item->data->action ) ) {
+                        $item->data->action = app()->call( $item->data->action, ['model' => $model, 'item' => $item] );
+                    }
+                }
+                return $list;
+            } ),
+            ArrayList::make( 'content' )->readOnly()->extractUsing( function( $model, $column, $list ) {
+                foreach( (array) $list as $item ) {
+                    if( isset( $item->data->action ) ) {
+                        $item->data->action = app()->call( $item->data->action, ['model' => $model, 'item' => $item] );
+                    }
+                }
+                return $list;
+            } ),
             DateTime::make( 'createdAt' )->readOnly(),
             DateTime::make( 'updatedAt' )->readOnly(),
             HasMany::make( 'elements' )->type( 'elements' )->readOnly()->serializeUsing(

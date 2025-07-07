@@ -60,15 +60,4 @@ class Server extends BaseServer
 
         return $this->baseUri;
     }
-
-
-    /**
-     * Returns the custom field resolver class.
-     *
-     * @return string Class name of the field resolver
-     */
-    protected function fieldResolver(): string
-    {
-        return \Aimeos\Cms\JsonApi\V1\Resolvers\CmsResolver::class;
-    }
 }

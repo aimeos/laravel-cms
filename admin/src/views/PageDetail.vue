@@ -276,6 +276,13 @@
       },
 
 
+      invalidate() {
+        const cache = this.$apollo.provider.defaultClient.cache
+        cache.evict({id: 'Page:' + this.item.id})
+        cache.gc()
+      },
+
+
       publish(at = null) {
         if(!this.auth.can('page:publish')) {
           this.messages.add('Permission denied', 'error')
@@ -411,6 +418,7 @@
               this.messages.add('Page saved successfully', 'success')
             }
 
+            this.invalidate()
             return true
           }).catch(error => {
             this.messages.add('Error saving page', 'error')

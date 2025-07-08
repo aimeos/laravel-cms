@@ -16,13 +16,14 @@ body {
     line-height: 1.6;
     color: var(--color-text);
     background-color: var(--color-light);
+    scroll-behavior: smooth;
 }
 
-body:not(.type-blog) .cms-content .container {
+body.type-page .cms-content .container {
     padding: 60px 10px;
 }
 
-body .cms-content > :nth-of-type(3n) {
+body.type-page .cms-content > :nth-of-type(3n) {
     background-color: var(--color-background);
 }
 

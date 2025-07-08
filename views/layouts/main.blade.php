@@ -33,7 +33,7 @@
             <script defer src="{{ cmsasset('vendor/cms/admin.js') }}"></script>
         @endif
     </head>
-    <body class="theme-{{ cms($page, 'theme', 'cms') }} type-{{ cms($page, 'type', 'page') }}">
+    <body class="theme-{{ cms($page, 'theme') ?: 'cms' }} type-{{ cms($page, 'type') ?: 'page' }}">
         @yield('header')
         @yield('main')
         @yield('footer')

@@ -151,7 +151,7 @@
           this.$emit('addFile', item.id)
         })
 
-        this.$emit('update:modelValue', this.images)
+        this.$emit('update:modelValue', this.images.map(item => ({id: item.id, type: 'file'})))
         this.vfiles = false
         this.vurls = false
         this.validate()

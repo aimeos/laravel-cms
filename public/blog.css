@@ -1,5 +1,13 @@
+.blog nav {
+    justify-content: center;
+}
+
+.blog .grid {
+    grid-template-columns: repeat(2, 1fr);
+}
+
 .blog .blog-item {
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
 }
 
 .blog picture img {
@@ -7,6 +15,7 @@
     margin-bottom: 2rem;
     aspect-ratio: 5 / 3;
     object-fit: contain;
+    width: 100%;
 }
 
 .blog h3 {

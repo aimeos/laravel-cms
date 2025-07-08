@@ -40,7 +40,7 @@ class Blog
 
                 return $item->setRelation( 'files', $item->files->map( function( $file ) use ( $fileattr, $fileIds ) {
                     return $fileIds->contains( $file->id ) ? collect( $file->toArray() )->only( $fileattr )->all() : [];
-                } ) );
+                } )->filter() );
             } );
     }
 }

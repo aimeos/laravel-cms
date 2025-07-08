@@ -1,56 +1,52 @@
 @extends('cms::layouts.main')
 
 @section('header')
-    <nav class="navbar navbar-expand-lg">
-        <div class="container">
-            <a class="navbar-brand" href="{{ cmsroute($page->ancestors?->first() ?? $page) }}">
-                {{ config('app.name') }}
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbar">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    @foreach($page->nav() as $item)
-                        <li class="nav-item">
-                            <a class="nav-link {{ $item->children->count() ? 'dropdown-toggle' : '' }} {{ $page->isSelfOrDescendantOf($item) ? 'active' : '' }}"
-                                href="{{ cmsroute($item) }}"
-                                @if($item->children->count()) role="button" aria-expanded="false" data-bs-toggle="dropdown" @endif
-                                @if($page->is($item)) aria-current="page" @endif>
-                                {{ cms($item, 'name') }}
-                            </a>
-                            @if($item->children->count())
-                                <ul class="dropdown-menu">
-                                    @foreach($item->children as $subItem)
-                                        <li>
-                                            <a class="dropdown-item {{ $page->isSelfOrDescendantOf($subItem) ? 'active' : '' }}"
-                                                href="{{ cmsroute($subItem) }}"
-                                                @if($page->is($subItem)) aria-current="page" @endif>
-                                                {{ cms($subItem, 'name') }}
-                                            </a>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            @endif
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
-        </div>
+    <nav>
+        <ul>
+            <li>
+                <a href="{{ cmsroute($page->ancestors?->first() ?? $page) }}" class="contrast">
+                    <strong>{{ config('app.name') }}</strong>
+                </a>
+            </li>
+        </ul>
+        <ul>
+            @foreach($page->nav() as $item)
+                <li>
+                    @if($item->children->count())
+                        <details class="dropdown">
+                            <summary role>{{ cms($item, 'name') }}</summary>
+                            <ul>
+                                @foreach($item->children as $subItem)
+                                    <li>
+                                        <a href="{{ cmsroute($subItem) }}" class="{{ !$page->isSelfOrDescendantOf($subItem) ?: 'active' }}">
+                                            {{ cms($subItem, 'name') }}
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </details>
+                    @else
+                        <a href="{{ cmsroute($item) }}" class="{{ !$page->isSelfOrDescendantOf($item) ?: 'active' }} contrast">
+                            {{ cms($item, 'name') }}
+                        </a>
+                    @endif
+                </li>
+            @endforeach
+        </ul>
     </nav>
 
     @if($page->ancestors->count() > 1)
-        <nav class="container" aria-label="breadcrumb">
-            <ol class="breadcrumb">
+        <nav aria-label="breadcrumb">
+            <ul>
                 @foreach($page->ancestors ?? [] as $item)
                     @if(cms($item, 'status') === 1)
-                        <li class="breadcrumb-item">
+                        <li>
                             <a href="{{ cmsroute($item) }}">{{ cms($item, 'name') }}</a>
                         </li>
                     @endif
                 @endforeach
-                <li class="breadcrumb-item active" aria-current="page">{{ cms($page, 'name') }}</li>
-            </ol>
+                <li>{{ cms($page, 'name') }}</li>
+            </ul>
         </nav>
     @endif
 @endsection

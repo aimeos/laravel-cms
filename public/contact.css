@@ -10,7 +10,7 @@
     padding: 15px;
     font-size: 16px;
     border: 1px solid var(--color-border);
-    border-radius: 5px;
+    border-radius: 8px;
     resize: vertical;
 }
 
@@ -28,7 +28,7 @@
     background-color: var(--color-primary);
     color: var(--color-light);
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
 }
 
 .contact button:disabled {

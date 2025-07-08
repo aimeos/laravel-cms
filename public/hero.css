@@ -1,6 +1,5 @@
 .hero {
     background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
-    color: var(--color-light);
     text-align: center;
     padding: 100px 0;
 }
@@ -8,11 +7,13 @@
 .hero h1 {
     font-size: 48px;
     margin-bottom: 20px;
+    color: var(--color-light);
 }
 
-.hero .text {
+.hero p {
     font-size: 18px;
     margin-bottom: 30px;
+    color: var(--color-light);
 }
 
 .hero .url {
@@ -20,7 +21,7 @@
     color: var(--color-primary);
     display: inline-block;
     padding: 12px 24px;
-    border-radius: 5px;
+    border-radius: 8px;
     font-weight: 600;
     text-decoration: none;
     transition: background 0.3s ease;

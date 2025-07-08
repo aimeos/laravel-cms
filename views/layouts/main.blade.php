@@ -7,28 +7,24 @@
         <meta http-equiv="Content-Security-Policy" content="
             base-uri 'self';
             default-src 'self';
-            style-src 'self' https://hcaptcha.com, https://*.hcaptcha.com;
-            script-src 'self' https://hcaptcha.com, https://*.hcaptcha.com;
-            frame-src 'self' https://hcaptcha.com, https://*.hcaptcha.com;
-            connect-src 'self' https://hcaptcha.com, https://*.hcaptcha.com
+            img-src 'self' data:;
+            style-src 'self' https://hcaptcha.com https://*.hcaptcha.com;
+            script-src 'self' https://hcaptcha.com https://*.hcaptcha.com;
+            frame-src 'self' https://hcaptcha.com https://*.hcaptcha.com;
+            connect-src 'self' https://hcaptcha.com https://*.hcaptcha.com
         ">
 
         <title>{{ cms($page, 'title') }}</title>
 
-        @foreach(cms($page, 'meta') ?? [] as $item)
+        @foreach(cms($page, 'meta', []) as $item)
             @includeFirst(cmsviews($page, $item), cmsdata($page, $item))
         @endforeach
 
-        @if(in_array(cms($page, 'lang'), ['ar', 'az', 'dv', 'fa', 'he', 'ku', 'ur']))
-            <link href="{{ cmsasset('vendor/cms/bootstrap.rtl.min.css') }}" rel="stylesheet">
-        @else
-            <link href="{{ cmsasset('vendor/cms/bootstrap.min.css') }}" rel="stylesheet">
-        @endif
+        <link href="{{ cmsasset('vendor/cms/pico.min.css') }}" rel="stylesheet">
         <link href="{{ cmsasset('vendor/cms/cms.css') }}" rel="stylesheet">
 
         @stack('css')
 
-        <script defer src="{{ cmsasset('vendor/cms/bootstrap.bundle.min.js') }}"></script>
         <script defer src="{{ cmsasset('vendor/cms/cms.js') }}"></script>
 
         @stack('js')
@@ -37,7 +33,7 @@
             <script defer src="{{ cmsasset('vendor/cms/admin.js') }}"></script>
         @endif
     </head>
-    <body class="theme-{{ cms($page, 'theme') }} type-{{ cms($page, 'type') }}">
+    <body class="theme-{{ cms($page, 'theme', 'cms') }} type-{{ cms($page, 'type', 'page') }}">
         @yield('header')
         @yield('main')
         @yield('footer')

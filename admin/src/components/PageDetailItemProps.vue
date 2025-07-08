@@ -233,7 +233,7 @@
           ></v-select>
           <v-select ref="type"
             :readonly="readonly"
-            :items="Object.keys(config.get(`themes.${item.theme || 'cms'}.types`, {'default': ''}))"
+            :items="Object.keys(config.get(`themes.${item.theme || 'cms'}.types`, {'page': ''}))"
             :modelValue="item.type"
             @update:modelValue="update('type', $event)"
             variant="underlined"

@@ -149,7 +149,7 @@ return [
         'themes' => [
             'cms' => [
                 'types' => [
-                    'default' => [
+                    'page' => [
                         'sections' => [
                             'main',
                             'footer',

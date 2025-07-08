@@ -28,7 +28,7 @@
 
     computed: {
       names() {
-        const type = this.item.type || 'default'
+        const type = this.item.type || 'page'
         const theme = this.item.theme || 'cms'
 
         return this.config.get(`themes.${theme}.types.${type}.sections`, ['main'])

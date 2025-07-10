@@ -21,13 +21,14 @@
         @endforeach
 
         <link href="{{ cmsasset('vendor/cms/pico.min.css') }}" rel="stylesheet">
-        <link href="{{ cmsasset('vendor/cms/cms.css') }}" rel="stylesheet">
 
         @stack('css')
 
-        <script defer src="{{ cmsasset('vendor/cms/cms.js') }}"></script>
+        <link href="{{ cmsasset('vendor/cms/cms.css') }}" rel="stylesheet">
 
         @stack('js')
+
+        <script defer src="{{ cmsasset('vendor/cms/cms.js') }}"></script>
 
         @if(\Aimeos\Cms\Permission::can('page:save', auth()->user()))
             <script defer src="{{ cmsasset('vendor/cms/admin.js') }}"></script>

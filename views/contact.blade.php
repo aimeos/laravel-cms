@@ -24,7 +24,7 @@
 
     <button type="submit" class="btn">
         <span class="send">{{ _('Send message') }}</span>
-        <span class="sending hidden">{{ _('Sending message') }}</span>
+        <span class="sending hidden"aria-busy="true">{{ _('Sending message') }}</span>
         <span class="success hidden">{{ _('Success') }}</span>
         <span class="failure hidden">{{ _('Failure') }}</span>
     </button>

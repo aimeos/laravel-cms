@@ -2,10 +2,6 @@
     justify-content: center;
 }
 
-.blog .grid {
-    grid-template-columns: repeat(2, 1fr);
-}
-
 .blog .blog-item {
     margin-bottom: 2rem;
 }
@@ -37,4 +33,10 @@
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
+}
+
+@media (min-width:768px) {
+    .blog .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }

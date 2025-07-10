@@ -40,6 +40,10 @@ nav li :where(a,[role=link]) {
     text-decoration: none;
 }
 
+header {
+    border-bottom: 1px solid #ddd;
+}
+
 header nav details summary {
     display: flex;
     list-style: none;
@@ -154,6 +158,10 @@ img {
     display: none;
 }
 
+.type-page .text {
+    text-align: center;
+}
+
 .file,
 .audio,
 .video,
@@ -170,10 +178,6 @@ img {
     max-width: 960px;
     max-height: 540px;
     border-radius: 8px;
-}
-
-.text {
-    text-align: center;
 }
 
 .image .main > img,

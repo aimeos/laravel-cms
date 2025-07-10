@@ -10,13 +10,13 @@ const uid = (function () {
   let counter = 0
 
   return function() {
-    counter = (counter + 1) % 16
+    counter = (counter + 1) % 8
 
     // IDs will repeat after ~70 years
-    const value = (Math.floor((Date.now() - EPOCH) / 8) << 4) | counter
+    const value = (((Date.now() - EPOCH) / 256) << 3) | counter
 
-    return Array.from({ length: 7 }, (_, i) => {
-      const index = (value >> (7 * (7 - i))) & 63
+    return Array.from({ length: 6 }, (_, i) => {
+      const index = (value >> (6 * (5 - i))) & 63
       return BASE64[i === 0 ? index % 52 : index]
     }).join('');
   }

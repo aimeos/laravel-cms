@@ -76,50 +76,71 @@ class PageSchema extends Schema
     {
         return [
             ID::make(),
-            Str::make( 'parent_id' )->readOnly(),
             Str::make( 'lang' )->readOnly(),
             Str::make( 'path' )->readOnly(),
             Str::make( 'name' )->readOnly(),
             Str::make( 'title' )->readOnly(),
             Str::make( 'theme' )->readOnly(),
             Str::make( 'type' )->readOnly(),
-            Str::make( 'tag' )->readOnly(),
             Str::make( 'to' )->readOnly(),
             Str::make( 'domain' )->readOnly(),
-            Boolean::make( 'has' )->readOnly(),
             Number::make( 'cache' )->readOnly(),
-            ArrayHash::make( 'meta' )->readOnly()->extractUsing( function( $model, $column, $list ) {
-                foreach( (array) $list as $item ) {
-                    if( isset( $item->data->action ) ) {
-                        $item->data->action = app()->call( $item->data->action, ['model' => $model, 'item' => $item] );
-                    }
-                }
-                return $list;
-            } ),
-            ArrayHash::make( 'config' )->readOnly()->extractUsing( function( $model, $column, $list ) {
-                foreach( (array) $list as $item ) {
-                    if( isset( $item->data->action ) ) {
-                        $item->data->action = app()->call( $item->data->action, ['model' => $model, 'item' => $item] );
-                    }
-                }
-                return $list;
-            } ),
-            ArrayList::make( 'content' )->readOnly()->extractUsing( function( $model, $column, $list ) {
-                foreach( (array) $list as $item ) {
-                    if( isset( $item->data->action ) ) {
-                        $item->data->action = app()->call( $item->data->action, ['model' => $model, 'item' => $item] );
-                    }
-                }
-                return $list;
-            } ),
             DateTime::make( 'createdAt' )->readOnly(),
             DateTime::make( 'updatedAt' )->readOnly(),
-            HasMany::make( 'elements' )->type( 'elements' )->readOnly()->serializeUsing(
-                static fn($relation) => $relation->withoutLinks()
-            ),
-            HasMany::make( 'files' )->type( 'files' )->readOnly()->serializeUsing(
-                static fn($relation) => $relation->withoutLinks()
-            ),
+            ArrayHash::make( 'meta' )->readOnly()->extractUsing( function( $model, $column, $items ) {
+                foreach( (array) $items as $item ) {
+                    if( isset( $item->data?->action ) ) {
+                        $item->data->action = app()->call( $item->data->action, ['model' => $model, 'item' => $item] );
+                    }
+
+                    if( isset( $item->files ) ) {
+                        $item->files = collect( $item->files )
+                            ->map( fn( $id ) => $model->files[$id] ?? null )
+                            ->filter()
+                            ->pluck( null, 'id' );
+                    }
+                }
+                return $items;
+            } ),
+            ArrayHash::make( 'config' )->readOnly()->extractUsing( function( $model, $column, $items ) {
+                foreach( (array) $items as $item ) {
+                    if( isset( $item->data?->action ) ) {
+                        $item->data->action = app()->call( $item->data->action, ['model' => $model, 'item' => $item] );
+                    }
+
+                    if( isset( $item->files ) ) {
+                        $item->files = collect( $item->files )
+                            ->map( fn( $id ) => $model->files[$id] ?? null )
+                            ->filter()
+                            ->pluck( null, 'id' );
+                    }
+                }
+                return $items;
+            } ),
+            ArrayList::make( 'content' )->readOnly()->extractUsing( function( $model, $column, $items ) {
+                foreach( (array) $items as $key => $item ) {
+                    if( isset( $item->files ) ) {
+                        $item->files = collect( $item->files )
+                            ->map( fn( $id ) => $model->files[$id] ?? null )
+                            ->filter()
+                            ->pluck( null, 'id' );
+                    }
+
+                    if( $item->type === 'reference' && $element = @$model->elements[@$item->refid] ) {
+                        $item->type = $element->type;
+                        $item->data = $element->data;
+
+                        if( !$element->files->isEmpty() ) {
+                            $item->files = $element->files;
+                        }
+                    }
+
+                    if( isset( $item->data?->action ) ) {
+                        $item->data->action = app()->call( $item->data->action, ['model' => $model, 'item' => $item] );
+                    }
+                }
+                return $items;
+            } ),
             HasOne::make( 'parent' )->type( 'pages' )->readOnly()->serializeUsing( function( $relation ) {
                 if( $relation->showData() && is_object( $item = $relation->data() ) ) {
                     unset( $item->data, $item->meta );

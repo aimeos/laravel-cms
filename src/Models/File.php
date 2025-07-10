@@ -75,6 +75,19 @@ class File extends Model
     ];
 
     /**
+     * The attributes that are return by toArray()
+     *
+     * @var array
+     */
+    protected $visible = [
+        'lang',
+        'mime',
+        'path',
+        'previews',
+        'description'
+    ];
+
+    /**
      * The table associated with the model.
      *
      * @var string

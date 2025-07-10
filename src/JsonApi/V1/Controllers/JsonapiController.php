@@ -34,23 +34,6 @@ class JsonapiController extends Controller
 
 
     /**
-     * Adds global meta data to related resource response.
-     *
-     * @param Page|null $page Page model
-     * @param mixed $data Fetched data
-     * @param ResourceQuery $request Query object
-     * @param Relation Relation type object
-     * @return RelatedResponse
-     */
-    public function readRelatedElements( ?Page $page, $data, ResourceQuery $request ) : RelatedResponse
-    {
-        return RelatedResponse::make( $page, 'elements', $data )
-            ->withMeta( ['baseurl' => Storage::disk( config( 'cms.disk', 'public' ) )->url( '' )] )
-            ->withQueryParameters( $request );
-    }
-
-
-    /**
      * Adds global meta data to collection resource response.
      *
      * @param mixed $data Fetched data

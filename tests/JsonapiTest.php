@@ -125,25 +125,6 @@ class JsonapiTest extends TestAbstract
     }
 
 
-    public function testPageIncludeElements()
-    {
-        $this->seed( \Database\Seeders\CmsSeeder::class );
-
-        $page = \Aimeos\Cms\Models\Page::where('tag', 'root')->firstOrFail();
-        $expected = [];
-
-        foreach( $page->elements as $item ) {
-            $expected[] = ['type' => 'elements', 'id' => $item->id];
-        }
-
-        $this->expectsDatabaseQueryCount( 2 ); // page + elements elements
-        $response = $this->jsonApi()->expects( 'pages' )->includePaths( 'elements' )->get( "cms/pages/{$page->id}" );
-        $response->assertFetchedOne( $page )->assertIncluded( $expected );
-
-        $this->assertGreaterThanOrEqual( 1, count( $expected ) );
-    }
-
-
     public function testPageFilterSubtree()
     {
         $this->seed( \Database\Seeders\CmsSeeder::class );

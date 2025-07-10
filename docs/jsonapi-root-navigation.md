@@ -4,10 +4,10 @@ permalink: /jsonapi/root-navigation/
 excerpt: "How to retrieve the root page and children from Laravel CMS using the JSON:API to build a page with navigation"
 ---
 
-Retrieve the root page with shared content elements and files and first level sub-pages to build the navigation:
+Retrieve the root page and first level sub-pages to build the navigation:
 
 ```
-http://mydomain.tld/api/cms/pages?filter[path]=/&include=children,elements,files
+http://mydomain.tld/cms/pages?filter[path]=/&include=children
 ```
 
 The result will be a JSON:API response which looks like:
@@ -29,8 +29,8 @@ The result will be a JSON:API response which looks like:
         "version": "1.0"
     },
     "links": {
-        "first": "http:\/\/mydomain.tld\/cms\/pages?filter%5Bpath%5D=/&include=children%2Celements%2Cfiles&page%5Bnumber%5D=1&page%5Bsize%5D=15",
-        "last": "http:\/\/mydomain.tld\/cms\/pages?filter%5Bpath%5D=/&include=children%2Celements%2Cfiles&page%5Bnumber%5D=1&page%5Bsize%5D=15"
+        "first": "http:\/\/mydomain.tld\/cms\/pages?filter%5Bpath%5D=/&include=children&page%5Bnumber%5D=1&page%5Bsize%5D=15",
+        "last": "http:\/\/mydomain.tld\/cms\/pages?filter%5Bpath%5D=/&include=children&page%5Bnumber%5D=1&page%5Bsize%5D=15"
     },
     "data": [
         {
@@ -50,13 +50,13 @@ The result will be a JSON:API response which looks like:
                 "content": [
                     {
                         "text": "Welcome to Laravel CMS",
-                        "type": "cms::heading"
+                        "type": "heading"
                     }
                 ],
                 "meta": {
-                    "cms::meta": {
+                    "meta": {
                         "text": "Laravel CMS is outstanding",
-                        "type": "cms::meta"
+                        "type": "meta"
                     }
                 },
                 "config": null,
@@ -64,14 +64,6 @@ The result will be a JSON:API response which looks like:
                 "updatedAt": "2023-05-01T09:36:30.000000Z"
             },
             "relationships": {
-                "elements": {
-                    "data": [
-                        {
-                            "type": "elements",
-                            "id": "0187d6ab-b76d-75ee-8830-ab00b4259aa5"
-                        }
-                    ]
-                },
                 "children": {
                     "data": [
                         {
@@ -95,18 +87,6 @@ The result will be a JSON:API response which looks like:
         }
     ],
     "included": [
-        {
-            "type": "elements",
-            "id": "0187d6ab-b76d-75ee-8830-ab00b4259aa5",
-            "attributes": {
-                "lang": "en",
-                "data": {
-                    "text": "Welcome to Laravel CMS",
-                    "type": "cms::heading"
-                },
-                "createdAt": "2023-05-01T09:36:30.000000Z"
-            }
-        },
         {
             "type": "pages",
             "id": "2",

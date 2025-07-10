@@ -6,13 +6,13 @@ excerpt: "How to retrieve the root page with descendents from Laravel CMS using 
 
 ## Root page with mega-menu
 
-Retrieve the root page with all shared content elements and sub-pages up to three levels to build a mega-menu:
+Retrieve the root page with sub-pages up to three levels to build a mega-menu:
 
 ```
-http://mydomain.tld/api/cms/pages?filter[path]=/&include=subtree,elements,files
+http://mydomain.tld/cms/pages?filter[path]=/&include=subtree
 ```
 
-Then, the page tree (up to three levels deep) including the shared content elements and files for the root page will be returned:
+Then, the page tree (up to three levels deep) for the root page will be returned:
 
 ```json
 {
@@ -31,8 +31,8 @@ Then, the page tree (up to three levels deep) including the shared content eleme
         "version": "1.0"
     },
     "links": {
-        "first": "http:\/\/mydomain.tld\/cms\/pages?filter%5Bpath%5D=/&include=subtree%2Celements%2Cfiles&page%5Bnumber%5D=1&page%5Bsize%5D=15",
-        "last": "http:\/\/mydomain.tld\/cms\/pages?filter%5Bpath%5D=/&include=subtree%2Celements%2Cfiles&page%5Bnumber%5D=1&page%5Bsize%5D=15"
+        "first": "http:\/\/mydomain.tld\/cms\/pages?filter%5Bpath%5D=/&include=subtree&page%5Bnumber%5D=1&page%5Bsize%5D=15",
+        "last": "http:\/\/mydomain.tld\/cms\/pages?filter%5Bpath%5D=/&include=subtree&page%5Bnumber%5D=1&page%5Bsize%5D=15"
     },
     "data": [
         {
@@ -49,16 +49,16 @@ Then, the page tree (up to three levels deep) including the shared content eleme
                 "domain": "mydomain.tld",
                 "has": true,
                 "cache": 5,
-                "data": [
+                "content": [
                     {
                         "text": "Welcome to Laravel CMS",
-                        "type": "cms::heading"
+                        "type": "heading"
                     }
                 ],
                 "meta": {
-                    "cms::meta": {
+                    "meta": {
                         "text": "Laravel CMS is outstanding",
-                        "type": "cms::meta"
+                        "type": "meta"
                     }
                 },
                 "config": null,
@@ -66,14 +66,6 @@ Then, the page tree (up to three levels deep) including the shared content eleme
                 "updatedAt": "2023-05-01T09:36:30.000000Z"
             },
             "relationships": {
-                "elements": {
-                    "data": [
-                        {
-                            "type": "elements",
-                            "id": "0187d6ab-b76d-75ee-8830-ab00b4259aa5"
-                        }
-                    ]
-                },
                 "subtree": {
                     "data": [
                         {
@@ -101,18 +93,6 @@ Then, the page tree (up to three levels deep) including the shared content eleme
         }
     ],
     "included": [
-        {
-            "type": "elements",
-            "id": "0187d6ab-b76d-75ee-8830-ab00b4259aa5",
-            "attributes": {
-                "lang": "en",
-                "data": {
-                    "text": "Welcome to Laravel CMS",
-                    "type": "cms::heading"
-                },
-                "createdAt": "2023-05-01T09:36:30.000000Z"
-            }
-        },
         {
             "type": "pages",
             "id": "2",

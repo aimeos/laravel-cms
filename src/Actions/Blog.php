@@ -9,9 +9,9 @@ use Illuminate\Http\Request;
 
 class Blog
 {
-    public function __invoke( Request $request, Page $model, object $item )
+    public function __invoke( Request $request, Page $page, object $item )
     {
-        $pid = @$item->data?->{'parent-page'}?->value ?: $model->id;
+        $pid = @$item->data?->{'parent-page'}?->value ?: $page->id;
         $sort = @$item->data?->order ?: '-id';
 
         $order = $sort[0] === '-' ? substr( $sort, 1 ) : $sort;
@@ -30,17 +30,25 @@ class Blog
                 }
             } )->orderBy( $order, $dir );
 
-        $pageattr = ['id', 'lang', 'path', 'name', 'title', 'to', 'domain', 'content'];
-        $fileattr = ['id', 'lang', 'name', 'mime', 'path', 'previews', 'description'];
+        $attr = ['id', 'lang', 'path', 'name', 'title', 'to', 'domain', 'content'];
 
-        return $builder->paginate( @$item->data?->limit ?? 10, $pageattr, 'p' )
-            ->through( function( $item ) use ( $fileattr ) {
+        return $builder->paginate( @$item->data?->limit ?? 10, $attr, 'p' )
+            ->through( function( $item ) {
+                $lang = $item->lang;
                 $item->content = collect( $item->content )->filter( fn( $item ) => $item->type === 'article' );
-                $fileIds = collect( $item->content )->map( fn( $item ) => $item->files )->collapse()->unique();
+                $files = collect( $item->content )
+                    ->map( fn( $item ) => $item->files )
+                    ->collapse()
+                    ->unique()
+                    ->map( fn( $id ) => $item->files[$id] ?? null )
+                    ->filter()
+                    ->pluck( null, 'id' )
+                    ->each( fn( $file ) => $file->description = $file->description?->{$lang}
+                        ?? $file->description?->{substr( $lang, 0, 2 )}
+                        ?? null
+                    );
 
-                return $item->setRelation( 'files', $item->files->map( function( $file ) use ( $fileattr, $fileIds ) {
-                    return $fileIds->contains( $file->id ) ? collect( $file->toArray() )->only( $fileattr )->all() : [];
-                } )->filter() );
+                return $item->setRelation( 'files', $files );
             } );
     }
 }

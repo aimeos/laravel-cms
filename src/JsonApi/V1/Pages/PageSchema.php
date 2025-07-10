@@ -120,18 +120,27 @@ class PageSchema extends Schema
             ArrayList::make( 'content' )->readOnly()->extractUsing( function( $model, $column, $items ) {
                 foreach( (array) $items as $key => $item ) {
                     if( isset( $item->files ) ) {
+                        $lang = $model->lang;
                         $item->files = collect( $item->files )
                             ->map( fn( $id ) => $model->files[$id] ?? null )
                             ->filter()
-                            ->pluck( null, 'id' );
+                            ->pluck( null, 'id' )
+                            ->each( fn ( $file ) => $file->description = $file->description?->{$lang}
+                                ?? $file->description?->{substr( $lang, 0, 2 )}
+                                ?? null
+                            );
                     }
 
                     if( $item->type === 'reference' && $element = @$model->elements[@$item->refid] ) {
                         $item->type = $element->type;
                         $item->data = $element->data;
+                        $lang = $model->lang;
 
                         if( !$element->files->isEmpty() ) {
-                            $item->files = $element->files;
+                            $item->files = $element->files->each( fn ( $file ) => $file->description = $file->description?->{$lang}
+                                ?? $file->description?->{substr( $lang, 0, 2 )}
+                                ?? null
+                            );
                         }
                     }
 

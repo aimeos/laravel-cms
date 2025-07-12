@@ -40,10 +40,10 @@ Then, the `included` section contains the ancestor pages, e.g.:
             "content": [
                 {
                     "text": "Blog example",
-                    "type": "cms::heading"
+                    "type": "heading"
                 },
                 {
-                    "type": "cms::blog"
+                    "type": "blog"
                 }
             ],
             "meta": null,

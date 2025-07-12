@@ -12,14 +12,6 @@ use LaravelJsonApi\Core\Document\JsonApi;
 class Server extends BaseServer
 {
     /**
-     * The base URI namespace for this server.
-     *
-     * @var string
-     */
-    protected string $baseUri;
-
-
-    /**
      * Bootstrap the server when it is handling an HTTP request.
      *
      * @return void
@@ -50,10 +42,6 @@ class Server extends BaseServer
      */
     protected function baseUri(): string
     {
-        if( !isset( $this->baseUri ) ) {
-            $this->baseUri = Route::has( 'cms.pages' ) ? str_replace( '/pages', '', Url::route( 'cms.pages' ) ) : '/cms';
-        }
-
-        return $this->baseUri;
+        return '/cms';
     }
 }

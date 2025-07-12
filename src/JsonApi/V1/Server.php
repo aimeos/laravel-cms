@@ -31,7 +31,7 @@ class Server extends BaseServer
      */
     protected function allSchemas(): array
     {
-        return [Pages\PageSchema::class];
+        return [Navs\NavSchema::class, Pages\PageSchema::class];
     }
 
 

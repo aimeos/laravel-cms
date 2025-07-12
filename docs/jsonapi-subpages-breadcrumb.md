@@ -55,7 +55,7 @@ Then, the `included` section contains the ancestor pages, e.g.:
             "ancestors": {
                 "data": [
                     {
-                        "type": "pages",
+                        "type": "navs",
                         "id": "1"
                     }
                 ]
@@ -67,7 +67,7 @@ Then, the `included` section contains the ancestor pages, e.g.:
     },
     "included": [
         {
-            "type": "pages",
+            "type": "navs",
             "id": "1",
             "attributes": {
                 "parent_id": null,
@@ -75,14 +75,10 @@ Then, the `included` section contains the ancestor pages, e.g.:
                 "path": "/",
                 "name": "Home",
                 "title": "Home | Laravel CMS",
-                "tag": "root",
                 "to": "",
                 "domain": "mydomain.tld",
                 "has": true,
                 "cache": 5,
-                "data": null,
-                "meta": null,
-                "config": null,
                 "createdAt": "2023-05-01T09:36:30.000000Z",
                 "updatedAt": "2023-05-01T09:36:30.000000Z"
             },

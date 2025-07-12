@@ -69,19 +69,19 @@ Then, the page tree (up to three levels deep) for the root page will be returned
                 "subtree": {
                     "data": [
                         {
-                            "type": "pages",
+                            "type": "navs",
                             "id": "2"
                         },
                         {
-                            "type": "pages",
+                            "type": "navs",
                             "id": "3"
                         },
                         {
-                            "type": "pages",
+                            "type": "navs",
                             "id": "4"
                         },
                         {
-                            "type": "pages",
+                            "type": "navs",
                             "id": "5"
                         }
                     ]
@@ -94,7 +94,7 @@ Then, the page tree (up to three levels deep) for the root page will be returned
     ],
     "included": [
         {
-            "type": "pages",
+            "type": "navs",
             "id": "2",
             "attributes": {
                 "parent_id": 1,
@@ -102,14 +102,10 @@ Then, the page tree (up to three levels deep) for the root page will be returned
                 "path": "blog",
                 "name": "Blog",
                 "title": "Blog | Laravel CMS",
-                "tag": "blog",
                 "to": "",
                 "domain": "",
                 "has": true,
                 "cache": 5,
-                "data": null,
-                "meta": null,
-                "config": null,
                 "createdAt": "2023-05-01T09:36:30.000000Z",
                 "updatedAt": "2023-05-01T09:36:30.000000Z"
             },
@@ -118,7 +114,7 @@ Then, the page tree (up to three levels deep) for the root page will be returned
             }
         },
         {
-            "type": "pages",
+            "type": "navs",
             "id": "3",
             "attributes": {
                 "parent_id": 2,
@@ -126,14 +122,10 @@ Then, the page tree (up to three levels deep) for the root page will be returned
                 "path": "welcome-to-laravelcms",
                 "name": "Welcome to Laravel CMS",
                 "title": "Welcome to Laravel CMS | Laravel CMS",
-                "tag": "article",
                 "to": "",
                 "domain": "",
                 "has": false,
                 "cache": 5,
-                "data": null,
-                "meta": null,
-                "config": null,
                 "createdAt": "2023-05-01T09:36:30.000000Z",
                 "updatedAt": "2023-05-01T09:36:30.000000Z"
             },
@@ -142,7 +134,7 @@ Then, the page tree (up to three levels deep) for the root page will be returned
             }
         },
         {
-            "type": "pages",
+            "type": "navs",
             "id": "4",
             "attributes": {
                 "parent_id": 1,
@@ -150,14 +142,10 @@ Then, the page tree (up to three levels deep) for the root page will be returned
                 "path": "dev",
                 "name": "Dev",
                 "title": "For Developer | Laravel CMS",
-                "tag": "",
                 "to": "",
                 "domain": "",
                 "has": false,
                 "cache": 5,
-                "data": null,
-                "meta": null,
-                "config": null,
                 "createdAt": "2023-05-01T09:36:30.000000Z",
                 "updatedAt": "2023-05-01T09:36:30.000000Z"
             },
@@ -166,7 +154,7 @@ Then, the page tree (up to three levels deep) for the root page will be returned
             }
         },
         {
-            "type": "pages",
+            "type": "navs",
             "id": "5",
             "attributes": {
                 "parent_id": 1,
@@ -174,14 +162,10 @@ Then, the page tree (up to three levels deep) for the root page will be returned
                 "path": "hidden",
                 "name": "Hidden",
                 "title": "Hidden page | Laravel CMS",
-                "tag": "hidden",
                 "to": "",
                 "domain": "",
                 "has": false,
                 "cache": 5,
-                "data": null,
-                "meta": null,
-                "config": null,
                 "createdAt": "2023-05-01T09:36:30.000000Z",
                 "updatedAt": "2023-05-01T09:36:30.000000Z"
             },

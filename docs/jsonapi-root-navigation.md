@@ -67,15 +67,15 @@ The result will be a JSON:API response which looks like:
                 "children": {
                     "data": [
                         {
-                            "type": "pages",
+                            "type": "navs",
                             "id": "2"
                         },
                         {
-                            "type": "pages",
+                            "type": "navs",
                             "id": "4"
                         },
                         {
-                            "type": "pages",
+                            "type": "navs",
                             "id": "5"
                         }
                     ]
@@ -88,7 +88,7 @@ The result will be a JSON:API response which looks like:
     ],
     "included": [
         {
-            "type": "pages",
+            "type": "navs",
             "id": "2",
             "attributes": {
                 "parent_id": 1,
@@ -96,14 +96,10 @@ The result will be a JSON:API response which looks like:
                 "path": "blog",
                 "name": "Blog",
                 "title": "Blog | Laravel CMS",
-                "tag": "blog",
                 "to": "",
                 "domain": "",
                 "has": true,
                 "cache": 5,
-                "meta": null,
-                "config": null,
-                "content": null,
                 "createdAt": "2023-05-01T09:36:30.000000Z",
                 "updatedAt": "2023-05-01T09:36:30.000000Z"
             },
@@ -112,7 +108,7 @@ The result will be a JSON:API response which looks like:
             }
         },
         {
-            "type": "pages",
+            "type": "navs",
             "id": "4",
             "attributes": {
                 "parent_id": 1,
@@ -120,14 +116,10 @@ The result will be a JSON:API response which looks like:
                 "path": "dev",
                 "name": "Dev",
                 "title": "For Developer | Laravel CMS",
-                "tag": "",
                 "to": "",
                 "domain": "",
                 "has": false,
                 "cache": 5,
-                "meta": null,
-                "config": null,
-                "content": null,
                 "createdAt": "2023-05-01T09:36:30.000000Z",
                 "updatedAt": "2023-05-01T09:36:30.000000Z"
             },
@@ -136,7 +128,7 @@ The result will be a JSON:API response which looks like:
             }
         },
         {
-            "type": "pages",
+            "type": "navs",
             "id": "5",
             "attributes": {
                 "parent_id": 1,
@@ -144,14 +136,10 @@ The result will be a JSON:API response which looks like:
                 "path": "hidden",
                 "name": "Hidden",
                 "title": "Hidden page | Laravel CMS",
-                "tag": "hidden",
                 "to": "",
                 "domain": "",
                 "has": false,
                 "cache": 5,
-                "meta": null,
-                "config": null,
-                "content": null,
                 "createdAt": "2023-05-01T09:36:30.000000Z",
                 "updatedAt": "2023-05-01T09:36:30.000000Z"
             },

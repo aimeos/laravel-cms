@@ -394,15 +394,15 @@ Then, the `relationships` section will contain:
     "children": {
         "data": [
             {
-                "type": "pages",
+                "type": "navs",
                 "id": "2"
             },
             {
-                "type": "pages",
+                "type": "navs",
                 "id": "4"
             },
             {
-                "type": "pages",
+                "type": "navs",
                 "id": "5"
             }
         ]
@@ -413,19 +413,19 @@ Then, the `relationships` section will contain:
     "subtree": {
         "data": [
             {
-                "type": "pages",
+                "type": "navs",
                 "id": "2"
             },
             {
-                "type": "pages",
+                "type": "navs",
                 "id": "3"
             },
             {
-                "type": "pages",
+                "type": "navs",
                 "id": "4"
             },
             {
-                "type": "pages",
+                "type": "navs",
                 "id": "5"
             }
         ]
@@ -461,7 +461,7 @@ The `included` section of each JSON API response is only available if you've add
         "children": {
             "data": [
                 {
-                    "type": "pages",
+                    "type": "navs",
                     "id": "2"
                 }
             ]
@@ -475,15 +475,13 @@ And the `included` section for that response then contains:
 ```json
 "included": [
     {
-        "type": "pages",
+        "type": "navs",
         "id": "2",
         "attributes": {
-            "lang": "",
-            "content": {
-                "text": "Welcome to Laravel CMS",
-                "type": "heading"
-            },
-            "created_at": "2023-03-12T16:06:26.000000Z"
+            "parent_id": 1,
+            "lang": "en",
+            "name": "Blog",
+            "...": "..."
         }
     }
 ]

@@ -8,7 +8,6 @@ use LaravelJsonApi\Eloquent\Contracts\Paginator;
 use LaravelJsonApi\Eloquent\Pagination\PagePagination;
 use LaravelJsonApi\Eloquent\Filters\Where;
 use LaravelJsonApi\Eloquent\Filters\WhereIdIn;
-use LaravelJsonApi\Eloquent\Fields\Relations\BelongsToMany;
 use LaravelJsonApi\Eloquent\Fields\Relations\HasMany;
 use LaravelJsonApi\Eloquent\Fields\Relations\HasOne;
 use LaravelJsonApi\Eloquent\Fields\ArrayHash;
@@ -20,6 +19,7 @@ use LaravelJsonApi\Eloquent\Fields\Str;
 use LaravelJsonApi\Eloquent\Fields\ID;
 use LaravelJsonApi\Eloquent\Schema;
 use Aimeos\Cms\Models\Page;
+use Aimeos\Cms\Models\Nav;
 
 
 class PageSchema extends Schema
@@ -45,17 +45,6 @@ class PageSchema extends Schema
 
 
     /**
-     * Determine if the resource is authorizable.
-     *
-     * @return bool
-     */
-    public function authorizable(): bool
-    {
-        return false;
-    }
-
-
-    /**
      * Schema constructor.
      *
      * @param \LaravelJsonApi\Contracts\Server\Server $server
@@ -68,6 +57,17 @@ class PageSchema extends Schema
 
 
     /**
+     * Determine if the resource is authorizable.
+     *
+     * @return bool
+     */
+    public function authorizable(): bool
+    {
+        return false;
+    }
+
+
+    /**
      * Get the resource fields.
      *
      * @return array
@@ -76,6 +76,7 @@ class PageSchema extends Schema
     {
         return [
             ID::make(),
+            Str::make( 'parent_id' )->readOnly(),
             Str::make( 'lang' )->readOnly(),
             Str::make( 'path' )->readOnly(),
             Str::make( 'name' )->readOnly(),
@@ -84,6 +85,7 @@ class PageSchema extends Schema
             Str::make( 'type' )->readOnly(),
             Str::make( 'to' )->readOnly(),
             Str::make( 'domain' )->readOnly(),
+            Boolean::make( 'has' )->readOnly(),
             Number::make( 'cache' )->readOnly(),
             DateTime::make( 'createdAt' )->readOnly(),
             DateTime::make( 'updatedAt' )->readOnly(),
@@ -150,40 +152,28 @@ class PageSchema extends Schema
                 }
                 return $items;
             } ),
-            HasOne::make( 'parent' )->type( 'pages' )->readOnly()->serializeUsing( function( $relation ) {
-                if( $relation->showData() && is_object( $item = $relation->data() ) ) {
-                    unset( $item->data, $item->meta );
-                    $relation->withData( $item );
-                }
-                $relation->withoutLinks();
-            }),
-            HasMany::make( 'children' )->type( 'pages' )->readOnly()->serializeUsing( function( $relation ) {
-                if( $relation->showData() && is_iterable( $data = $relation->data() ) ) {
-                    foreach( $data as $item ) {
-                        unset( $item->data, $item->meta );
+            HasOne::make( 'parent' )->type( 'navs' )->readOnly()->serializeUsing( function( $relation ) {
+                $relation->withData( function( $resource ) use ( $relation ) {
+                    if( $parent = $resource->{$relation->fieldName()} ) {
+                        return (new Nav())->forceFill( ['id' => $parent->id] + $parent->toArray() );
                     }
-                    $relation->withData( $data );
-                }
-                $relation->withoutLinks();
-            }),
-            HasMany::make( 'ancestors' )->type( 'pages' )->readOnly()->serializeUsing( function( $relation ) {
-                if( $relation->showData() && is_iterable( $data = $relation->data() ) ) {
-                    foreach( $data as $item ) {
-                        unset( $item->data, $item->meta );
-                    }
-                    $relation->withData( $data );
-                }
-                $relation->withoutLinks();
-            }),
-            HasMany::make( 'subtree' )->type( 'pages' )->readOnly()->serializeUsing( function( $relation ) {
-                if( $relation->showData() && is_iterable( $data = $relation->data() ) ) {
-                    foreach( $data as $item ) {
-                        unset( $item->data, $item->meta );
-                    }
-                    $relation->withData( $data );
-                }
-                $relation->withoutLinks();
-            }),
+                } )->withoutLinks();
+            } ),
+            HasMany::make( 'children' )->type( 'navs' )->readOnly()->serializeUsing( function( $relation ) {
+                $relation->withData( fn( $resource ) => $resource->{$relation->fieldName()}->map( function( $item ) {
+                        return (new Nav())->forceFill( ['id' => $item->id] + $item->toArray() );
+                } ) )->withoutLinks();
+            } ),
+            HasMany::make( 'ancestors' )->type( 'navs' )->readOnly()->serializeUsing( function( $relation ) {
+                $relation->withData( fn( $resource ) => $resource->{$relation->fieldName()}->map( function( $item ) {
+                        return (new Nav())->forceFill( ['id' => $item->id] + $item->toArray() );
+                } ) )->withoutLinks();
+            } ),
+            HasMany::make( 'subtree' )->type( 'navs' )->readOnly()->serializeUsing( function( $relation ) {
+                $relation->withData( fn( $resource ) => $resource->{$relation->fieldName()}->map( function( $item ) {
+                        return (new Nav())->forceFill( ['id' => $item->id] + $item->toArray() );
+                } ) )->withoutLinks();
+            } ),
         ];
     }
 

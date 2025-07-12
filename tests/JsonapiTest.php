@@ -77,7 +77,7 @@ class JsonapiTest extends TestAbstract
         $expected = [];
 
         foreach( $page->ancestors as $item ){
-            $expected[] = ['type' => 'pages', 'id' => $item->id];
+            $expected[] = ['type' => 'navs', 'id' => $item->id];
         }
 
         $this->expectsDatabaseQueryCount( 2 ); // page + ancestors
@@ -96,7 +96,7 @@ class JsonapiTest extends TestAbstract
         $expected = [];
 
         foreach( $page->children->filter( fn($item) => $item->status > 0 ) as $item ) {
-            $expected[] = ['type' => 'pages', 'id' => $item->id];
+            $expected[] = ['type' => 'navs', 'id' => $item->id];
         }
 
         $this->expectsDatabaseQueryCount( 2 ); // page + child pages
@@ -115,7 +115,7 @@ class JsonapiTest extends TestAbstract
         $expected = [];
 
         foreach( $page->children->filter( fn($item) => $item->status > 0 ) as $item ) {
-            $expected[] = ['type' => 'pages', 'id' => $item->id];
+            $expected[] = ['type' => 'navs', 'id' => $item->id];
         }
 
         $this->expectsDatabaseQueryCount( 1 );
@@ -133,7 +133,7 @@ class JsonapiTest extends TestAbstract
         $expected = [];
 
         foreach( $pages->first()->subtree as $item ) {
-            $expected[] = ['type' => 'pages', 'id' => $item->id];
+            $expected[] = ['type' => 'navs', 'id' => $item->id];
         }
 
         $this->expectsDatabaseQueryCount( 3 ); // page + count + page subtree
@@ -154,7 +154,7 @@ class JsonapiTest extends TestAbstract
         $expected = [];
 
         foreach( $page->subtree as $item ) {
-            $expected[] = ['type' => 'pages', 'id' => $item->id];
+            $expected[] = ['type' => 'navs', 'id' => $item->id];
         }
 
         $this->expectsDatabaseQueryCount( 2 ); // page + page subtree
@@ -175,7 +175,7 @@ class JsonapiTest extends TestAbstract
         $this->expectsDatabaseQueryCount( 2 ); // page + parent page
         $response = $this->jsonApi()->expects( 'pages' )->includePaths( 'parent' )->get( "cms/pages/{$page->id}" );
 
-        $response->assertFetchedOne( $page )->assertIsIncluded( 'pages', $expected );
+        $response->assertFetchedOne( $page )->assertIsIncluded( 'navs', $expected );
     }
 
 

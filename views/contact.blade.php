@@ -11,9 +11,9 @@
 <form action="{{ route('cms.api.contact') }}" method="POST">
     @csrf
 
-    <input type="text" name="name" placeholder="{{ _('Your name') }}" required />
-    <input type="email" name="email" placeholder="{{ _('Your e-mail address') }}" required />
-    <textarea name="message" placeholder="{{ _('Your message') }}" required rows="6"></textarea>
+    <input type="text" name="name" placeholder="{{ __('Your name') }}" required />
+    <input type="email" name="email" placeholder="{{ __('Your e-mail address') }}" required />
+    <textarea name="message" placeholder="{{ __('Your message') }}" required rows="6"></textarea>
 
     @if(!app()->environment('local') && config('services.hcaptcha.sitekey'))
         <div class="h-captcha" data-sitekey="{{ config('services.hcaptcha.sitekey') }}"></div>
@@ -23,9 +23,9 @@
     <div class="errors"></div>
 
     <button type="submit" class="btn">
-        <span class="send">{{ _('Send message') }}</span>
-        <span class="sending hidden"aria-busy="true">{{ _('Sending message') }}</span>
-        <span class="success hidden">{{ _('Success') }}</span>
-        <span class="failure hidden">{{ _('Failure') }}</span>
+        <span class="send">{{ __('Send message') }}</span>
+        <span class="sending hidden"aria-busy="true">{{ __('Message will be sent') }}</span>
+        <span class="success hidden">{{ __('Successfully sent') }}</span>
+        <span class="failure hidden">{{ __('Error sending e-mail') }}</span>
     </button>
 </form>

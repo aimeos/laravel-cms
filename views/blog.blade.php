@@ -22,7 +22,7 @@
                 @else
                     <h3>{{ cms($item, 'title') }}</h3>
                 @endif
-                More about "<a href="{{ route('cms.page', ['path' => @$item->path]) }}">{{ cms($item, 'title') }}</a>"
+                {{ __('More about') }} "<a href="{{ route('cms.page', ['path' => @$item->path]) }}">{{ cms($item, 'title') }}</a>"
             </div>
         @endforeach
     </div>

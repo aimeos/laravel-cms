@@ -31,6 +31,7 @@ class CmsServiceProvider extends ServiceProvider
 		$this->loadViewsFrom( $basedir . '/views', 'cms' );
 		$this->loadRoutesFrom( $basedir . '/routes/web.php');
 		$this->loadMigrationsFrom( $basedir . '/database/migrations' );
+		$this->loadJsonTranslationsFrom( $basedir . '/lang' );
 
 		$this->publishes( [$basedir . '/public' => public_path( 'vendor/cms' )], 'public' );
 		$this->publishes( [$basedir . '/config/cms.php' => config_path( 'cms.php' )], 'config' );

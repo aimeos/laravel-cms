@@ -14,20 +14,20 @@
     computed: {
       values() {
         const map = {
-          'id': this.item.id,
-          'editor': this.item.editor
+          [this.$gettext('id')]: this.item.id,
+          [this.$gettext('editor')]: this.item.editor
         }
 
         if(this.item.created_at) {
-          map['created'] = (new Date(this.item.created_at)).toLocaleString()
+          map[this.$gettext('created')] = (new Date(this.item.created_at)).toLocaleString(this.$vuetify.locale.current)
         }
 
         if(this.item.updated_at) {
-          map['updated'] = (new Date(this.item.updated_at)).toLocaleString()
+          map[this.$gettext('updated')] = (new Date(this.item.updated_at)).toLocaleString(this.$vuetify.locale.current)
         }
 
         if(this.item.deleted_at) {
-          map['deleted'] = (new Date(this.item.deleted_at)).toLocaleString()
+          map[this.$gettext('deleted')] = (new Date(this.item.deleted_at)).toLocaleString(this.$vuetify.locale.current)
         }
 
         return map
@@ -42,7 +42,7 @@
     <v-list :opened="[0]">
       <v-list-group :value="0">
         <template v-slot:activator="{ props }">
-          <v-list-item v-bind="props">Meta data</v-list-item>
+          <v-list-item v-bind="props">{{ $gettext('Meta data') }}</v-list-item>
         </template>
 
         <v-list-item v-for="(value, key) in values" :key="key" rounded="lg">

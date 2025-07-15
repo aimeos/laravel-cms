@@ -24,7 +24,7 @@
 
         for(const type in this.schemas[this.type] || {}) {
           const el = this.schemas[this.type][type]
-          const name = el.group || 'uncategorized'
+          const name = el.group || this.$gettext('uncategorized')
 
           el.type = type
           map[name] = map[name] || []
@@ -32,6 +32,12 @@
         }
 
         return map
+
+        // for translation
+        this.$gettext('basic')
+        this.$gettext('content')
+        this.$gettext('media')
+        this.$gettext('forms')
       }
     },
 
@@ -45,7 +51,7 @@
 
 <template>
   <v-tabs v-model="tab">
-    <v-tab v-for="(group, name) in groups" :key="name" :value="name">{{ name }}</v-tab>
+    <v-tab v-for="(group, name) in groups" :key="name" :value="name">{{ $gettext(name) }}</v-tab>
   </v-tabs>
 
   <v-tabs-window v-model="tab">

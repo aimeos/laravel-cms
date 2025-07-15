@@ -168,19 +168,19 @@
 
       share(idx) {
         if(!this.auth.can('element:add')) {
-          this.messages.add('Permission denied', 'error')
+          this.messages.add(this.$gettext('Permission denied'), 'error')
           return
         }
 
         const entry = this.content[idx]
 
         if(!entry) {
-          this.messages.add('Element not found', 'error')
+          this.messages.add(this.$gettext('Element not found'), 'error')
           return
         }
 
         if(entry.type === 'reference') {
-          this.messages.add('Element is already shared', 'error')
+          this.messages.add(this.$gettext('Element is already shared'), 'error')
           return
         }
 
@@ -240,7 +240,7 @@
           this.$emit('update:content', this.content)
           this.store()
         }).catch(error => {
-          this.messages.add('Unable to make element shared', 'error')
+          this.messages.add(this.$gettext('Unable to make element shared'), 'error')
           this.$log(`PageDetailContentList::share(): Error making element shared`, idx, error)
         })
       },
@@ -280,7 +280,14 @@
           }
         })
 
-        this.side.store = {type: types, state: state}
+        return this.side.store = {type: types, state: state}
+
+        // for translation only
+        this.$gettext('type')
+        this.$gettext('state')
+        this.$gettext('valid')
+        this.$gettext('changed')
+        this.$gettext('error')
       },
 
 
@@ -304,14 +311,14 @@
 
       unshare(idx) {
         if(!this.content[idx]) {
-          this.messages.add('Content element not found', 'error')
+          this.messages.add(this.$gettext('Content element not found'), 'error')
           return
         }
 
         const entry = this.content[idx]
 
         if(entry.type !== 'reference' || !this.elements[entry.refid]) {
-          this.messages.add('Element is not shared', 'error')
+          this.messages.add(this.$gettext('Element is not shared'), 'error')
           return
         }
 
@@ -361,11 +368,11 @@
         <v-checkbox-btn v-model="checked" @click.stop="toggle()"></v-checkbox-btn>
         <v-menu location="bottom right">
           <template v-slot:activator="{ props }">
-            <v-btn append-icon="mdi-menu-down" variant="text" v-bind="props">Actions</v-btn>
+            <v-btn append-icon="mdi-menu-down" variant="text" v-bind="props">{{ $gettext('Actions') }}</v-btn>
           </template>
           <v-list>
             <v-list-item>
-              <v-btn prepend-icon="mdi-delete" variant="text" @click="purge()">Delete</v-btn>
+              <v-btn prepend-icon="mdi-delete" variant="text" @click="purge()">{{ $gettext('Delete') }}</v-btn>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -374,7 +381,7 @@
       <v-text-field
         prepend-inner-icon="mdi-magnify"
         variant="underlined"
-        label="Search for"
+        :label="$gettext('Search for')"
         class="search"
         clearable
         hide-details
@@ -401,45 +408,45 @@
               </template>
               <v-list>
                 <v-list-item v-if="!el._error">
-                  <v-btn prepend-icon="mdi-content-copy" variant="text" @click="copy(idx)">Copy</v-btn>
+                  <v-btn prepend-icon="mdi-content-copy" variant="text" @click="copy(idx)">{{ $gettext('Copy') }}</v-btn>
                 </v-list-item>
                 <v-list-item v-if="!el._error">
-                  <v-btn prepend-icon="mdi-content-cut" variant="text" @click="cut(idx)">Cut</v-btn>
+                  <v-btn prepend-icon="mdi-content-cut" variant="text" @click="cut(idx)">{{ $gettext('Cut') }}</v-btn>
                 </v-list-item>
 
                 <v-divider></v-divider>
 
                 <v-list-item v-if="!el._error && clip">
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(idx)">🠕 Paste before</v-btn>
+                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(idx)">🠕 {{ $gettext('Paste before') }}</v-btn>
                 </v-list-item>
                 <v-list-item v-if="!el._error && clip">
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(idx + 1)">🠗 Paste after</v-btn>
+                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(idx + 1)">🠗 {{ $gettext('Paste after') }}</v-btn>
                 </v-list-item>
                 <v-list-item v-if="!el._error">
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(idx)">🠕 Insert before</v-btn>
+                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(idx)">🠕 {{ $gettext('Insert before') }}</v-btn>
                 </v-list-item>
                 <v-list-item v-if="!el._error">
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(idx + 1)">🠗 Insert after</v-btn>
+                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(idx + 1)">🠗 {{ $gettext('Insert after') }}</v-btn>
                 </v-list-item>
 
                 <v-divider></v-divider>
 
                 <v-list-item>
-                  <v-btn prepend-icon="mdi-delete" variant="text" @click="remove(idx)">Delete</v-btn>
+                  <v-btn prepend-icon="mdi-delete" variant="text" @click="remove(idx)">{{ $gettext('Delete') }}</v-btn>
                 </v-list-item>
                 <v-list-item v-if="!el._error && el.type !== 'reference' && auth.can('element:add')">
-                  <v-btn prepend-icon="mdi-link" variant="text" @click="share(idx)">Make shared</v-btn>
+                  <v-btn prepend-icon="mdi-link" variant="text" @click="share(idx)">{{ $gettext('Make shared') }}</v-btn>
                 </v-list-item>
                 <v-list-item v-if="el.type === 'reference'">
-                  <v-btn prepend-icon="mdi-link-off" variant="text" @click="unshare(idx)">Merge copy</v-btn>
+                  <v-btn prepend-icon="mdi-link-off" variant="text" @click="unshare(idx)">{{ $gettext('Merge copy') }}</v-btn>
                 </v-list-item>
               </v-list>
             </v-menu>
 
-            <v-icon v-if="el.type === 'reference'" class="icon-shared" icon="mdi-link" title="Shared element"></v-icon>
+            <v-icon v-if="el.type === 'reference'" class="icon-shared" icon="mdi-link" :title="$gettext('Shared element')"></v-icon>
 
             <div class="element-title">{{ el.type === 'reference' ? elements[el.refid]?.name : title(el) }}</div>
-            <div class="element-type">{{ el.type }}</div>
+            <div class="element-type">{{ $gettext(el.type) }}</div>
           </v-expansion-panel-title>
           <v-expansion-panel-text>
 

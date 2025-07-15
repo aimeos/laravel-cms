@@ -30,6 +30,7 @@
     setup() {
       const auth = useAuthStore()
       const app = useAppStore()
+
       return { app, auth }
     },
 
@@ -54,7 +55,7 @@
     methods: {
       add(files) {
         if(!this.auth.can('file:add')) {
-          this.messages.add('Permission denied', 'error')
+          this.messages.add(this.$gettext('Permission denied'), 'error')
           return
         }
 

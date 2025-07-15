@@ -63,16 +63,19 @@
       <v-tabs class="subtabs" v-model="tab" align-tabs="center">
         <v-tab value="details"
           :class="{changed: changed.details, error: errors.details}"
-          @click="$emit('update:aside', 'meta')"
-        >Detail</v-tab>
+          @click="$emit('update:aside', 'meta')">
+          {{ $gettext('Detail') }}
+        </v-tab>
         <v-tab value="meta"
           :class="{changed: changed.meta, error: errors.meta}"
-          @click="$emit('update:aside', 'count')"
-        >Meta</v-tab>
+          @click="$emit('update:aside', 'count')">
+          {{ $gettext('Meta') }}
+        </v-tab>
         <v-tab value="config"
           :class="{changed: changed.config, error: errors.config}"
-          @click="$emit('update:aside', 'count')"
-        >Config</v-tab>
+          @click="$emit('update:aside', 'count')">
+          {{ $gettext('Config') }}
+        </v-tab>
       </v-tabs>
 
       <v-window v-model="tab">

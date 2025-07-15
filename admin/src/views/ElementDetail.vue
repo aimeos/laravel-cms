@@ -96,7 +96,7 @@
 
         this.item.files = files
       }).catch(error => {
-        this.messages.add('Error fetching element', 'error')
+        this.messages.add(this.$gettext('Error fetching element'), 'error')
         this.$log(`ElementDetail::watch(item): Error fetching element`, error)
       })
     },
@@ -104,7 +104,7 @@
     methods: {
       publish(at = null) {
         if(!this.auth.can('element:publish')) {
-          this.messages.add('Permission denied', 'error')
+          this.messages.add(this.$gettext('Permission denied'), 'error')
           return
         }
 
@@ -130,15 +130,15 @@
 
             if(!at) {
               this.item.published = true
-              this.messages.add('Element published successfully', 'success')
+              this.messages.add(this.$gettext('Element published successfully'), 'success')
             } else {
               this.item.publish_at = at
-              this.messages.add(`Element scheduled for publishing at ${at.toLocaleDateString()}`, 'info')
+              this.messages.add(this.$gettext('Element scheduled for publishing at %{date}', {date: at.toLocaleDateString()}), 'info')
             }
 
             this.closeView()
           }).catch(error => {
-            this.messages.add('Error publishing element', 'error')
+            this.messages.add(this.$gettext('Error publishing element'), 'error')
             this.$log(`ElementDetail::publish(): Error publishing element`, at, error)
           })
         })
@@ -153,7 +153,7 @@
 
       save(quiet = false) {
         if(!this.auth.can('element:save')) {
-          this.messages.add('Permission denied', 'error')
+          this.messages.add(this.$gettext('Permission denied'), 'error')
           return Promise.resolve(false)
         }
 
@@ -188,12 +188,12 @@
           this.reset()
 
           if(!quiet) {
-            this.messages.add('Element saved successfully', 'success')
+            this.messages.add(this.$gettext('Element saved successfully'), 'success')
           }
 
           return true
         }).catch(error => {
-          this.messages.add('Error saving element', 'error')
+          this.messages.add(this.$gettext('Error saving element'), 'error')
           this.$log(`ElementDetail::save(): Error saving element`, error)
         })
       },
@@ -208,7 +208,7 @@
 
       versions(id) {
         if(!this.auth.can('element:view')) {
-          this.messages.add('Permission denied', 'error')
+          this.messages.add(this.$gettext('Permission denied'), 'error')
           return Promise.resolve([])
         }
 
@@ -249,7 +249,7 @@
             }
           }).reverse() // latest versions first
         }).catch(error => {
-          this.messages.add('Error fetching element versions', 'error')
+          this.messages.add(this.$gettext('Error fetching element versions'), 'error')
           this.$log(`ElementDetail::versions(): Error fetching element versions`, id, error)
         })
       }
@@ -268,7 +268,7 @@
 
     <v-app-bar-title>
       <div class="app-title">
-        Element: {{ item.name }}
+        {{ $gettext('Element') }}: {{ item.name }}
       </div>
     </v-app-bar-title>
 
@@ -282,16 +282,18 @@
       <v-btn :class="{error: error}" class="menu-save"
         :disabled="!changed || error || !auth.can('element:save')"
         @click="save()"
-        variant="text"
-      >Save</v-btn>
+        variant="text">
+        {{ $gettext('Save') }}
+      </v-btn>
 
       <v-menu v-model="pubmenu" :close-on-content-click="false">
         <template #activator="{ props }">
           <v-btn-group class="menu-publish" variant="text">
             <v-btn :class="{error: error}" class="button"
               :disabled="item.published && !changed || error || !auth.can('element:publish')"
-              @click="publish()"
-            >Publish</v-btn>
+              @click="publish()">
+              {{ $gettext('Publish') }}
+            </v-btn>
             <v-btn :class="{error: error}" class="icon" icon="mdi-menu-down"
               :disabled="item.published && !changed || error || !auth.can('element:publish')"
               v-bind="props"
@@ -304,8 +306,9 @@
             :disabled="!publishAt || error"
             :color="publishAt ? 'primary' : ''"
             @click="publish(publishAt); pubmenu = false"
-            variant="flat"
-          >Publish</v-btn>
+            variant="flat">
+            {{ $gettext('Publish') }}
+          </v-btn>
         </div>
       </v-menu>
 
@@ -320,8 +323,8 @@
   <v-main class="element-details">
     <v-form @submit.prevent>
       <v-tabs fixed-tabs v-model="tab">
-        <v-tab value="element" :class="{changed: changed, error: error}">Element</v-tab>
-        <v-tab value="refs">Used by</v-tab>
+        <v-tab value="element" :class="{changed: changed, error: error}">{{ $gettext('Element') }}</v-tab>
+        <v-tab value="refs">{{ $gettext('Used by') }}</v-tab>
       </v-tabs>
 
       <v-window v-model="tab">

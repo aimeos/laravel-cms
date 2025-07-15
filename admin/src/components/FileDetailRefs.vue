@@ -65,7 +65,13 @@
               return {
                 id: item.versionable_id,
                 type: item.versionable_type.split('\\').at(-1),
-                published: item.published ? 'yes' : (item.publish_at ? (new Date(item.publish_at)).toLocaleDateString() : 'no'),
+                published: item.published
+                  ? this.$gettext('yes')
+                  : (
+                    item.publish_at
+                    ? (new Date(item.publish_at)).toLocaleDateString()
+                    : this.$gettext('no')
+                  ),
               }
             }).filter(item => {
               return this.auth.can(item.type.toLowerCase() + ':view')
@@ -85,14 +91,14 @@
       <v-expansion-panels v-model="panel" elevation="0" multiple>
 
         <v-expansion-panel v-if="file.bypages?.length && auth.can('page:view')">
-          <v-expansion-panel-title>Pages</v-expansion-panel-title>
+          <v-expansion-panel-title>{{ $gettext('Pages') }}</v-expansion-panel-title>
           <v-expansion-panel-text>
             <v-table density="comfortable" hover>
               <thead>
                 <tr>
-                  <th>ID</th>
-                  <th>URL</th>
-                  <th>Name</th>
+                  <th>{{ $gettext('ID') }}</th>
+                  <th>{{ $gettext('URL') }}</th>
+                  <th>{{ $gettext('Name') }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -107,14 +113,14 @@
         </v-expansion-panel>
 
         <v-expansion-panel v-if="file.byelements?.length && auth.can('element:view')">
-          <v-expansion-panel-title>Elements</v-expansion-panel-title>
+          <v-expansion-panel-title>{{ $gettext('Elements') }}</v-expansion-panel-title>
           <v-expansion-panel-text>
             <v-table density="comfortable" hover>
               <thead>
                 <tr>
-                  <th>ID</th>
-                  <th>Type</th>
-                  <th>Name</th>
+                  <th>{{ $gettext('ID') }}</th>
+                  <th>{{ $gettext('Type') }}</th>
+                  <th>{{ $gettext('Name') }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -129,14 +135,14 @@
         </v-expansion-panel>
 
         <v-expansion-panel v-if="versions?.length">
-          <v-expansion-panel-title>Versions</v-expansion-panel-title>
+          <v-expansion-panel-title>{{ $gettext('Versions') }}</v-expansion-panel-title>
           <v-expansion-panel-text>
             <v-table density="comfortable" hover>
               <thead>
                 <tr>
-                  <th>ID</th>
-                  <th>Type</th>
-                  <th>Published</th>
+                  <th>{{ $gettext('ID') }}</th>
+                  <th>{{ $gettext('Type') }}</th>
+                  <th>{{ $gettext('Published') }}</th>
                 </tr>
               </thead>
               <tbody>

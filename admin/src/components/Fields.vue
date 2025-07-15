@@ -116,7 +116,7 @@
 <template>
   <div v-for="(field, code) in fields" :key="code" class="item" :class="{error: errors[code]}">
     <v-label v-if="field.type !== 'hidden'">
-      {{ (field.label || code).replace(/-/g, ' ') }}
+      {{ $gettext(field.label || code).replace(/-/g, ' ') }}
       <div v-if="!readonly && ['markdown', 'plaintext', 'string', 'text'].includes(field.type)" class="actions">
         <v-menu>
           <template #activator="{ props }">

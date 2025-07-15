@@ -53,7 +53,7 @@
     <v-list v-model:opened="open">
       <v-list-group v-for="(group, index) in content" :key="index" :value="index">
         <template v-slot:activator="{ props }">
-          <v-list-item v-bind="props" :class="{active: has(group.key)}">{{ group.key }}</v-list-item>
+          <v-list-item v-bind="props" :class="{active: has(group.key)}">{{ group.title || group.key }}</v-list-item>
         </template>
 
         <v-list-item

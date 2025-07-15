@@ -137,13 +137,13 @@
 <template>
   <v-autocomplete ref="field"
     :rules="[
-      v => !config.required || !!v || `Value is required`,
+      v => !config.required || !!v || $gettext('Value is required'),
     ]"
     :loading="loading"
     :readonly="readonly"
     :clearable="!readonly"
     :items="list"
-    :no-data-text="config['empty-text'] || 'No data available'"
+    :no-data-text="config['empty-text'] || $gettext('No data available')"
     :placeholder="config.placeholder || ''"
     :return-object="!!config['item-title']"
     :multiple="config.multiple"

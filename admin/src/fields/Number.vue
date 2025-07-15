@@ -47,7 +47,7 @@
 <template>
   <v-number-input ref="field"
     :rules="[
-      v => !config.required || !!v || `Value is required`
+      v => !config.required || !!v || $gettext(`Value is required`)
     ]"
     :readonly="readonly"
     :clearable="!readonly && !config.required"

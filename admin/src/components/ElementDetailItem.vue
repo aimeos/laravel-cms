@@ -27,7 +27,7 @@
 
     computed: {
       langs() {
-        const list = [{code: null, name: 'None'}]
+        const list = [{code: null, name: this.$gettext('None')}]
 
         Object.entries(this.languages.available).forEach(pair => {
           list.push({code: pair[0], name: pair[1]})
@@ -74,7 +74,7 @@
             :modelValue="item.name"
             @update:modelValue="update('name', $event)"
             variant="underlined"
-            label="Name"
+            :label="$gettext('Name')"
             counter="255"
             maxlength="255"
           ></v-text-field>
@@ -88,7 +88,7 @@
             variant="underlined"
             item-title="name"
             item-value="code"
-            label="Language"
+            :label="$gettext('Language')"
           ></v-select>
         </v-col>
       </v-row>

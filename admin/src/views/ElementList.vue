@@ -3,9 +3,9 @@
   import User from '../components/User.vue'
   import AsideList from '../components/AsideList.vue'
   import Navigation from '../components/Navigation.vue'
+  import ElementDetail from '../views/ElementDetail.vue'
   import ElementListItems from '../components/ElementListItems.vue'
   import { useAuthStore, useDrawerStore, useLanguageStore } from '../stores'
-  import ElementDetail from '../views/ElementDetail.vue'
 
   export default {
     components: {
@@ -38,7 +38,7 @@
 
     methods: {
       languages() {
-        const list = [{ title: 'All', icon: 'mdi-playlist-check', value: {lang: null} }]
+        const list = [{ title: this.$gettext('All'), icon: 'mdi-playlist-check', value: {lang: null} }]
 
         for(const key in this.languages.available) {
           list.push({ title: this.languages.available[key], icon: 'mdi-translate', value: {lang: key} })
@@ -65,7 +65,9 @@
       </v-btn>
     </template>
 
-    <v-app-bar-title>Shared elements</v-app-bar-title>
+    <v-app-bar-title>
+      {{ $gettext('Shared elements') }}
+    </v-app-bar-title>
 
     <template #append>
       <User />
@@ -90,27 +92,31 @@
 
   <AsideList v-model:filter="filter" :content="[{
       key: 'publish',
+      title: $gettext('Publish'),
       items: [
-        { title: 'All', icon: 'mdi-playlist-check', value: {'publish': null} },
-        { title: 'Published', icon: 'mdi-publish', value: {'publish': 'PUBLISHED'} },
-        { title: 'Scheduled', icon: 'mdi-clock-outline', value: {'publish': 'SCHEDULED'} },
-        { title: 'Drafts', icon: 'mdi-pencil', value: {'publish': 'DRAFT'} }
+        { title: $gettext('All'), icon: 'mdi-playlist-check', value: {'publish': null} },
+        { title: $gettext('Published'), icon: 'mdi-publish', value: {'publish': 'PUBLISHED'} },
+        { title: $gettext('Scheduled'), icon: 'mdi-clock-outline', value: {'publish': 'SCHEDULED'} },
+        { title: $gettext('Drafts'), icon: 'mdi-pencil', value: {'publish': 'DRAFT'} }
       ]
     }, {
       key: 'trashed',
+      title: $gettext('Trashed'),
       items: [
-        { title: 'All', icon: 'mdi-playlist-check', value: {'trashed': 'WITH'} },
-        { title: 'Available only', icon: 'mdi-delete-off', value: {'trashed': 'WITHOUT'} },
-        { title: 'Only trashed', icon: 'mdi-delete', value: {'trashed': 'ONLY'} }
+        { title: $gettext('All'), icon: 'mdi-playlist-check', value: {'trashed': 'WITH'} },
+        { title: $gettext('Available only'), icon: 'mdi-delete-off', value: {'trashed': 'WITHOUT'} },
+        { title: $gettext('Only trashed'), icon: 'mdi-delete', value: {'trashed': 'ONLY'} }
       ]
     }, {
       key: 'editor',
+      title: $gettext('Editor'),
       items: [
-        { title: 'All', icon: 'mdi-playlist-check', value: {'editor': null} },
-        { title: 'Edited by me', icon: 'mdi-account', value: {'editor': this.auth.me?.email} },
+        { title: $gettext('All'), icon: 'mdi-playlist-check', value: {'editor': null} },
+        { title: $gettext('Edited by me'), icon: 'mdi-account', value: {'editor': this.auth.me?.email} },
       ]
     }, {
       key: 'lang',
+      title: $gettext('Languages'),
       items: languages()
     }]"
   />

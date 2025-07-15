@@ -45,7 +45,7 @@
 <template>
   <v-date-input ref="field"
     :rules="[
-      v => !config.required || !!v || `Value is required`,
+      v => !config.required || !!v || $gettext(`Value is required`),
     ]"
     :readonly="readonly"
     :allowed-dates="config.allowed"

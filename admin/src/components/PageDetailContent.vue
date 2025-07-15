@@ -57,6 +57,13 @@
         }
 
         return sections
+
+        // for translation only
+        this.$gettext('main')
+        this.$gettext('header')
+        this.$gettext('footer')
+        this.$gettext('sidebar')
+        this.$gettext('aside')
       }
     },
 
@@ -112,7 +119,7 @@
               error: errors[section]
             }"
             :value="section"
-          >{{ section }}</v-tab>
+          >{{ $gettext(section) }}</v-tab>
         </v-tabs>
 
         <v-window v-model="tab">

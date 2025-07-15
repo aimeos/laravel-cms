@@ -25,7 +25,7 @@
 <template>
   <v-radio-group
     :rules="[
-      v => !config.required || !!v || `Selection is required`
+      v => !config.required || !!v || $gettext(`Selection is required`)
     ]"
     :readonly="readonly"
     :modelValue="modelValue"

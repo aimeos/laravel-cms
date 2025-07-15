@@ -23,7 +23,7 @@
         <v-icon @click="$emit('update:modelValue', false)">mdi-close</v-icon>
       </template>
       <template v-slot:title>
-        Files
+        {{ $gettext('Files') }}
       </template>
 
       <v-divider></v-divider>

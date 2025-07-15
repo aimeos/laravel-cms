@@ -1,4 +1,5 @@
 import { createPinia } from 'pinia'
+import { createGettext } from "vue3-gettext";
 import { createApp, defineAsyncComponent } from 'vue'
 import VueObserveVisibility from 'vue3-observe-visibility'
 import apolloProvider from './graphql'
@@ -38,17 +39,39 @@ const vuetify = createVuetify({
 })
 
 
-const fields = import.meta.glob("@/fields/*.vue");
+const gettext = createGettext({
+  availableLanguages: {
+    en: "English (en)",
+    de: "Deutsch (de)",
+  },
+  defaultLanguage: "en",
+  translations: {},
+  silent: true
+});
+
+const langs = Object.keys(gettext.available)
+const userLang = navigator.language.toLowerCase().replace('_', '-')
+const baseLang = userLang.slice(0, 2)
+const sysLang = langs.includes(userLang) ? userLang : langs.includes(baseLang) ? baseLang : 'en'
+
+import(`./language/${sysLang}.json`).then(translations => {
+  gettext.translations = translations.default || translations
+  gettext.current = sysLang
+})
+
+
+const fields = import.meta.glob("@/fields/*.vue")
 
 for(const path in fields) {
   const name = path.split("/").at(-1).split(".")[0]
-  app.component(name, defineAsyncComponent(fields[path]));
+  app.component(name, defineAsyncComponent(fields[path]))
 }
 
 
 app.use(logger)
   .use(pinia)
   .use(router)
+  .use(gettext)
   .use(vuetify)
   .use(apolloProvider)
   .use(VueObserveVisibility)

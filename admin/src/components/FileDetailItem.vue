@@ -213,7 +213,7 @@
             :modelValue="item.name"
             @update:modelValue="update('name', $event)"
             variant="underlined"
-            label="Name"
+            :label="$gettext('Name')"
             counter="255"
             maxlength="255"
           ></v-text-field>
@@ -227,7 +227,7 @@
             variant="underlined"
             item-title="name"
             item-value="code"
-            label="Language"
+            :label="$gettext('Language')"
           ></v-select>
         </v-col>
       </v-row>
@@ -238,16 +238,16 @@
 
             <div v-if="!readonly" class="floating-toolbar">
               <div class="toolbar-group">
-                <v-btn icon="mdi-rotate-left" @click="rotate(-90)" title="Rotate counter-clockwise" />
-                <v-btn icon="mdi-rotate-right" @click="rotate(90)" title="Rotate clockwise" />
+                <v-btn icon="mdi-rotate-left" @click="rotate(-90)" :title="$gettext('Rotate counter-clockwise')" />
+                <v-btn icon="mdi-rotate-right" @click="rotate(90)" :title="$gettext('Rotate clockwise')" />
               </div>
               <div class="toolbar-group">
-                <v-btn icon="mdi-flip-horizontal" @click="flipX" title="Flip horizontally" />
-                <v-btn icon="mdi-flip-vertical" @click="flipY" title="Flip vertically" />
+                <v-btn icon="mdi-flip-horizontal" @click="flipX" :title="$gettext('Flip horizontally')" />
+                <v-btn icon="mdi-flip-vertical" @click="flipY" :title="$gettext('Flip vertically')" />
               </div>
               <div class="toolbar-group">
-                <v-btn icon="mdi-history" @click="reset()" title="Reset" />
-                <v-btn icon="mdi-download" @click="download()" title="Download" />
+                <v-btn icon="mdi-history" @click="reset()" :title="$gettext('Reset')" />
+                <v-btn icon="mdi-download" @click="download()" :title="$gettext('Download')" />
               </div>
             </div>
           </div>
@@ -273,7 +273,7 @@
       <v-row>
         <v-col cols="12" class="desc">
           <v-label>
-            Descriptions
+            {{ $gettext('Descriptions') }}
             <div v-if="!readonly" class="actions">
               <v-btn v-if="Object.values(item.description).find(v => !!v)"
                 :loading="translating"
@@ -292,7 +292,7 @@
             :readonly="readonly"
             :modelValue="item.description?.[lang] || ''"
             @update:modelValue="item.description[lang] = $event; $emit('update:item', item)"
-            :label="`Description (${lang})`"
+            :label="$gettext('Description (%{lang})', {lang: lang})"
             variant="underlined"
             counter="500"
             rows="2"

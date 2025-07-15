@@ -39,7 +39,7 @@
 <template>
   <v-textarea ref="field"
     :rules="[
-      v => !!v || `Value is required`,
+      v => !!v || $gettext(`Value is required`),
     ]"
     :readonly="readonly"
     :placeholder="config.placeholder || ''"

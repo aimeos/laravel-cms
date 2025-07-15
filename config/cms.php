@@ -136,15 +136,15 @@ return [
     */
     'config' => [
         'languages' => [
-            'en' => 'English',
-            'ar' => 'Arabic',
-            'zh' => 'Chinese',
-            'fr' => 'French',
-            'de' => 'German',
-            'es' => 'Spanish',
-            'pt' => 'Portugese',
-            'pt-BR' => 'Portugese (Brasil)',
-            'ru' => 'Russian',
+            'en' => 'English (en)',
+            'ar' => 'اللغة العربية (ar)',
+            'zh' => '中文 (zh)',
+            'fr' => 'Français (fr)',
+            'de' => 'Deutsch (de)',
+            'es' => 'Español (es)',
+            'pt' => 'Portugués (pt)',
+            'pt-BR' => 'Português (Brasil)',
+            'ru' => 'Русский (ru)',
         ],
         'themes' => [
             'cms' => [

@@ -44,7 +44,7 @@
         }
 
         if(this.item.config[item.type]) {
-          this.messages.add('Element is already available', 'error')
+          this.messages.add(this.$gettext('The element has already been added'), 'error')
           return
         }
 

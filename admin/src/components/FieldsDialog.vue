@@ -49,7 +49,7 @@
         <v-btn variant="flat" icon="mdi-close" @click="$emit('update:modelValue', false)"></v-btn>
       </template>
       <template v-slot:title>
-        Content Element
+        {{ $gettext('Content Element') }}
       </template>
 
       <v-divider></v-divider>

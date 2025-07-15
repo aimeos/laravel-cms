@@ -18,6 +18,7 @@
 
     setup() {
       const auth = useAuthStore()
+
       return { auth }
     },
 
@@ -60,7 +61,12 @@
               return {
                 id: item.versionable_id,
                 type: item.versionable_type.split('\\').at(-1),
-                published: item.published ? 'yes' : (item.publish_at ? (new Date(item.publish_at)).toLocaleDateString() : 'no'),
+                published: item.published
+                  ? this.$gettext('yes')
+                  : (item.publish_at
+                    ? (new Date(item.publish_at)).toLocaleDateString()
+                    : this.$gettext('no')
+                  ),
               }
             }).filter(item => {
               return this.auth.can(item.type.toLowerCase() + ':view')
@@ -80,14 +86,14 @@
       <v-expansion-panels v-model="panel" elevation="0" multiple>
 
         <v-expansion-panel v-if="element.bypages?.length && auth.can('page:view')">
-          <v-expansion-panel-title>Pages</v-expansion-panel-title>
+          <v-expansion-panel-title>{{ $gettext('Shared elements') }}</v-expansion-panel-title>
           <v-expansion-panel-text>
             <v-table density="comfortable" hover>
               <thead>
                 <tr>
-                  <th>ID</th>
-                  <th>URL</th>
-                  <th>Name</th>
+                  <th>{{ $gettext('ID') }}</th>
+                  <th>{{ $gettext('URL') }}</th>
+                  <th>{{ $gettext('Name') }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -107,9 +113,9 @@
             <v-table density="comfortable" hover>
               <thead>
                 <tr>
-                  <th>ID</th>
-                  <th>Type</th>
-                  <th>Published</th>
+                  <th>{{ $gettext('ID') }}</th>
+                  <th>{{ $gettext('Type') }}</th>
+                  <th>{{ $gettext('Published') }}</th>
                 </tr>
               </thead>
               <tbody>

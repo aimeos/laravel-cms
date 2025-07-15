@@ -67,7 +67,7 @@
     <v-list v-model:opened="open">
       <v-list-group v-for="(items, key) in stores" :key="key" :value="Object.keys(stores).indexOf(key)" v-show="Object.keys(items).length">
         <template v-slot:activator="{ props }">
-          <v-list-item v-bind="props">{{ key }}</v-list-item>
+          <v-list-item v-bind="props">{{ $gettext(key) }}</v-list-item>
         </template>
 
         <v-list-item v-for="(value, code) in items" :key="code"
@@ -75,7 +75,7 @@
           @click="toggle(key, code)"
           rounded="lg"
         >
-          <span class="name">{{ code }}</span>
+          <span class="name">{{ $gettext(code) }}</span>
           <span class="value">{{ value }}</span>
         </v-list-item>
 

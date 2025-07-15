@@ -237,7 +237,7 @@
           }
         }
       }).catch(error => {
-        this.messages.add('Error fetching page', 'error')
+        this.messages.add(this.$gettext('Error fetching page'), 'error')
         this.$log(`PageDetail::watch(item): Error fetching page`, error)
       })
     },
@@ -285,7 +285,7 @@
 
       publish(at = null) {
         if(!this.auth.can('page:publish')) {
-          this.messages.add('Permission denied', 'error')
+          this.messages.add(this.$gettext('Permission denied'), 'error')
           return
         }
 
@@ -311,15 +311,15 @@
 
             if(!at) {
               this.item.published = true
-              this.messages.add('Page published successfully', 'success')
+              this.messages.add(this.$gettext('Page published successfully'), 'success')
             } else {
               this.item.publish_at = at
-              this.messages.add(`Page scheduled for publishing at ${at.toLocaleDateString()}`, 'info')
+              this.messages.add(this.$gettext('Page scheduled for publishing at %{date}', {date: at.toLocaleDateString()}), 'info')
             }
 
             this.closeView()
           }).catch(error => {
-            this.messages.add('Error publishing page', 'error')
+            this.messages.add(this.$gettext('Error publishing page'), 'error')
             this.$log(`PageDetail::publish(): Error publishing page`, at, error)
           })
         })
@@ -337,7 +337,7 @@
 
       save(quiet = false) {
         if(!this.auth.can('page:save')) {
-          this.messages.add('Permission denied', 'error')
+          this.messages.add(this.$gettext('Permission denied'), 'error')
           return Promise.resolve(false)
         }
 
@@ -347,7 +347,7 @@
 
         return this.validate().then(valid => {
           if(!valid) {
-            this.messages.add('There are invalid fields, please resolve the errors first', 'error')
+            this.messages.add(this.$gettext('There are invalid fields, please resolve the errors first'), 'error')
             return valid
           }
 
@@ -415,13 +415,13 @@
             this.reset()
 
             if(!quiet) {
-              this.messages.add('Page saved successfully', 'success')
+              this.messages.add(this.$gettext('Page saved successfully'), 'success')
             }
 
             this.invalidate()
             return true
           }).catch(error => {
-            this.messages.add('Error saving page', 'error')
+            this.messages.add(this.$gettext('Error saving page'), 'error')
             this.$log(`PageDetail::save(): Error saving page`, error)
           })
         })
@@ -430,7 +430,7 @@
 
       translatePage(lang) {
         if(!this.schemas.content) {
-          this.messages.add('No page schema for "content" found', 'error')
+          this.messages.add(this.$gettext('No page schema for "content" found'), 'error')
           return
         }
 
@@ -529,7 +529,7 @@
 
       versions(id) {
         if(!this.auth.can('page:view')) {
-          this.messages.add('Permission denied', 'error')
+          this.messages.add(this.$gettext('Permission denied'), 'error')
           return Promise.resolve([])
         }
 
@@ -566,7 +566,7 @@
             return item
           }).reverse() // latest versions first
         }).catch(error => {
-          this.messages.add('Error fetching page versions', 'error')
+          this.messages.add(this.$gettext('Error fetching page versions'), 'error')
           this.$log(`PageDetail::versions(): Error fetching page versions`, id, error)
         })
       }
@@ -591,7 +591,7 @@
 
     <v-app-bar-title>
       <div class="app-title">
-        Page: {{ item.name }}
+        {{ $gettext('Page') }}: {{ item.name }}
       </div>
     </v-app-bar-title>
 
@@ -602,7 +602,7 @@
         </template>
         <v-list>
           <v-list-item v-for="lang in txlanguages(item.lang)" :key="lang.code">
-            <v-btn variant="text" @click="translatePage(lang.code)">🠖 {{ lang.name }} ({{lang.code}})</v-btn>
+            <v-btn variant="text" @click="translatePage(lang.code)" prepend-icon="mdi-arrow-right-thin">{{ lang.name }}</v-btn>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -616,16 +616,18 @@
       <v-btn :class="{error: hasError}" class="menu-save"
         :disabled="!hasChanged || hasError || !auth.can('page:save')"
         @click="save()"
-        variant="text"
-      >Save</v-btn>
+        variant="text">
+        {{ $gettext('Save') }}
+      </v-btn>
 
       <v-menu v-model="pubmenu" :close-on-content-click="false">
         <template #activator="{ props }">
           <v-btn-group class="menu-publish" variant="text">
             <v-btn :class="{error: hasError}" class="button"
               :disabled="item.published && !hasChanged || hasError || !auth.can('page:publish')"
-              @click="publish()"
-            >Publish</v-btn>
+              @click="publish()">
+              {{ $gettext('Publish') }}
+            </v-btn>
             <v-btn :class="{error: hasError}" class="icon" icon="mdi-menu-down"
               :disabled="item.published && !hasChanged || hasError || !auth.can('page:publish')"
               v-bind="props"
@@ -638,8 +640,9 @@
             :disabled="!publishAt || hasError"
             :color="publishAt ? 'primary' : ''"
             @click="publish(publishAt); pubmenu = false"
-            variant="flat"
-          >Publish</v-btn>
+            variant="flat">
+            {{ $gettext('Publish') }}
+          </v-btn>
         </div>
       </v-menu>
 
@@ -656,15 +659,18 @@
       <v-tabs fixed-tabs v-model="tab">
         <v-tab value="page"
           :class="{changed: changed.page, error: errors.page}"
-          @click="aside = asidePage"
-        >Page</v-tab>
+          @click="aside = asidePage">
+          {{ $gettext('Page') }}
+        </v-tab>
         <v-tab value="content"
           :class="{changed: changed.content, error: errors.content}"
-          @click="aside = 'count'"
-        >Content</v-tab>
+          @click="aside = 'count'">
+          {{ $gettext('Content') }}
+        </v-tab>
         <v-tab value="preview"
-          @click="aside = ''"
-        >Preview</v-tab>
+          @click="aside = ''">
+          {{ $gettext('Preview') }}
+        </v-tab>
       </v-tabs>
 
       <v-window v-model="tab">

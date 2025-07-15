@@ -16,15 +16,15 @@
     <v-list>
       <v-list-item v-if="auth.can('page:view')" rounded="lg">
         <v-icon icon="mdi-file-tree" class="icon"></v-icon>
-        <router-link to="/pages" class="router-link">Pages</router-link>
+        <router-link to="/pages" class="router-link">{{ $gettext('Pages') }}</router-link>
       </v-list-item>
       <v-list-item v-if="auth.can('element:view')" rounded="lg">
         <v-icon icon="mdi-share-variant" class="icon"></v-icon>
-        <router-link to="/elements" class="router-link">Shared elements</router-link>
+        <router-link to="/elements" class="router-link">{{ $gettext('Shared elements') }}</router-link>
       </v-list-item>
       <v-list-item v-if="auth.can('file:view')" rounded="lg">
         <v-icon icon="mdi-folder-multiple-image" class="icon"></v-icon>
-        <router-link to="/files" class="router-link">Files</router-link>
+        <router-link to="/files" class="router-link">{{ $gettext('Files') }}</router-link>
       </v-list-item>
     </v-list>
   </v-navigation-drawer>

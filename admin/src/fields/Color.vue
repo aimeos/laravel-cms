@@ -31,8 +31,8 @@
 <template>
   <v-color-input
     :rules="[
-      v => !config.required || !!v || `Value is required`,
-      v => !v || /^#[0-9A-F]{6,8}$/i.test(v) || `Value must be a hex color code`,
+      v => !config.required || !!v || $gettext(`Value is required`),
+      v => !v || /^#[0-9A-F]{6,8}$/i.test(v) || $gettext(`Value must be a hex color code`),
     ]"
     :clearable="!readonly"
     :disabled="readonly"

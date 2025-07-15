@@ -47,7 +47,7 @@
           if(Object.values(user.permission || {}).some(perm => perm === true)) {
             router.replace(this.next())
           } else {
-            this.error = 'Not a CMS editor'
+            this.error = this.$gettext('Not a CMS editor')
           }
         }).catch(error => {
           this.error = error.message
@@ -63,7 +63,7 @@
         })?.path
 
         if(!url) {
-          this.message.add('Access denied', 'error')
+          this.message.add(this.$gettext('Access denied'), 'error')
         }
 
         return url || '/'
@@ -76,28 +76,30 @@
   <v-form class="login" :class="{show: login}" v-model="form" @submit.prevent="cmslogin()">
     <v-card :loading="loading" class="elevation-2" :class="{error: error}">
       <template v-slot:title>
-        Login
+        {{ $gettext('Login') }}
       </template>
 
       <v-card-text>
-        <v-text-field v-model="creds.email" label="E-Mail" variant="underlined" validate-on="blur" :rules="[
-          v => !!v || 'Field is required',
-          v => !!v.match(/.+@.+/) || 'Invalid e-mail address'
+        <v-text-field v-model="creds.email" :label="$gettext('E-Mail')" variant="underlined" validate-on="blur" :rules="[
+          v => !!v || $gettext('Field is required'),
+          v => !!v.match(/.+@.+/) || $gettext('Invalid e-mail address')
         ]" autocomplete="username" autofocus>
         </v-text-field>
         <v-text-field v-model="creds.password" :type="show ? `text` : `password`"
-          label="Password" variant="underlined" :rules="[
-            v => !!v || 'Field is required'
+          :label="$gettext('Password')" variant="underlined" :rules="[
+            v => !!v || $gettext('Field is required')
           ]" autocomplete="current-password">
           <template v-slot:append-inner>
             <v-icon @click="show = !show" @keydown="[13, 32].includes($event.keyCode) ? show = !show : false">{{ show ? `mdi-eye-off` : `mdi-eye` }}</v-icon>
           </template>
         </v-text-field>
-        <v-alert v-show="error" color="error" icon="mdi-alert-octagon" :text="`Error: ` + error"></v-alert>
+        <v-alert v-show="error" color="error" icon="mdi-alert-octagon" :text="$gettext('Error') + ': ' + error"></v-alert>
       </v-card-text>
 
       <v-card-actions>
-        <v-btn type="submit" variant="outlined" :disabled="form != true">Login</v-btn>
+        <v-btn type="submit" variant="outlined" :disabled="form != true">
+          {{ $gettext('Login') }}
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-form>

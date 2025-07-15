@@ -64,7 +64,7 @@
     methods: {
       add() {
         if(this.embed || !this.auth.can('page:add')) {
-          this.messages.add('Permission denied', 'error')
+          this.messages.add(this.$gettext('Permission denied'), 'error')
           return
         }
 
@@ -90,7 +90,7 @@
           this.$refs.tree.add(item)
           this.$emit('select', item)
         }).catch(error => {
-          this.messages.add('Error adding root page', 'error')
+          this.messages.add(this.$gettext('Error adding root page'), 'error')
           this.$log(`PageList::add(): Error adding root page`, error)
         })
       },
@@ -98,7 +98,7 @@
 
       change() {
         if(!this.auth.can('page:move')) {
-          this.messages.add('Permission denied', 'error')
+          this.messages.add(this.$gettext('Permission denied'), 'error')
           return
         }
 
@@ -132,7 +132,7 @@
             parent.data.has = true
           }
         }).catch(error => {
-          this.messages.add('Error moving page', 'error')
+          this.messages.add(this.$gettext('Error moving page'), 'error')
           this.$log(`PageList::change(): Error moving page`, error)
         })
       },
@@ -160,7 +160,7 @@
 
       drop(stat) {
         if(!this.auth.can('page:drop')) {
-          this.messages.add('Permission denied', 'error')
+          this.messages.add(this.$gettext('Permission denied'), 'error')
           return
         }
 
@@ -195,7 +195,7 @@
 
           this.invalidate()
         }).catch(error => {
-          this.messages.add('Error trashing page', 'error')
+          this.messages.add(this.$gettext('Error trashing page'), 'error')
           this.$log(`PageList::drop(): Error trashing page`, list, error)
         })
       },
@@ -203,7 +203,7 @@
 
       fetch(parent = null, page = 1, limit = 100) {
         if(!this.auth.can('page:view')) {
-          this.messages.add('Permission denied', 'error')
+          this.messages.add(this.$gettext('Permission denied'), 'error')
           return Promise.resolve([])
         }
 
@@ -234,7 +234,7 @@
 
           return this.transform(result.data.pages)
         }).catch(error => {
-          this.messages.add('Error fetching pages', 'error')
+          this.messages.add(this.$gettext('Error fetching pages'), 'error')
           this.$log(`PageList::fetch(): Error fetching page`, parent, page, limit, error)
         })
       },
@@ -271,7 +271,7 @@
 
       insert(stat, idx = null) {
         if(!this.auth.can('page:add')) {
-          this.messages.add('Permission denied', 'error')
+          this.messages.add(this.$gettext('Permission denied'), 'error')
           return
         }
 
@@ -319,7 +319,7 @@
 
           this.invalidate()
         }).catch(error => {
-          this.messages.add('Error inserting page', 'error')
+          this.messages.add(this.$gettext('Error inserting page'), 'error')
           this.$log(`PageList::insert(): Error inserting page`, error)
         })
       },
@@ -334,7 +334,7 @@
 
       keep(stat) {
         if(!this.auth.can('page:keep')) {
-          this.messages.add('Permission denied', 'error')
+          this.messages.add(this.$gettext('Permission denied'), 'error')
           return
         }
 
@@ -375,7 +375,7 @@
 
           this.invalidate()
         }).catch(error => {
-          this.messages.add('Error restoring page', 'error')
+          this.messages.add(this.$gettext('Error restoring page'), 'error')
           this.$log(`PageList::keep(): Error restoring page`, list, error)
         })
       },
@@ -399,7 +399,7 @@
 
       move(stat, idx = null) {
         if(!this.auth.can('page:move')) {
-          this.messages.add('Permission denied', 'error')
+          this.messages.add(this.$gettext('Permission denied'), 'error')
           return
         }
 
@@ -443,7 +443,7 @@
 
           this.invalidate()
         }).catch(error => {
-          this.messages.add('Error moving page', 'error')
+          this.messages.add(this.$gettext('Error moving page'), 'error')
           this.$log(`PageList::move(): Error moving page`, stat, idx, error)
         })
 
@@ -453,7 +453,7 @@
 
       paste(stat, idx = null) {
         if(!this.auth.can('page:add')) {
-          this.messages.add('Permission denied', 'error')
+          this.messages.add(this.$gettext('Permission denied'), 'error')
           return
         }
 
@@ -535,11 +535,11 @@
             this.$refs.tree.add(item, parent, index)
             this.invalidate()
           }).catch(error => {
-            this.messages.add('Error copying page', 'error')
+            this.messages.add(this.$gettext('Error copying page'), 'error')
             this.$log(`PageList::paste(): Error copying page`, stat, idx, error)
           })
         }).catch(error => {
-          this.messages.add('Error fetching page', 'error')
+          this.messages.add(this.$gettext('Error fetching page'), 'error')
           this.$log(`PageList::paste(): Error fetching page`, node.id, error)
         })
 
@@ -549,7 +549,7 @@
 
       publish(stat) {
         if(!this.auth.can('page:publish')) {
-          this.messages.add('Permission denied', 'error')
+          this.messages.add(this.$gettext('Permission denied'), 'error')
           return
         }
 
@@ -582,7 +582,7 @@
 
           this.invalidate()
         }).catch(error => {
-          this.messages.add('Error publishing page', 'error')
+          this.messages.add(this.$gettext('Error publishing page'), 'error')
           this.$log(`PageList::publish(): Error publishing page`, list, error)
         })
       },
@@ -590,7 +590,7 @@
 
       purge(stat) {
         if(!this.auth.can('page:purge')) {
-          this.messages.add('Permission denied', 'error')
+          this.messages.add(this.$gettext('Permission denied'), 'error')
           return
         }
 
@@ -624,7 +624,7 @@
             }
           }
         }).catch(error => {
-          this.messages.add('Error purging page', 'error')
+          this.messages.add(this.$gettext('Error purging page'), 'error')
           this.$log(`PageList::purge(): Error purging page`, list, error)
         })
       },
@@ -632,7 +632,7 @@
 
       search(page = 1, limit = 100) {
         if(!this.auth.can('page:view')) {
-          this.messages.add('Permission denied', 'error')
+          this.messages.add(this.$gettext('Permission denied'), 'error')
           return Promise.resolve([])
         }
 
@@ -673,7 +673,7 @@
 
           return this.transform(result.data.pages)
         }).catch(error => {
-          this.messages.add('Error searching pages', 'error')
+          this.messages.add(this.$gettext('Error searching pages'), 'error')
           this.$log(`PageList::search(): Error searching pages`, page, limit, error)
         })
       },
@@ -693,7 +693,7 @@
 
       status(stat, val) {
         if(!this.auth.can('page:save')) {
-          this.messages.add('Permission denied', 'error')
+          this.messages.add(this.$gettext('Permission denied'), 'error')
           return
         }
 
@@ -721,7 +721,7 @@
 
             stat.data.status = val
           }).catch(error => {
-            this.messages.add('Error saving page', 'error')
+            this.messages.add(this.$gettext('Error saving page'), 'error')
             this.$log(`PageList::status(): Error saving page`, stat, val, error)
           })
         })
@@ -848,29 +848,29 @@
       <v-checkbox-btn v-model="checked" @click.stop="toggle()"></v-checkbox-btn>
       <v-menu>
         <template #activator="{ props }">
-          <v-btn append-icon="mdi-menu-down" variant="text" v-bind="props">Actions</v-btn>
+          <v-btn append-icon="mdi-menu-down" variant="text" v-bind="props">{{ $gettext('Actions') }}</v-btn>
         </template>
         <v-list>
           <v-list-item v-if="isChecked && auth.can('page:publish')">
-            <v-btn prepend-icon="mdi-publish" variant="text" @click="publish()">Publish</v-btn>
+            <v-btn prepend-icon="mdi-publish" variant="text" @click="publish()">{{ $gettext('Publish') }}</v-btn>
           </v-list-item>
           <v-list-item v-if="isChecked && auth.can('page:save')">
-            <v-btn prepend-icon="mdi-eye" variant="text" @click="status(null, 1)">Enable</v-btn>
+            <v-btn prepend-icon="mdi-eye" variant="text" @click="status(null, 1)">{{ $gettext('Enable') }}</v-btn>
           </v-list-item>
           <v-list-item v-if="isChecked && auth.can('page:save')">
-            <v-btn prepend-icon="mdi-eye-off" variant="text" @click="status(null, 0)">Disable</v-btn>
+            <v-btn prepend-icon="mdi-eye-off" variant="text" @click="status(null, 0)">{{ $gettext('Disable') }}</v-btn>
           </v-list-item>
 
           <v-divider></v-divider>
 
           <v-list-item v-if="canTrash && auth.can('page:drop')">
-            <v-btn prepend-icon="mdi-delete" variant="text" @click="drop()">Trash</v-btn>
+            <v-btn prepend-icon="mdi-delete" variant="text" @click="drop()">{{ $gettext('Trash') }}</v-btn>
           </v-list-item>
           <v-list-item v-if="isTrashed && auth.can('page:keep')">
-            <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="keep()">Restore</v-btn>
+            <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="keep()">{{ $gettext('Restore') }}</v-btn>
           </v-list-item>
           <v-list-item v-if="isChecked && auth.can('page:purge')">
-            <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge()">Purge</v-btn>
+            <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge()">{{ $gettext('Purge') }}</v-btn>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -879,9 +879,9 @@
     <div class="search">
       <v-text-field
         v-model="term"
+        :label="$gettext('Search for')"
         prepend-inner-icon="mdi-magnify"
         variant="underlined"
-        label="Search for"
         hide-details
         clearable
       ></v-text-field>
@@ -891,6 +891,7 @@
   <Draggable v-model="items" ref="tree"
     :defaultOpen="false"
     :disableDrag="!auth.can('page:move')"
+    :rtl="$vuetify.locale.isRtl"
     :watermark="false"
     virtualization
     @change="change()"
@@ -907,91 +908,91 @@
         </template>
         <v-list>
           <v-list-item v-if="!node.deleted_at && !node.published && auth.can('page:publish')">
-            <v-btn prepend-icon="mdi-publish" variant="text" @click="publish(stat)">Publish</v-btn>
+            <v-btn prepend-icon="mdi-publish" variant="text" @click="publish(stat)">{{ $gettext('Publish') }}</v-btn>
           </v-list-item>
           <v-list-item v-if="node.status !== 0 && auth.can('page:save')">
-            <v-btn prepend-icon="mdi-eye-off" variant="text" @click="status(stat, 0)">Disable</v-btn>
+            <v-btn prepend-icon="mdi-eye-off" variant="text" @click="status(stat, 0)">{{ $gettext('Disable') }}</v-btn>
           </v-list-item>
           <v-list-item v-if="node.status !== 1 && auth.can('page:save')">
-            <v-btn prepend-icon="mdi-eye" variant="text" @click="status(stat, 1)">Enable</v-btn>
+            <v-btn prepend-icon="mdi-eye" variant="text" @click="status(stat, 1)">{{ $gettext('Enable') }}</v-btn>
           </v-list-item>
           <v-list-item v-if="node.status !== 2 && auth.can('page:save')">
-            <v-btn prepend-icon="mdi-eye-off-outline" variant="text" @click="status(stat, 2)">Hide in menu</v-btn>
+            <v-btn prepend-icon="mdi-eye-off-outline" variant="text" @click="status(stat, 2)">{{ $gettext('Hide in menu') }}</v-btn>
           </v-list-item>
 
           <v-divider></v-divider>
 
           <v-list-item v-if="auth.can('page:move')">
-            <v-btn prepend-icon="mdi-content-cut" variant="text" @click="cut(stat, node)">Cut</v-btn>
+            <v-btn prepend-icon="mdi-content-cut" variant="text" @click="cut(stat, node)">{{ $gettext('Cut') }}</v-btn>
           </v-list-item>
           <v-list-item v-if="!this.embed && auth.can('page:add')">
-            <v-btn prepend-icon="mdi-content-copy" variant="text" @click="copy(stat, node)">Copy</v-btn>
+            <v-btn prepend-icon="mdi-content-copy" variant="text" @click="copy(stat, node)">{{ $gettext('Copy') }}</v-btn>
           </v-list-item>
           <v-list-item v-if="clip && clip.type == 'copy' && !this.embed && auth.can('page:add')">
-            <v-btn prepend-icon="mdi-content-paste" variant="text" @click.stop="show('paste')">Paste</v-btn>
+            <v-btn prepend-icon="mdi-content-paste" variant="text" @click.stop="show('paste')">{{ $gettext('Paste') }}</v-btn>
           </v-list-item>
           <v-fade-transition v-if="clip && clip.type == 'copy' && menu.paste && !this.embed && auth.can('page:add')">
             <v-list-item>
-              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(stat, 0)">🠕 Before</v-btn>
+              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(stat, 0)">🠕 {{ $gettext('Before') }}</v-btn>
             </v-list-item>
           </v-fade-transition>
           <v-fade-transition v-if="clip && clip.type == 'copy' && menu.paste && !this.embed && auth.can('page:add')">
             <v-list-item>
-              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(stat)">🠖 Into</v-btn>
+              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(stat)">🠖 {{ $gettext('Into') }}</v-btn>
             </v-list-item>
           </v-fade-transition>
           <v-fade-transition v-if="clip && clip.type == 'copy' && menu.paste && !this.embed && auth.can('page:add')">
             <v-list-item>
-              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(stat, 1)">🠗 After</v-btn>
+              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(stat, 1)">🠗 {{ $gettext('After') }}</v-btn>
             </v-list-item>
           </v-fade-transition>
           <v-list-item v-if="clip && clip.type == 'cut' && auth.can('page:move')">
-            <v-btn prepend-icon="mdi-content-paste" variant="text" @click.stop="show('move')">Paste</v-btn>
+            <v-btn prepend-icon="mdi-content-paste" variant="text" @click.stop="show('move')">{{ $gettext('Paste') }}</v-btn>
           </v-list-item>
           <v-fade-transition v-if="clip && clip.type == 'cut' && menu.move && auth.can('page:move')">
             <v-list-item>
-              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="move(stat, 0)">🠕 Before</v-btn>
+              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="move(stat, 0)">🠕 {{ $gettext('Before') }}</v-btn>
             </v-list-item>
           </v-fade-transition>
           <v-fade-transition v-if="clip && clip.type == 'cut' && menu.move && auth.can('page:move')">
             <v-list-item>
-              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="move(stat)">🠖 Into</v-btn>
+              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="move(stat)">🠖 {{ $gettext('Into') }}</v-btn>
             </v-list-item>
           </v-fade-transition>
           <v-fade-transition v-if="clip && clip.type == 'cut' && menu.move && auth.can('page:move')">
             <v-list-item>
-              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="move(stat, 1)">🠗 After</v-btn>
+              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="move(stat, 1)">🠗 {{ $gettext('After') }}</v-btn>
             </v-list-item>
           </v-fade-transition>
           <v-list-item v-if="!this.embed && auth.can('page:add')">
-            <v-btn prepend-icon="mdi-content-paste" variant="text" @click.stop="show('insert')">Insert</v-btn>
+            <v-btn prepend-icon="mdi-content-paste" variant="text" @click.stop="show('insert')">{{ $gettext('Insert') }}</v-btn>
           </v-list-item>
           <v-fade-transition v-if="menu.insert && !this.embed && auth.can('page:add')">
             <v-list-item>
-              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(stat, 0)">🠕 Before</v-btn>
+              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(stat, 0)">🠕 {{ $gettext('Before') }}</v-btn>
             </v-list-item>
           </v-fade-transition>
           <v-fade-transition v-if="menu.insert && !this.embed && auth.can('page:add')">
             <v-list-item>
-              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(stat)">🠖 Into</v-btn>
+              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(stat)">🠖 {{ $gettext('Into') }}</v-btn>
             </v-list-item>
           </v-fade-transition>
           <v-fade-transition v-if="menu.insert && !this.embed && auth.can('page:add')">
             <v-list-item>
-              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(stat, 1)">🠗 After</v-btn>
+              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(stat, 1)">🠗 {{ $gettext('After') }}</v-btn>
             </v-list-item>
           </v-fade-transition>
 
           <v-divider></v-divider>
 
           <v-list-item v-if="!node.deleted_at && auth.can('page:drop')">
-            <v-btn prepend-icon="mdi-delete" variant="text" @click="drop(stat)">Trash</v-btn>
+            <v-btn prepend-icon="mdi-delete" variant="text" @click="drop(stat)">{{ $gettext('Trash') }}</v-btn>
           </v-list-item>
           <v-list-item v-if="node.deleted_at && auth.can('page:keep')">
-            <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="keep(stat)">Restore</v-btn>
+            <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="keep(stat)">{{ $gettext('Restore') }}</v-btn>
           </v-list-item>
           <v-list-item v-if="auth.can('page:purge')">
-            <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge(stat)">Purge</v-btn>
+            <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge(stat)">{{ $gettext('Purge') }}</v-btn>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -1007,7 +1008,7 @@
         <div class="item-text" @click="$emit('select', node)">
           <v-icon v-if="node.publish_at" class="publish-at" icon="mdi-clock-outline"></v-icon>
           <span class="item-lang" v-if="node.lang">{{ node.lang }}</span>
-          <span class="item-title">{{ node.name || 'New' }}</span>
+          <span class="item-title">{{ node.name || $gettext('New') }}</span>
           <div v-if="node.title" class="item-subtitle">{{ node.title }}</div>
         </div>
         <a class="item-aux" :href="url(node)" target="_blank" draggable="false">
@@ -1020,12 +1021,12 @@
   </Draggable>
 
   <p v-if="loading" class="loading">
-    Loading
+    {{ $gettext('Loading') }}
     <svg class="spinner" width="32" height="32" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle class="spin1" cx="4" cy="12" r="3"/><circle class="spin1 spin2" cx="12" cy="12" r="3"/><circle class="spin1 spin3" cx="20" cy="12" r="3"/></svg>
   </p>
 
   <p v-if="!loading && !items.length" class="notfound">
-    No items found
+    {{ $gettext('No entries found') }}
   </p>
 
   <div v-if="!loading && !items.length && !this.embed && this.auth.can('page:add')" class="btn-group">

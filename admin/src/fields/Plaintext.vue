@@ -45,8 +45,8 @@
 <template>
   <v-textarea ref="field"
     :rules="[
-      v => !config.min || +v?.length >= +config.min || `Minimum length is ${config.min} characters`,
-      v => !config.max || +v?.length <= +config.max || `Maximum length is ${config.max} characters`
+      v => !config.min || +v?.length >= +config.min || $gettext(`Minimum length is %{num} characters`, {num: config.min}),
+      v => !config.max || +v?.length <= +config.max || $gettext(`Maximum length is %{num} characters`, {num: config.max}),
     ]"
     :readonly="readonly"
     :counter="config.max"

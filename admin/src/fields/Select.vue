@@ -39,7 +39,7 @@
 <template>
   <v-select ref="field"
     :rules="[
-      v => !config.required || !!v || `Value is required`,
+      v => !config.required || !!v || $gettext(`Value is required`),
     ]"
     :readonly="readonly"
     :items="config.options || []"

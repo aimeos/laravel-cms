@@ -78,7 +78,7 @@
         <v-icon @click="$emit('update:modelValue', false)">mdi-close</v-icon>
       </template>
       <template v-slot:title>
-        History
+        {{ $gettext('History') }}
       </template>
 
       <v-divider></v-divider>
@@ -87,19 +87,19 @@
         <v-timeline side="end" align="start">
           <v-timeline-item v-if="loading" size="small" dot-color="grey-lighten-1">
             <div class="loading">
-              Loading
+              {{ $gettext('Loading') }}
               <svg class="spinner" width="32" height="32" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle class="spin1" cx="4" cy="12" r="3"/><circle class="spin1 spin2" cx="12" cy="12" r="3"/><circle class="spin1 spin3" cx="20" cy="12" r="3"/></svg>
             </div>
           </v-timeline-item>
 
           <v-timeline-item v-if="!loading && !(latest && isModified(latest, current) || versions.length)" size="small" dot-color="grey-lighten-1">
-            No changes
+            {{ $gettext('No changes') }}
           </v-timeline-item>
 
           <v-timeline-item v-if="!loading && latest && isModified(latest, current)" size="small" dot-color="blue">
 
             <v-card class="elevation-2" @click="show = !show">
-              <v-card-title>Current</v-card-title>
+              <v-card-title>{{ $gettext('Current') }}</v-card-title>
               <v-card-text class="diff" :class="{show: show}">
                 <span v-for="part of diff(current.data, latest?.data)" :class="{added: part.added, removed: part.removed}">
                   {{ part.value || part }}
@@ -107,7 +107,7 @@
               </v-card-text>
               <v-card-actions>
                 <v-btn variant="outlined" @click.stop="$emit('revert', latest)">
-                  Revert
+                  {{ $gettext('Revert') }}
                 </v-btn>
               </v-card-actions>
             </v-card>
@@ -119,7 +119,7 @@
 
             <v-card class="elevation-2">
               <div @click="version._show = !version._show">
-                <v-card-title>{{ (new Date(version.publish_at || version.created_at)).toLocaleString() }}</v-card-title>
+                <v-card-title>{{ (new Date(version.publish_at || version.created_at)).toLocaleString($vuetify.locale.current) }}</v-card-title>
                 <v-card-subtitle>{{ version.editor }}</v-card-subtitle>
                 <v-card-text class="diff" :class="{show: version._show}">
                   <span v-for="part of diff(version.data, current.data)" :class="{added: part.removed, removed: part.added}">
@@ -129,7 +129,7 @@
               </div>
               <v-card-actions>
                 <v-btn variant="outlined" @click.stop="$emit('use', version)">
-                  Use version
+                  {{ $gettext('Use version') }}
                 </v-btn>
               </v-card-actions>
             </v-card>

@@ -5,6 +5,8 @@
    * - `placeholder`: string, placeholder text for the input field
    * - `required`: boolean, if true, the field is required
    */
+
+
   export default {
     props: {
       'modelValue': {type: String, default: ''},
@@ -19,7 +21,7 @@
         const allowed = this.config.allowed || ['http', 'https']
 
         if(!allowed.every(s => /^[a-z]+/.test(s))) {
-          return 'Invalid URL schema configuration'
+          return this.$gettext('Invalid URL schema configuration')
         }
 
         return v
@@ -57,8 +59,8 @@
   <v-text-field ref="field"
     :placeholder="config.placeholder || ''"
     :rules="[
-      v => !config.required || !!v || `Value is required`,
-      v => check(v) || `Not a valid URL`,
+      v => !config.required || !!v || $gettext(`Value is required`),
+      v => check(v) || $gettext(`Not a valid URL`),
     ]"
     :readonly="readonly"
     :modelValue="modelValue"

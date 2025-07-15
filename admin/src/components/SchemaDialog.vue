@@ -23,7 +23,7 @@
         <v-icon @click="$emit('update:modelValue', false)">mdi-close</v-icon>
       </template>
       <template v-slot:title>
-        Content Elements
+        {{ $gettext('Content elements') }}
       </template>
 
       <v-divider></v-divider>
@@ -32,7 +32,7 @@
         <SchemaItems type="content" @add="$emit('add', $event)" />
 
         <v-tabs>
-          <v-tab>Shared elements</v-tab>
+          <v-tab>{{ $gettext('Shared elements') }}</v-tab>
         </v-tabs>
         <ElementListItems @select="$emit('add', $event)" embed />
       </v-card-text>

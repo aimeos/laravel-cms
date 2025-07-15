@@ -61,7 +61,7 @@
     methods: {
       add(item) {
         if(this.embed || !this.auth.can('element:add')) {
-          this.messages.add('Permission denied', 'error')
+          this.messages.add(this.$gettext('Permission denied'), 'error')
           return
         }
 
@@ -82,7 +82,7 @@
           variables: {
             input: {
               type: item.type,
-              name: 'New shared element',
+              name: this.$gettext('New shared element'),
               data: '{}',
             }
           }
@@ -110,7 +110,7 @@
 
       drop(item) {
         if(!this.auth.can('element:drop')) {
-          this.messages.add('Permission denied', 'error')
+          this.messages.add(this.$gettext('Permission denied'), 'error')
           return
         }
 
@@ -139,7 +139,7 @@
           this.invalidate()
           this.search()
         }).catch(error => {
-          this.messages.add('Error trashing shared element', 'error')
+          this.messages.add(this.$gettext('Error trashing shared element'), 'error')
           this.$log(`ElementListItems::drop(): Error trashing shared element`, list, error)
         })
       },
@@ -154,7 +154,7 @@
 
       keep(item) {
         if(!this.auth.can('element:keep')) {
-          this.messages.add('Permission denied', 'error')
+          this.messages.add(this.$gettext('Permission denied'), 'error')
           return
         }
 
@@ -187,7 +187,7 @@
           this.invalidate()
           this.search()
         }).catch(error => {
-          this.messages.add('Error restoring shared element', 'error')
+          this.messages.add(this.$gettext('Error restoring shared element'), 'error')
           this.$log(`ElementListItems::keep(): Error restoring shared element`, list, error)
         })
       },
@@ -195,7 +195,7 @@
 
       publish(item) {
         if(!this.auth.can('element:publish')) {
-          this.messages.add('Permission denied', 'error')
+          this.messages.add(this.$gettext('Permission denied'), 'error')
           return
         }
 
@@ -229,7 +229,7 @@
           this.invalidate()
           this.search()
         }).catch(error => {
-          this.messages.add('Error publishing shared element', 'error')
+          this.messages.add(this.$gettext('Error publishing shared element'), 'error')
           this.$log(`ElementListItems::publish(): Error publishing shared element`, list, error)
         })
       },
@@ -237,7 +237,7 @@
 
       purge(item) {
         if(!this.auth.can('element:purge')) {
-          this.messages.add('Permission denied', 'error')
+          this.messages.add(this.$gettext('Permission denied'), 'error')
           return
         }
 
@@ -266,7 +266,7 @@
           this.invalidate()
           this.search()
         }).catch(error => {
-          this.messages.add('Error purging shared element', 'error')
+          this.messages.add(this.$gettext('Error purging shared element'), 'error')
           this.$log(`ElementListItems::purge(): Error purging shared element`, list, error)
         })
       },
@@ -274,7 +274,7 @@
 
       search() {
         if(!this.auth.can('element:view')) {
-          this.messages.add('Permission denied', 'error')
+          this.messages.add(this.$gettext('Permission denied'), 'error')
           return Promise.resolve([])
         }
 
@@ -358,7 +358,7 @@
 
           return this.items
         }).catch(error => {
-          this.messages.add('Error fetching shared elements', 'error')
+          this.messages.add(this.$gettext('Error fetching shared elements'), 'error')
           this.$log(`ElementListItems::search(): Error fetching shared element`, error)
         })
       },
@@ -414,23 +414,23 @@
       <v-checkbox-btn v-model="checked" @click.stop="toggle()"></v-checkbox-btn>
       <v-menu location="bottom left">
         <template #activator="{ props }">
-          <v-btn append-icon="mdi-menu-down" variant="text" v-bind="props">Actions</v-btn>
+          <v-btn append-icon="mdi-menu-down" variant="text" v-bind="props">{{ $gettext('Actions') }}</v-btn>
         </template>
         <v-list>
           <v-list-item v-show="isChecked && auth.can('element:publish')">
-            <v-btn prepend-icon="mdi-publish" variant="text" @click="publish()">Publish</v-btn>
+            <v-btn prepend-icon="mdi-publish" variant="text" @click="publish()">{{ $gettext('Publish') }}</v-btn>
           </v-list-item>
           <v-list-item v-if="!this.embed && auth.can('element:add')">
-            <v-btn prepend-icon="mdi-folder-plus" variant="text" @click="vschemas = true">Add element</v-btn>
+            <v-btn prepend-icon="mdi-folder-plus" variant="text" @click="vschemas = true">{{ $gettext('Add element') }}</v-btn>
           </v-list-item>
           <v-list-item v-show="canTrash && auth.can('element:drop')">
-            <v-btn prepend-icon="mdi-delete" variant="text" @click="drop()">Trash</v-btn>
+            <v-btn prepend-icon="mdi-delete" variant="text" @click="drop()">{{ $gettext('Trash') }}</v-btn>
           </v-list-item>
           <v-list-item v-show="isTrashed && auth.can('element:keep')">
-            <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="keep()">Restore</v-btn>
+            <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="keep()">{{ $gettext('Restore') }}</v-btn>
           </v-list-item>
           <v-list-item v-show="isChecked && auth.can('element:purge')">
-            <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge()">Purge</v-btn>
+            <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge()">{{ $gettext('Purge') }}</v-btn>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -441,7 +441,7 @@
         v-model="term"
         prepend-inner-icon="mdi-magnify"
         variant="underlined"
-        label="Search for"
+        :label="$gettext('Search for')"
         hide-details
         clearable
       ></v-text-field>
@@ -451,24 +451,24 @@
       <v-menu>
         <template #activator="{ props }">
           <v-btn append-icon="mdi-menu-down" prepend-icon="mdi-sort" variant="text" location="bottom right" v-bind="props">
-            {{ sort?.column === 'ID' ? (sort?.order === 'DESC' ? 'Latest' : 'Oldest' ) : (sort?.column || '') }}
+            {{ sort?.column === 'ID' ? (sort?.order === 'DESC' ? $gettext('Latest') : $gettext('Oldest') ) : (sort?.column || '') }}
           </v-btn>
         </template>
         <v-list>
           <v-list-item>
-            <v-btn variant="text" @click="sort = {column: 'ID', order: 'DESC'}">Latest</v-btn>
+            <v-btn variant="text" @click="sort = {column: 'ID', order: 'DESC'}">{{ $gettext('Latest') }}</v-btn>
           </v-list-item>
           <v-list-item>
-            <v-btn variant="text" @click="sort = {column: 'ID', order: 'ASC'}">Oldest</v-btn>
+            <v-btn variant="text" @click="sort = {column: 'ID', order: 'ASC'}">{{ $gettext('Oldest') }}</v-btn>
           </v-list-item>
           <v-list-item>
-            <v-btn variant="text" @click="sort = {column: 'NAME', order: 'ASC'}">Name</v-btn>
+            <v-btn variant="text" @click="sort = {column: 'NAME', order: 'ASC'}">{{ $gettext('Name') }}</v-btn>
           </v-list-item>
           <v-list-item>
-            <v-btn variant="text" @click="sort = {column: 'TYPE', order: 'ASC'}">Type</v-btn>
+            <v-btn variant="text" @click="sort = {column: 'TYPE', order: 'ASC'}">{{ $gettext('Type') }}</v-btn>
           </v-list-item>
           <v-list-item>
-            <v-btn variant="text" @click="sort = {column: 'EDITOR', order: 'ASC'}">Editor</v-btn>
+            <v-btn variant="text" @click="sort = {column: 'EDITOR', order: 'ASC'}">{{ $gettext('Editor') }}</v-btn>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -485,16 +485,16 @@
         </template>
         <v-list>
           <v-list-item v-show="!item.deleted_at && !item.published && this.auth.can('element:publish')">
-            <v-btn prepend-icon="mdi-publish" variant="text" @click="publish(item)">Publish</v-btn>
+            <v-btn prepend-icon="mdi-publish" variant="text" @click="publish(item)">{{ $gettext('Publish') }}</v-btn>
           </v-list-item>
           <v-list-item v-if="!item.deleted_at && this.auth.can('element:drop')">
-            <v-btn prepend-icon="mdi-delete" variant="text" @click="drop(item)">Trash</v-btn>
+            <v-btn prepend-icon="mdi-delete" variant="text" @click="drop(item)">{{ $gettext('Trash') }}</v-btn>
           </v-list-item>
           <v-list-item v-if="item.deleted_at && this.auth.can('element:keep')">
-            <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="keep(item)">Restore</v-btn>
+            <v-btn prepend-icon="mdi-delete-restore" variant="text" @click="keep(item)">{{ $gettext('Restore') }}</v-btn>
           </v-list-item>
           <v-list-item v-if="this.auth.can('element:purge')">
-            <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge(item)">Purge</v-btn>
+            <v-btn prepend-icon="mdi-delete-forever" variant="text" @click="purge(item)">{{ $gettext('Purge') }}</v-btn>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -516,11 +516,11 @@
   </v-list>
 
   <p v-if="loading" class="loading">
-    Loading
+    {{ $gettext('Loading') }}
     <svg class="spinner" width="32" height="32" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle class="spin1" cx="4" cy="12" r="3"/><circle class="spin1 spin2" cx="12" cy="12" r="3"/><circle class="spin1 spin3" cx="20" cy="12" r="3"/></svg>
   </p>
   <p v-if="!loading && !items.length" class="notfound">
-    No items found
+    {{ $gettext('No entries found') }}
   </p>
 
   <v-pagination v-if="last > 1"

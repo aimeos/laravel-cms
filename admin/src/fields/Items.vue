@@ -62,8 +62,8 @@
 
       async validate() {
         const rules = [
-          v => (!this.config.max || this.config.max && v.length <= this.config.max) || `Maximum is ${this.config.max} items`,
-          v => ((this.config.min ?? 1) && v.length >= (this.config.min ?? 1)) || `Minimum is ${this.config.min ?? 1} items`,
+          v => (!this.config.max || this.config.max && v.length <= this.config.max) || this.$gettext(`Maximum is %{num} entries`, {num: this.config.max}),
+          v => ((this.config.min ?? 1) && v.length >= (this.config.min ?? 1)) || this.$gettext(`Minimum is %{num} entries`, {num: this.config.min ?? 1}),
         ]
 
         this.errors = rules.map(rule => rule(this.items)).filter(v => v !== true)

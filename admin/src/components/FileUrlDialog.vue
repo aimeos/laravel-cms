@@ -14,6 +14,7 @@
     setup() {
       const messages = useMessageStore()
       const app = useAppStore()
+
       return { app, messages }
     },
 
@@ -131,8 +132,8 @@
               }
             } else {
               this.errors = this.multiple
-                ? [`At least one file is not of type "${this.mime}*"`]
-                : [`The file is not of type "${this.mime}*"`]
+                ? [this.$gettext(`At least one file is not of type "%{mime}*"`, {mime: this.mime})]
+                : [this.$gettext(`The file is not of type "%{mime}*"`, {mime: this.mime})]
             }
           }).catch(error => {
             this.$log(`Error fetching ${url}`, error)
@@ -148,12 +149,12 @@
     <v-card>
       <template v-slot:append>
         <v-btn v-if="Object.keys(items).length" variant="outlined" @click="add()">
-          {{ multiple ? 'Add files' : 'Add file' }}
+          {{ $gettext('Add file', 'Add files', +multiple) }}
         </v-btn>
         <v-btn icon="mdi-close" variant="flat" @click="$emit('update:modelValue', false)"></v-btn>
       </template>
       <template v-slot:title>
-        Add files by URL
+        {{ $gettext('Add files by URL') }}
       </template>
 
       <v-progress-linear v-if="loading"
@@ -172,7 +173,7 @@
           @click:clear="errors = []"
           :error-messages="errors"
           :append-inner-icon="input ? 'mdi-check' : ''"
-          placeholder="Enter one URL per line"
+          :placeholder="$gettext('Enter one URL per line')"
           variant="underlined"
           autofocus
           clearable
@@ -186,7 +187,7 @@
           @click:clear="errors = []"
           :error-messages="errors"
           :append-inner-icon="input ? 'mdi-check' : ''"
-          placeholder="Enter URL"
+          :placeholder="$gettext('Enter URL')"
           variant="underlined"
           autofocus
           clearable
@@ -194,7 +195,7 @@
 
         <v-list class="items grid">
           <v-list-item v-for="(item, url) in items" :key="url">
-            <v-btn icon="mdi-delete" @click="remove(url)" class="btn-overlay" title="Remove file"></v-btn>
+            <v-btn icon="mdi-delete" @click="remove(url)" class="btn-overlay" :title="$gettext('Remove file')"></v-btn>
 
             <div class="item-preview" @click="$emit('select', item)">
               <img v-if="item.mime?.startsWith('image/')" :src="item.path">

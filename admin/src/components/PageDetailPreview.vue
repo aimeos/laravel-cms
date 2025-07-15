@@ -153,7 +153,7 @@
       <v-btn icon="mdi-trash-can-outline" variant="text" @click="remove()"></v-btn>
     </div>
     <div v-if="vpreview" class="preview-mode">
-      Preview mode
+      {{ $gettext('Preview mode') }}
     </div>
 
     <iframe ref="iframe" :src="url"></iframe>

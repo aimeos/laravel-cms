@@ -33,7 +33,7 @@
 
     computed: {
       langs() {
-        const list = [{code: null, name: 'None'}]
+        const list = [{code: null, name: this.$gettext('None')}]
 
         Object.entries(this.languages.available).forEach(pair => {
           list.push({code: pair[0], name: pair[1]})
@@ -66,7 +66,7 @@
           }
         }).then(result => {
           if(result?.data?.pages?.data?.length > 0 && result?.data?.pages?.data?.some(page => page.id !== this.item.id)) {
-            this.messages.path = ['The path is already in use by another page']
+            this.messages.path = [this.$gettext('The path is already in use by another page')]
           } else {
             this.messages.path = []
           }
@@ -138,9 +138,9 @@
         <v-col cols="12" md="6">
           <v-select ref="status"
             :items="[
-              { key: 0, val: 'Disabled' },
-              { key: 1, val: 'Enabled' },
-              { key: 2, val: 'Hidden in navigation' }
+              { key: 0, val: $gettext('Disabled') },
+              { key: 1, val: $gettext('Enabled') },
+              { key: 2, val: $gettext('Hidden in navigation') }
             ]"
             :readonly="readonly"
             :modelValue="item.status"
@@ -148,7 +148,7 @@
             variant="underlined"
             item-title="val"
             item-value="key"
-            label="Status"
+            :label="$gettext('Status')"
           ></v-select>
         </v-col>
         <v-col cols="12" md="6">
@@ -160,7 +160,7 @@
             variant="underlined"
             item-title="name"
             item-value="code"
-            label="Language"
+            :label="$gettext('Language')"
           ></v-select>
         </v-col>
       </v-row>
@@ -169,14 +169,14 @@
         <v-col cols="12" md="6">
           <v-text-field ref="name"
             :rules="[
-              v => !!v || `The field is required`,
+              v => !!v || $gettext('Field is required'),
             ]"
             :readonly="readonly"
             :modelValue="item.name"
             @update:modelValue="update('name', $event)"
             @update:focused="setPath($event)"
             variant="underlined"
-            label="Page name"
+            :label="$gettext('Page name')"
             counter="255"
             maxlength="255"
           ></v-text-field>
@@ -185,7 +185,7 @@
             :modelValue="item.title"
             @update:modelValue="update('title', $event)"
             variant="underlined"
-            label="Page title"
+            :label="$gettext('Page title')"
             counter="255"
             maxlength="255"
           ></v-text-field>
@@ -193,7 +193,7 @@
         <v-col cols="12" md="6">
           <v-text-field ref="path"
             :rules="[
-              v => !v || v && v[0] !== '/' || `Path must not start with a slash (/)`,
+              v => !v || v && v[0] !== '/' || $gettext('Path must not start with a slash (/)'),
             ]"
             :error="!!(messages.path || []).length"
             :error-messages="messages.path"
@@ -202,19 +202,19 @@
             @update:modelValue="updatePath($event); messages.path = null"
             @change="checkPath()"
             variant="underlined"
-            label="URL path"
+            :label="$gettext('URL path')"
             counter="255"
             maxlength="255"
           ></v-text-field>
           <v-text-field ref="domain"
             :rules="[
-              v => !v || v && /^([0-9a-z]+[.-])*[0-9a-z]+\.[a-z]{2,}$/.test(v) || `Domain name is invalid`,
+              v => !v || v && /^([0-9a-z]+[.-])*[0-9a-z]+\.[a-z]{2,}$/.test(v) || $gettext('Domain name is invalid'),
             ]"
             :readonly="readonly"
             :modelValue="item.domain"
             @update:modelValue="update('domain', $event)"
             variant="underlined"
-            label="Domain"
+            :label="$gettext('Domain')"
             counter="255"
             maxlength="255"
           ></v-text-field>
@@ -229,7 +229,7 @@
             :modelValue="item.theme"
             @update:modelValue="update('theme', $event); item.type = ''"
             variant="underlined"
-            label="Theme"
+            :label="$gettext('Theme')"
           ></v-select>
           <v-select ref="type"
             :readonly="readonly"
@@ -237,14 +237,14 @@
             :modelValue="item.type"
             @update:modelValue="update('type', $event)"
             variant="underlined"
-            label="Page type"
+            :label="$gettext('Page type')"
           ></v-select>
         </v-col>
         <v-col cols="12" md="6">
           <v-text-field ref="tag"
             v-model="item.tag"
             :readonly="readonly"
-            label="Page tag"
+            :label="$gettext('Page tag')"
             variant="underlined"
             @update:modelValue="update()"
             counter="30"
@@ -252,22 +252,22 @@
           ></v-text-field>
           <v-select ref="cache"
             :items="[
-              { key: 0, val: 'No cache' },
-              { key: 1, val: '1 minute' },
-              { key: 5, val: '5 minutes' },
-              { key: 15, val: '15 minutes' },
-              { key: 30, val: '30 minutes' },
-              { key: 60, val: '1 hour' },
-              { key: 180, val: '3 hours' },
-              { key: 360, val: '6 hours' },
-              { key: 720, val: '12 hours' },
-              { key: 1440, val: '24 hours' },
+              { key: 0, val: $gettext('No cache') },
+              { key: 1, val: $ngettext('%{num} minute', '%{num} minutes', 1, {num: 1}) },
+              { key: 5, val: $ngettext('%{num} minute', '%{num} minutes', 5, {num: 5}) },
+              { key: 15, val: $ngettext('%{num} minute', '%{num} minutes', 15, {num: 15}) },
+              { key: 30, val: $ngettext('%{num} minute', '%{num} minutes', 30, {num: 30}) },
+              { key: 60, val: $ngettext('%{num} hour', '%{num} hours', 1, {num: 1}) },
+              { key: 180, val: $ngettext('%{num} hour', '%{num} hours', 3, {num: 3}) },
+              { key: 360, val: $ngettext('%{num} hour', '%{num} hours', 6, {num: 6}) },
+              { key: 720, val: $ngettext('%{num} hour', '%{num} hours', 12, {num: 12}) },
+              { key: 1440, val: $ngettext('%{num} hour', '%{num} hours', 24, {num: 24}) },
             ]"
             :readonly="readonly"
             :modelValue="item.cache"
             @update:modelValue="update('cache', $event)"
             variant="underlined"
-            label="Cache time"
+            :label="$gettext('Cache time')"
             item-title="val"
             item-value="key"
           ></v-select>
@@ -278,13 +278,13 @@
         <v-col cols="12">
           <v-text-field ref="to"
             :rules="[
-              v => !v || v.match('^((https?:)?//([^\\s/:@]+(:[^\\s/:@]+)?@)?([0-9a-z]+(\\.|-))*[0-9a-z]+\\.[a-z]{2,}(:[0-9]{1,5})?)?(/[^\\s]*)*$') !== null || 'URL is not valid',
+              v => !v || v.match('^((https?:)?//([^\\s/:@]+(:[^\\s/:@]+)?@)?([0-9a-z]+(\\.|-))*[0-9a-z]+\\.[a-z]{2,}(:[0-9]{1,5})?)?(/[^\\s]*)*$') !== null || $gettext('URL is not valid'),
             ]"
             :readonly="readonly"
             :modelValue="item.to"
             @update:modelValue="update('to', $event)"
             variant="underlined"
-            label="Redirect URL"
+            :label="$gettext('Redirect URL')"
             counter="255"
             maxlength="255"
           ></v-text-field>

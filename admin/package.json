@@ -18,7 +18,9 @@
     "test:unit": "cypress run --component",
     "test:unit:dev": "cypress open --component",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
-    "format": "prettier --write src/"
+    "format": "prettier --write src/",
+    "gettext:extract": "vue-gettext-extract",
+    "gettext:compile": "vue-gettext-compile"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-vue": "^7.3.0",
@@ -35,6 +37,7 @@
     "vue": "^3.5",
     "vue-draggable-plus": "^0.6.0",
     "vue-router": "^4.5",
+    "vue3-gettext": "^4.0.0-alpha.8",
     "vue3-observe-visibility": "^1.0.3",
     "vuedraggable": "^4.1.0",
     "vuetify": "^3.8"

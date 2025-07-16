@@ -20,7 +20,7 @@ const httpLink = ApolloLink.split(
 )
 
 const apolloClient = new ApolloClient({cache: new InMemoryCache(), link: httpLink})
-const apolloProvider = createApolloProvider({defaultClient: apolloClient})
+const apollo = createApolloProvider({defaultClient: apolloClient})
 
-export default apolloProvider
+export default apollo
 export { apolloClient }

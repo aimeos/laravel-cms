@@ -141,9 +141,9 @@
       txlangs(current = null) {
         const list = []
         const supported = [
-          'ar', 'bg', 'cs', 'da', 'de', 'el', 'en', 'en-GB', 'en_US', 'es', 'et', 'fi', 'fr',
+          'ar', 'bg', 'cs', 'da', 'de', 'el', 'en', 'en-GB', 'en-US', 'es', 'et', 'fi', 'fr',
           'he', 'hu', 'id', 'it', 'ja', 'ko', 'lt', 'lv', 'nb', 'nl', 'pl', 'pt', 'pt-BR',
-          'ro', 'ru', 'sk', 'sl', 'sv', 'th', 'tr', 'uk', 'vi', 'zh', 'zh-HANS', 'zh-HANT'
+          'ro', 'ru', 'sk', 'sl', 'sv', 'th', 'tr', 'uk', 'vi', 'zh', 'zh-Hans', 'zh-Hant'
         ]
 
         Object.entries(this.languages.available).forEach(pair => {

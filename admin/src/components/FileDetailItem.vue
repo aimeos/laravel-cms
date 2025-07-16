@@ -44,6 +44,8 @@
           zoomable: true,
           zoomOnWheel: false,
           zoomOnTouch: false,
+          checkCrossOrigin: false,
+          checkOrientation: false,
           viewMode: 1,
         })
       }
@@ -193,8 +195,11 @@
       },
 
 
-      url(path) {
-        if(path.startsWith('http') || path.startsWith('blob:')) {
+      url(path, proxy = false) {
+        if(proxy && path.startsWith('http')) {
+          return this.app.urlproxy.replace(/:url/, encodeURIComponent(path))
+        }
+        if(path.startsWith('blob:') || path.startsWith('http')) {
           return path
         }
         return this.app.urlfile.replace(/\/+$/g, '') + '/' + path
@@ -234,7 +239,7 @@
       <v-row>
         <v-col v-if="item" cols="12" class="preview">
           <div v-if="item.mime?.startsWith('image/')" ref="editorContainer" class="editor-container">
-            <img ref="image" :src="url(item.path)" class="element" />
+            <img ref="image" :src="url(item.path, true)" class="element" />
 
             <div v-if="!readonly" class="floating-toolbar">
               <div class="toolbar-group">

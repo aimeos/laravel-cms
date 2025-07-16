@@ -115,18 +115,22 @@ class AdminController extends Controller
         $scheme = parse_url($url, PHP_URL_SCHEME);
         $path = parse_url($url, PHP_URL_PATH) ?? '/';
         $query = parse_url($url, PHP_URL_QUERY);
-
-        return Http::withHeaders([
+        $headers = [
             'User-Agent' => 'Pagible-Proxy/1.0',
             'Accept-Encoding' => 'identity',
-            'Range' => $range,
-        ])
-        ->timeout(10)
-        ->withOptions([
-            'stream' => true,
-            'verify' => true
-        ])
-        ->send($method, $url);
+        ];
+
+        if( $range ) {
+            $headers['Range'] = $range;
+        }
+
+        return Http::withHeaders($headers)
+            ->timeout(10)
+            ->withOptions([
+                'stream' => true,
+                'verify' => true
+            ])
+            ->send($method, $url);
     }
 
 
@@ -203,7 +207,7 @@ class AdminController extends Controller
      * @param \Psr\Http\Message\StreamInterface $body
      * @param int $maxBytes
      */
-    protected function stream(\Psr\Http\Message\StreamInterface$body, int $maxBytes): void
+    protected function stream(\Psr\Http\Message\StreamInterface $body, int $maxBytes): void
     {
         $sent = 0;
         $chunkSize = 1048576; // 1MB
@@ -218,8 +222,10 @@ class AdminController extends Controller
                 break;
             }
 
-            echo $body->read($chunkSize);
-            $sent += $chunkSize;
+            $chunk = $body->read($chunkSize);
+            $sent += strlen($chunk);
+
+            echo $chunk;
             flush();
         }
     }

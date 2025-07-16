@@ -46,7 +46,11 @@
     computed: {
       changed() {
         return this.content.some(el => el._changed)
-      }
+      },
+
+      isChecked() {
+        return this.content.some(el => el._checked)
+      },
     },
 
     methods: {
@@ -371,7 +375,7 @@
             <v-btn append-icon="mdi-menu-down" variant="text" v-bind="props">{{ $gettext('Actions') }}</v-btn>
           </template>
           <v-list>
-            <v-list-item>
+            <v-list-item v-if="isChecked">
               <v-btn prepend-icon="mdi-delete" variant="text" @click="purge()">{{ $gettext('Delete') }}</v-btn>
             </v-list-item>
           </v-list>

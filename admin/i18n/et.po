@@ -1,0 +1,1028 @@
+msgid ""
+msgstr ""
+"Content-Transfer-Encoding: 8bit\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: et\n"
+"Language-Team: none\n"
+"Last-Translator: Automatically generated\n"
+"MIME-Version: 1.0\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+
+#: src/components/AsideMeta.vue:17
+msgid "id"
+msgstr "id"
+
+#: src/components/AsideMeta.vue:18
+msgid "editor"
+msgstr "toimetaja"
+
+#: src/components/AsideMeta.vue:22
+msgid "created"
+msgstr "loodud"
+
+#: src/components/AsideMeta.vue:26
+msgid "updated"
+msgstr "ajakohastatud"
+
+#: src/components/AsideMeta.vue:30
+msgid "deleted"
+msgstr "kustutatud"
+
+#: src/components/AsideMeta.vue:45
+msgid "Meta data"
+msgstr "Metaandmed"
+
+#: src/components/ElementDetailItem.vue:30
+#: src/components/PageDetailItemProps.vue:36
+msgid "None"
+msgstr "Puudub"
+
+#: src/components/ElementDetailItem.vue:77
+#: src/components/ElementDetailRefs.vue:96
+#: src/components/ElementListItems.vue:465
+#: src/components/FileDetailItem.vue:216
+#: src/components/FileDetailRefs.vue:101
+#: src/components/FileDetailRefs.vue:123
+#: src/components/FileListItems.vue:497
+#: src/fields/Audio.vue:59
+#: src/fields/File.vue:244
+#: src/fields/Image.vue:85
+#: src/fields/Video.vue:61
+msgid "Name"
+msgstr "Nimi"
+
+#: src/components/ElementDetailItem.vue:91
+#: src/components/FileDetailItem.vue:230
+#: src/components/FileListItems.vue:503
+#: src/components/PageDetailItemProps.vue:163
+msgid "Language"
+msgstr "Keel"
+
+#: src/components/ElementDetailRefs.vue:65
+#: src/components/FileDetailRefs.vue:69
+msgid "yes"
+msgstr "jah"
+
+#: src/components/ElementDetailRefs.vue:68
+#: src/components/FileDetailRefs.vue:73
+msgid "no"
+msgstr "ei"
+
+#: src/components/ElementDetailRefs.vue:89
+#: src/components/Navigation.vue:23
+#: src/components/SchemaDialog.vue:35
+#: src/views/ElementList.vue:69
+msgid "Shared elements"
+msgstr "Ühised elemendid"
+
+#: src/components/ElementDetailRefs.vue:94
+#: src/components/ElementDetailRefs.vue:116
+#: src/components/FileDetailRefs.vue:99
+#: src/components/FileDetailRefs.vue:121
+#: src/components/FileDetailRefs.vue:143
+msgid "ID"
+msgstr "ID"
+
+#: src/components/ElementDetailRefs.vue:95
+#: src/components/FileDetailRefs.vue:100
+msgid "URL"
+msgstr "URL"
+
+#: src/components/ElementDetailRefs.vue:117
+#: src/components/ElementListItems.vue:468
+#: src/components/FileDetailRefs.vue:122
+#: src/components/FileDetailRefs.vue:144
+msgid "Type"
+msgstr "Tüüp"
+
+#: src/components/ElementDetailRefs.vue:118
+#: src/components/FileDetailRefs.vue:145
+#: src/views/ElementList.vue:98
+#: src/views/FileList.vue:95
+#: src/views/PageList.vue:95
+msgid "Published"
+msgstr "Avaldatud"
+
+#: src/components/ElementListItems.vue:64
+#: src/components/ElementListItems.vue:113
+#: src/components/ElementListItems.vue:157
+#: src/components/ElementListItems.vue:198
+#: src/components/ElementListItems.vue:240
+#: src/components/ElementListItems.vue:277
+#: src/components/FileListItems.vue:61
+#: src/components/FileListItems.vue:122
+#: src/components/FileListItems.vue:166
+#: src/components/FileListItems.vue:207
+#: src/components/FileListItems.vue:249
+#: src/components/FileListItems.vue:286
+#: src/components/PageDetailContentList.vue:171
+#: src/components/PageListItems.vue:67
+#: src/components/PageListItems.vue:101
+#: src/components/PageListItems.vue:163
+#: src/components/PageListItems.vue:206
+#: src/components/PageListItems.vue:274
+#: src/components/PageListItems.vue:337
+#: src/components/PageListItems.vue:402
+#: src/components/PageListItems.vue:456
+#: src/components/PageListItems.vue:552
+#: src/components/PageListItems.vue:593
+#: src/components/PageListItems.vue:635
+#: src/components/PageListItems.vue:696
+#: src/fields/File.vue:55
+#: src/fields/Images.vue:58
+#: src/views/ElementDetail.vue:107
+#: src/views/ElementDetail.vue:156
+#: src/views/ElementDetail.vue:211
+#: src/views/FileDetail.vue:45
+#: src/views/FileDetail.vue:94
+#: src/views/FileDetail.vue:149
+#: src/views/PageDetail.vue:288
+#: src/views/PageDetail.vue:340
+#: src/views/PageDetail.vue:532
+msgid "Permission denied"
+msgstr "Luba keelatud"
+
+#: src/components/ElementListItems.vue:85
+msgid "New shared element"
+msgstr "Uus ühine element"
+
+#: src/components/ElementListItems.vue:142
+msgid "Error trashing shared element"
+msgstr "Viga jagatud elemendi prügikastis"
+
+#: src/components/ElementListItems.vue:190
+msgid "Error restoring shared element"
+msgstr "Viga jagatud elemendi taastamisel"
+
+#: src/components/ElementListItems.vue:232
+msgid "Error publishing shared element"
+msgstr "Viga jagatud elemendi avaldamisel"
+
+#: src/components/ElementListItems.vue:269
+msgid "Error purging shared element"
+msgstr "Viga jagatud elemendi puhastamisel"
+
+#: src/components/ElementListItems.vue:361
+msgid "Error fetching shared elements"
+msgstr "Viga jagatud elementide hankimisel"
+
+#: src/components/ElementListItems.vue:417
+#: src/components/FileListItems.vue:446
+#: src/components/PageDetailContentList.vue:371
+#: src/components/PageListItems.vue:851
+msgid "Actions"
+msgstr "Meetmed"
+
+#: src/components/ElementListItems.vue:421
+#: src/components/ElementListItems.vue:488
+#: src/components/FileListItems.vue:450
+#: src/components/FileListItems.vue:523
+#: src/components/PageListItems.vue:855
+#: src/components/PageListItems.vue:911
+#: src/views/ElementDetail.vue:295
+#: src/views/ElementDetail.vue:310
+#: src/views/ElementList.vue:95
+#: src/views/FileDetail.vue:229
+#: src/views/FileDetail.vue:244
+#: src/views/FileList.vue:92
+#: src/views/PageDetail.vue:629
+#: src/views/PageDetail.vue:644
+#: src/views/PageList.vue:92
+msgid "Publish"
+msgstr "Avalda"
+
+#: src/components/ElementListItems.vue:424
+msgid "Add element"
+msgstr "Lisa element"
+
+#: src/components/ElementListItems.vue:427
+#: src/components/ElementListItems.vue:491
+#: src/components/FileListItems.vue:456
+#: src/components/FileListItems.vue:526
+#: src/components/PageListItems.vue:867
+#: src/components/PageListItems.vue:989
+msgid "Trash"
+msgstr "Prügikast"
+
+#: src/components/ElementListItems.vue:430
+#: src/components/ElementListItems.vue:494
+#: src/components/FileListItems.vue:459
+#: src/components/FileListItems.vue:529
+#: src/components/PageListItems.vue:870
+#: src/components/PageListItems.vue:992
+msgid "Restore"
+msgstr "Taasta"
+
+#: src/components/ElementListItems.vue:433
+#: src/components/ElementListItems.vue:497
+#: src/components/FileListItems.vue:462
+#: src/components/FileListItems.vue:532
+#: src/components/PageListItems.vue:873
+#: src/components/PageListItems.vue:995
+msgid "Purge"
+msgstr "Puhastus"
+
+#: src/components/ElementListItems.vue:444
+#: src/components/FileListItems.vue:473
+#: src/components/PageDetailContentList.vue:384
+#: src/components/PageListItems.vue:882
+msgid "Search for"
+msgstr "Otsi"
+
+#: src/components/ElementListItems.vue:454
+#: src/components/ElementListItems.vue:459
+#: src/components/FileListItems.vue:486
+#: src/components/FileListItems.vue:491
+msgid "Latest"
+msgstr "Viimane"
+
+#: src/components/ElementListItems.vue:454
+#: src/components/ElementListItems.vue:462
+#: src/components/FileListItems.vue:486
+#: src/components/FileListItems.vue:494
+msgid "Oldest"
+msgstr "Vanim"
+
+#: src/components/ElementListItems.vue:471
+#: src/components/FileListItems.vue:506
+#: src/fields/Audio.vue:61
+#: src/fields/File.vue:246
+#: src/fields/Image.vue:87
+#: src/fields/Video.vue:63
+#: src/views/ElementList.vue:112
+#: src/views/FileList.vue:109
+#: src/views/PageList.vue:109
+msgid "Editor"
+msgstr "Toimetaja"
+
+#: src/components/ElementListItems.vue:519
+#: src/components/FileListItems.vue:561
+#: src/components/HistoryDialog.vue:90
+#: src/components/PageListItems.vue:1024
+msgid "Loading"
+msgstr "Laadimine"
+
+#: src/components/ElementListItems.vue:523
+#: src/components/FileListItems.vue:566
+#: src/components/PageListItems.vue:1029
+msgid "No entries found"
+msgstr "Kirjeid ei leitud"
+
+#: src/components/FieldsDialog.vue:52
+msgid "Content Element"
+msgstr "Sisu element"
+
+#: src/components/FileDetailItem.vue:241
+msgid "Rotate counter-clockwise"
+msgstr "Pöörake vastupäeva"
+
+#: src/components/FileDetailItem.vue:242
+msgid "Rotate clockwise"
+msgstr "Pöörake päripäeva"
+
+#: src/components/FileDetailItem.vue:245
+msgid "Flip horizontally"
+msgstr "Flip horisontaalselt"
+
+#: src/components/FileDetailItem.vue:246
+msgid "Flip vertically"
+msgstr "Pöörake vertikaalselt"
+
+#: src/components/FileDetailItem.vue:249
+msgid "Reset"
+msgstr "Reset"
+
+#: src/components/FileDetailItem.vue:250
+msgid "Download"
+msgstr "Lae alla"
+
+#: src/components/FileDetailItem.vue:276
+msgid "Descriptions"
+msgstr "Kirjeldused"
+
+#: src/components/FileDetailItem.vue:295
+msgid "Description (%{lang})"
+msgstr "Kirjeldus (%{lang})"
+
+#: src/components/FileDetailRefs.vue:94
+#: src/components/Navigation.vue:19
+#: src/views/PageList.vue:67
+msgid "Pages"
+msgstr "Leheküljed"
+
+#: src/components/FileDetailRefs.vue:116
+msgid "Elements"
+msgstr "Elements"
+
+#: src/components/FileDetailRefs.vue:138
+msgid "Versions"
+msgstr "Versioonid"
+
+#: src/components/FileDialog.vue:26
+#: src/components/Navigation.vue:27
+msgid "Files"
+msgstr "Failid"
+
+#: src/components/FileListItems.vue:151
+msgid "Error trashing file"
+msgstr "Viga faili prügikasti hävitamisel"
+
+#: src/components/FileListItems.vue:199
+msgid "Error restoring file"
+msgstr "Viga faili taastamisel"
+
+#: src/components/FileListItems.vue:241
+#: src/views/FileDetail.vue:79
+msgid "Error publishing file"
+msgstr "Viga faili avaldamisel"
+
+#: src/components/FileListItems.vue:278
+msgid "Error purging file"
+msgstr "Viga faili puhastamisel"
+
+#: src/components/FileListItems.vue:373
+msgid "Error fetching files"
+msgstr "Failide kättesaamise viga"
+
+#: src/components/FileListItems.vue:453
+msgid "Add files"
+msgstr "Failide lisamine"
+
+#: src/components/FileListItems.vue:480
+msgid "Grid view"
+msgstr "Ruudustiku vaade"
+
+#: src/components/FileListItems.vue:481
+msgid "List view"
+msgstr "Nimekirja vaade"
+
+#: src/components/FileListItems.vue:500
+#: src/fields/Audio.vue:60
+#: src/fields/File.vue:245
+#: src/fields/Image.vue:86
+#: src/fields/Video.vue:62
+msgid "Mime"
+msgstr "Mime"
+
+#: src/components/FileUrlDialog.vue:135
+msgid "At least one file is not of type \"%{mime}*\""
+msgstr "Vähemalt üks fail ei ole tüüpi \"%{mime}*\""
+
+#: src/components/FileUrlDialog.vue:136
+msgid "The file is not of type \"%{mime}*\""
+msgstr "Faili tüüp ei ole \"%{mime}*\""
+
+#: src/components/FileUrlDialog.vue:152
+msgid "Add file"
+msgstr "Lisa faili"
+
+#: src/components/FileUrlDialog.vue:157
+msgid "Add files by URL"
+msgstr "Failide lisamine URL-i järgi"
+
+#: src/components/FileUrlDialog.vue:176
+msgid "Enter one URL per line"
+msgstr "Sisestage üks URL iga rea kohta"
+
+#: src/components/FileUrlDialog.vue:190
+msgid "Enter URL"
+msgstr "Sisestage URL"
+
+#: src/components/FileUrlDialog.vue:198
+msgid "Remove file"
+msgstr "Eemalda fail"
+
+#: src/components/HistoryDialog.vue:81
+msgid "History"
+msgstr "Ajalugu"
+
+#: src/components/HistoryDialog.vue:96
+msgid "No changes"
+msgstr "Muudatusi ei ole"
+
+#: src/components/HistoryDialog.vue:102
+msgid "Current"
+msgstr "Praegune"
+
+#: src/components/HistoryDialog.vue:110
+msgid "Revert"
+msgstr "Tagasi"
+
+#: src/components/HistoryDialog.vue:132
+msgid "Use version"
+msgstr "Kasutage versiooni"
+
+#: src/components/PageDetailContent.vue:62
+msgid "main"
+msgstr "peamine"
+
+#: src/components/PageDetailContent.vue:63
+msgid "header"
+msgstr "pealkiri"
+
+#: src/components/PageDetailContent.vue:64
+msgid "footer"
+msgstr "alumine osa"
+
+#: src/components/PageDetailContent.vue:65
+msgid "sidebar"
+msgstr "külgriba"
+
+#: src/components/PageDetailContent.vue:66
+msgid "aside"
+msgstr "kõrvale"
+
+#: src/components/PageDetailContentList.vue:178
+msgid "Element not found"
+msgstr "Elementi ei leitud"
+
+#: src/components/PageDetailContentList.vue:183
+msgid "Element is already shared"
+msgstr "Element on juba jagatud"
+
+#: src/components/PageDetailContentList.vue:243
+msgid "Unable to make element shared"
+msgstr "Ei ole võimalik teha elementi jagatud"
+
+#: src/components/PageDetailContentList.vue:286
+msgid "type"
+msgstr "tüüp"
+
+#: src/components/PageDetailContentList.vue:287
+msgid "state"
+msgstr "riik"
+
+#: src/components/PageDetailContentList.vue:288
+msgid "valid"
+msgstr "kehtiv"
+
+#: src/components/PageDetailContentList.vue:289
+msgid "changed"
+msgstr "muudetud"
+
+#: src/components/PageDetailContentList.vue:290
+msgid "error"
+msgstr "viga"
+
+#: src/components/PageDetailContentList.vue:314
+msgid "Content element not found"
+msgstr "Sisuelementi ei leitud"
+
+#: src/components/PageDetailContentList.vue:321
+msgid "Element is not shared"
+msgstr "Element ei ole jagatud"
+
+#: src/components/PageDetailContentList.vue:375
+#: src/components/PageDetailContentList.vue:435
+msgid "Delete"
+msgstr "Kustuta"
+
+#: src/components/PageDetailContentList.vue:411
+#: src/components/PageListItems.vue:929
+msgid "Copy"
+msgstr "Koopia"
+
+#: src/components/PageDetailContentList.vue:414
+#: src/components/PageListItems.vue:926
+msgid "Cut"
+msgstr "Lõika"
+
+#: src/components/PageDetailContentList.vue:420
+msgid "Paste before"
+msgstr "Paneeri enne"
+
+#: src/components/PageDetailContentList.vue:423
+msgid "Paste after"
+msgstr "Pasta pärast"
+
+#: src/components/PageDetailContentList.vue:426
+msgid "Insert before"
+msgstr "Sisesta enne"
+
+#: src/components/PageDetailContentList.vue:429
+msgid "Insert after"
+msgstr "Sisestage pärast"
+
+#: src/components/PageDetailContentList.vue:438
+msgid "Make shared"
+msgstr "Tee jagatud"
+
+#: src/components/PageDetailContentList.vue:441
+msgid "Merge copy"
+msgstr "Koopia ühendamine"
+
+#: src/components/PageDetailContentList.vue:446
+msgid "Shared element"
+msgstr "Jagatud element"
+
+#: src/components/PageDetailItem.vue:67
+msgid "Detail"
+msgstr "Detail"
+
+#: src/components/PageDetailItem.vue:72
+msgid "Meta"
+msgstr "Meta"
+
+#: src/components/PageDetailItem.vue:77
+msgid "Config"
+msgstr "Config"
+
+#: src/components/PageDetailItemConfig.vue:47
+#: src/components/PageDetailItemMeta.vue:47
+msgid "The element has already been added"
+msgstr "Element on juba lisatud"
+
+#: src/components/PageDetailItemProps.vue:69
+msgid "The path is already in use by another page"
+msgstr "Teekond on juba kasutusel mõne teise lehekülje poolt"
+
+#: src/components/PageDetailItemProps.vue:141
+msgid "Disabled"
+msgstr "Puudega inimesed"
+
+#: src/components/PageDetailItemProps.vue:142
+msgid "Enabled"
+msgstr "Lubatud"
+
+#: src/components/PageDetailItemProps.vue:143
+msgid "Hidden in navigation"
+msgstr "Navigeerimisse peidetud"
+
+#: src/components/PageDetailItemProps.vue:151
+msgid "Status"
+msgstr "Staatus"
+
+#: src/components/PageDetailItemProps.vue:172
+#: src/fields/Table.vue:54
+#: src/views/Login.vue:84
+#: src/views/Login.vue:90
+msgid "Field is required"
+msgstr "Väli on nõutav"
+
+#: src/components/PageDetailItemProps.vue:179
+msgid "Page name"
+msgstr "Lehe nimi"
+
+#: src/components/PageDetailItemProps.vue:188
+msgid "Page title"
+msgstr "Lehekülje pealkiri"
+
+#: src/components/PageDetailItemProps.vue:196
+msgid "Path must not start with a slash (/)"
+msgstr "Tee ei tohi alata kaldkriipsuga (/)"
+
+#: src/components/PageDetailItemProps.vue:205
+msgid "URL path"
+msgstr "URL-postitusviis"
+
+#: src/components/PageDetailItemProps.vue:211
+msgid "Domain name is invalid"
+msgstr "Domeeninimi on kehtetu"
+
+#: src/components/PageDetailItemProps.vue:217
+msgid "Domain"
+msgstr "Domeen"
+
+#: src/components/PageDetailItemProps.vue:232
+msgid "Theme"
+msgstr "Teema"
+
+#: src/components/PageDetailItemProps.vue:240
+msgid "Page type"
+msgstr "Lehe tüüp"
+
+#: src/components/PageDetailItemProps.vue:247
+msgid "Page tag"
+msgstr "Lehekülje silt"
+
+#: src/components/PageDetailItemProps.vue:255
+msgid "No cache"
+msgstr "Ei ole vahemälu"
+
+#: src/components/PageDetailItemProps.vue:256
+#: src/components/PageDetailItemProps.vue:257
+#: src/components/PageDetailItemProps.vue:258
+#: src/components/PageDetailItemProps.vue:259
+msgid "%{num} minute"
+msgid_plural "%{num} minutes"
+msgstr[0] "%{num} minut"
+msgstr[1] ""
+
+#: src/components/PageDetailItemProps.vue:260
+#: src/components/PageDetailItemProps.vue:261
+#: src/components/PageDetailItemProps.vue:262
+#: src/components/PageDetailItemProps.vue:263
+#: src/components/PageDetailItemProps.vue:264
+msgid "%{num} hour"
+msgid_plural "%{num} hours"
+msgstr[0] "%{num} tund"
+msgstr[1] ""
+
+#: src/components/PageDetailItemProps.vue:270
+msgid "Cache time"
+msgstr "Vahemälu aeg"
+
+#: src/components/PageDetailItemProps.vue:281
+msgid "URL is not valid"
+msgstr "URL ei ole kehtiv"
+
+#: src/components/PageDetailItemProps.vue:287
+msgid "Redirect URL"
+msgstr "Ümbersuunamise URL"
+
+#: src/components/PageDetailPreview.vue:156
+msgid "Preview mode"
+msgstr "Eelvaate režiim"
+
+#: src/components/PageListItems.vue:93
+msgid "Error adding root page"
+msgstr "Viga juurlehe lisamisel"
+
+#: src/components/PageListItems.vue:135
+#: src/components/PageListItems.vue:446
+msgid "Error moving page"
+msgstr "Viga liikuva lehega"
+
+#: src/components/PageListItems.vue:198
+msgid "Error trashing page"
+msgstr "Viga prügikasti lehekülje"
+
+#: src/components/PageListItems.vue:237
+msgid "Error fetching pages"
+msgstr "Viga lehekülgede kättesaamisel"
+
+#: src/components/PageListItems.vue:322
+msgid "Error inserting page"
+msgstr "Viga lehekülje sisestamisel"
+
+#: src/components/PageListItems.vue:378
+msgid "Error restoring page"
+msgstr "Viga lehekülje taastamisel"
+
+#: src/components/PageListItems.vue:538
+msgid "Error copying page"
+msgstr "Viga lehekülje kopeerimisel"
+
+#: src/components/PageListItems.vue:542
+#: src/views/PageDetail.vue:240
+msgid "Error fetching page"
+msgstr "Viga lehe kättesaamisel"
+
+#: src/components/PageListItems.vue:585
+#: src/views/PageDetail.vue:322
+msgid "Error publishing page"
+msgstr "Viga lehekülje avaldamisel"
+
+#: src/components/PageListItems.vue:627
+msgid "Error purging page"
+msgstr "Vea puhastamise lehekülg"
+
+#: src/components/PageListItems.vue:676
+msgid "Error searching pages"
+msgstr "Vea otsinguleheküljed"
+
+#: src/components/PageListItems.vue:724
+#: src/views/PageDetail.vue:424
+msgid "Error saving page"
+msgstr "Viga lehekülje salvestamisel"
+
+#: src/components/PageListItems.vue:858
+#: src/components/PageListItems.vue:917
+msgid "Enable"
+msgstr "Lubage"
+
+#: src/components/PageListItems.vue:861
+#: src/components/PageListItems.vue:914
+msgid "Disable"
+msgstr "Lülita välja"
+
+#: src/components/PageListItems.vue:920
+msgid "Hide in menu"
+msgstr "Peida menüüsse"
+
+#: src/components/PageListItems.vue:932
+#: src/components/PageListItems.vue:950
+msgid "Paste"
+msgstr "Paste"
+
+#: src/components/PageListItems.vue:936
+#: src/components/PageListItems.vue:954
+#: src/components/PageListItems.vue:972
+msgid "Before"
+msgstr "Enne"
+
+#: src/components/PageListItems.vue:941
+#: src/components/PageListItems.vue:959
+#: src/components/PageListItems.vue:977
+msgid "Into"
+msgstr "Into"
+
+#: src/components/PageListItems.vue:946
+#: src/components/PageListItems.vue:964
+#: src/components/PageListItems.vue:982
+msgid "After"
+msgstr "Pärast"
+
+#: src/components/PageListItems.vue:968
+msgid "Insert"
+msgstr "Sisesta"
+
+#: src/components/PageListItems.vue:1011
+msgid "New"
+msgstr "Uus"
+
+#: src/components/SchemaDialog.vue:26
+msgid "Content elements"
+msgstr "Sisuelemendid"
+
+#: src/components/SchemaItems.vue:27
+msgid "uncategorized"
+msgstr "kategoriseerimata"
+
+#: src/components/SchemaItems.vue:37
+msgid "basic"
+msgstr "põhilised"
+
+#: src/components/SchemaItems.vue:38
+msgid "content"
+msgstr "sisu"
+
+#: src/components/SchemaItems.vue:39
+msgid "media"
+msgstr "meedia"
+
+#: src/components/SchemaItems.vue:40
+msgid "forms"
+msgstr "vormid"
+
+#: src/components/User.vue:23
+msgid "Failed to load user"
+msgstr "Kasutaja laadimine ebaõnnestus"
+
+#: src/components/User.vue:33
+msgid "Logout failed"
+msgstr "Väljalogimine ebaõnnestus"
+
+#: src/components/User.vue:71
+msgid "Logout"
+msgstr "Väljalogimine"
+
+#: src/fields/Audio.vue:62
+#: src/fields/File.vue:247
+#: src/fields/Image.vue:88
+#: src/fields/Video.vue:64
+msgid "Updated"
+msgstr "Uuendatud"
+
+#: src/fields/Autocomplete.vue:140
+#: src/fields/Color.vue:34
+#: src/fields/Date.vue:48
+#: src/fields/Html.vue:42
+#: src/fields/Number.vue:50
+#: src/fields/Select.vue:42
+#: src/fields/Url.vue:62
+msgid "Value is required"
+msgstr "Väärtus on nõutav"
+
+#: src/fields/Autocomplete.vue:146
+msgid "No data available"
+msgstr "Andmed puuduvad"
+
+#: src/fields/Color.vue:35
+msgid "Value must be a hex color code"
+msgstr "Väärtus peab olema heksavärviline kood"
+
+#: src/fields/Items.vue:65
+msgid "Maximum is %{num} entries"
+msgstr "Maksimaalne on %{num} sissekanded"
+
+#: src/fields/Items.vue:66
+msgid "Minimum is %{num} entries"
+msgstr "Minimaalne on %{num} sissekanded"
+
+#: src/fields/Plaintext.vue:48
+#: src/fields/String.vue:52
+msgid "Minimum length is %{num} characters"
+msgstr "Minimaalne pikkus on %{num} tähemärgid"
+
+#: src/fields/Plaintext.vue:49
+#: src/fields/String.vue:53
+msgid "Maximum length is %{num} characters"
+msgstr "Maksimaalne pikkus on %{num} tähemärgid"
+
+#: src/fields/Radio.vue:28
+msgid "Selection is required"
+msgstr "Vajalik on valik"
+
+#: src/fields/Table.vue:55
+msgid "Minimum are %{num} columns"
+msgstr "Minimaalne on %{num} veerud"
+
+#: src/fields/Table.vue:56
+msgid "The number of columns is not the same in all rows"
+msgstr "Veergude arv ei ole kõikides ridades sama."
+
+#: src/fields/Url.vue:24
+msgid "Invalid URL schema configuration"
+msgstr "URL-skeemi vale konfiguratsioon"
+
+#: src/fields/Url.vue:63
+msgid "Not a valid URL"
+msgstr "Ei ole kehtiv URL"
+
+#: src/routes.js:48
+msgid "You do not have permission to access %{path}"
+msgstr "Teil ei ole juurdepääsuõigust %{path}"
+
+#: src/views/ElementDetail.vue:99
+msgid "Error fetching element"
+msgstr "Viga elemendi kättesaamisel"
+
+#: src/views/ElementDetail.vue:133
+msgid "Element published successfully"
+msgstr "Element edukalt avaldatud"
+
+#: src/views/ElementDetail.vue:136
+msgid "Element scheduled for publishing at %{date}"
+msgstr "Elemendi avaldamine on planeeritud aadressil %{date}"
+
+#: src/views/ElementDetail.vue:141
+msgid "Error publishing element"
+msgstr "Viga avaldamise element"
+
+#: src/views/ElementDetail.vue:191
+msgid "Element saved successfully"
+msgstr "Element salvestatud edukalt"
+
+#: src/views/ElementDetail.vue:196
+msgid "Error saving element"
+msgstr "Viga salvestamise element"
+
+#: src/views/ElementDetail.vue:252
+msgid "Error fetching element versions"
+msgstr "Viga elementide versioonide hankimisel"
+
+#: src/views/ElementDetail.vue:271
+#: src/views/ElementDetail.vue:326
+msgid "Element"
+msgstr "Element"
+
+#: src/views/ElementDetail.vue:286
+#: src/views/FileDetail.vue:220
+#: src/views/PageDetail.vue:620
+msgid "Save"
+msgstr "Salvesta"
+
+#: src/views/ElementDetail.vue:327
+#: src/views/FileDetail.vue:261
+msgid "Used by"
+msgstr "Kasutab"
+
+#: src/views/ElementList.vue:41
+#: src/views/ElementList.vue:97
+#: src/views/ElementList.vue:106
+#: src/views/ElementList.vue:114
+#: src/views/FileList.vue:40
+#: src/views/FileList.vue:94
+#: src/views/FileList.vue:103
+#: src/views/FileList.vue:111
+#: src/views/PageList.vue:40
+#: src/views/PageList.vue:94
+#: src/views/PageList.vue:103
+#: src/views/PageList.vue:111
+msgid "All"
+msgstr "Kõik"
+
+#: src/views/ElementList.vue:99
+#: src/views/FileList.vue:96
+#: src/views/PageList.vue:96
+msgid "Scheduled"
+msgstr "Planeeritud"
+
+#: src/views/ElementList.vue:100
+#: src/views/FileList.vue:97
+#: src/views/PageList.vue:97
+msgid "Drafts"
+msgstr "Eelnõud"
+
+#: src/views/ElementList.vue:104
+#: src/views/FileList.vue:101
+#: src/views/PageList.vue:101
+msgid "Trashed"
+msgstr "Trashed"
+
+#: src/views/ElementList.vue:107
+#: src/views/FileList.vue:104
+#: src/views/PageList.vue:104
+msgid "Available only"
+msgstr "Saadaval ainult"
+
+#: src/views/ElementList.vue:108
+#: src/views/FileList.vue:105
+#: src/views/PageList.vue:105
+msgid "Only trashed"
+msgstr "Ainult prügikasti"
+
+#: src/views/ElementList.vue:115
+#: src/views/FileList.vue:112
+#: src/views/PageList.vue:112
+msgid "Edited by me"
+msgstr "Minu poolt toimetatud"
+
+#: src/views/ElementList.vue:119
+#: src/views/FileList.vue:116
+#: src/views/PageList.vue:116
+msgid "Languages"
+msgstr "Keeled"
+
+#: src/views/FileDetail.vue:71
+msgid "File published successfully"
+msgstr "Faili edukalt avaldatud"
+
+#: src/views/FileDetail.vue:74
+msgid "File scheduled for publishing at %{date}"
+msgstr "Avaldamiseks kavandatud fail aadressil %{date}"
+
+#: src/views/FileDetail.vue:129
+msgid "File saved successfully"
+msgstr "Faili edukalt salvestatud"
+
+#: src/views/FileDetail.vue:134
+msgid "Error saving file"
+msgstr "Viga faili salvestamisel"
+
+#: src/views/FileDetail.vue:186
+msgid "Error fetching file versions"
+msgstr "Viga faili versioonide hankimisel"
+
+#: src/views/FileDetail.vue:205
+#: src/views/FileDetail.vue:260
+msgid "File"
+msgstr "Faili"
+
+#: src/views/Login.vue:50
+msgid "Not a CMS editor"
+msgstr "Ei ole CMS toimetaja"
+
+#: src/views/Login.vue:66
+msgid "Access denied"
+msgstr "Juurdepääs keelatud"
+
+#: src/views/Login.vue:79
+#: src/views/Login.vue:101
+msgid "Login"
+msgstr "Logi sisse"
+
+#: src/views/Login.vue:83
+msgid "E-Mail"
+msgstr "E-Mail"
+
+#: src/views/Login.vue:85
+msgid "Invalid e-mail address"
+msgstr "Vale e-posti aadress"
+
+#: src/views/Login.vue:89
+msgid "Password"
+msgstr "Parool"
+
+#: src/views/Login.vue:96
+msgid "Error"
+msgstr "Viga"
+
+#: src/views/PageDetail.vue:314
+msgid "Page published successfully"
+msgstr "Lehekülg edukalt avaldatud"
+
+#: src/views/PageDetail.vue:317
+msgid "Page scheduled for publishing at %{date}"
+msgstr "Avaldamiseks kavandatud lehekülg aadressil %{date}"
+
+#: src/views/PageDetail.vue:350
+msgid "There are invalid fields, please resolve the errors first"
+msgstr "On kehtetud väljad, palun lahendage esmalt vead."
+
+#: src/views/PageDetail.vue:418
+msgid "Page saved successfully"
+msgstr "Lehekülg edukalt salvestatud"
+
+#: src/views/PageDetail.vue:433
+msgid "No page schema for \"content\" found"
+msgstr "Lehekülje skeemi \"sisu\" ei leitud"
+
+#: src/views/PageDetail.vue:569
+msgid "Error fetching page versions"
+msgstr "Viga lehe versioonide hankimisel"
+
+#: src/views/PageDetail.vue:594
+#: src/views/PageDetail.vue:663
+msgid "Page"
+msgstr "Lehekülg"
+
+#: src/views/PageDetail.vue:668
+msgid "Content"
+msgstr "Sisu"
+
+#: src/views/PageDetail.vue:672
+msgid "Preview"
+msgstr "Eelvaade"

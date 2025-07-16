@@ -1,0 +1,1028 @@
+msgid ""
+msgstr ""
+"Content-Transfer-Encoding: 8bit\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: tr\n"
+"Language-Team: none\n"
+"Last-Translator: Automatically generated\n"
+"MIME-Version: 1.0\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+
+#: src/components/AsideMeta.vue:17
+msgid "id"
+msgstr "id"
+
+#: src/components/AsideMeta.vue:18
+msgid "editor"
+msgstr "editör"
+
+#: src/components/AsideMeta.vue:22
+msgid "created"
+msgstr "yaratıldı"
+
+#: src/components/AsideMeta.vue:26
+msgid "updated"
+msgstr "güncellendi"
+
+#: src/components/AsideMeta.vue:30
+msgid "deleted"
+msgstr "silindi"
+
+#: src/components/AsideMeta.vue:45
+msgid "Meta data"
+msgstr "Meta veri"
+
+#: src/components/ElementDetailItem.vue:30
+#: src/components/PageDetailItemProps.vue:36
+msgid "None"
+msgstr "Hiçbiri"
+
+#: src/components/ElementDetailItem.vue:77
+#: src/components/ElementDetailRefs.vue:96
+#: src/components/ElementListItems.vue:465
+#: src/components/FileDetailItem.vue:216
+#: src/components/FileDetailRefs.vue:101
+#: src/components/FileDetailRefs.vue:123
+#: src/components/FileListItems.vue:497
+#: src/fields/Audio.vue:59
+#: src/fields/File.vue:244
+#: src/fields/Image.vue:85
+#: src/fields/Video.vue:61
+msgid "Name"
+msgstr "İsim"
+
+#: src/components/ElementDetailItem.vue:91
+#: src/components/FileDetailItem.vue:230
+#: src/components/FileListItems.vue:503
+#: src/components/PageDetailItemProps.vue:163
+msgid "Language"
+msgstr "Dil"
+
+#: src/components/ElementDetailRefs.vue:65
+#: src/components/FileDetailRefs.vue:69
+msgid "yes"
+msgstr "Evet."
+
+#: src/components/ElementDetailRefs.vue:68
+#: src/components/FileDetailRefs.vue:73
+msgid "no"
+msgstr "Hayır"
+
+#: src/components/ElementDetailRefs.vue:89
+#: src/components/Navigation.vue:23
+#: src/components/SchemaDialog.vue:35
+#: src/views/ElementList.vue:69
+msgid "Shared elements"
+msgstr "Paylaşılan unsurlar"
+
+#: src/components/ElementDetailRefs.vue:94
+#: src/components/ElementDetailRefs.vue:116
+#: src/components/FileDetailRefs.vue:99
+#: src/components/FileDetailRefs.vue:121
+#: src/components/FileDetailRefs.vue:143
+msgid "ID"
+msgstr "KIMLIK"
+
+#: src/components/ElementDetailRefs.vue:95
+#: src/components/FileDetailRefs.vue:100
+msgid "URL"
+msgstr "URL"
+
+#: src/components/ElementDetailRefs.vue:117
+#: src/components/ElementListItems.vue:468
+#: src/components/FileDetailRefs.vue:122
+#: src/components/FileDetailRefs.vue:144
+msgid "Type"
+msgstr "Tip"
+
+#: src/components/ElementDetailRefs.vue:118
+#: src/components/FileDetailRefs.vue:145
+#: src/views/ElementList.vue:98
+#: src/views/FileList.vue:95
+#: src/views/PageList.vue:95
+msgid "Published"
+msgstr "Yayınlandı"
+
+#: src/components/ElementListItems.vue:64
+#: src/components/ElementListItems.vue:113
+#: src/components/ElementListItems.vue:157
+#: src/components/ElementListItems.vue:198
+#: src/components/ElementListItems.vue:240
+#: src/components/ElementListItems.vue:277
+#: src/components/FileListItems.vue:61
+#: src/components/FileListItems.vue:122
+#: src/components/FileListItems.vue:166
+#: src/components/FileListItems.vue:207
+#: src/components/FileListItems.vue:249
+#: src/components/FileListItems.vue:286
+#: src/components/PageDetailContentList.vue:171
+#: src/components/PageListItems.vue:67
+#: src/components/PageListItems.vue:101
+#: src/components/PageListItems.vue:163
+#: src/components/PageListItems.vue:206
+#: src/components/PageListItems.vue:274
+#: src/components/PageListItems.vue:337
+#: src/components/PageListItems.vue:402
+#: src/components/PageListItems.vue:456
+#: src/components/PageListItems.vue:552
+#: src/components/PageListItems.vue:593
+#: src/components/PageListItems.vue:635
+#: src/components/PageListItems.vue:696
+#: src/fields/File.vue:55
+#: src/fields/Images.vue:58
+#: src/views/ElementDetail.vue:107
+#: src/views/ElementDetail.vue:156
+#: src/views/ElementDetail.vue:211
+#: src/views/FileDetail.vue:45
+#: src/views/FileDetail.vue:94
+#: src/views/FileDetail.vue:149
+#: src/views/PageDetail.vue:288
+#: src/views/PageDetail.vue:340
+#: src/views/PageDetail.vue:532
+msgid "Permission denied"
+msgstr "İzin reddedildi"
+
+#: src/components/ElementListItems.vue:85
+msgid "New shared element"
+msgstr "Yeni ortak unsur"
+
+#: src/components/ElementListItems.vue:142
+msgid "Error trashing shared element"
+msgstr "Paylaşılan öğe çöpe atılırken hata oluştu"
+
+#: src/components/ElementListItems.vue:190
+msgid "Error restoring shared element"
+msgstr "Paylaşılan öğe geri yüklenirken hata oluştu"
+
+#: src/components/ElementListItems.vue:232
+msgid "Error publishing shared element"
+msgstr "Paylaşılan öğe yayınlanırken hata oluştu"
+
+#: src/components/ElementListItems.vue:269
+msgid "Error purging shared element"
+msgstr "Paylaşılan öğe temizlenirken hata oluştu"
+
+#: src/components/ElementListItems.vue:361
+msgid "Error fetching shared elements"
+msgstr "Paylaşılan öğeler getirilirken hata oluştu"
+
+#: src/components/ElementListItems.vue:417
+#: src/components/FileListItems.vue:446
+#: src/components/PageDetailContentList.vue:371
+#: src/components/PageListItems.vue:851
+msgid "Actions"
+msgstr "Eylemler"
+
+#: src/components/ElementListItems.vue:421
+#: src/components/ElementListItems.vue:488
+#: src/components/FileListItems.vue:450
+#: src/components/FileListItems.vue:523
+#: src/components/PageListItems.vue:855
+#: src/components/PageListItems.vue:911
+#: src/views/ElementDetail.vue:295
+#: src/views/ElementDetail.vue:310
+#: src/views/ElementList.vue:95
+#: src/views/FileDetail.vue:229
+#: src/views/FileDetail.vue:244
+#: src/views/FileList.vue:92
+#: src/views/PageDetail.vue:629
+#: src/views/PageDetail.vue:644
+#: src/views/PageList.vue:92
+msgid "Publish"
+msgstr "Yayınla"
+
+#: src/components/ElementListItems.vue:424
+msgid "Add element"
+msgstr "Öğe ekle"
+
+#: src/components/ElementListItems.vue:427
+#: src/components/ElementListItems.vue:491
+#: src/components/FileListItems.vue:456
+#: src/components/FileListItems.vue:526
+#: src/components/PageListItems.vue:867
+#: src/components/PageListItems.vue:989
+msgid "Trash"
+msgstr "Çöp"
+
+#: src/components/ElementListItems.vue:430
+#: src/components/ElementListItems.vue:494
+#: src/components/FileListItems.vue:459
+#: src/components/FileListItems.vue:529
+#: src/components/PageListItems.vue:870
+#: src/components/PageListItems.vue:992
+msgid "Restore"
+msgstr "Geri Yükleme"
+
+#: src/components/ElementListItems.vue:433
+#: src/components/ElementListItems.vue:497
+#: src/components/FileListItems.vue:462
+#: src/components/FileListItems.vue:532
+#: src/components/PageListItems.vue:873
+#: src/components/PageListItems.vue:995
+msgid "Purge"
+msgstr "Arındırma"
+
+#: src/components/ElementListItems.vue:444
+#: src/components/FileListItems.vue:473
+#: src/components/PageDetailContentList.vue:384
+#: src/components/PageListItems.vue:882
+msgid "Search for"
+msgstr "Aramak için"
+
+#: src/components/ElementListItems.vue:454
+#: src/components/ElementListItems.vue:459
+#: src/components/FileListItems.vue:486
+#: src/components/FileListItems.vue:491
+msgid "Latest"
+msgstr "En son"
+
+#: src/components/ElementListItems.vue:454
+#: src/components/ElementListItems.vue:462
+#: src/components/FileListItems.vue:486
+#: src/components/FileListItems.vue:494
+msgid "Oldest"
+msgstr "En eski"
+
+#: src/components/ElementListItems.vue:471
+#: src/components/FileListItems.vue:506
+#: src/fields/Audio.vue:61
+#: src/fields/File.vue:246
+#: src/fields/Image.vue:87
+#: src/fields/Video.vue:63
+#: src/views/ElementList.vue:112
+#: src/views/FileList.vue:109
+#: src/views/PageList.vue:109
+msgid "Editor"
+msgstr "Editör"
+
+#: src/components/ElementListItems.vue:519
+#: src/components/FileListItems.vue:561
+#: src/components/HistoryDialog.vue:90
+#: src/components/PageListItems.vue:1024
+msgid "Loading"
+msgstr "Yükleniyor"
+
+#: src/components/ElementListItems.vue:523
+#: src/components/FileListItems.vue:566
+#: src/components/PageListItems.vue:1029
+msgid "No entries found"
+msgstr "Giriş bulunamadı"
+
+#: src/components/FieldsDialog.vue:52
+msgid "Content Element"
+msgstr "İçerik Öğesi"
+
+#: src/components/FileDetailItem.vue:241
+msgid "Rotate counter-clockwise"
+msgstr "Saat yönünün tersine döndürün"
+
+#: src/components/FileDetailItem.vue:242
+msgid "Rotate clockwise"
+msgstr "Saat yönünde döndürün"
+
+#: src/components/FileDetailItem.vue:245
+msgid "Flip horizontally"
+msgstr "Yatay olarak çevirin"
+
+#: src/components/FileDetailItem.vue:246
+msgid "Flip vertically"
+msgstr "Dikey olarak çevirin"
+
+#: src/components/FileDetailItem.vue:249
+msgid "Reset"
+msgstr "Sıfırla"
+
+#: src/components/FileDetailItem.vue:250
+msgid "Download"
+msgstr "İndir"
+
+#: src/components/FileDetailItem.vue:276
+msgid "Descriptions"
+msgstr "Açıklamalar"
+
+#: src/components/FileDetailItem.vue:295
+msgid "Description (%{lang})"
+msgstr "Açıklama (%{lang})"
+
+#: src/components/FileDetailRefs.vue:94
+#: src/components/Navigation.vue:19
+#: src/views/PageList.vue:67
+msgid "Pages"
+msgstr "Sayfalar"
+
+#: src/components/FileDetailRefs.vue:116
+msgid "Elements"
+msgstr "Elementler"
+
+#: src/components/FileDetailRefs.vue:138
+msgid "Versions"
+msgstr "Versiyonlar"
+
+#: src/components/FileDialog.vue:26
+#: src/components/Navigation.vue:27
+msgid "Files"
+msgstr "Dosyalar"
+
+#: src/components/FileListItems.vue:151
+msgid "Error trashing file"
+msgstr "Dosya çöpe atılırken hata oluştu"
+
+#: src/components/FileListItems.vue:199
+msgid "Error restoring file"
+msgstr "Dosya geri yüklenirken hata oluştu"
+
+#: src/components/FileListItems.vue:241
+#: src/views/FileDetail.vue:79
+msgid "Error publishing file"
+msgstr "Dosya yayınlanırken hata oluştu"
+
+#: src/components/FileListItems.vue:278
+msgid "Error purging file"
+msgstr "Dosya temizlenirken hata oluştu"
+
+#: src/components/FileListItems.vue:373
+msgid "Error fetching files"
+msgstr "Dosyaları getirirken hata oluştu"
+
+#: src/components/FileListItems.vue:453
+msgid "Add files"
+msgstr "Dosya ekleme"
+
+#: src/components/FileListItems.vue:480
+msgid "Grid view"
+msgstr "Izgara görünümü"
+
+#: src/components/FileListItems.vue:481
+msgid "List view"
+msgstr "Liste görünümü"
+
+#: src/components/FileListItems.vue:500
+#: src/fields/Audio.vue:60
+#: src/fields/File.vue:245
+#: src/fields/Image.vue:86
+#: src/fields/Video.vue:62
+msgid "Mime"
+msgstr "Pandomim"
+
+#: src/components/FileUrlDialog.vue:135
+msgid "At least one file is not of type \"%{mime}*\""
+msgstr "En az bir dosya \"%{mime}*\" türünde değil"
+
+#: src/components/FileUrlDialog.vue:136
+msgid "The file is not of type \"%{mime}*\""
+msgstr "Dosya \"%{mime}*\" türünde değil"
+
+#: src/components/FileUrlDialog.vue:152
+msgid "Add file"
+msgstr "Dosya ekle"
+
+#: src/components/FileUrlDialog.vue:157
+msgid "Add files by URL"
+msgstr "URL'ye göre dosya ekleme"
+
+#: src/components/FileUrlDialog.vue:176
+msgid "Enter one URL per line"
+msgstr "Satır başına bir URL girin"
+
+#: src/components/FileUrlDialog.vue:190
+msgid "Enter URL"
+msgstr "URL Girin"
+
+#: src/components/FileUrlDialog.vue:198
+msgid "Remove file"
+msgstr "Dosyayı kaldır"
+
+#: src/components/HistoryDialog.vue:81
+msgid "History"
+msgstr "Tarih"
+
+#: src/components/HistoryDialog.vue:96
+msgid "No changes"
+msgstr "Değişiklik yok"
+
+#: src/components/HistoryDialog.vue:102
+msgid "Current"
+msgstr "Güncel"
+
+#: src/components/HistoryDialog.vue:110
+msgid "Revert"
+msgstr "Geri Dön"
+
+#: src/components/HistoryDialog.vue:132
+msgid "Use version"
+msgstr "Sürüm kullanın"
+
+#: src/components/PageDetailContent.vue:62
+msgid "main"
+msgstr "ana"
+
+#: src/components/PageDetailContent.vue:63
+msgid "header"
+msgstr "başlık"
+
+#: src/components/PageDetailContent.vue:64
+msgid "footer"
+msgstr "altbilgi"
+
+#: src/components/PageDetailContent.vue:65
+msgid "sidebar"
+msgstr "kenar çubuğu"
+
+#: src/components/PageDetailContent.vue:66
+msgid "aside"
+msgstr "bir kenara"
+
+#: src/components/PageDetailContentList.vue:178
+msgid "Element not found"
+msgstr "Öğe bulunamadı"
+
+#: src/components/PageDetailContentList.vue:183
+msgid "Element is already shared"
+msgstr "Öğe zaten paylaşılıyor"
+
+#: src/components/PageDetailContentList.vue:243
+msgid "Unable to make element shared"
+msgstr "Paylaşılan öğe yapılamıyor"
+
+#: src/components/PageDetailContentList.vue:286
+msgid "type"
+msgstr "tip"
+
+#: src/components/PageDetailContentList.vue:287
+msgid "state"
+msgstr "devlet"
+
+#: src/components/PageDetailContentList.vue:288
+msgid "valid"
+msgstr "geçerli"
+
+#: src/components/PageDetailContentList.vue:289
+msgid "changed"
+msgstr "değişti"
+
+#: src/components/PageDetailContentList.vue:290
+msgid "error"
+msgstr "Hata"
+
+#: src/components/PageDetailContentList.vue:314
+msgid "Content element not found"
+msgstr "İçerik öğesi bulunamadı"
+
+#: src/components/PageDetailContentList.vue:321
+msgid "Element is not shared"
+msgstr "Öğe paylaşılmıyor"
+
+#: src/components/PageDetailContentList.vue:375
+#: src/components/PageDetailContentList.vue:435
+msgid "Delete"
+msgstr "Silme"
+
+#: src/components/PageDetailContentList.vue:411
+#: src/components/PageListItems.vue:929
+msgid "Copy"
+msgstr "Anlaşıldı"
+
+#: src/components/PageDetailContentList.vue:414
+#: src/components/PageListItems.vue:926
+msgid "Cut"
+msgstr "Kesmek"
+
+#: src/components/PageDetailContentList.vue:420
+msgid "Paste before"
+msgstr "Önce yapıştırın"
+
+#: src/components/PageDetailContentList.vue:423
+msgid "Paste after"
+msgstr "Sonra yapıştır"
+
+#: src/components/PageDetailContentList.vue:426
+msgid "Insert before"
+msgstr "Önce ekle"
+
+#: src/components/PageDetailContentList.vue:429
+msgid "Insert after"
+msgstr "Sonra ekle"
+
+#: src/components/PageDetailContentList.vue:438
+msgid "Make shared"
+msgstr "Paylaşımlı hale getirin"
+
+#: src/components/PageDetailContentList.vue:441
+msgid "Merge copy"
+msgstr "Birleştirme kopyası"
+
+#: src/components/PageDetailContentList.vue:446
+msgid "Shared element"
+msgstr "Paylaşılan öğe"
+
+#: src/components/PageDetailItem.vue:67
+msgid "Detail"
+msgstr "Detay"
+
+#: src/components/PageDetailItem.vue:72
+msgid "Meta"
+msgstr "Meta"
+
+#: src/components/PageDetailItem.vue:77
+msgid "Config"
+msgstr "Konfigürasyon"
+
+#: src/components/PageDetailItemConfig.vue:47
+#: src/components/PageDetailItemMeta.vue:47
+msgid "The element has already been added"
+msgstr "Öğe zaten eklenmiştir"
+
+#: src/components/PageDetailItemProps.vue:69
+msgid "The path is already in use by another page"
+msgstr "Yol zaten başka bir sayfa tarafından kullanılıyor"
+
+#: src/components/PageDetailItemProps.vue:141
+msgid "Disabled"
+msgstr "Engelli"
+
+#: src/components/PageDetailItemProps.vue:142
+msgid "Enabled"
+msgstr "Etkin"
+
+#: src/components/PageDetailItemProps.vue:143
+msgid "Hidden in navigation"
+msgstr "Navigasyonda gizli"
+
+#: src/components/PageDetailItemProps.vue:151
+msgid "Status"
+msgstr "Durum"
+
+#: src/components/PageDetailItemProps.vue:172
+#: src/fields/Table.vue:54
+#: src/views/Login.vue:84
+#: src/views/Login.vue:90
+msgid "Field is required"
+msgstr "Alan zorunludur"
+
+#: src/components/PageDetailItemProps.vue:179
+msgid "Page name"
+msgstr "Sayfa adı"
+
+#: src/components/PageDetailItemProps.vue:188
+msgid "Page title"
+msgstr "Sayfa başlığı"
+
+#: src/components/PageDetailItemProps.vue:196
+msgid "Path must not start with a slash (/)"
+msgstr "Yol eğik çizgi (/) ile başlamamalıdır"
+
+#: src/components/PageDetailItemProps.vue:205
+msgid "URL path"
+msgstr "URL yolu"
+
+#: src/components/PageDetailItemProps.vue:211
+msgid "Domain name is invalid"
+msgstr "Alan adı geçersiz"
+
+#: src/components/PageDetailItemProps.vue:217
+msgid "Domain"
+msgstr "Etki Alanı"
+
+#: src/components/PageDetailItemProps.vue:232
+msgid "Theme"
+msgstr "Tema"
+
+#: src/components/PageDetailItemProps.vue:240
+msgid "Page type"
+msgstr "Sayfa türü"
+
+#: src/components/PageDetailItemProps.vue:247
+msgid "Page tag"
+msgstr "Sayfa etiketi"
+
+#: src/components/PageDetailItemProps.vue:255
+msgid "No cache"
+msgstr "Önbellek yok"
+
+#: src/components/PageDetailItemProps.vue:256
+#: src/components/PageDetailItemProps.vue:257
+#: src/components/PageDetailItemProps.vue:258
+#: src/components/PageDetailItemProps.vue:259
+msgid "%{num} minute"
+msgid_plural "%{num} minutes"
+msgstr[0] "%{num} dakika"
+msgstr[1] ""
+
+#: src/components/PageDetailItemProps.vue:260
+#: src/components/PageDetailItemProps.vue:261
+#: src/components/PageDetailItemProps.vue:262
+#: src/components/PageDetailItemProps.vue:263
+#: src/components/PageDetailItemProps.vue:264
+msgid "%{num} hour"
+msgid_plural "%{num} hours"
+msgstr[0] "%{num} saat"
+msgstr[1] ""
+
+#: src/components/PageDetailItemProps.vue:270
+msgid "Cache time"
+msgstr "Önbellek süresi"
+
+#: src/components/PageDetailItemProps.vue:281
+msgid "URL is not valid"
+msgstr "URL geçerli değil"
+
+#: src/components/PageDetailItemProps.vue:287
+msgid "Redirect URL"
+msgstr "Yönlendirme URL'si"
+
+#: src/components/PageDetailPreview.vue:156
+msgid "Preview mode"
+msgstr "Önizleme modu"
+
+#: src/components/PageListItems.vue:93
+msgid "Error adding root page"
+msgstr "Kök sayfa eklerken hata oluştu"
+
+#: src/components/PageListItems.vue:135
+#: src/components/PageListItems.vue:446
+msgid "Error moving page"
+msgstr "Sayfa taşınırken hata oluştu"
+
+#: src/components/PageListItems.vue:198
+msgid "Error trashing page"
+msgstr "Sayfa çöpe atılırken hata oluştu"
+
+#: src/components/PageListItems.vue:237
+msgid "Error fetching pages"
+msgstr "Sayfaları getirirken hata oluştu"
+
+#: src/components/PageListItems.vue:322
+msgid "Error inserting page"
+msgstr "Sayfa eklenirken hata oluştu"
+
+#: src/components/PageListItems.vue:378
+msgid "Error restoring page"
+msgstr "Sayfa geri yüklenirken hata oluştu"
+
+#: src/components/PageListItems.vue:538
+msgid "Error copying page"
+msgstr "Sayfa kopyalanırken hata oluştu"
+
+#: src/components/PageListItems.vue:542
+#: src/views/PageDetail.vue:240
+msgid "Error fetching page"
+msgstr "Sayfa getirilirken hata oluştu"
+
+#: src/components/PageListItems.vue:585
+#: src/views/PageDetail.vue:322
+msgid "Error publishing page"
+msgstr "Sayfa yayınlanırken hata oluştu"
+
+#: src/components/PageListItems.vue:627
+msgid "Error purging page"
+msgstr "Hata temizleme sayfası"
+
+#: src/components/PageListItems.vue:676
+msgid "Error searching pages"
+msgstr "Arama sayfalarında hata"
+
+#: src/components/PageListItems.vue:724
+#: src/views/PageDetail.vue:424
+msgid "Error saving page"
+msgstr "Sayfa kaydedilirken hata oluştu"
+
+#: src/components/PageListItems.vue:858
+#: src/components/PageListItems.vue:917
+msgid "Enable"
+msgstr "Etkinleştir"
+
+#: src/components/PageListItems.vue:861
+#: src/components/PageListItems.vue:914
+msgid "Disable"
+msgstr "Devre dışı bırak"
+
+#: src/components/PageListItems.vue:920
+msgid "Hide in menu"
+msgstr "Menüde gizle"
+
+#: src/components/PageListItems.vue:932
+#: src/components/PageListItems.vue:950
+msgid "Paste"
+msgstr "Yapıştır"
+
+#: src/components/PageListItems.vue:936
+#: src/components/PageListItems.vue:954
+#: src/components/PageListItems.vue:972
+msgid "Before"
+msgstr "Önce"
+
+#: src/components/PageListItems.vue:941
+#: src/components/PageListItems.vue:959
+#: src/components/PageListItems.vue:977
+msgid "Into"
+msgstr "İçine"
+
+#: src/components/PageListItems.vue:946
+#: src/components/PageListItems.vue:964
+#: src/components/PageListItems.vue:982
+msgid "After"
+msgstr "Sonra"
+
+#: src/components/PageListItems.vue:968
+msgid "Insert"
+msgstr "Ekleme"
+
+#: src/components/PageListItems.vue:1011
+msgid "New"
+msgstr "Yeni"
+
+#: src/components/SchemaDialog.vue:26
+msgid "Content elements"
+msgstr "İçerik öğeleri"
+
+#: src/components/SchemaItems.vue:27
+msgid "uncategorized"
+msgstr "kategorize edilmemiş"
+
+#: src/components/SchemaItems.vue:37
+msgid "basic"
+msgstr "temel"
+
+#: src/components/SchemaItems.vue:38
+msgid "content"
+msgstr "İçerik"
+
+#: src/components/SchemaItems.vue:39
+msgid "media"
+msgstr "medya"
+
+#: src/components/SchemaItems.vue:40
+msgid "forms"
+msgstr "formlar"
+
+#: src/components/User.vue:23
+msgid "Failed to load user"
+msgstr "Kullanıcı yüklenemedi"
+
+#: src/components/User.vue:33
+msgid "Logout failed"
+msgstr "Oturum kapatma başarısız"
+
+#: src/components/User.vue:71
+msgid "Logout"
+msgstr "Oturumu Kapat"
+
+#: src/fields/Audio.vue:62
+#: src/fields/File.vue:247
+#: src/fields/Image.vue:88
+#: src/fields/Video.vue:64
+msgid "Updated"
+msgstr "Güncellenmiş"
+
+#: src/fields/Autocomplete.vue:140
+#: src/fields/Color.vue:34
+#: src/fields/Date.vue:48
+#: src/fields/Html.vue:42
+#: src/fields/Number.vue:50
+#: src/fields/Select.vue:42
+#: src/fields/Url.vue:62
+msgid "Value is required"
+msgstr "Değer gereklidir"
+
+#: src/fields/Autocomplete.vue:146
+msgid "No data available"
+msgstr "Veri mevcut değil"
+
+#: src/fields/Color.vue:35
+msgid "Value must be a hex color code"
+msgstr "Değer bir hex renk kodu olmalıdır"
+
+#: src/fields/Items.vue:65
+msgid "Maximum is %{num} entries"
+msgstr "Maksimum %{num} girişleri"
+
+#: src/fields/Items.vue:66
+msgid "Minimum is %{num} entries"
+msgstr "Minimum %{num} girişleri"
+
+#: src/fields/Plaintext.vue:48
+#: src/fields/String.vue:52
+msgid "Minimum length is %{num} characters"
+msgstr "Minimum uzunluk %{num} karakterdir"
+
+#: src/fields/Plaintext.vue:49
+#: src/fields/String.vue:53
+msgid "Maximum length is %{num} characters"
+msgstr "Maksimum uzunluk %{num} karakterdir"
+
+#: src/fields/Radio.vue:28
+msgid "Selection is required"
+msgstr "Seçim gereklidir"
+
+#: src/fields/Table.vue:55
+msgid "Minimum are %{num} columns"
+msgstr "Minimum %{num} sütunlarıdır"
+
+#: src/fields/Table.vue:56
+msgid "The number of columns is not the same in all rows"
+msgstr "Sütun sayısı tüm satırlarda aynı değildir"
+
+#: src/fields/Url.vue:24
+msgid "Invalid URL schema configuration"
+msgstr "Geçersiz URL şeması yapılandırması"
+
+#: src/fields/Url.vue:63
+msgid "Not a valid URL"
+msgstr "Geçerli bir URL değil"
+
+#: src/routes.js:48
+msgid "You do not have permission to access %{path}"
+msgstr "Erişim izniniz yok %{path}"
+
+#: src/views/ElementDetail.vue:99
+msgid "Error fetching element"
+msgstr "Eleman getirilirken hata oluştu"
+
+#: src/views/ElementDetail.vue:133
+msgid "Element published successfully"
+msgstr "Öğe başarıyla yayınlandı"
+
+#: src/views/ElementDetail.vue:136
+msgid "Element scheduled for publishing at %{date}"
+msgstr "adresinde yayınlanması planlanan öğe %{date}"
+
+#: src/views/ElementDetail.vue:141
+msgid "Error publishing element"
+msgstr "Yayınlama öğesinde hata"
+
+#: src/views/ElementDetail.vue:191
+msgid "Element saved successfully"
+msgstr "Öğe başarıyla kaydedildi"
+
+#: src/views/ElementDetail.vue:196
+msgid "Error saving element"
+msgstr "Eleman kaydedilirken hata oluştu"
+
+#: src/views/ElementDetail.vue:252
+msgid "Error fetching element versions"
+msgstr "Öğe sürümlerini getirirken hata oluştu"
+
+#: src/views/ElementDetail.vue:271
+#: src/views/ElementDetail.vue:326
+msgid "Element"
+msgstr "Element"
+
+#: src/views/ElementDetail.vue:286
+#: src/views/FileDetail.vue:220
+#: src/views/PageDetail.vue:620
+msgid "Save"
+msgstr "Kaydet"
+
+#: src/views/ElementDetail.vue:327
+#: src/views/FileDetail.vue:261
+msgid "Used by"
+msgstr "Tarafından kullanıldı"
+
+#: src/views/ElementList.vue:41
+#: src/views/ElementList.vue:97
+#: src/views/ElementList.vue:106
+#: src/views/ElementList.vue:114
+#: src/views/FileList.vue:40
+#: src/views/FileList.vue:94
+#: src/views/FileList.vue:103
+#: src/views/FileList.vue:111
+#: src/views/PageList.vue:40
+#: src/views/PageList.vue:94
+#: src/views/PageList.vue:103
+#: src/views/PageList.vue:111
+msgid "All"
+msgstr "Tümü"
+
+#: src/views/ElementList.vue:99
+#: src/views/FileList.vue:96
+#: src/views/PageList.vue:96
+msgid "Scheduled"
+msgstr "Planlanmış"
+
+#: src/views/ElementList.vue:100
+#: src/views/FileList.vue:97
+#: src/views/PageList.vue:97
+msgid "Drafts"
+msgstr "Taslaklar"
+
+#: src/views/ElementList.vue:104
+#: src/views/FileList.vue:101
+#: src/views/PageList.vue:101
+msgid "Trashed"
+msgstr "Çöp"
+
+#: src/views/ElementList.vue:107
+#: src/views/FileList.vue:104
+#: src/views/PageList.vue:104
+msgid "Available only"
+msgstr "Sadece mevcut"
+
+#: src/views/ElementList.vue:108
+#: src/views/FileList.vue:105
+#: src/views/PageList.vue:105
+msgid "Only trashed"
+msgstr "Sadece çöpe atılmış"
+
+#: src/views/ElementList.vue:115
+#: src/views/FileList.vue:112
+#: src/views/PageList.vue:112
+msgid "Edited by me"
+msgstr "Benim tarafımdan düzenlendi"
+
+#: src/views/ElementList.vue:119
+#: src/views/FileList.vue:116
+#: src/views/PageList.vue:116
+msgid "Languages"
+msgstr "Diller"
+
+#: src/views/FileDetail.vue:71
+msgid "File published successfully"
+msgstr "Dosya başarıyla yayınlandı"
+
+#: src/views/FileDetail.vue:74
+msgid "File scheduled for publishing at %{date}"
+msgstr "adresinde yayınlanması planlanan dosya %{date}"
+
+#: src/views/FileDetail.vue:129
+msgid "File saved successfully"
+msgstr "Dosya başarıyla kaydedildi"
+
+#: src/views/FileDetail.vue:134
+msgid "Error saving file"
+msgstr "Dosya kaydedilirken hata oluştu"
+
+#: src/views/FileDetail.vue:186
+msgid "Error fetching file versions"
+msgstr "Dosya sürümleri alınırken hata oluştu"
+
+#: src/views/FileDetail.vue:205
+#: src/views/FileDetail.vue:260
+msgid "File"
+msgstr "Dosya"
+
+#: src/views/Login.vue:50
+msgid "Not a CMS editor"
+msgstr "CMS editörü değil"
+
+#: src/views/Login.vue:66
+msgid "Access denied"
+msgstr "Erişim reddedildi"
+
+#: src/views/Login.vue:79
+#: src/views/Login.vue:101
+msgid "Login"
+msgstr "Giriş"
+
+#: src/views/Login.vue:83
+msgid "E-Mail"
+msgstr "E-Posta"
+
+#: src/views/Login.vue:85
+msgid "Invalid e-mail address"
+msgstr "Geçersiz e-posta adresi"
+
+#: src/views/Login.vue:89
+msgid "Password"
+msgstr "Şifre"
+
+#: src/views/Login.vue:96
+msgid "Error"
+msgstr "Hata"
+
+#: src/views/PageDetail.vue:314
+msgid "Page published successfully"
+msgstr "Sayfa başarıyla yayınlandı"
+
+#: src/views/PageDetail.vue:317
+msgid "Page scheduled for publishing at %{date}"
+msgstr "adresinde yayınlanması planlanan sayfa %{date}"
+
+#: src/views/PageDetail.vue:350
+msgid "There are invalid fields, please resolve the errors first"
+msgstr "Geçersiz alanlar var, lütfen önce hataları giderin"
+
+#: src/views/PageDetail.vue:418
+msgid "Page saved successfully"
+msgstr "Sayfa başarıyla kaydedildi"
+
+#: src/views/PageDetail.vue:433
+msgid "No page schema for \"content\" found"
+msgstr "\"content\" için sayfa şeması bulunamadı"
+
+#: src/views/PageDetail.vue:569
+msgid "Error fetching page versions"
+msgstr "Sayfa sürümlerini getirirken hata oluştu"
+
+#: src/views/PageDetail.vue:594
+#: src/views/PageDetail.vue:663
+msgid "Page"
+msgstr "Sayfa"
+
+#: src/views/PageDetail.vue:668
+msgid "Content"
+msgstr "İçerik"
+
+#: src/views/PageDetail.vue:672
+msgid "Preview"
+msgstr "Önizleme"

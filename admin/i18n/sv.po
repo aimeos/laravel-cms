@@ -1,0 +1,1028 @@
+msgid ""
+msgstr ""
+"Content-Transfer-Encoding: 8bit\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: sv\n"
+"Language-Team: none\n"
+"Last-Translator: Automatically generated\n"
+"MIME-Version: 1.0\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+
+#: src/components/AsideMeta.vue:17
+msgid "id"
+msgstr "id"
+
+#: src/components/AsideMeta.vue:18
+msgid "editor"
+msgstr "Redaktör"
+
+#: src/components/AsideMeta.vue:22
+msgid "created"
+msgstr "skapade"
+
+#: src/components/AsideMeta.vue:26
+msgid "updated"
+msgstr "uppdaterad"
+
+#: src/components/AsideMeta.vue:30
+msgid "deleted"
+msgstr "raderade"
+
+#: src/components/AsideMeta.vue:45
+msgid "Meta data"
+msgstr "Metadata"
+
+#: src/components/ElementDetailItem.vue:30
+#: src/components/PageDetailItemProps.vue:36
+msgid "None"
+msgstr "Ingen"
+
+#: src/components/ElementDetailItem.vue:77
+#: src/components/ElementDetailRefs.vue:96
+#: src/components/ElementListItems.vue:465
+#: src/components/FileDetailItem.vue:216
+#: src/components/FileDetailRefs.vue:101
+#: src/components/FileDetailRefs.vue:123
+#: src/components/FileListItems.vue:497
+#: src/fields/Audio.vue:59
+#: src/fields/File.vue:244
+#: src/fields/Image.vue:85
+#: src/fields/Video.vue:61
+msgid "Name"
+msgstr "Namn"
+
+#: src/components/ElementDetailItem.vue:91
+#: src/components/FileDetailItem.vue:230
+#: src/components/FileListItems.vue:503
+#: src/components/PageDetailItemProps.vue:163
+msgid "Language"
+msgstr "Språk"
+
+#: src/components/ElementDetailRefs.vue:65
+#: src/components/FileDetailRefs.vue:69
+msgid "yes"
+msgstr "ja"
+
+#: src/components/ElementDetailRefs.vue:68
+#: src/components/FileDetailRefs.vue:73
+msgid "no"
+msgstr "nej"
+
+#: src/components/ElementDetailRefs.vue:89
+#: src/components/Navigation.vue:23
+#: src/components/SchemaDialog.vue:35
+#: src/views/ElementList.vue:69
+msgid "Shared elements"
+msgstr "Delade element"
+
+#: src/components/ElementDetailRefs.vue:94
+#: src/components/ElementDetailRefs.vue:116
+#: src/components/FileDetailRefs.vue:99
+#: src/components/FileDetailRefs.vue:121
+#: src/components/FileDetailRefs.vue:143
+msgid "ID"
+msgstr "ID"
+
+#: src/components/ElementDetailRefs.vue:95
+#: src/components/FileDetailRefs.vue:100
+msgid "URL"
+msgstr "URL"
+
+#: src/components/ElementDetailRefs.vue:117
+#: src/components/ElementListItems.vue:468
+#: src/components/FileDetailRefs.vue:122
+#: src/components/FileDetailRefs.vue:144
+msgid "Type"
+msgstr "Typ"
+
+#: src/components/ElementDetailRefs.vue:118
+#: src/components/FileDetailRefs.vue:145
+#: src/views/ElementList.vue:98
+#: src/views/FileList.vue:95
+#: src/views/PageList.vue:95
+msgid "Published"
+msgstr "Publicerad"
+
+#: src/components/ElementListItems.vue:64
+#: src/components/ElementListItems.vue:113
+#: src/components/ElementListItems.vue:157
+#: src/components/ElementListItems.vue:198
+#: src/components/ElementListItems.vue:240
+#: src/components/ElementListItems.vue:277
+#: src/components/FileListItems.vue:61
+#: src/components/FileListItems.vue:122
+#: src/components/FileListItems.vue:166
+#: src/components/FileListItems.vue:207
+#: src/components/FileListItems.vue:249
+#: src/components/FileListItems.vue:286
+#: src/components/PageDetailContentList.vue:171
+#: src/components/PageListItems.vue:67
+#: src/components/PageListItems.vue:101
+#: src/components/PageListItems.vue:163
+#: src/components/PageListItems.vue:206
+#: src/components/PageListItems.vue:274
+#: src/components/PageListItems.vue:337
+#: src/components/PageListItems.vue:402
+#: src/components/PageListItems.vue:456
+#: src/components/PageListItems.vue:552
+#: src/components/PageListItems.vue:593
+#: src/components/PageListItems.vue:635
+#: src/components/PageListItems.vue:696
+#: src/fields/File.vue:55
+#: src/fields/Images.vue:58
+#: src/views/ElementDetail.vue:107
+#: src/views/ElementDetail.vue:156
+#: src/views/ElementDetail.vue:211
+#: src/views/FileDetail.vue:45
+#: src/views/FileDetail.vue:94
+#: src/views/FileDetail.vue:149
+#: src/views/PageDetail.vue:288
+#: src/views/PageDetail.vue:340
+#: src/views/PageDetail.vue:532
+msgid "Permission denied"
+msgstr "Behörighet nekad"
+
+#: src/components/ElementListItems.vue:85
+msgid "New shared element"
+msgstr "Nytt gemensamt element"
+
+#: src/components/ElementListItems.vue:142
+msgid "Error trashing shared element"
+msgstr "Fel vid bortforsling av delat element"
+
+#: src/components/ElementListItems.vue:190
+msgid "Error restoring shared element"
+msgstr "Fel vid återställning av delat element"
+
+#: src/components/ElementListItems.vue:232
+msgid "Error publishing shared element"
+msgstr "Fel vid publicering av delat element"
+
+#: src/components/ElementListItems.vue:269
+msgid "Error purging shared element"
+msgstr "Fel vid rensning av delat element"
+
+#: src/components/ElementListItems.vue:361
+msgid "Error fetching shared elements"
+msgstr "Fel vid hämtning av delade element"
+
+#: src/components/ElementListItems.vue:417
+#: src/components/FileListItems.vue:446
+#: src/components/PageDetailContentList.vue:371
+#: src/components/PageListItems.vue:851
+msgid "Actions"
+msgstr "Åtgärder"
+
+#: src/components/ElementListItems.vue:421
+#: src/components/ElementListItems.vue:488
+#: src/components/FileListItems.vue:450
+#: src/components/FileListItems.vue:523
+#: src/components/PageListItems.vue:855
+#: src/components/PageListItems.vue:911
+#: src/views/ElementDetail.vue:295
+#: src/views/ElementDetail.vue:310
+#: src/views/ElementList.vue:95
+#: src/views/FileDetail.vue:229
+#: src/views/FileDetail.vue:244
+#: src/views/FileList.vue:92
+#: src/views/PageDetail.vue:629
+#: src/views/PageDetail.vue:644
+#: src/views/PageList.vue:92
+msgid "Publish"
+msgstr "Publicera"
+
+#: src/components/ElementListItems.vue:424
+msgid "Add element"
+msgstr "Lägg till element"
+
+#: src/components/ElementListItems.vue:427
+#: src/components/ElementListItems.vue:491
+#: src/components/FileListItems.vue:456
+#: src/components/FileListItems.vue:526
+#: src/components/PageListItems.vue:867
+#: src/components/PageListItems.vue:989
+msgid "Trash"
+msgstr "Skräp"
+
+#: src/components/ElementListItems.vue:430
+#: src/components/ElementListItems.vue:494
+#: src/components/FileListItems.vue:459
+#: src/components/FileListItems.vue:529
+#: src/components/PageListItems.vue:870
+#: src/components/PageListItems.vue:992
+msgid "Restore"
+msgstr "Återställ"
+
+#: src/components/ElementListItems.vue:433
+#: src/components/ElementListItems.vue:497
+#: src/components/FileListItems.vue:462
+#: src/components/FileListItems.vue:532
+#: src/components/PageListItems.vue:873
+#: src/components/PageListItems.vue:995
+msgid "Purge"
+msgstr "Utrensning"
+
+#: src/components/ElementListItems.vue:444
+#: src/components/FileListItems.vue:473
+#: src/components/PageDetailContentList.vue:384
+#: src/components/PageListItems.vue:882
+msgid "Search for"
+msgstr "Sök efter"
+
+#: src/components/ElementListItems.vue:454
+#: src/components/ElementListItems.vue:459
+#: src/components/FileListItems.vue:486
+#: src/components/FileListItems.vue:491
+msgid "Latest"
+msgstr "Senaste"
+
+#: src/components/ElementListItems.vue:454
+#: src/components/ElementListItems.vue:462
+#: src/components/FileListItems.vue:486
+#: src/components/FileListItems.vue:494
+msgid "Oldest"
+msgstr "Äldst"
+
+#: src/components/ElementListItems.vue:471
+#: src/components/FileListItems.vue:506
+#: src/fields/Audio.vue:61
+#: src/fields/File.vue:246
+#: src/fields/Image.vue:87
+#: src/fields/Video.vue:63
+#: src/views/ElementList.vue:112
+#: src/views/FileList.vue:109
+#: src/views/PageList.vue:109
+msgid "Editor"
+msgstr "Redaktör"
+
+#: src/components/ElementListItems.vue:519
+#: src/components/FileListItems.vue:561
+#: src/components/HistoryDialog.vue:90
+#: src/components/PageListItems.vue:1024
+msgid "Loading"
+msgstr "Lastning"
+
+#: src/components/ElementListItems.vue:523
+#: src/components/FileListItems.vue:566
+#: src/components/PageListItems.vue:1029
+msgid "No entries found"
+msgstr "Inga poster hittades"
+
+#: src/components/FieldsDialog.vue:52
+msgid "Content Element"
+msgstr "Innehållselement"
+
+#: src/components/FileDetailItem.vue:241
+msgid "Rotate counter-clockwise"
+msgstr "Vrid moturs"
+
+#: src/components/FileDetailItem.vue:242
+msgid "Rotate clockwise"
+msgstr "Rotera medurs"
+
+#: src/components/FileDetailItem.vue:245
+msgid "Flip horizontally"
+msgstr "Vänd horisontellt"
+
+#: src/components/FileDetailItem.vue:246
+msgid "Flip vertically"
+msgstr "Vänd vertikalt"
+
+#: src/components/FileDetailItem.vue:249
+msgid "Reset"
+msgstr "Återställning"
+
+#: src/components/FileDetailItem.vue:250
+msgid "Download"
+msgstr "Nedladdningar"
+
+#: src/components/FileDetailItem.vue:276
+msgid "Descriptions"
+msgstr "Beskrivningar"
+
+#: src/components/FileDetailItem.vue:295
+msgid "Description (%{lang})"
+msgstr "Beskrivning (%{lang})"
+
+#: src/components/FileDetailRefs.vue:94
+#: src/components/Navigation.vue:19
+#: src/views/PageList.vue:67
+msgid "Pages"
+msgstr "Sidor"
+
+#: src/components/FileDetailRefs.vue:116
+msgid "Elements"
+msgstr "Element"
+
+#: src/components/FileDetailRefs.vue:138
+msgid "Versions"
+msgstr "Versioner"
+
+#: src/components/FileDialog.vue:26
+#: src/components/Navigation.vue:27
+msgid "Files"
+msgstr "Filer"
+
+#: src/components/FileListItems.vue:151
+msgid "Error trashing file"
+msgstr "Fel vid bortforsling av fil"
+
+#: src/components/FileListItems.vue:199
+msgid "Error restoring file"
+msgstr "Fel vid återställning av fil"
+
+#: src/components/FileListItems.vue:241
+#: src/views/FileDetail.vue:79
+msgid "Error publishing file"
+msgstr "Fel vid publicering av fil"
+
+#: src/components/FileListItems.vue:278
+msgid "Error purging file"
+msgstr "Fel vid rensning av fil"
+
+#: src/components/FileListItems.vue:373
+msgid "Error fetching files"
+msgstr "Fel vid hämtning av filer"
+
+#: src/components/FileListItems.vue:453
+msgid "Add files"
+msgstr "Lägg till filer"
+
+#: src/components/FileListItems.vue:480
+msgid "Grid view"
+msgstr "Rutnätsvy"
+
+#: src/components/FileListItems.vue:481
+msgid "List view"
+msgstr "Lista vy"
+
+#: src/components/FileListItems.vue:500
+#: src/fields/Audio.vue:60
+#: src/fields/File.vue:245
+#: src/fields/Image.vue:86
+#: src/fields/Video.vue:62
+msgid "Mime"
+msgstr "Mime"
+
+#: src/components/FileUrlDialog.vue:135
+msgid "At least one file is not of type \"%{mime}*\""
+msgstr "Minst en fil är inte av typen \"%{mime}*\""
+
+#: src/components/FileUrlDialog.vue:136
+msgid "The file is not of type \"%{mime}*\""
+msgstr "Filen är inte av typen \"%{mime}*\""
+
+#: src/components/FileUrlDialog.vue:152
+msgid "Add file"
+msgstr "Lägg till fil"
+
+#: src/components/FileUrlDialog.vue:157
+msgid "Add files by URL"
+msgstr "Lägg till filer via URL"
+
+#: src/components/FileUrlDialog.vue:176
+msgid "Enter one URL per line"
+msgstr "Ange en URL per rad"
+
+#: src/components/FileUrlDialog.vue:190
+msgid "Enter URL"
+msgstr "Ange URL"
+
+#: src/components/FileUrlDialog.vue:198
+msgid "Remove file"
+msgstr "Ta bort fil"
+
+#: src/components/HistoryDialog.vue:81
+msgid "History"
+msgstr "Historia"
+
+#: src/components/HistoryDialog.vue:96
+msgid "No changes"
+msgstr "Inga förändringar"
+
+#: src/components/HistoryDialog.vue:102
+msgid "Current"
+msgstr "Nuvarande"
+
+#: src/components/HistoryDialog.vue:110
+msgid "Revert"
+msgstr "Återgå"
+
+#: src/components/HistoryDialog.vue:132
+msgid "Use version"
+msgstr "Använd version"
+
+#: src/components/PageDetailContent.vue:62
+msgid "main"
+msgstr "huvud"
+
+#: src/components/PageDetailContent.vue:63
+msgid "header"
+msgstr "rubrik"
+
+#: src/components/PageDetailContent.vue:64
+msgid "footer"
+msgstr "sidfot"
+
+#: src/components/PageDetailContent.vue:65
+msgid "sidebar"
+msgstr "sidofält"
+
+#: src/components/PageDetailContent.vue:66
+msgid "aside"
+msgstr "åt sidan"
+
+#: src/components/PageDetailContentList.vue:178
+msgid "Element not found"
+msgstr "Elementet hittades inte"
+
+#: src/components/PageDetailContentList.vue:183
+msgid "Element is already shared"
+msgstr "Elementet är redan delat"
+
+#: src/components/PageDetailContentList.vue:243
+msgid "Unable to make element shared"
+msgstr "Kan inte göra elementet delat"
+
+#: src/components/PageDetailContentList.vue:286
+msgid "type"
+msgstr "typ"
+
+#: src/components/PageDetailContentList.vue:287
+msgid "state"
+msgstr "tillstånd"
+
+#: src/components/PageDetailContentList.vue:288
+msgid "valid"
+msgstr "giltig"
+
+#: src/components/PageDetailContentList.vue:289
+msgid "changed"
+msgstr "förändrats"
+
+#: src/components/PageDetailContentList.vue:290
+msgid "error"
+msgstr "fel"
+
+#: src/components/PageDetailContentList.vue:314
+msgid "Content element not found"
+msgstr "Innehållselementet hittades inte"
+
+#: src/components/PageDetailContentList.vue:321
+msgid "Element is not shared"
+msgstr "Elementet är inte delat"
+
+#: src/components/PageDetailContentList.vue:375
+#: src/components/PageDetailContentList.vue:435
+msgid "Delete"
+msgstr "Radera"
+
+#: src/components/PageDetailContentList.vue:411
+#: src/components/PageListItems.vue:929
+msgid "Copy"
+msgstr "Kopia"
+
+#: src/components/PageDetailContentList.vue:414
+#: src/components/PageListItems.vue:926
+msgid "Cut"
+msgstr "Klipp"
+
+#: src/components/PageDetailContentList.vue:420
+msgid "Paste before"
+msgstr "Klistra in före"
+
+#: src/components/PageDetailContentList.vue:423
+msgid "Paste after"
+msgstr "Klistra in efter"
+
+#: src/components/PageDetailContentList.vue:426
+msgid "Insert before"
+msgstr "Infoga före"
+
+#: src/components/PageDetailContentList.vue:429
+msgid "Insert after"
+msgstr "Infoga efter"
+
+#: src/components/PageDetailContentList.vue:438
+msgid "Make shared"
+msgstr "Gör delad"
+
+#: src/components/PageDetailContentList.vue:441
+msgid "Merge copy"
+msgstr "Sammanfoga kopia"
+
+#: src/components/PageDetailContentList.vue:446
+msgid "Shared element"
+msgstr "Gemensamt element"
+
+#: src/components/PageDetailItem.vue:67
+msgid "Detail"
+msgstr "Detalj"
+
+#: src/components/PageDetailItem.vue:72
+msgid "Meta"
+msgstr "Meta"
+
+#: src/components/PageDetailItem.vue:77
+msgid "Config"
+msgstr "Konfig"
+
+#: src/components/PageDetailItemConfig.vue:47
+#: src/components/PageDetailItemMeta.vue:47
+msgid "The element has already been added"
+msgstr "Elementet har redan lagts till"
+
+#: src/components/PageDetailItemProps.vue:69
+msgid "The path is already in use by another page"
+msgstr "Stigen används redan av en annan sida"
+
+#: src/components/PageDetailItemProps.vue:141
+msgid "Disabled"
+msgstr "Inaktiverad"
+
+#: src/components/PageDetailItemProps.vue:142
+msgid "Enabled"
+msgstr "Aktiverad"
+
+#: src/components/PageDetailItemProps.vue:143
+msgid "Hidden in navigation"
+msgstr "Dold i navigering"
+
+#: src/components/PageDetailItemProps.vue:151
+msgid "Status"
+msgstr "Status"
+
+#: src/components/PageDetailItemProps.vue:172
+#: src/fields/Table.vue:54
+#: src/views/Login.vue:84
+#: src/views/Login.vue:90
+msgid "Field is required"
+msgstr "Fältet är obligatoriskt"
+
+#: src/components/PageDetailItemProps.vue:179
+msgid "Page name"
+msgstr "Sidans namn"
+
+#: src/components/PageDetailItemProps.vue:188
+msgid "Page title"
+msgstr "Sidans titel"
+
+#: src/components/PageDetailItemProps.vue:196
+msgid "Path must not start with a slash (/)"
+msgstr "Sökvägen får inte börja med ett snedstreck (/)"
+
+#: src/components/PageDetailItemProps.vue:205
+msgid "URL path"
+msgstr "URL-sökväg"
+
+#: src/components/PageDetailItemProps.vue:211
+msgid "Domain name is invalid"
+msgstr "Domännamnet är ogiltigt"
+
+#: src/components/PageDetailItemProps.vue:217
+msgid "Domain"
+msgstr "Domän"
+
+#: src/components/PageDetailItemProps.vue:232
+msgid "Theme"
+msgstr "Tema"
+
+#: src/components/PageDetailItemProps.vue:240
+msgid "Page type"
+msgstr "Typ av sida"
+
+#: src/components/PageDetailItemProps.vue:247
+msgid "Page tag"
+msgstr "Sidans tagg"
+
+#: src/components/PageDetailItemProps.vue:255
+msgid "No cache"
+msgstr "Ingen cache"
+
+#: src/components/PageDetailItemProps.vue:256
+#: src/components/PageDetailItemProps.vue:257
+#: src/components/PageDetailItemProps.vue:258
+#: src/components/PageDetailItemProps.vue:259
+msgid "%{num} minute"
+msgid_plural "%{num} minutes"
+msgstr[0] "%{num} minut"
+msgstr[1] ""
+
+#: src/components/PageDetailItemProps.vue:260
+#: src/components/PageDetailItemProps.vue:261
+#: src/components/PageDetailItemProps.vue:262
+#: src/components/PageDetailItemProps.vue:263
+#: src/components/PageDetailItemProps.vue:264
+msgid "%{num} hour"
+msgid_plural "%{num} hours"
+msgstr[0] "%{num} timme"
+msgstr[1] ""
+
+#: src/components/PageDetailItemProps.vue:270
+msgid "Cache time"
+msgstr "Cache-tid"
+
+#: src/components/PageDetailItemProps.vue:281
+msgid "URL is not valid"
+msgstr "URL är inte giltig"
+
+#: src/components/PageDetailItemProps.vue:287
+msgid "Redirect URL"
+msgstr "URL för omdirigering"
+
+#: src/components/PageDetailPreview.vue:156
+msgid "Preview mode"
+msgstr "Förhandsgranskningsläge"
+
+#: src/components/PageListItems.vue:93
+msgid "Error adding root page"
+msgstr "Fel vid tillägg av rotsida"
+
+#: src/components/PageListItems.vue:135
+#: src/components/PageListItems.vue:446
+msgid "Error moving page"
+msgstr "Fel vid flyttning av sida"
+
+#: src/components/PageListItems.vue:198
+msgid "Error trashing page"
+msgstr "Fel vid borttagning av sida"
+
+#: src/components/PageListItems.vue:237
+msgid "Error fetching pages"
+msgstr "Fel vid hämtning av sidor"
+
+#: src/components/PageListItems.vue:322
+msgid "Error inserting page"
+msgstr "Fel vid infogning av sida"
+
+#: src/components/PageListItems.vue:378
+msgid "Error restoring page"
+msgstr "Fel vid återställning av sida"
+
+#: src/components/PageListItems.vue:538
+msgid "Error copying page"
+msgstr "Fel vid kopiering av sida"
+
+#: src/components/PageListItems.vue:542
+#: src/views/PageDetail.vue:240
+msgid "Error fetching page"
+msgstr "Fel vid hämtning av sida"
+
+#: src/components/PageListItems.vue:585
+#: src/views/PageDetail.vue:322
+msgid "Error publishing page"
+msgstr "Fel vid publicering av sida"
+
+#: src/components/PageListItems.vue:627
+msgid "Error purging page"
+msgstr "Fel vid rensning av sida"
+
+#: src/components/PageListItems.vue:676
+msgid "Error searching pages"
+msgstr "Fel vid sökning av sidor"
+
+#: src/components/PageListItems.vue:724
+#: src/views/PageDetail.vue:424
+msgid "Error saving page"
+msgstr "Fel vid lagring av sida"
+
+#: src/components/PageListItems.vue:858
+#: src/components/PageListItems.vue:917
+msgid "Enable"
+msgstr "Aktivera"
+
+#: src/components/PageListItems.vue:861
+#: src/components/PageListItems.vue:914
+msgid "Disable"
+msgstr "Avaktivera"
+
+#: src/components/PageListItems.vue:920
+msgid "Hide in menu"
+msgstr "Dölj i menyn"
+
+#: src/components/PageListItems.vue:932
+#: src/components/PageListItems.vue:950
+msgid "Paste"
+msgstr "Klistra in"
+
+#: src/components/PageListItems.vue:936
+#: src/components/PageListItems.vue:954
+#: src/components/PageListItems.vue:972
+msgid "Before"
+msgstr "Före"
+
+#: src/components/PageListItems.vue:941
+#: src/components/PageListItems.vue:959
+#: src/components/PageListItems.vue:977
+msgid "Into"
+msgstr "In i"
+
+#: src/components/PageListItems.vue:946
+#: src/components/PageListItems.vue:964
+#: src/components/PageListItems.vue:982
+msgid "After"
+msgstr "Efter"
+
+#: src/components/PageListItems.vue:968
+msgid "Insert"
+msgstr "Infoga"
+
+#: src/components/PageListItems.vue:1011
+msgid "New"
+msgstr "Ny"
+
+#: src/components/SchemaDialog.vue:26
+msgid "Content elements"
+msgstr "Innehållselement"
+
+#: src/components/SchemaItems.vue:27
+msgid "uncategorized"
+msgstr "oklassificerad"
+
+#: src/components/SchemaItems.vue:37
+msgid "basic"
+msgstr "grundläggande"
+
+#: src/components/SchemaItems.vue:38
+msgid "content"
+msgstr "innehåll"
+
+#: src/components/SchemaItems.vue:39
+msgid "media"
+msgstr "media"
+
+#: src/components/SchemaItems.vue:40
+msgid "forms"
+msgstr "former"
+
+#: src/components/User.vue:23
+msgid "Failed to load user"
+msgstr "Misslyckades med att ladda användare"
+
+#: src/components/User.vue:33
+msgid "Logout failed"
+msgstr "Logout misslyckades"
+
+#: src/components/User.vue:71
+msgid "Logout"
+msgstr "Logga ut"
+
+#: src/fields/Audio.vue:62
+#: src/fields/File.vue:247
+#: src/fields/Image.vue:88
+#: src/fields/Video.vue:64
+msgid "Updated"
+msgstr "Uppdaterad"
+
+#: src/fields/Autocomplete.vue:140
+#: src/fields/Color.vue:34
+#: src/fields/Date.vue:48
+#: src/fields/Html.vue:42
+#: src/fields/Number.vue:50
+#: src/fields/Select.vue:42
+#: src/fields/Url.vue:62
+msgid "Value is required"
+msgstr "Värde krävs"
+
+#: src/fields/Autocomplete.vue:146
+msgid "No data available"
+msgstr "Inga uppgifter tillgängliga"
+
+#: src/fields/Color.vue:35
+msgid "Value must be a hex color code"
+msgstr "Värdet måste vara en hexfärgkod"
+
+#: src/fields/Items.vue:65
+msgid "Maximum is %{num} entries"
+msgstr "Max är %{num} poster"
+
+#: src/fields/Items.vue:66
+msgid "Minimum is %{num} entries"
+msgstr "Minimum är %{num} poster"
+
+#: src/fields/Plaintext.vue:48
+#: src/fields/String.vue:52
+msgid "Minimum length is %{num} characters"
+msgstr "Minsta längd är %{num} tecken"
+
+#: src/fields/Plaintext.vue:49
+#: src/fields/String.vue:53
+msgid "Maximum length is %{num} characters"
+msgstr "Maximal längd är %{num} tecken"
+
+#: src/fields/Radio.vue:28
+msgid "Selection is required"
+msgstr "Urval krävs"
+
+#: src/fields/Table.vue:55
+msgid "Minimum are %{num} columns"
+msgstr "Minimum är %{num} kolumner"
+
+#: src/fields/Table.vue:56
+msgid "The number of columns is not the same in all rows"
+msgstr "Antalet kolumner är inte detsamma i alla rader"
+
+#: src/fields/Url.vue:24
+msgid "Invalid URL schema configuration"
+msgstr "Ogiltig konfiguration av URL-schema"
+
+#: src/fields/Url.vue:63
+msgid "Not a valid URL"
+msgstr "Inte en giltig URL"
+
+#: src/routes.js:48
+msgid "You do not have permission to access %{path}"
+msgstr "Du har inte behörighet att komma åt %{path}"
+
+#: src/views/ElementDetail.vue:99
+msgid "Error fetching element"
+msgstr "Fel vid hämtning av element"
+
+#: src/views/ElementDetail.vue:133
+msgid "Element published successfully"
+msgstr "Elementet publicerades framgångsrikt"
+
+#: src/views/ElementDetail.vue:136
+msgid "Element scheduled for publishing at %{date}"
+msgstr "Element planerad för publicering vid %{date}"
+
+#: src/views/ElementDetail.vue:141
+msgid "Error publishing element"
+msgstr "Fel vid publicering av element"
+
+#: src/views/ElementDetail.vue:191
+msgid "Element saved successfully"
+msgstr "Elementet sparades framgångsrikt"
+
+#: src/views/ElementDetail.vue:196
+msgid "Error saving element"
+msgstr "Fel vid lagring av element"
+
+#: src/views/ElementDetail.vue:252
+msgid "Error fetching element versions"
+msgstr "Fel vid hämtning av elementversioner"
+
+#: src/views/ElementDetail.vue:271
+#: src/views/ElementDetail.vue:326
+msgid "Element"
+msgstr "Element"
+
+#: src/views/ElementDetail.vue:286
+#: src/views/FileDetail.vue:220
+#: src/views/PageDetail.vue:620
+msgid "Save"
+msgstr "Spara"
+
+#: src/views/ElementDetail.vue:327
+#: src/views/FileDetail.vue:261
+msgid "Used by"
+msgstr "Används av"
+
+#: src/views/ElementList.vue:41
+#: src/views/ElementList.vue:97
+#: src/views/ElementList.vue:106
+#: src/views/ElementList.vue:114
+#: src/views/FileList.vue:40
+#: src/views/FileList.vue:94
+#: src/views/FileList.vue:103
+#: src/views/FileList.vue:111
+#: src/views/PageList.vue:40
+#: src/views/PageList.vue:94
+#: src/views/PageList.vue:103
+#: src/views/PageList.vue:111
+msgid "All"
+msgstr "Alla"
+
+#: src/views/ElementList.vue:99
+#: src/views/FileList.vue:96
+#: src/views/PageList.vue:96
+msgid "Scheduled"
+msgstr "Planerad"
+
+#: src/views/ElementList.vue:100
+#: src/views/FileList.vue:97
+#: src/views/PageList.vue:97
+msgid "Drafts"
+msgstr "Utkast"
+
+#: src/views/ElementList.vue:104
+#: src/views/FileList.vue:101
+#: src/views/PageList.vue:101
+msgid "Trashed"
+msgstr "Skrotad"
+
+#: src/views/ElementList.vue:107
+#: src/views/FileList.vue:104
+#: src/views/PageList.vue:104
+msgid "Available only"
+msgstr "Endast tillgänglig"
+
+#: src/views/ElementList.vue:108
+#: src/views/FileList.vue:105
+#: src/views/PageList.vue:105
+msgid "Only trashed"
+msgstr "Bara skräpigt"
+
+#: src/views/ElementList.vue:115
+#: src/views/FileList.vue:112
+#: src/views/PageList.vue:112
+msgid "Edited by me"
+msgstr "Redigerad av mig"
+
+#: src/views/ElementList.vue:119
+#: src/views/FileList.vue:116
+#: src/views/PageList.vue:116
+msgid "Languages"
+msgstr "Språk"
+
+#: src/views/FileDetail.vue:71
+msgid "File published successfully"
+msgstr "Filen publicerades framgångsrikt"
+
+#: src/views/FileDetail.vue:74
+msgid "File scheduled for publishing at %{date}"
+msgstr "Filen planeras för publicering på %{date}"
+
+#: src/views/FileDetail.vue:129
+msgid "File saved successfully"
+msgstr "Filen sparades framgångsrikt"
+
+#: src/views/FileDetail.vue:134
+msgid "Error saving file"
+msgstr "Fel vid lagring av fil"
+
+#: src/views/FileDetail.vue:186
+msgid "Error fetching file versions"
+msgstr "Fel vid hämtning av filversioner"
+
+#: src/views/FileDetail.vue:205
+#: src/views/FileDetail.vue:260
+msgid "File"
+msgstr "Fil"
+
+#: src/views/Login.vue:50
+msgid "Not a CMS editor"
+msgstr "Inte en CMS-redaktör"
+
+#: src/views/Login.vue:66
+msgid "Access denied"
+msgstr "Åtkomst nekad"
+
+#: src/views/Login.vue:79
+#: src/views/Login.vue:101
+msgid "Login"
+msgstr "Logga in"
+
+#: src/views/Login.vue:83
+msgid "E-Mail"
+msgstr "E-post"
+
+#: src/views/Login.vue:85
+msgid "Invalid e-mail address"
+msgstr "Ogiltig e-postadress"
+
+#: src/views/Login.vue:89
+msgid "Password"
+msgstr "Lösenord"
+
+#: src/views/Login.vue:96
+msgid "Error"
+msgstr "Fel"
+
+#: src/views/PageDetail.vue:314
+msgid "Page published successfully"
+msgstr "Sidan publicerades framgångsrikt"
+
+#: src/views/PageDetail.vue:317
+msgid "Page scheduled for publishing at %{date}"
+msgstr "Sidan planeras för publicering på %{date}"
+
+#: src/views/PageDetail.vue:350
+msgid "There are invalid fields, please resolve the errors first"
+msgstr "Det finns ogiltiga fält, vänligen åtgärda felen först"
+
+#: src/views/PageDetail.vue:418
+msgid "Page saved successfully"
+msgstr "Sidan sparades framgångsrikt"
+
+#: src/views/PageDetail.vue:433
+msgid "No page schema for \"content\" found"
+msgstr "Inget sidschema för \"content\" hittades"
+
+#: src/views/PageDetail.vue:569
+msgid "Error fetching page versions"
+msgstr "Fel vid hämtning av sidversioner"
+
+#: src/views/PageDetail.vue:594
+#: src/views/PageDetail.vue:663
+msgid "Page"
+msgstr "Sidan"
+
+#: src/views/PageDetail.vue:668
+msgid "Content"
+msgstr "Innehåll"
+
+#: src/views/PageDetail.vue:672
+msgid "Preview"
+msgstr "Förhandsgranskning"

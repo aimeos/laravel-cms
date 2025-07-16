@@ -1,0 +1,1027 @@
+msgid ""
+msgstr ""
+"Content-Transfer-Encoding: 8bit\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: zh\n"
+"Language-Team: none\n"
+"Last-Translator: Automatically generated\n"
+"MIME-Version: 1.0\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+
+#: src/components/AsideMeta.vue:17
+msgid "id"
+msgstr "本我"
+
+#: src/components/AsideMeta.vue:18
+msgid "editor"
+msgstr "编辑"
+
+#: src/components/AsideMeta.vue:22
+msgid "created"
+msgstr "创建"
+
+#: src/components/AsideMeta.vue:26
+msgid "updated"
+msgstr "最新的"
+
+#: src/components/AsideMeta.vue:30
+msgid "deleted"
+msgstr "删除"
+
+#: src/components/AsideMeta.vue:45
+msgid "Meta data"
+msgstr "元数据"
+
+#: src/components/ElementDetailItem.vue:30
+#: src/components/PageDetailItemProps.vue:36
+msgid "None"
+msgstr "无"
+
+#: src/components/ElementDetailItem.vue:77
+#: src/components/ElementDetailRefs.vue:96
+#: src/components/ElementListItems.vue:465
+#: src/components/FileDetailItem.vue:216
+#: src/components/FileDetailRefs.vue:101
+#: src/components/FileDetailRefs.vue:123
+#: src/components/FileListItems.vue:497
+#: src/fields/Audio.vue:59
+#: src/fields/File.vue:244
+#: src/fields/Image.vue:85
+#: src/fields/Video.vue:61
+msgid "Name"
+msgstr "名称"
+
+#: src/components/ElementDetailItem.vue:91
+#: src/components/FileDetailItem.vue:230
+#: src/components/FileListItems.vue:503
+#: src/components/PageDetailItemProps.vue:163
+msgid "Language"
+msgstr "语言"
+
+#: src/components/ElementDetailRefs.vue:65
+#: src/components/FileDetailRefs.vue:69
+msgid "yes"
+msgstr "是"
+
+#: src/components/ElementDetailRefs.vue:68
+#: src/components/FileDetailRefs.vue:73
+msgid "no"
+msgstr "没有"
+
+#: src/components/ElementDetailRefs.vue:89
+#: src/components/Navigation.vue:23
+#: src/components/SchemaDialog.vue:35
+#: src/views/ElementList.vue:69
+msgid "Shared elements"
+msgstr "共享要素"
+
+#: src/components/ElementDetailRefs.vue:94
+#: src/components/ElementDetailRefs.vue:116
+#: src/components/FileDetailRefs.vue:99
+#: src/components/FileDetailRefs.vue:121
+#: src/components/FileDetailRefs.vue:143
+msgid "ID"
+msgstr "身份证"
+
+#: src/components/ElementDetailRefs.vue:95
+#: src/components/FileDetailRefs.vue:100
+msgid "URL"
+msgstr "网址"
+
+#: src/components/ElementDetailRefs.vue:117
+#: src/components/ElementListItems.vue:468
+#: src/components/FileDetailRefs.vue:122
+#: src/components/FileDetailRefs.vue:144
+msgid "Type"
+msgstr "类型"
+
+#: src/components/ElementDetailRefs.vue:118
+#: src/components/FileDetailRefs.vue:145
+#: src/views/ElementList.vue:98
+#: src/views/FileList.vue:95
+#: src/views/PageList.vue:95
+msgid "Published"
+msgstr "已出版"
+
+#: src/components/ElementListItems.vue:64
+#: src/components/ElementListItems.vue:113
+#: src/components/ElementListItems.vue:157
+#: src/components/ElementListItems.vue:198
+#: src/components/ElementListItems.vue:240
+#: src/components/ElementListItems.vue:277
+#: src/components/FileListItems.vue:61
+#: src/components/FileListItems.vue:122
+#: src/components/FileListItems.vue:166
+#: src/components/FileListItems.vue:207
+#: src/components/FileListItems.vue:249
+#: src/components/FileListItems.vue:286
+#: src/components/PageDetailContentList.vue:171
+#: src/components/PageListItems.vue:67
+#: src/components/PageListItems.vue:101
+#: src/components/PageListItems.vue:163
+#: src/components/PageListItems.vue:206
+#: src/components/PageListItems.vue:274
+#: src/components/PageListItems.vue:337
+#: src/components/PageListItems.vue:402
+#: src/components/PageListItems.vue:456
+#: src/components/PageListItems.vue:552
+#: src/components/PageListItems.vue:593
+#: src/components/PageListItems.vue:635
+#: src/components/PageListItems.vue:696
+#: src/fields/File.vue:55
+#: src/fields/Images.vue:58
+#: src/views/ElementDetail.vue:107
+#: src/views/ElementDetail.vue:156
+#: src/views/ElementDetail.vue:211
+#: src/views/FileDetail.vue:45
+#: src/views/FileDetail.vue:94
+#: src/views/FileDetail.vue:149
+#: src/views/PageDetail.vue:288
+#: src/views/PageDetail.vue:340
+#: src/views/PageDetail.vue:532
+msgid "Permission denied"
+msgstr "拒绝许可"
+
+#: src/components/ElementListItems.vue:85
+msgid "New shared element"
+msgstr "新的共享元素"
+
+#: src/components/ElementListItems.vue:142
+msgid "Error trashing shared element"
+msgstr "清除共享元素出错"
+
+#: src/components/ElementListItems.vue:190
+msgid "Error restoring shared element"
+msgstr "恢复共享元素出错"
+
+#: src/components/ElementListItems.vue:232
+msgid "Error publishing shared element"
+msgstr "发布共享元素出错"
+
+#: src/components/ElementListItems.vue:269
+msgid "Error purging shared element"
+msgstr "清除共享元素出错"
+
+#: src/components/ElementListItems.vue:361
+msgid "Error fetching shared elements"
+msgstr "获取共享元素时出错"
+
+#: src/components/ElementListItems.vue:417
+#: src/components/FileListItems.vue:446
+#: src/components/PageDetailContentList.vue:371
+#: src/components/PageListItems.vue:851
+msgid "Actions"
+msgstr "行动"
+
+#: src/components/ElementListItems.vue:421
+#: src/components/ElementListItems.vue:488
+#: src/components/FileListItems.vue:450
+#: src/components/FileListItems.vue:523
+#: src/components/PageListItems.vue:855
+#: src/components/PageListItems.vue:911
+#: src/views/ElementDetail.vue:295
+#: src/views/ElementDetail.vue:310
+#: src/views/ElementList.vue:95
+#: src/views/FileDetail.vue:229
+#: src/views/FileDetail.vue:244
+#: src/views/FileList.vue:92
+#: src/views/PageDetail.vue:629
+#: src/views/PageDetail.vue:644
+#: src/views/PageList.vue:92
+msgid "Publish"
+msgstr "出版"
+
+#: src/components/ElementListItems.vue:424
+msgid "Add element"
+msgstr "添加元素"
+
+#: src/components/ElementListItems.vue:427
+#: src/components/ElementListItems.vue:491
+#: src/components/FileListItems.vue:456
+#: src/components/FileListItems.vue:526
+#: src/components/PageListItems.vue:867
+#: src/components/PageListItems.vue:989
+msgid "Trash"
+msgstr "垃圾"
+
+#: src/components/ElementListItems.vue:430
+#: src/components/ElementListItems.vue:494
+#: src/components/FileListItems.vue:459
+#: src/components/FileListItems.vue:529
+#: src/components/PageListItems.vue:870
+#: src/components/PageListItems.vue:992
+msgid "Restore"
+msgstr "恢复"
+
+#: src/components/ElementListItems.vue:433
+#: src/components/ElementListItems.vue:497
+#: src/components/FileListItems.vue:462
+#: src/components/FileListItems.vue:532
+#: src/components/PageListItems.vue:873
+#: src/components/PageListItems.vue:995
+msgid "Purge"
+msgstr "清除"
+
+#: src/components/ElementListItems.vue:444
+#: src/components/FileListItems.vue:473
+#: src/components/PageDetailContentList.vue:384
+#: src/components/PageListItems.vue:882
+msgid "Search for"
+msgstr "搜索"
+
+#: src/components/ElementListItems.vue:454
+#: src/components/ElementListItems.vue:459
+#: src/components/FileListItems.vue:486
+#: src/components/FileListItems.vue:491
+msgid "Latest"
+msgstr "最新"
+
+#: src/components/ElementListItems.vue:454
+#: src/components/ElementListItems.vue:462
+#: src/components/FileListItems.vue:486
+#: src/components/FileListItems.vue:494
+msgid "Oldest"
+msgstr "最老"
+
+#: src/components/ElementListItems.vue:471
+#: src/components/FileListItems.vue:506
+#: src/fields/Audio.vue:61
+#: src/fields/File.vue:246
+#: src/fields/Image.vue:87
+#: src/fields/Video.vue:63
+#: src/views/ElementList.vue:112
+#: src/views/FileList.vue:109
+#: src/views/PageList.vue:109
+msgid "Editor"
+msgstr "编辑"
+
+#: src/components/ElementListItems.vue:519
+#: src/components/FileListItems.vue:561
+#: src/components/HistoryDialog.vue:90
+#: src/components/PageListItems.vue:1024
+msgid "Loading"
+msgstr "加载中"
+
+#: src/components/ElementListItems.vue:523
+#: src/components/FileListItems.vue:566
+#: src/components/PageListItems.vue:1029
+msgid "No entries found"
+msgstr "未找到条目"
+
+#: src/components/FieldsDialog.vue:52
+msgid "Content Element"
+msgstr "内容要素"
+
+#: src/components/FileDetailItem.vue:241
+msgid "Rotate counter-clockwise"
+msgstr "逆时针旋转"
+
+#: src/components/FileDetailItem.vue:242
+msgid "Rotate clockwise"
+msgstr "顺时针旋转"
+
+#: src/components/FileDetailItem.vue:245
+msgid "Flip horizontally"
+msgstr "水平翻转"
+
+#: src/components/FileDetailItem.vue:246
+msgid "Flip vertically"
+msgstr "垂直翻转"
+
+#: src/components/FileDetailItem.vue:249
+msgid "Reset"
+msgstr "重置"
+
+#: src/components/FileDetailItem.vue:250
+msgid "Download"
+msgstr "下载"
+
+#: src/components/FileDetailItem.vue:276
+msgid "Descriptions"
+msgstr "说明"
+
+#: src/components/FileDetailItem.vue:295
+msgid "Description (%{lang})"
+msgstr "说明 (%{lang})"
+
+#: src/components/FileDetailRefs.vue:94
+#: src/components/Navigation.vue:19
+#: src/views/PageList.vue:67
+msgid "Pages"
+msgstr "页面"
+
+#: src/components/FileDetailRefs.vue:116
+msgid "Elements"
+msgstr "要素"
+
+#: src/components/FileDetailRefs.vue:138
+msgid "Versions"
+msgstr "版本"
+
+#: src/components/FileDialog.vue:26
+#: src/components/Navigation.vue:27
+msgid "Files"
+msgstr "文件"
+
+#: src/components/FileListItems.vue:151
+msgid "Error trashing file"
+msgstr "删除文件出错"
+
+#: src/components/FileListItems.vue:199
+msgid "Error restoring file"
+msgstr "恢复文件出错"
+
+#: src/components/FileListItems.vue:241
+#: src/views/FileDetail.vue:79
+msgid "Error publishing file"
+msgstr "发布文件出错"
+
+#: src/components/FileListItems.vue:278
+msgid "Error purging file"
+msgstr "清除文件出错"
+
+#: src/components/FileListItems.vue:373
+msgid "Error fetching files"
+msgstr "获取文件时出错"
+
+#: src/components/FileListItems.vue:453
+msgid "Add files"
+msgstr "添加文件"
+
+#: src/components/FileListItems.vue:480
+msgid "Grid view"
+msgstr "网格视图"
+
+#: src/components/FileListItems.vue:481
+msgid "List view"
+msgstr "列表视图"
+
+#: src/components/FileListItems.vue:500
+#: src/fields/Audio.vue:60
+#: src/fields/File.vue:245
+#: src/fields/Image.vue:86
+#: src/fields/Video.vue:62
+msgid "Mime"
+msgstr "哑剧"
+
+#: src/components/FileUrlDialog.vue:135
+msgid "At least one file is not of type \"%{mime}*\""
+msgstr "至少有一个文件的类型不是 \"%{mime}*\""
+
+#: src/components/FileUrlDialog.vue:136
+msgid "The file is not of type \"%{mime}*\""
+msgstr "文件类型不是 \"%{mime}*\""
+
+#: src/components/FileUrlDialog.vue:152
+msgid "Add file"
+msgstr "添加文件"
+
+#: src/components/FileUrlDialog.vue:157
+msgid "Add files by URL"
+msgstr "通过 URL 添加文件"
+
+#: src/components/FileUrlDialog.vue:176
+msgid "Enter one URL per line"
+msgstr "每行输入一个 URL"
+
+#: src/components/FileUrlDialog.vue:190
+msgid "Enter URL"
+msgstr "输入 URL"
+
+#: src/components/FileUrlDialog.vue:198
+msgid "Remove file"
+msgstr "删除文件"
+
+#: src/components/HistoryDialog.vue:81
+msgid "History"
+msgstr "历史"
+
+#: src/components/HistoryDialog.vue:96
+msgid "No changes"
+msgstr "无变化"
+
+#: src/components/HistoryDialog.vue:102
+msgid "Current"
+msgstr "当前"
+
+#: src/components/HistoryDialog.vue:110
+msgid "Revert"
+msgstr "返回"
+
+#: src/components/HistoryDialog.vue:132
+msgid "Use version"
+msgstr "使用版本"
+
+#: src/components/PageDetailContent.vue:62
+msgid "main"
+msgstr "主要"
+
+#: src/components/PageDetailContent.vue:63
+msgid "header"
+msgstr "页眉"
+
+#: src/components/PageDetailContent.vue:64
+msgid "footer"
+msgstr "页脚"
+
+#: src/components/PageDetailContent.vue:65
+msgid "sidebar"
+msgstr "侧栏"
+
+#: src/components/PageDetailContent.vue:66
+msgid "aside"
+msgstr "一旁"
+
+#: src/components/PageDetailContentList.vue:178
+msgid "Element not found"
+msgstr "未找到元素"
+
+#: src/components/PageDetailContentList.vue:183
+msgid "Element is already shared"
+msgstr "元素已共享"
+
+#: src/components/PageDetailContentList.vue:243
+msgid "Unable to make element shared"
+msgstr "无法共享元素"
+
+#: src/components/PageDetailContentList.vue:286
+msgid "type"
+msgstr "类型"
+
+#: src/components/PageDetailContentList.vue:287
+msgid "state"
+msgstr "国"
+
+#: src/components/PageDetailContentList.vue:288
+msgid "valid"
+msgstr "有效"
+
+#: src/components/PageDetailContentList.vue:289
+msgid "changed"
+msgstr "变了"
+
+#: src/components/PageDetailContentList.vue:290
+msgid "error"
+msgstr "错误"
+
+#: src/components/PageDetailContentList.vue:314
+msgid "Content element not found"
+msgstr "未找到内容元素"
+
+#: src/components/PageDetailContentList.vue:321
+msgid "Element is not shared"
+msgstr "元素不共享"
+
+#: src/components/PageDetailContentList.vue:375
+#: src/components/PageDetailContentList.vue:435
+msgid "Delete"
+msgstr "删除"
+
+#: src/components/PageDetailContentList.vue:411
+#: src/components/PageListItems.vue:929
+msgid "Copy"
+msgstr "复制"
+
+#: src/components/PageDetailContentList.vue:414
+#: src/components/PageListItems.vue:926
+msgid "Cut"
+msgstr "切割"
+
+#: src/components/PageDetailContentList.vue:420
+msgid "Paste before"
+msgstr "粘贴前"
+
+#: src/components/PageDetailContentList.vue:423
+msgid "Paste after"
+msgstr "后粘贴"
+
+#: src/components/PageDetailContentList.vue:426
+msgid "Insert before"
+msgstr "插入前"
+
+#: src/components/PageDetailContentList.vue:429
+msgid "Insert after"
+msgstr "后插入"
+
+#: src/components/PageDetailContentList.vue:438
+msgid "Make shared"
+msgstr "使共享"
+
+#: src/components/PageDetailContentList.vue:441
+msgid "Merge copy"
+msgstr "合并副本"
+
+#: src/components/PageDetailContentList.vue:446
+msgid "Shared element"
+msgstr "共享元素"
+
+#: src/components/PageDetailItem.vue:67
+msgid "Detail"
+msgstr "详细信息"
+
+#: src/components/PageDetailItem.vue:72
+msgid "Meta"
+msgstr "梅塔"
+
+#: src/components/PageDetailItem.vue:77
+msgid "Config"
+msgstr "配置"
+
+#: src/components/PageDetailItemConfig.vue:47
+#: src/components/PageDetailItemMeta.vue:47
+msgid "The element has already been added"
+msgstr "已添加元素"
+
+#: src/components/PageDetailItemProps.vue:69
+msgid "The path is already in use by another page"
+msgstr "该路径已被其他页面使用"
+
+#: src/components/PageDetailItemProps.vue:141
+msgid "Disabled"
+msgstr "残疾"
+
+#: src/components/PageDetailItemProps.vue:142
+msgid "Enabled"
+msgstr "已启用"
+
+#: src/components/PageDetailItemProps.vue:143
+msgid "Hidden in navigation"
+msgstr "隐藏在导航中"
+
+#: src/components/PageDetailItemProps.vue:151
+msgid "Status"
+msgstr "现状"
+
+#: src/components/PageDetailItemProps.vue:172
+#: src/fields/Table.vue:54
+#: src/views/Login.vue:84
+#: src/views/Login.vue:90
+msgid "Field is required"
+msgstr "字段为必填字段"
+
+#: src/components/PageDetailItemProps.vue:179
+msgid "Page name"
+msgstr "页面名称"
+
+#: src/components/PageDetailItemProps.vue:188
+msgid "Page title"
+msgstr "页面标题"
+
+#: src/components/PageDetailItemProps.vue:196
+msgid "Path must not start with a slash (/)"
+msgstr "路径不得以斜线 (/) 开头"
+
+#: src/components/PageDetailItemProps.vue:205
+msgid "URL path"
+msgstr "URL 路径"
+
+#: src/components/PageDetailItemProps.vue:211
+msgid "Domain name is invalid"
+msgstr "域名无效"
+
+#: src/components/PageDetailItemProps.vue:217
+msgid "Domain"
+msgstr "域名"
+
+#: src/components/PageDetailItemProps.vue:232
+msgid "Theme"
+msgstr "主题"
+
+#: src/components/PageDetailItemProps.vue:240
+msgid "Page type"
+msgstr "页面类型"
+
+#: src/components/PageDetailItemProps.vue:247
+msgid "Page tag"
+msgstr "页面标签"
+
+#: src/components/PageDetailItemProps.vue:255
+msgid "No cache"
+msgstr "无缓存"
+
+#: src/components/PageDetailItemProps.vue:256
+#: src/components/PageDetailItemProps.vue:257
+#: src/components/PageDetailItemProps.vue:258
+#: src/components/PageDetailItemProps.vue:259
+msgid "%{num} minute"
+msgid_plural "%{num} minutes"
+msgstr[0] "%{num} 分钟"
+msgstr[1] ""
+
+#: src/components/PageDetailItemProps.vue:260
+#: src/components/PageDetailItemProps.vue:261
+#: src/components/PageDetailItemProps.vue:262
+#: src/components/PageDetailItemProps.vue:263
+#: src/components/PageDetailItemProps.vue:264
+msgid "%{num} hour"
+msgid_plural "%{num} hours"
+msgstr[0] "%{num} 小时"
+msgstr[1] ""
+
+#: src/components/PageDetailItemProps.vue:270
+msgid "Cache time"
+msgstr "缓存时间"
+
+#: src/components/PageDetailItemProps.vue:281
+msgid "URL is not valid"
+msgstr "URL 无效"
+
+#: src/components/PageDetailItemProps.vue:287
+msgid "Redirect URL"
+msgstr "重定向 URL"
+
+#: src/components/PageDetailPreview.vue:156
+msgid "Preview mode"
+msgstr "预览模式"
+
+#: src/components/PageListItems.vue:93
+msgid "Error adding root page"
+msgstr "添加根页面时出错"
+
+#: src/components/PageListItems.vue:135
+#: src/components/PageListItems.vue:446
+msgid "Error moving page"
+msgstr "页面移动错误"
+
+#: src/components/PageListItems.vue:198
+msgid "Error trashing page"
+msgstr "删除页面错误"
+
+#: src/components/PageListItems.vue:237
+msgid "Error fetching pages"
+msgstr "获取网页出错"
+
+#: src/components/PageListItems.vue:322
+msgid "Error inserting page"
+msgstr "插入页面出错"
+
+#: src/components/PageListItems.vue:378
+msgid "Error restoring page"
+msgstr "错误恢复页面"
+
+#: src/components/PageListItems.vue:538
+msgid "Error copying page"
+msgstr "复制页面出错"
+
+#: src/components/PageListItems.vue:542
+#: src/views/PageDetail.vue:240
+msgid "Error fetching page"
+msgstr "获取页面出错"
+
+#: src/components/PageListItems.vue:585
+#: src/views/PageDetail.vue:322
+msgid "Error publishing page"
+msgstr "发布页面出错"
+
+#: src/components/PageListItems.vue:627
+msgid "Error purging page"
+msgstr "错误清除页面"
+
+#: src/components/PageListItems.vue:676
+msgid "Error searching pages"
+msgstr "搜索页面出错"
+
+#: src/components/PageListItems.vue:724
+#: src/views/PageDetail.vue:424
+msgid "Error saving page"
+msgstr "保存页面出错"
+
+#: src/components/PageListItems.vue:858
+#: src/components/PageListItems.vue:917
+msgid "Enable"
+msgstr "启用"
+
+#: src/components/PageListItems.vue:861
+#: src/components/PageListItems.vue:914
+msgid "Disable"
+msgstr "禁用"
+
+#: src/components/PageListItems.vue:920
+msgid "Hide in menu"
+msgstr "隐藏在菜单中"
+
+#: src/components/PageListItems.vue:932
+#: src/components/PageListItems.vue:950
+msgid "Paste"
+msgstr "粘贴"
+
+#: src/components/PageListItems.vue:936
+#: src/components/PageListItems.vue:954
+#: src/components/PageListItems.vue:972
+msgid "Before"
+msgstr "之前"
+
+#: src/components/PageListItems.vue:941
+#: src/components/PageListItems.vue:959
+#: src/components/PageListItems.vue:977
+msgid "Into"
+msgstr "进入"
+
+#: src/components/PageListItems.vue:946
+#: src/components/PageListItems.vue:964
+#: src/components/PageListItems.vue:982
+msgid "After"
+msgstr "之后"
+
+#: src/components/PageListItems.vue:968
+msgid "Insert"
+msgstr "插入"
+
+#: src/components/PageListItems.vue:1011
+msgid "New"
+msgstr "新"
+
+#: src/components/SchemaDialog.vue:26
+msgid "Content elements"
+msgstr "内容要素"
+
+#: src/components/SchemaItems.vue:27
+msgid "uncategorized"
+msgstr "未分类"
+
+#: src/components/SchemaItems.vue:37
+msgid "basic"
+msgstr "基本的"
+
+#: src/components/SchemaItems.vue:38
+msgid "content"
+msgstr "内容"
+
+#: src/components/SchemaItems.vue:39
+msgid "media"
+msgstr "媒体"
+
+#: src/components/SchemaItems.vue:40
+msgid "forms"
+msgstr "形式"
+
+#: src/components/User.vue:23
+msgid "Failed to load user"
+msgstr "加载用户失败"
+
+#: src/components/User.vue:33
+msgid "Logout failed"
+msgstr "注销失败"
+
+#: src/components/User.vue:71
+msgid "Logout"
+msgstr "注销"
+
+#: src/fields/Audio.vue:62
+#: src/fields/File.vue:247
+#: src/fields/Image.vue:88
+#: src/fields/Video.vue:64
+msgid "Updated"
+msgstr "已更新"
+
+#: src/fields/Autocomplete.vue:140
+#: src/fields/Color.vue:34
+#: src/fields/Date.vue:48
+#: src/fields/Html.vue:42
+#: src/fields/Number.vue:50
+#: src/fields/Select.vue:42
+#: src/fields/Url.vue:62
+msgid "Value is required"
+msgstr "需要值"
+
+#: src/fields/Autocomplete.vue:146
+msgid "No data available"
+msgstr "无数据"
+
+#: src/fields/Color.vue:35
+msgid "Value must be a hex color code"
+msgstr "值必须是十六进制颜色代码"
+
+#: src/fields/Items.vue:65
+msgid "Maximum is %{num} entries"
+msgstr "最多为%{num} 条目"
+
+#: src/fields/Items.vue:66
+msgid "Minimum is %{num} entries"
+msgstr "最低为%{num} 条目"
+
+#: src/fields/Plaintext.vue:48
+#: src/fields/String.vue:52
+msgid "Minimum length is %{num} characters"
+msgstr "最小长度为%{num} 字符"
+
+#: src/fields/Plaintext.vue:49
+#: src/fields/String.vue:53
+msgid "Maximum length is %{num} characters"
+msgstr "最大长度为%{num} 字符"
+
+#: src/fields/Radio.vue:28
+msgid "Selection is required"
+msgstr "需要进行遴选"
+
+#: src/fields/Table.vue:55
+msgid "Minimum are %{num} columns"
+msgstr "最小为%{num} 列"
+
+#: src/fields/Table.vue:56
+msgid "The number of columns is not the same in all rows"
+msgstr "所有行的列数都不相同"
+
+#: src/fields/Url.vue:24
+msgid "Invalid URL schema configuration"
+msgstr "URL 模式配置无效"
+
+#: src/fields/Url.vue:63
+msgid "Not a valid URL"
+msgstr "不是有效的 URL"
+
+#: src/routes.js:48
+msgid "You do not have permission to access %{path}"
+msgstr "您没有权限访问%{path}"
+
+#: src/views/ElementDetail.vue:99
+msgid "Error fetching element"
+msgstr "获取元素时出错"
+
+#: src/views/ElementDetail.vue:133
+msgid "Element published successfully"
+msgstr "元素发布成功"
+
+#: src/views/ElementDetail.vue:136
+msgid "Element scheduled for publishing at %{date}"
+msgstr "计划于%{date}"
+
+#: src/views/ElementDetail.vue:141
+msgid "Error publishing element"
+msgstr "发布元素出错"
+
+#: src/views/ElementDetail.vue:191
+msgid "Element saved successfully"
+msgstr "成功保存元素"
+
+#: src/views/ElementDetail.vue:196
+msgid "Error saving element"
+msgstr "保存元素出错"
+
+#: src/views/ElementDetail.vue:252
+msgid "Error fetching element versions"
+msgstr "获取元素版本时出错"
+
+#: src/views/ElementDetail.vue:271
+#: src/views/ElementDetail.vue:326
+msgid "Element"
+msgstr "要素"
+
+#: src/views/ElementDetail.vue:286
+#: src/views/FileDetail.vue:220
+#: src/views/PageDetail.vue:620
+msgid "Save"
+msgstr "节省"
+
+#: src/views/ElementDetail.vue:327
+#: src/views/FileDetail.vue:261
+msgid "Used by"
+msgstr "已使用"
+
+#: src/views/ElementList.vue:41
+#: src/views/ElementList.vue:97
+#: src/views/ElementList.vue:106
+#: src/views/ElementList.vue:114
+#: src/views/FileList.vue:40
+#: src/views/FileList.vue:94
+#: src/views/FileList.vue:103
+#: src/views/FileList.vue:111
+#: src/views/PageList.vue:40
+#: src/views/PageList.vue:94
+#: src/views/PageList.vue:103
+#: src/views/PageList.vue:111
+msgid "All"
+msgstr "全部"
+
+#: src/views/ElementList.vue:99
+#: src/views/FileList.vue:96
+#: src/views/PageList.vue:96
+msgid "Scheduled"
+msgstr "计划"
+
+#: src/views/ElementList.vue:100
+#: src/views/FileList.vue:97
+#: src/views/PageList.vue:97
+msgid "Drafts"
+msgstr "草稿"
+
+#: src/views/ElementList.vue:104
+#: src/views/FileList.vue:101
+#: src/views/PageList.vue:101
+msgid "Trashed"
+msgstr "垃圾"
+
+#: src/views/ElementList.vue:107
+#: src/views/FileList.vue:104
+#: src/views/PageList.vue:104
+msgid "Available only"
+msgstr "仅提供"
+
+#: src/views/ElementList.vue:108
+#: src/views/FileList.vue:105
+#: src/views/PageList.vue:105
+msgid "Only trashed"
+msgstr "只有垃圾"
+
+#: src/views/ElementList.vue:115
+#: src/views/FileList.vue:112
+#: src/views/PageList.vue:112
+msgid "Edited by me"
+msgstr "由我编辑"
+
+#: src/views/ElementList.vue:119
+#: src/views/FileList.vue:116
+#: src/views/PageList.vue:116
+msgid "Languages"
+msgstr "语言"
+
+#: src/views/FileDetail.vue:71
+msgid "File published successfully"
+msgstr "文件已成功发布"
+
+#: src/views/FileDetail.vue:74
+msgid "File scheduled for publishing at %{date}"
+msgstr "文件定于%{date}"
+
+#: src/views/FileDetail.vue:129
+msgid "File saved successfully"
+msgstr "文件已成功保存"
+
+#: src/views/FileDetail.vue:134
+msgid "Error saving file"
+msgstr "保存文件出错"
+
+#: src/views/FileDetail.vue:186
+msgid "Error fetching file versions"
+msgstr "获取文件版本时出错"
+
+#: src/views/FileDetail.vue:205
+#: src/views/FileDetail.vue:260
+msgid "File"
+msgstr "文件"
+
+#: src/views/Login.vue:50
+msgid "Not a CMS editor"
+msgstr "不是内容管理系统编辑器"
+
+#: src/views/Login.vue:66
+msgid "Access denied"
+msgstr "拒绝访问"
+
+#: src/views/Login.vue:79
+#: src/views/Login.vue:101
+msgid "Login"
+msgstr "登录"
+
+#: src/views/Login.vue:83
+msgid "E-Mail"
+msgstr "电子邮件"
+
+#: src/views/Login.vue:85
+msgid "Invalid e-mail address"
+msgstr "无效电子邮件地址"
+
+#: src/views/Login.vue:89
+msgid "Password"
+msgstr "密码"
+
+#: src/views/Login.vue:96
+msgid "Error"
+msgstr "错误"
+
+#: src/views/PageDetail.vue:314
+msgid "Page published successfully"
+msgstr "页面已成功发布"
+
+#: src/views/PageDetail.vue:317
+msgid "Page scheduled for publishing at %{date}"
+msgstr "计划于%{date}"
+
+#: src/views/PageDetail.vue:350
+msgid "There are invalid fields, please resolve the errors first"
+msgstr "有无效字段，请先解决错误"
+
+#: src/views/PageDetail.vue:418
+msgid "Page saved successfully"
+msgstr "页面保存成功"
+
+#: src/views/PageDetail.vue:433
+msgid "No page schema for \"content\" found"
+msgstr "未找到 \"content \"的页面模式"
+
+#: src/views/PageDetail.vue:569
+msgid "Error fetching page versions"
+msgstr "获取页面版本时出错"
+
+#: src/views/PageDetail.vue:594
+#: src/views/PageDetail.vue:663
+msgid "Page"
+msgstr "页次"
+
+#: src/views/PageDetail.vue:668
+msgid "Content"
+msgstr "内容"
+
+#: src/views/PageDetail.vue:672
+msgid "Preview"
+msgstr "预览"

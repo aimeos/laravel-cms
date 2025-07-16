@@ -1,0 +1,1030 @@
+msgid ""
+msgstr ""
+"Content-Transfer-Encoding: 8bit\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: sk\n"
+"Language-Team: none\n"
+"Last-Translator: Automatically generated\n"
+"MIME-Version: 1.0\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+
+#: src/components/AsideMeta.vue:17
+msgid "id"
+msgstr "id"
+
+#: src/components/AsideMeta.vue:18
+msgid "editor"
+msgstr "redaktor"
+
+#: src/components/AsideMeta.vue:22
+msgid "created"
+msgstr "vytvorené"
+
+#: src/components/AsideMeta.vue:26
+msgid "updated"
+msgstr "aktualizované"
+
+#: src/components/AsideMeta.vue:30
+msgid "deleted"
+msgstr "zmazané"
+
+#: src/components/AsideMeta.vue:45
+msgid "Meta data"
+msgstr "Metaúdaje"
+
+#: src/components/ElementDetailItem.vue:30
+#: src/components/PageDetailItemProps.vue:36
+msgid "None"
+msgstr "Žiadne"
+
+#: src/components/ElementDetailItem.vue:77
+#: src/components/ElementDetailRefs.vue:96
+#: src/components/ElementListItems.vue:465
+#: src/components/FileDetailItem.vue:216
+#: src/components/FileDetailRefs.vue:101
+#: src/components/FileDetailRefs.vue:123
+#: src/components/FileListItems.vue:497
+#: src/fields/Audio.vue:59
+#: src/fields/File.vue:244
+#: src/fields/Image.vue:85
+#: src/fields/Video.vue:61
+msgid "Name"
+msgstr "Názov"
+
+#: src/components/ElementDetailItem.vue:91
+#: src/components/FileDetailItem.vue:230
+#: src/components/FileListItems.vue:503
+#: src/components/PageDetailItemProps.vue:163
+msgid "Language"
+msgstr "Jazyk"
+
+#: src/components/ElementDetailRefs.vue:65
+#: src/components/FileDetailRefs.vue:69
+msgid "yes"
+msgstr "áno"
+
+#: src/components/ElementDetailRefs.vue:68
+#: src/components/FileDetailRefs.vue:73
+msgid "no"
+msgstr "nie"
+
+#: src/components/ElementDetailRefs.vue:89
+#: src/components/Navigation.vue:23
+#: src/components/SchemaDialog.vue:35
+#: src/views/ElementList.vue:69
+msgid "Shared elements"
+msgstr "Spoločné prvky"
+
+#: src/components/ElementDetailRefs.vue:94
+#: src/components/ElementDetailRefs.vue:116
+#: src/components/FileDetailRefs.vue:99
+#: src/components/FileDetailRefs.vue:121
+#: src/components/FileDetailRefs.vue:143
+msgid "ID"
+msgstr "ID"
+
+#: src/components/ElementDetailRefs.vue:95
+#: src/components/FileDetailRefs.vue:100
+msgid "URL"
+msgstr "ADRESA URL"
+
+#: src/components/ElementDetailRefs.vue:117
+#: src/components/ElementListItems.vue:468
+#: src/components/FileDetailRefs.vue:122
+#: src/components/FileDetailRefs.vue:144
+msgid "Type"
+msgstr "Typ"
+
+#: src/components/ElementDetailRefs.vue:118
+#: src/components/FileDetailRefs.vue:145
+#: src/views/ElementList.vue:98
+#: src/views/FileList.vue:95
+#: src/views/PageList.vue:95
+msgid "Published"
+msgstr "Zverejnené na"
+
+#: src/components/ElementListItems.vue:64
+#: src/components/ElementListItems.vue:113
+#: src/components/ElementListItems.vue:157
+#: src/components/ElementListItems.vue:198
+#: src/components/ElementListItems.vue:240
+#: src/components/ElementListItems.vue:277
+#: src/components/FileListItems.vue:61
+#: src/components/FileListItems.vue:122
+#: src/components/FileListItems.vue:166
+#: src/components/FileListItems.vue:207
+#: src/components/FileListItems.vue:249
+#: src/components/FileListItems.vue:286
+#: src/components/PageDetailContentList.vue:171
+#: src/components/PageListItems.vue:67
+#: src/components/PageListItems.vue:101
+#: src/components/PageListItems.vue:163
+#: src/components/PageListItems.vue:206
+#: src/components/PageListItems.vue:274
+#: src/components/PageListItems.vue:337
+#: src/components/PageListItems.vue:402
+#: src/components/PageListItems.vue:456
+#: src/components/PageListItems.vue:552
+#: src/components/PageListItems.vue:593
+#: src/components/PageListItems.vue:635
+#: src/components/PageListItems.vue:696
+#: src/fields/File.vue:55
+#: src/fields/Images.vue:58
+#: src/views/ElementDetail.vue:107
+#: src/views/ElementDetail.vue:156
+#: src/views/ElementDetail.vue:211
+#: src/views/FileDetail.vue:45
+#: src/views/FileDetail.vue:94
+#: src/views/FileDetail.vue:149
+#: src/views/PageDetail.vue:288
+#: src/views/PageDetail.vue:340
+#: src/views/PageDetail.vue:532
+msgid "Permission denied"
+msgstr "Povolenie zamietnuté"
+
+#: src/components/ElementListItems.vue:85
+msgid "New shared element"
+msgstr "Nový spoločný prvok"
+
+#: src/components/ElementListItems.vue:142
+msgid "Error trashing shared element"
+msgstr "Chyba pri vymazávaní zdieľaného prvku"
+
+#: src/components/ElementListItems.vue:190
+msgid "Error restoring shared element"
+msgstr "Chyba pri obnovení zdieľaného prvku"
+
+#: src/components/ElementListItems.vue:232
+msgid "Error publishing shared element"
+msgstr "Chyba pri publikovaní zdieľaného prvku"
+
+#: src/components/ElementListItems.vue:269
+msgid "Error purging shared element"
+msgstr "Chyba pri čistení zdieľaného prvku"
+
+#: src/components/ElementListItems.vue:361
+msgid "Error fetching shared elements"
+msgstr "Chyba pri načítaní zdieľaných prvkov"
+
+#: src/components/ElementListItems.vue:417
+#: src/components/FileListItems.vue:446
+#: src/components/PageDetailContentList.vue:371
+#: src/components/PageListItems.vue:851
+msgid "Actions"
+msgstr "Činnosti"
+
+#: src/components/ElementListItems.vue:421
+#: src/components/ElementListItems.vue:488
+#: src/components/FileListItems.vue:450
+#: src/components/FileListItems.vue:523
+#: src/components/PageListItems.vue:855
+#: src/components/PageListItems.vue:911
+#: src/views/ElementDetail.vue:295
+#: src/views/ElementDetail.vue:310
+#: src/views/ElementList.vue:95
+#: src/views/FileDetail.vue:229
+#: src/views/FileDetail.vue:244
+#: src/views/FileList.vue:92
+#: src/views/PageDetail.vue:629
+#: src/views/PageDetail.vue:644
+#: src/views/PageList.vue:92
+msgid "Publish"
+msgstr "Publikovať"
+
+#: src/components/ElementListItems.vue:424
+msgid "Add element"
+msgstr "Pridať prvok"
+
+#: src/components/ElementListItems.vue:427
+#: src/components/ElementListItems.vue:491
+#: src/components/FileListItems.vue:456
+#: src/components/FileListItems.vue:526
+#: src/components/PageListItems.vue:867
+#: src/components/PageListItems.vue:989
+msgid "Trash"
+msgstr "Odpadky"
+
+#: src/components/ElementListItems.vue:430
+#: src/components/ElementListItems.vue:494
+#: src/components/FileListItems.vue:459
+#: src/components/FileListItems.vue:529
+#: src/components/PageListItems.vue:870
+#: src/components/PageListItems.vue:992
+msgid "Restore"
+msgstr "Obnovenie"
+
+#: src/components/ElementListItems.vue:433
+#: src/components/ElementListItems.vue:497
+#: src/components/FileListItems.vue:462
+#: src/components/FileListItems.vue:532
+#: src/components/PageListItems.vue:873
+#: src/components/PageListItems.vue:995
+msgid "Purge"
+msgstr "Vyčistiť"
+
+#: src/components/ElementListItems.vue:444
+#: src/components/FileListItems.vue:473
+#: src/components/PageDetailContentList.vue:384
+#: src/components/PageListItems.vue:882
+msgid "Search for"
+msgstr "Vyhľadávanie"
+
+#: src/components/ElementListItems.vue:454
+#: src/components/ElementListItems.vue:459
+#: src/components/FileListItems.vue:486
+#: src/components/FileListItems.vue:491
+msgid "Latest"
+msgstr "Najnovšie"
+
+#: src/components/ElementListItems.vue:454
+#: src/components/ElementListItems.vue:462
+#: src/components/FileListItems.vue:486
+#: src/components/FileListItems.vue:494
+msgid "Oldest"
+msgstr "Najstarší"
+
+#: src/components/ElementListItems.vue:471
+#: src/components/FileListItems.vue:506
+#: src/fields/Audio.vue:61
+#: src/fields/File.vue:246
+#: src/fields/Image.vue:87
+#: src/fields/Video.vue:63
+#: src/views/ElementList.vue:112
+#: src/views/FileList.vue:109
+#: src/views/PageList.vue:109
+msgid "Editor"
+msgstr "Editor"
+
+#: src/components/ElementListItems.vue:519
+#: src/components/FileListItems.vue:561
+#: src/components/HistoryDialog.vue:90
+#: src/components/PageListItems.vue:1024
+msgid "Loading"
+msgstr "Načítanie"
+
+#: src/components/ElementListItems.vue:523
+#: src/components/FileListItems.vue:566
+#: src/components/PageListItems.vue:1029
+msgid "No entries found"
+msgstr "Nenašli sa žiadne záznamy"
+
+#: src/components/FieldsDialog.vue:52
+msgid "Content Element"
+msgstr "Prvok obsahu"
+
+#: src/components/FileDetailItem.vue:241
+msgid "Rotate counter-clockwise"
+msgstr "Otáčajte proti smeru hodinových ručičiek"
+
+#: src/components/FileDetailItem.vue:242
+msgid "Rotate clockwise"
+msgstr "Otáčajte v smere hodinových ručičiek"
+
+#: src/components/FileDetailItem.vue:245
+msgid "Flip horizontally"
+msgstr "Vodorovné preklopenie"
+
+#: src/components/FileDetailItem.vue:246
+msgid "Flip vertically"
+msgstr "Flip na výšku"
+
+#: src/components/FileDetailItem.vue:249
+msgid "Reset"
+msgstr "Obnovenie"
+
+#: src/components/FileDetailItem.vue:250
+msgid "Download"
+msgstr "Stiahnite si"
+
+#: src/components/FileDetailItem.vue:276
+msgid "Descriptions"
+msgstr "Popisy"
+
+#: src/components/FileDetailItem.vue:295
+msgid "Description (%{lang})"
+msgstr "Popis (%{lang})"
+
+#: src/components/FileDetailRefs.vue:94
+#: src/components/Navigation.vue:19
+#: src/views/PageList.vue:67
+msgid "Pages"
+msgstr "Stránky"
+
+#: src/components/FileDetailRefs.vue:116
+msgid "Elements"
+msgstr "Prvky"
+
+#: src/components/FileDetailRefs.vue:138
+msgid "Versions"
+msgstr "Verzie"
+
+#: src/components/FileDialog.vue:26
+#: src/components/Navigation.vue:27
+msgid "Files"
+msgstr "Súbory"
+
+#: src/components/FileListItems.vue:151
+msgid "Error trashing file"
+msgstr "Chyba pri vymazávaní súboru"
+
+#: src/components/FileListItems.vue:199
+msgid "Error restoring file"
+msgstr "Chyba pri obnovení súboru"
+
+#: src/components/FileListItems.vue:241
+#: src/views/FileDetail.vue:79
+msgid "Error publishing file"
+msgstr "Chyba pri publikovaní súboru"
+
+#: src/components/FileListItems.vue:278
+msgid "Error purging file"
+msgstr "Chybné čistenie súboru"
+
+#: src/components/FileListItems.vue:373
+msgid "Error fetching files"
+msgstr "Chyba pri načítavaní súborov"
+
+#: src/components/FileListItems.vue:453
+msgid "Add files"
+msgstr "Pridávanie súborov"
+
+#: src/components/FileListItems.vue:480
+msgid "Grid view"
+msgstr "Zobrazenie mriežky"
+
+#: src/components/FileListItems.vue:481
+msgid "List view"
+msgstr "Zobrazenie zoznamu"
+
+#: src/components/FileListItems.vue:500
+#: src/fields/Audio.vue:60
+#: src/fields/File.vue:245
+#: src/fields/Image.vue:86
+#: src/fields/Video.vue:62
+msgid "Mime"
+msgstr "Mime"
+
+#: src/components/FileUrlDialog.vue:135
+msgid "At least one file is not of type \"%{mime}*\""
+msgstr "Aspoň jeden súbor nie je typu \"%{mime}*\""
+
+#: src/components/FileUrlDialog.vue:136
+msgid "The file is not of type \"%{mime}*\""
+msgstr "Súbor nie je typu \"%{mime}*\""
+
+#: src/components/FileUrlDialog.vue:152
+msgid "Add file"
+msgstr "Pridať súbor"
+
+#: src/components/FileUrlDialog.vue:157
+msgid "Add files by URL"
+msgstr "Pridávanie súborov podľa adresy URL"
+
+#: src/components/FileUrlDialog.vue:176
+msgid "Enter one URL per line"
+msgstr "Zadajte jednu adresu URL na riadok"
+
+#: src/components/FileUrlDialog.vue:190
+msgid "Enter URL"
+msgstr "Zadajte adresu URL"
+
+#: src/components/FileUrlDialog.vue:198
+msgid "Remove file"
+msgstr "Odstrániť súbor"
+
+#: src/components/HistoryDialog.vue:81
+msgid "History"
+msgstr "História"
+
+#: src/components/HistoryDialog.vue:96
+msgid "No changes"
+msgstr "Žiadne zmeny"
+
+#: src/components/HistoryDialog.vue:102
+msgid "Current"
+msgstr "Aktuálne"
+
+#: src/components/HistoryDialog.vue:110
+msgid "Revert"
+msgstr "Vrátiť"
+
+#: src/components/HistoryDialog.vue:132
+msgid "Use version"
+msgstr "Použitie verzie"
+
+#: src/components/PageDetailContent.vue:62
+msgid "main"
+msgstr "hlavný"
+
+#: src/components/PageDetailContent.vue:63
+msgid "header"
+msgstr "záhlavie"
+
+#: src/components/PageDetailContent.vue:64
+msgid "footer"
+msgstr "pätička"
+
+#: src/components/PageDetailContent.vue:65
+msgid "sidebar"
+msgstr "bočný panel"
+
+#: src/components/PageDetailContent.vue:66
+msgid "aside"
+msgstr "stranou"
+
+#: src/components/PageDetailContentList.vue:178
+msgid "Element not found"
+msgstr "Prvok nebol nájdený"
+
+#: src/components/PageDetailContentList.vue:183
+msgid "Element is already shared"
+msgstr "Prvok je už zdieľaný"
+
+#: src/components/PageDetailContentList.vue:243
+msgid "Unable to make element shared"
+msgstr "Nie je možné vytvoriť zdieľaný prvok"
+
+#: src/components/PageDetailContentList.vue:286
+msgid "type"
+msgstr "typ"
+
+#: src/components/PageDetailContentList.vue:287
+msgid "state"
+msgstr "štát"
+
+#: src/components/PageDetailContentList.vue:288
+msgid "valid"
+msgstr "platný"
+
+#: src/components/PageDetailContentList.vue:289
+msgid "changed"
+msgstr "zmenená"
+
+#: src/components/PageDetailContentList.vue:290
+msgid "error"
+msgstr "chyba"
+
+#: src/components/PageDetailContentList.vue:314
+msgid "Content element not found"
+msgstr "Prvok obsahu nebol nájdený"
+
+#: src/components/PageDetailContentList.vue:321
+msgid "Element is not shared"
+msgstr "Prvok nie je zdieľaný"
+
+#: src/components/PageDetailContentList.vue:375
+#: src/components/PageDetailContentList.vue:435
+msgid "Delete"
+msgstr "Odstrániť"
+
+#: src/components/PageDetailContentList.vue:411
+#: src/components/PageListItems.vue:929
+msgid "Copy"
+msgstr "Kopírovať"
+
+#: src/components/PageDetailContentList.vue:414
+#: src/components/PageListItems.vue:926
+msgid "Cut"
+msgstr "Rez"
+
+#: src/components/PageDetailContentList.vue:420
+msgid "Paste before"
+msgstr "Vložiť pred"
+
+#: src/components/PageDetailContentList.vue:423
+msgid "Paste after"
+msgstr "Vložiť po"
+
+#: src/components/PageDetailContentList.vue:426
+msgid "Insert before"
+msgstr "Vložte pred"
+
+#: src/components/PageDetailContentList.vue:429
+msgid "Insert after"
+msgstr "Vložte za"
+
+#: src/components/PageDetailContentList.vue:438
+msgid "Make shared"
+msgstr "Vytvorte zdieľané"
+
+#: src/components/PageDetailContentList.vue:441
+msgid "Merge copy"
+msgstr "Zlúčenie kópie"
+
+#: src/components/PageDetailContentList.vue:446
+msgid "Shared element"
+msgstr "Spoločný prvok"
+
+#: src/components/PageDetailItem.vue:67
+msgid "Detail"
+msgstr "Detail"
+
+#: src/components/PageDetailItem.vue:72
+msgid "Meta"
+msgstr "Meta"
+
+#: src/components/PageDetailItem.vue:77
+msgid "Config"
+msgstr "Konfigurácia"
+
+#: src/components/PageDetailItemConfig.vue:47
+#: src/components/PageDetailItemMeta.vue:47
+msgid "The element has already been added"
+msgstr "Prvok už bol pridaný"
+
+#: src/components/PageDetailItemProps.vue:69
+msgid "The path is already in use by another page"
+msgstr "Cesta sa už používa na inej stránke"
+
+#: src/components/PageDetailItemProps.vue:141
+msgid "Disabled"
+msgstr "Bezbariérový"
+
+#: src/components/PageDetailItemProps.vue:142
+msgid "Enabled"
+msgstr "Povolené"
+
+#: src/components/PageDetailItemProps.vue:143
+msgid "Hidden in navigation"
+msgstr "Skryté v navigácii"
+
+#: src/components/PageDetailItemProps.vue:151
+msgid "Status"
+msgstr "Stav"
+
+#: src/components/PageDetailItemProps.vue:172
+#: src/fields/Table.vue:54
+#: src/views/Login.vue:84
+#: src/views/Login.vue:90
+msgid "Field is required"
+msgstr "Pole je povinné"
+
+#: src/components/PageDetailItemProps.vue:179
+msgid "Page name"
+msgstr "Názov stránky"
+
+#: src/components/PageDetailItemProps.vue:188
+msgid "Page title"
+msgstr "Názov stránky"
+
+#: src/components/PageDetailItemProps.vue:196
+msgid "Path must not start with a slash (/)"
+msgstr "Cesta nesmie začínať lomítkom (/)"
+
+#: src/components/PageDetailItemProps.vue:205
+msgid "URL path"
+msgstr "Cesta URL"
+
+#: src/components/PageDetailItemProps.vue:211
+msgid "Domain name is invalid"
+msgstr "Názov domény je neplatný"
+
+#: src/components/PageDetailItemProps.vue:217
+msgid "Domain"
+msgstr "Doména"
+
+#: src/components/PageDetailItemProps.vue:232
+msgid "Theme"
+msgstr "Téma"
+
+#: src/components/PageDetailItemProps.vue:240
+msgid "Page type"
+msgstr "Typ stránky"
+
+#: src/components/PageDetailItemProps.vue:247
+msgid "Page tag"
+msgstr "Značka stránky"
+
+#: src/components/PageDetailItemProps.vue:255
+msgid "No cache"
+msgstr "Žiadna vyrovnávacia pamäť"
+
+#: src/components/PageDetailItemProps.vue:256
+#: src/components/PageDetailItemProps.vue:257
+#: src/components/PageDetailItemProps.vue:258
+#: src/components/PageDetailItemProps.vue:259
+msgid "%{num} minute"
+msgid_plural "%{num} minutes"
+msgstr[0] "%{num} minúta"
+msgstr[1] ""
+msgstr[2] ""
+
+#: src/components/PageDetailItemProps.vue:260
+#: src/components/PageDetailItemProps.vue:261
+#: src/components/PageDetailItemProps.vue:262
+#: src/components/PageDetailItemProps.vue:263
+#: src/components/PageDetailItemProps.vue:264
+msgid "%{num} hour"
+msgid_plural "%{num} hours"
+msgstr[0] "%{num} hodina"
+msgstr[1] ""
+msgstr[2] ""
+
+#: src/components/PageDetailItemProps.vue:270
+msgid "Cache time"
+msgstr "Čas vyrovnávacej pamäte"
+
+#: src/components/PageDetailItemProps.vue:281
+msgid "URL is not valid"
+msgstr "Adresa URL nie je platná"
+
+#: src/components/PageDetailItemProps.vue:287
+msgid "Redirect URL"
+msgstr "Adresa URL presmerovania"
+
+#: src/components/PageDetailPreview.vue:156
+msgid "Preview mode"
+msgstr "Režim náhľadu"
+
+#: src/components/PageListItems.vue:93
+msgid "Error adding root page"
+msgstr "Chyba pri pridávaní koreňovej stránky"
+
+#: src/components/PageListItems.vue:135
+#: src/components/PageListItems.vue:446
+msgid "Error moving page"
+msgstr "Chyba pri presúvaní stránky"
+
+#: src/components/PageListItems.vue:198
+msgid "Error trashing page"
+msgstr "Chyba pri vymazávaní stránky"
+
+#: src/components/PageListItems.vue:237
+msgid "Error fetching pages"
+msgstr "Chyba pri načítavaní stránok"
+
+#: src/components/PageListItems.vue:322
+msgid "Error inserting page"
+msgstr "Chyba pri vkladaní stránky"
+
+#: src/components/PageListItems.vue:378
+msgid "Error restoring page"
+msgstr "Obnovenie stránky s chybou"
+
+#: src/components/PageListItems.vue:538
+msgid "Error copying page"
+msgstr "Chyba pri kopírovaní stránky"
+
+#: src/components/PageListItems.vue:542
+#: src/views/PageDetail.vue:240
+msgid "Error fetching page"
+msgstr "Chyba pri načítaní stránky"
+
+#: src/components/PageListItems.vue:585
+#: src/views/PageDetail.vue:322
+msgid "Error publishing page"
+msgstr "Chyba pri publikovaní stránky"
+
+#: src/components/PageListItems.vue:627
+msgid "Error purging page"
+msgstr "Stránka na čistenie chýb"
+
+#: src/components/PageListItems.vue:676
+msgid "Error searching pages"
+msgstr "Vyhľadávanie stránok s chybami"
+
+#: src/components/PageListItems.vue:724
+#: src/views/PageDetail.vue:424
+msgid "Error saving page"
+msgstr "Chyba pri ukladaní stránky"
+
+#: src/components/PageListItems.vue:858
+#: src/components/PageListItems.vue:917
+msgid "Enable"
+msgstr "Povolenie stránky"
+
+#: src/components/PageListItems.vue:861
+#: src/components/PageListItems.vue:914
+msgid "Disable"
+msgstr "Zakázať"
+
+#: src/components/PageListItems.vue:920
+msgid "Hide in menu"
+msgstr "Skryť v ponuke"
+
+#: src/components/PageListItems.vue:932
+#: src/components/PageListItems.vue:950
+msgid "Paste"
+msgstr "Vložiť"
+
+#: src/components/PageListItems.vue:936
+#: src/components/PageListItems.vue:954
+#: src/components/PageListItems.vue:972
+msgid "Before"
+msgstr "Pred"
+
+#: src/components/PageListItems.vue:941
+#: src/components/PageListItems.vue:959
+#: src/components/PageListItems.vue:977
+msgid "Into"
+msgstr "Na"
+
+#: src/components/PageListItems.vue:946
+#: src/components/PageListItems.vue:964
+#: src/components/PageListItems.vue:982
+msgid "After"
+msgstr "Po stránke"
+
+#: src/components/PageListItems.vue:968
+msgid "Insert"
+msgstr "Vložte"
+
+#: src/components/PageListItems.vue:1011
+msgid "New"
+msgstr "Nový"
+
+#: src/components/SchemaDialog.vue:26
+msgid "Content elements"
+msgstr "Prvky obsahu"
+
+#: src/components/SchemaItems.vue:27
+msgid "uncategorized"
+msgstr "nezaradené"
+
+#: src/components/SchemaItems.vue:37
+msgid "basic"
+msgstr "základné"
+
+#: src/components/SchemaItems.vue:38
+msgid "content"
+msgstr "obsah"
+
+#: src/components/SchemaItems.vue:39
+msgid "media"
+msgstr "médiá"
+
+#: src/components/SchemaItems.vue:40
+msgid "forms"
+msgstr "formuláre"
+
+#: src/components/User.vue:23
+msgid "Failed to load user"
+msgstr "Nepodarilo sa načítať používateľa"
+
+#: src/components/User.vue:33
+msgid "Logout failed"
+msgstr "Odhlásenie zlyhalo"
+
+#: src/components/User.vue:71
+msgid "Logout"
+msgstr "Odhlásenie"
+
+#: src/fields/Audio.vue:62
+#: src/fields/File.vue:247
+#: src/fields/Image.vue:88
+#: src/fields/Video.vue:64
+msgid "Updated"
+msgstr "Aktualizované stránky"
+
+#: src/fields/Autocomplete.vue:140
+#: src/fields/Color.vue:34
+#: src/fields/Date.vue:48
+#: src/fields/Html.vue:42
+#: src/fields/Number.vue:50
+#: src/fields/Select.vue:42
+#: src/fields/Url.vue:62
+msgid "Value is required"
+msgstr "Vyžaduje sa hodnota"
+
+#: src/fields/Autocomplete.vue:146
+msgid "No data available"
+msgstr "Nie sú k dispozícii žiadne údaje"
+
+#: src/fields/Color.vue:35
+msgid "Value must be a hex color code"
+msgstr "Hodnota musí byť hexakód farby"
+
+#: src/fields/Items.vue:65
+msgid "Maximum is %{num} entries"
+msgstr "Maximum je %{num} záznamov"
+
+#: src/fields/Items.vue:66
+msgid "Minimum is %{num} entries"
+msgstr "Minimum je %{num} záznamov"
+
+#: src/fields/Plaintext.vue:48
+#: src/fields/String.vue:52
+msgid "Minimum length is %{num} characters"
+msgstr "Minimálna dĺžka je %{num} znakov"
+
+#: src/fields/Plaintext.vue:49
+#: src/fields/String.vue:53
+msgid "Maximum length is %{num} characters"
+msgstr "Maximálna dĺžka je %{num} znakov"
+
+#: src/fields/Radio.vue:28
+msgid "Selection is required"
+msgstr "Vyžaduje sa výber"
+
+#: src/fields/Table.vue:55
+msgid "Minimum are %{num} columns"
+msgstr "Minimálne sú stĺpce %{num} "
+
+#: src/fields/Table.vue:56
+msgid "The number of columns is not the same in all rows"
+msgstr "Počet stĺpcov nie je vo všetkých riadkoch rovnaký"
+
+#: src/fields/Url.vue:24
+msgid "Invalid URL schema configuration"
+msgstr "Neplatná konfigurácia schémy URL"
+
+#: src/fields/Url.vue:63
+msgid "Not a valid URL"
+msgstr "Neplatná adresa URL"
+
+#: src/routes.js:48
+msgid "You do not have permission to access %{path}"
+msgstr "Nemáte povolenie na prístup %{path}"
+
+#: src/views/ElementDetail.vue:99
+msgid "Error fetching element"
+msgstr "Chyba pri načítaní prvku"
+
+#: src/views/ElementDetail.vue:133
+msgid "Element published successfully"
+msgstr "Prvok bol úspešne publikovaný"
+
+#: src/views/ElementDetail.vue:136
+msgid "Element scheduled for publishing at %{date}"
+msgstr "Prvok naplánovaný na uverejnenie na %{date}"
+
+#: src/views/ElementDetail.vue:141
+msgid "Error publishing element"
+msgstr "Chybný publikačný prvok"
+
+#: src/views/ElementDetail.vue:191
+msgid "Element saved successfully"
+msgstr "Prvok bol úspešne uložený"
+
+#: src/views/ElementDetail.vue:196
+msgid "Error saving element"
+msgstr "Chyba pri ukladaní prvku"
+
+#: src/views/ElementDetail.vue:252
+msgid "Error fetching element versions"
+msgstr "Chyba pri načítavaní verzií prvkov"
+
+#: src/views/ElementDetail.vue:271
+#: src/views/ElementDetail.vue:326
+msgid "Element"
+msgstr "Prvok"
+
+#: src/views/ElementDetail.vue:286
+#: src/views/FileDetail.vue:220
+#: src/views/PageDetail.vue:620
+msgid "Save"
+msgstr "Uložiť"
+
+#: src/views/ElementDetail.vue:327
+#: src/views/FileDetail.vue:261
+msgid "Used by"
+msgstr "Používa"
+
+#: src/views/ElementList.vue:41
+#: src/views/ElementList.vue:97
+#: src/views/ElementList.vue:106
+#: src/views/ElementList.vue:114
+#: src/views/FileList.vue:40
+#: src/views/FileList.vue:94
+#: src/views/FileList.vue:103
+#: src/views/FileList.vue:111
+#: src/views/PageList.vue:40
+#: src/views/PageList.vue:94
+#: src/views/PageList.vue:103
+#: src/views/PageList.vue:111
+msgid "All"
+msgstr "Všetky"
+
+#: src/views/ElementList.vue:99
+#: src/views/FileList.vue:96
+#: src/views/PageList.vue:96
+msgid "Scheduled"
+msgstr "Plánované"
+
+#: src/views/ElementList.vue:100
+#: src/views/FileList.vue:97
+#: src/views/PageList.vue:97
+msgid "Drafts"
+msgstr "Návrhy"
+
+#: src/views/ElementList.vue:104
+#: src/views/FileList.vue:101
+#: src/views/PageList.vue:101
+msgid "Trashed"
+msgstr "Znehodnotené stránky"
+
+#: src/views/ElementList.vue:107
+#: src/views/FileList.vue:104
+#: src/views/PageList.vue:104
+msgid "Available only"
+msgstr "K dispozícii len"
+
+#: src/views/ElementList.vue:108
+#: src/views/FileList.vue:105
+#: src/views/PageList.vue:105
+msgid "Only trashed"
+msgstr "Iba zdemolované"
+
+#: src/views/ElementList.vue:115
+#: src/views/FileList.vue:112
+#: src/views/PageList.vue:112
+msgid "Edited by me"
+msgstr "Upravené mnou"
+
+#: src/views/ElementList.vue:119
+#: src/views/FileList.vue:116
+#: src/views/PageList.vue:116
+msgid "Languages"
+msgstr "Jazyky"
+
+#: src/views/FileDetail.vue:71
+msgid "File published successfully"
+msgstr "Súbor bol úspešne publikovaný"
+
+#: src/views/FileDetail.vue:74
+msgid "File scheduled for publishing at %{date}"
+msgstr "Súbor naplánovaný na uverejnenie na %{date}"
+
+#: src/views/FileDetail.vue:129
+msgid "File saved successfully"
+msgstr "Súbor bol úspešne uložený"
+
+#: src/views/FileDetail.vue:134
+msgid "Error saving file"
+msgstr "Chyba pri ukladaní súboru"
+
+#: src/views/FileDetail.vue:186
+msgid "Error fetching file versions"
+msgstr "Chyba pri načítavaní verzií súborov"
+
+#: src/views/FileDetail.vue:205
+#: src/views/FileDetail.vue:260
+msgid "File"
+msgstr "Súbor"
+
+#: src/views/Login.vue:50
+msgid "Not a CMS editor"
+msgstr "Nie je to editor CMS"
+
+#: src/views/Login.vue:66
+msgid "Access denied"
+msgstr "Prístup zamietnutý"
+
+#: src/views/Login.vue:79
+#: src/views/Login.vue:101
+msgid "Login"
+msgstr "Prihlásenie"
+
+#: src/views/Login.vue:83
+msgid "E-Mail"
+msgstr "E-mail"
+
+#: src/views/Login.vue:85
+msgid "Invalid e-mail address"
+msgstr "Neplatná e-mailová adresa"
+
+#: src/views/Login.vue:89
+msgid "Password"
+msgstr "Heslo"
+
+#: src/views/Login.vue:96
+msgid "Error"
+msgstr "Chyba"
+
+#: src/views/PageDetail.vue:314
+msgid "Page published successfully"
+msgstr "Stránka bola úspešne publikovaná"
+
+#: src/views/PageDetail.vue:317
+msgid "Page scheduled for publishing at %{date}"
+msgstr "Strana plánovaná na uverejnenie na %{date}"
+
+#: src/views/PageDetail.vue:350
+msgid "There are invalid fields, please resolve the errors first"
+msgstr "Sú tu neplatné polia, najprv vyriešte chyby"
+
+#: src/views/PageDetail.vue:418
+msgid "Page saved successfully"
+msgstr "Stránka bola úspešne uložená"
+
+#: src/views/PageDetail.vue:433
+msgid "No page schema for \"content\" found"
+msgstr "Nenašla sa žiadna schéma stránky pre \"content\""
+
+#: src/views/PageDetail.vue:569
+msgid "Error fetching page versions"
+msgstr "Chyba pri načítavaní verzií stránok"
+
+#: src/views/PageDetail.vue:594
+#: src/views/PageDetail.vue:663
+msgid "Page"
+msgstr "Strana"
+
+#: src/views/PageDetail.vue:668
+msgid "Content"
+msgstr "Obsah"
+
+#: src/views/PageDetail.vue:672
+msgid "Preview"
+msgstr "Náhľad"

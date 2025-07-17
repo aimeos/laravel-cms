@@ -3,7 +3,7 @@
   import Fields from './Fields.vue'
   import SchemaDialog from './SchemaDialog.vue'
   import { VueDraggable } from 'vue-draggable-plus'
-  import { useAuthStore, useMessageStore, useSchemaStore, useSideStore } from '../stores'
+  import { useAuthStore, useClipboardStore, useMessageStore, useSchemaStore, useSideStore } from '../stores'
   import { uid } from '../utils'
 
   export default {
@@ -26,7 +26,6 @@
     data: () => ({
       panel: [],
       menu: {},
-      clip: null,
       index: null,
       checked: false,
       vschemas: false,
@@ -35,18 +34,20 @@
     }),
 
     setup() {
+      const clipboard = useClipboardStore()
       const messages = useMessageStore()
       const schemas = useSchemaStore()
       const side = useSideStore()
       const auth = useAuthStore()
 
-      return { auth, side, messages, schemas }
+      return { auth, clipboard, side, messages, schemas }
     },
 
     computed: {
       changed() {
         return this.content.some(el => el._changed)
       },
+
 
       isChecked() {
         return this.content.some(el => el._checked)
@@ -82,17 +83,48 @@
 
 
       copy(idx) {
-        const entry = JSON.parse(JSON.stringify(this.content[idx]))
-        entry['id'] = null
+        const list = []
 
-        this.clip = {type: 'copy', index: idx, content: entry}
+        if(idx === undefined) {
+          for(let i = this.content.length - 1; i >= 0; i--) {
+            if(this.content[i]._checked) {
+              const entry = JSON.parse(JSON.stringify(this.content[i]))
+              entry._checked = false
+              entry['id'] = null
+              list.push(entry)
+            }
+          }
+        } else {
+          const entry = JSON.parse(JSON.stringify(this.content[idx]))
+          entry._checked = false
+          entry['id'] = null
+          list.push(entry)
+        }
+
+        this.clipboard.set('page-content', list.reverse())
       },
 
 
       cut(idx) {
-        this.clip = {type: 'cut', index: idx, content: this.content[idx]}
-        this.content.splice(idx, 1)
+        const list = []
 
+        if(idx === undefined) {
+          for(let i = this.content.length - 1; i >= 0; i--) {
+            if(this.content[i]._checked) {
+              const entry = JSON.parse(JSON.stringify(this.content[i]))
+              this.content.splice(i, 1)
+              entry['id'] = null
+              list.push(entry)
+            }
+          }
+        } else {
+          const entry = JSON.parse(JSON.stringify(this.content[idx]))
+          this.content.splice(idx, 1)
+          entry['id'] = null
+          list.push(entry)
+        }
+
+        this.clipboard.set('page-content', list.reverse())
         this.$emit('update:content', this.content)
         this.store()
       },
@@ -121,10 +153,18 @@
       },
 
 
-      paste(idx) {
-        this.content.splice(idx, 0, this.clip.content)
+      paste(idx = null) {
+        if(idx === null) {
+          idx = this.content.length
+        }
+
+        const entries = (this.clipboard.get('page-content') || []).map(el => {
+          el.group = this.section || 'main'
+          return el
+        })
+
+        this.content.splice(idx, 0, ...entries)
         this.$emit('update:content', this.content)
-        this.clip = null
         this.store()
       },
 
@@ -136,6 +176,7 @@
           }
         }
 
+        this.$emit('error', this.content.some(el => el._error))
         this.$emit('update:content', this.content)
         this.checked = false
         this.store()
@@ -380,6 +421,15 @@
             <v-list-item v-if="isChecked">
               <v-btn prepend-icon="mdi-delete" variant="text" @click="purge()">{{ $gettext('Delete') }}</v-btn>
             </v-list-item>
+            <v-list-item v-if="isChecked">
+              <v-btn prepend-icon="mdi-content-copy" variant="text" @click="copy()">{{ $gettext('Copy') }}</v-btn>
+            </v-list-item>
+            <v-list-item v-if="isChecked">
+              <v-btn prepend-icon="mdi-content-cut" variant="text" @click="cut()">{{ $gettext('Cut') }}</v-btn>
+            </v-list-item>
+            <v-list-item v-if="clipboard.get('page-content')">
+              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste()">{{ $gettext('Paste') }}</v-btn>
+            </v-list-item>
           </v-list>
         </v-menu>
       </div>
@@ -413,37 +463,37 @@
                 <v-btn icon="mdi-dots-vertical" variant="text" v-bind="props"></v-btn>
               </template>
               <v-list>
-                <v-list-item v-if="!el._error">
+                <v-list-item v-if="!el._error && auth.can('page:save')">
                   <v-btn prepend-icon="mdi-content-copy" variant="text" @click="copy(idx)">{{ $gettext('Copy') }}</v-btn>
                 </v-list-item>
-                <v-list-item v-if="!el._error">
+                <v-list-item v-if="!el._error && auth.can('page:save')">
                   <v-btn prepend-icon="mdi-content-cut" variant="text" @click="cut(idx)">{{ $gettext('Cut') }}</v-btn>
+                </v-list-item>
+                <v-list-item v-if="auth.can('page:save')">
+                  <v-btn prepend-icon="mdi-delete" variant="text" @click="remove(idx)">{{ $gettext('Delete') }}</v-btn>
                 </v-list-item>
 
                 <v-divider></v-divider>
 
-                <v-list-item v-if="!el._error && clip">
+                <v-list-item v-if="clipboard.get('page-content') && auth.can('page:save')">
                   <v-btn prepend-icon="mdi-arrow-up" variant="text" @click="paste(idx)">{{ $gettext('Paste before') }}</v-btn>
                 </v-list-item>
-                <v-list-item v-if="!el._error && clip">
+                <v-list-item v-if="clipboard.get('page-content') && auth.can('page:save')">
                   <v-btn prepend-icon="mdi-arrow-down" variant="text" @click="paste(idx + 1)">{{ $gettext('Paste after') }}</v-btn>
                 </v-list-item>
-                <v-list-item v-if="!el._error">
+                <v-list-item v-if="auth.can('page:save')">
                   <v-btn prepend-icon="mdi-arrow-up" variant="text" @click="insert(idx)">{{ $gettext('Insert before') }}</v-btn>
                 </v-list-item>
-                <v-list-item v-if="!el._error">
+                <v-list-item v-if="auth.can('page:save')">
                   <v-btn prepend-icon="mdi-arrow-down" variant="text" @click="insert(idx + 1)">{{ $gettext('Insert after') }}</v-btn>
                 </v-list-item>
 
                 <v-divider></v-divider>
 
-                <v-list-item>
-                  <v-btn prepend-icon="mdi-delete" variant="text" @click="remove(idx)">{{ $gettext('Delete') }}</v-btn>
-                </v-list-item>
                 <v-list-item v-if="!el._error && el.type !== 'reference' && auth.can('element:add')">
                   <v-btn prepend-icon="mdi-link" variant="text" @click="share(idx)">{{ $gettext('Make shared') }}</v-btn>
                 </v-list-item>
-                <v-list-item v-if="el.type === 'reference'">
+                <v-list-item v-if="!el._error && el.type === 'reference' && auth.can('page:save')">
                   <v-btn prepend-icon="mdi-link-off" variant="text" @click="unshare(idx)">{{ $gettext('Merge copy') }}</v-btn>
                 </v-list-item>
               </v-list>

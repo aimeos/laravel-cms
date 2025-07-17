@@ -123,6 +123,25 @@ export const useAuthStore = defineStore('auth', {
 })
 
 
+export const useClipboardStore = defineStore('clipboard', {
+  state: () => ({}),
+
+  actions: {
+    get(key, defval = null) {
+      return this[key] ?? defval
+    },
+
+    set(key, value) {
+      if(typeof key !== 'string') {
+        return
+      }
+
+      this[key] = value
+    }
+  }
+})
+
+
 export const useConfigStore = defineStore('config', {
   state: () => (JSON.parse(app?.dataset.config || '{}')),
 

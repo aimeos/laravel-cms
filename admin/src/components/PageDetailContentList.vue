@@ -92,6 +92,8 @@
       cut(idx) {
         this.clip = {type: 'cut', index: idx, content: this.content[idx]}
         this.content.splice(idx, 1)
+
+        this.$emit('update:content', this.content)
         this.store()
       },
 
@@ -421,16 +423,16 @@
                 <v-divider></v-divider>
 
                 <v-list-item v-if="!el._error && clip">
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(idx)">🠕 {{ $gettext('Paste before') }}</v-btn>
+                  <v-btn prepend-icon="mdi-arrow-up" variant="text" @click="paste(idx)">{{ $gettext('Paste before') }}</v-btn>
                 </v-list-item>
                 <v-list-item v-if="!el._error && clip">
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(idx + 1)">🠗 {{ $gettext('Paste after') }}</v-btn>
+                  <v-btn prepend-icon="mdi-arrow-down" variant="text" @click="paste(idx + 1)">{{ $gettext('Paste after') }}</v-btn>
                 </v-list-item>
                 <v-list-item v-if="!el._error">
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(idx)">🠕 {{ $gettext('Insert before') }}</v-btn>
+                  <v-btn prepend-icon="mdi-arrow-up" variant="text" @click="insert(idx)">{{ $gettext('Insert before') }}</v-btn>
                 </v-list-item>
                 <v-list-item v-if="!el._error">
-                  <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(idx + 1)">🠗 {{ $gettext('Insert after') }}</v-btn>
+                  <v-btn prepend-icon="mdi-arrow-down" variant="text" @click="insert(idx + 1)">{{ $gettext('Insert after') }}</v-btn>
                 </v-list-item>
 
                 <v-divider></v-divider>

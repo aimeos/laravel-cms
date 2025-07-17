@@ -125,6 +125,10 @@ body {
   margin: 0 4px;
 }
 
+.v-list .v-btn.subitem {
+  margin-inline-start: 24px;
+}
+
 .v-list-group {
   --list-indent-size: 12px !important;
 }

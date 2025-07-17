@@ -154,6 +154,11 @@
 
 
       cut(stat, node) {
+        this.$refs.tree.statsFlat.forEach(stat => {
+          delete stat.cut
+        })
+        stat.cut = true
+
         this.clip = {type: 'cut', node: node, stat: stat}
       },
 
@@ -933,17 +938,17 @@
           </v-list-item>
           <v-fade-transition v-if="clip && clip.type == 'copy' && menu.paste && !this.embed && auth.can('page:add')">
             <v-list-item>
-              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(stat, 0)">🠕 {{ $gettext('Before') }}</v-btn>
+              <v-btn prepend-icon="mdi-arrow-up" variant="text" @click="paste(stat, 0)" class="subitem">{{ $gettext('Before') }}</v-btn>
             </v-list-item>
           </v-fade-transition>
           <v-fade-transition v-if="clip && clip.type == 'copy' && menu.paste && !this.embed && auth.can('page:add')">
             <v-list-item>
-              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(stat)">🠖 {{ $gettext('Into') }}</v-btn>
+              <v-btn prepend-icon="mdi-arrow-right" variant="text" @click="paste(stat)" class="subitem">{{ $gettext('Into') }}</v-btn>
             </v-list-item>
           </v-fade-transition>
           <v-fade-transition v-if="clip && clip.type == 'copy' && menu.paste && !this.embed && auth.can('page:add')">
             <v-list-item>
-              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="paste(stat, 1)">🠗 {{ $gettext('After') }}</v-btn>
+              <v-btn prepend-icon="mdi-arrow-down" variant="text" @click="paste(stat, 1)" class="subitem">{{ $gettext('After') }}</v-btn>
             </v-list-item>
           </v-fade-transition>
           <v-list-item v-if="clip && clip.type == 'cut' && auth.can('page:move')">
@@ -951,17 +956,17 @@
           </v-list-item>
           <v-fade-transition v-if="clip && clip.type == 'cut' && menu.move && auth.can('page:move')">
             <v-list-item>
-              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="move(stat, 0)">🠕 {{ $gettext('Before') }}</v-btn>
+              <v-btn prepend-icon="mdi-arrow-up" variant="text" @click="move(stat, 0)" class="subitem">{{ $gettext('Before') }}</v-btn>
             </v-list-item>
           </v-fade-transition>
           <v-fade-transition v-if="clip && clip.type == 'cut' && menu.move && auth.can('page:move')">
             <v-list-item>
-              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="move(stat)">🠖 {{ $gettext('Into') }}</v-btn>
+              <v-btn prepend-icon="mdi-arrow-right" variant="text" @click="move(stat)" class="subitem">{{ $gettext('Into') }}</v-btn>
             </v-list-item>
           </v-fade-transition>
           <v-fade-transition v-if="clip && clip.type == 'cut' && menu.move && auth.can('page:move')">
             <v-list-item>
-              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="move(stat, 1)">🠗 {{ $gettext('After') }}</v-btn>
+              <v-btn prepend-icon="mdi-arrow-down" variant="text" @click="move(stat, 1)" class="subitem">{{ $gettext('After') }}</v-btn>
             </v-list-item>
           </v-fade-transition>
           <v-list-item v-if="!this.embed && auth.can('page:add')">
@@ -969,17 +974,17 @@
           </v-list-item>
           <v-fade-transition v-if="menu.insert && !this.embed && auth.can('page:add')">
             <v-list-item>
-              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(stat, 0)">🠕 {{ $gettext('Before') }}</v-btn>
+              <v-btn prepend-icon="mdi-arrow-up" variant="text" @click="insert(stat, 0)" class="subitem">{{ $gettext('Before') }}</v-btn>
             </v-list-item>
           </v-fade-transition>
           <v-fade-transition v-if="menu.insert && !this.embed && auth.can('page:add')">
             <v-list-item>
-              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(stat)">🠖 {{ $gettext('Into') }}</v-btn>
+              <v-btn prepend-icon="mdi-arrow-right" variant="text" @click="insert(stat)" class="subitem">{{ $gettext('Into') }}</v-btn>
             </v-list-item>
           </v-fade-transition>
           <v-fade-transition v-if="menu.insert && !this.embed && auth.can('page:add')">
             <v-list-item>
-              <v-btn prepend-icon="mdi-content-paste" variant="text" @click="insert(stat, 1)">🠗 {{ $gettext('After') }}</v-btn>
+              <v-btn prepend-icon="mdi-arrow-down" variant="text" @click="insert(stat, 1)" class="subitem">{{ $gettext('After') }}</v-btn>
             </v-list-item>
           </v-fade-transition>
 
@@ -1001,7 +1006,8 @@
           'status-hidden': node.status == 2,
           'status-enabled': node.status == 1,
           'status-disabled': !node.status,
-          'trashed': node.deleted_at
+          'trashed': node.deleted_at,
+          'cut': stat.cut,
         }"
         :title="title(node)"
       >
@@ -1058,6 +1064,10 @@
   .tree-node-inner .spinner {
     transform: rotate(90deg);
     width: 28px;
+  }
+
+  .item-content.cut {
+    opacity: 0.5;
   }
 
   .item-domain {

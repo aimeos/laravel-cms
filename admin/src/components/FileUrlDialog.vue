@@ -1,6 +1,6 @@
 <script>
   import gql from 'graphql-tag'
-  import { useAppStore, useMessageStore } from '../stores'
+  import { useAppStore } from '../stores'
 
   export default {
     props: {
@@ -12,10 +12,9 @@
     emits: ['update:modelValue', 'add'],
 
     setup() {
-      const messages = useMessageStore()
       const app = useAppStore()
 
-      return { app, messages }
+      return { app }
     },
 
     data() {

@@ -809,7 +809,7 @@
         return this.app.urlpage
           .replace(/:domain/, node.domain || '')
           .replace(/:path/, node.path || '')
-          .replace(/\/+$/, '/')
+          .replace(/\/+$/, '')
       }
     },
 

@@ -20,31 +20,34 @@ final class Imagine
             throw new Exception( 'Prompt must not be empty' );
         }
 
+        $prompt = join( "\n\n", array_filter( [
+            view( 'cms::prompts.imagine' )->render(),
+            $args['context'] ?? '',
+            $args['prompt']
+        ] ) );
+
         $prism = Prism::image()->using( config( 'cms.ai.image', 'openai' ), config( 'cms.ai.image-model', 'dall-e-3' ) );
 
-        if( !empty( $args['context'] ) ) {
-            $prism->withSystemPrompt( $args['context'] );
-        }
+        $images = collect( $args['images'] ?? [] )->map( function( $image ) {
+            if( str_starts_with( $image, 'http' ) ) {
+                return Image::fromUrl( $image );
+            } else {
+                return Image::fromStoragePath( $image, 'public' );
+            }
+        } )->toArray();
 
-        if( !empty( $args['images'] ) )
-        {
-            $images = collect( $args['images'] )->map( function( $image ) {
-                if( str_starts_with( $image, 'http' ) ) {
-                    return Image::fromUrl( $image );
-                } else {
-                    return Image::fromStoragePath( $image, 'public' );
-                }
-            } )->toArray();
+        $response = $prism->withPrompt( $prompt, $images )->generate();
 
-            $prism->withMessages( [new UserMessage( $args['prompt'], $images )] );
-        }
-        else
-        {
-            $prism->withPrompt( $args['prompt'] );
-        }
+        $prompt = collect( $response->images )
+            ->map( fn( $image ) => $image->hasRevisedPrompt() ? $image->revisedPrompt : null )
+            ->filter()
+            ->first() ?? $prompt;
 
-        $response = $prism->withSystemPrompt( view( 'cms::prompts.imagine' ) )->generate();
+        $urls = collect( $response->images )
+            ->map( fn( $image ) => $image->hasUrl() ? $image->url : null )
+            ->filter()
+            ->toArray();
 
-        return collect( $response->images )->map( fn( Image $image ) => $image->url )->toArray();
+        return array_merge( [$prompt], $urls );
     }
 }

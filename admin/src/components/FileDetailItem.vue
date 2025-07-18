@@ -83,19 +83,16 @@
 
     methods: {
       composeText() {
-        const lang = this.desclangs[0] || this.item.lang || 'en'
-        const prompt = 'Describe the content of the image in a few words in the language with the code "' + lang + '":'
-        const image = this.item.previews[Object.keys(this.item.previews || {})[0]] // use the smallest preview image
+        const lang = this.item.lang || 'en'
+        const prompt = 'Describe the content of the file in a few words in the language with the ISO code "' + lang + '":'
 
-        if(image) {
-          this.composing = true
+        this.composing = true
 
-          this.compose(prompt, null, [image]).then(result => {
-            this.item.description[lang] = result
-          }).finally(() => {
-            this.composing = false
-          })
-        }
+        this.compose(prompt, null, [this.item.id]).then(result => {
+          this.item.description[lang] = result
+        }).finally(() => {
+          this.composing = false
+        })
       },
 
 

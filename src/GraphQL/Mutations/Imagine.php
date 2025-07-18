@@ -3,9 +3,12 @@
 namespace Aimeos\Cms\GraphQL\Mutations;
 
 use Prism\Prism\Prism;
-use Prism\Prism\ValueObjects\Messages\UserMessage;
-use Prism\Prism\ValueObjects\Messages\Support\Image;
+use Prism\Prism\ValueObjects\Media\Audio;
+use Prism\Prism\ValueObjects\Media\Image;
+use Prism\Prism\ValueObjects\Media\Video;
+use Prism\Prism\ValueObjects\Media\Document;
 use Aimeos\Cms\GraphQL\Exception;
+use Aimeos\Cms\Models\File;
 
 
 final class Imagine
@@ -20,6 +23,7 @@ final class Imagine
             throw new Exception( 'Prompt must not be empty' );
         }
 
+        $files = [];
         $prompt = join( "\n\n", array_filter( [
             view( 'cms::prompts.imagine' )->render(),
             $args['context'] ?? '',
@@ -28,15 +32,30 @@ final class Imagine
 
         $prism = Prism::image()->using( config( 'cms.ai.image', 'openai' ), config( 'cms.ai.image-model', 'dall-e-3' ) );
 
-        $images = collect( $args['images'] ?? [] )->map( function( $image ) {
-            if( str_starts_with( $image, 'http' ) ) {
-                return Image::fromUrl( $image );
-            } else {
-                return Image::fromStoragePath( $image, 'public' );
-            }
-        } )->toArray();
+        if( !empty( $ids = $args['files'] ?? null ) )
+        {
+            $files = File::where( 'id', $ids )->get()->map( function( $file ) {
 
-        $response = $prism->withPrompt( $prompt, $images )->generate();
+                if( str_starts_with( $file->path, 'http' ) )
+                {
+                    return match( explode( '/', $file->mime )[0] ) {
+                        'image' => Image::fromUrl( $file->path ),
+                        'audio' => Audio::fromUrl( $file->path ),
+                        'video' => Video::fromUrl( $file->path ),
+                        default => Document::fromUrl( $file->path ),
+                    };
+                }
+
+                return match( explode( '/', $file->mime )[0] ) {
+                    'image' => Image::fromStoragePath( $file->path, 'public' ),
+                    'audio' => Audio::fromStoragePath( $file->path, 'public' ),
+                    'video' => Video::fromStoragePath( $file->path, 'public' ),
+                    default => Document::fromStoragePath( $file->path, 'public' ),
+                };
+            } )->values()->toArray();
+        }
+
+        $response = $prism->withPrompt( $prompt, $files )->generate();
 
         $prompt = collect( $response->images )
             ->map( fn( $image ) => $image->hasRevisedPrompt() ? $image->revisedPrompt : null )

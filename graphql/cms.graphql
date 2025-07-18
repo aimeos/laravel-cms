@@ -68,11 +68,11 @@ extend type Mutation {
   "Log out authenticated user"
   cmsLogout: User @guard
 
-  "Generate texts from prompts and passed image URLs"
-  compose(prompt: String!, context: String, images: [String!]): String
+  "Generate texts from prompts and passed file IDs"
+  compose(prompt: String!, context: String, files: [String!]): String
 
-  "Generate images from prompts and passed image URLs"
-  imagine(prompt: String!, context: String, images: [String!]): [String!]
+  "Generate images from prompts and passed file IDs"
+  imagine(prompt: String!, context: String, files: [String!]): [String!]
 
   "Translate texts"
   translate(texts: [String!]!, to: String!, from: String, context: String): [String!]!

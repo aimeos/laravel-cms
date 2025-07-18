@@ -260,7 +260,7 @@
       },
 
 
-      composeText(prompt, context = []) {
+      composeText(prompt, context = [], files = []) {
         if(!this.$options._compose) {
           return Promise.reject(new Error('Compose method is not available in PageDetail component'))
         }
@@ -272,7 +272,7 @@
         context.push('page content as JSON: ' + JSON.stringify(this.item.content))
         context.push('required output language: ' + (this.item.lang || 'en'))
 
-        return this.$options._compose(prompt, context)
+        return this.$options._compose(prompt, context, files)
       },
 
 

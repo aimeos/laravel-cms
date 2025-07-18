@@ -366,27 +366,37 @@ body {
 
 .item-content {
   display: flex;
-  flex-grow: 1;
   flex-wrap: wrap;
-  justify-content: space-between;
-  overflow: hidden;
+  align-items: stretch;
   cursor: pointer;
   margin: 0 1%;
+  width: 100%;
+  gap: 4px;
+}
+
+@media (min-width: 768px) {
+  .item-content {
+    flex-wrap: nowrap;
+  }
 }
 
 .item-text {
-  flex-grow: 1;
-  margin-inline-end: 4px;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+}
+
+.item-aux {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-self: end;
 }
 
 .item-text,
 .item-aux {
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.item-aux {
-  align-self: end;
 }
 
 .item-aux,

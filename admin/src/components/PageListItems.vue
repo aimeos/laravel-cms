@@ -902,8 +902,14 @@
     @change="change()"
   >
     <template #default="{ node, stat }">
-      <svg v-if="stat.loading" class="spinner" width="24" height="24" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg"><circle class="spin1" cx="4" cy="12" r="3"/><circle class="spin1 spin2" cx="12" cy="12" r="3"/><circle class="spin1 spin3" cx="20" cy="12" r="3"/></svg>
-      <v-icon v-else :class="{hidden: !node.has}" size="large" @click="load(stat, node)" :icon="stat.open ? 'mdi-menu-down' : 'mdi-menu-right'"></v-icon>
+      <svg v-if="stat.loading" class="spinner" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <circle class="spin1" cx="4" cy="12" r="3"/>
+        <circle class="spin1 spin2" cx="12" cy="12" r="3"/>
+        <circle class="spin1 spin3" cx="20" cy="12" r="3"/>
+      </svg>
+      <v-btn v-else :class="{hidden: !node.has}" @click="load(stat, node)" variant="flat"
+        :icon="stat.open ? 'mdi-menu-down' : 'mdi-menu-right'"
+      ></v-btn>
 
       <v-checkbox-btn v-model="stat.check" :class="{draft: !node.published}"></v-checkbox-btn>
 
@@ -1012,9 +1018,11 @@
         :title="title(node)"
       >
         <div class="item-text" @click="$emit('select', node)">
-          <v-icon v-if="node.publish_at" class="publish-at" icon="mdi-clock-outline"></v-icon>
-          <span class="item-lang" v-if="node.lang">{{ node.lang }}</span>
-          <span class="item-title">{{ node.name || $gettext('New') }}</span>
+          <div class="item-head">
+            <v-icon v-if="node.publish_at" class="publish-at" icon="mdi-clock-outline"></v-icon>
+            <span class="item-lang" v-if="node.lang">{{ node.lang }}</span>
+            <span class="item-title">{{ node.name || $gettext('New') }}</span>
+          </div>
           <div v-if="node.title" class="item-subtitle">{{ node.title }}</div>
         </div>
         <a class="item-aux" :href="url(node)" target="_blank" draggable="false">
@@ -1063,7 +1071,10 @@
 
   .tree-node-inner .spinner {
     transform: rotate(90deg);
-    width: 28px;
+    margin-inline-end: 6px;
+    padding: 8px;
+    height: 48px;
+    width: 48px;
   }
 
   .item-content.cut {

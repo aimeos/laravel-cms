@@ -127,7 +127,7 @@
                 path: url,
                 mime: response.headers?.get('Content-Type'),
                 size: parseInt(response.headers?.get('Content-Length')),
-                name: response.headers?.get('Content-Disposition')?.split('filename=')[1] || url.split('/')?.pop(),
+                name: (url.split('?')?.shift()?.split('/')?.pop() || url).splice(0, 100)
               }
             } else {
               this.errors = this.multiple
@@ -145,7 +145,7 @@
 
 <template>
   <v-dialog :modelValue="modelValue" max-width="1200" scrollable>
-    <v-card>
+    <v-card :loading="loading ? 'primary' : false">
       <template v-slot:append>
         <v-btn v-if="Object.keys(items).length" variant="outlined" @click="add()">
           {{ $gettext('Add file', 'Add files', +multiple) }}
@@ -155,14 +155,6 @@
       <template v-slot:title>
         {{ $gettext('Add files by URL') }}
       </template>
-
-      <v-progress-linear v-if="loading"
-        color="primary"
-        height="2"
-        indeterminate
-        rounded
-      ></v-progress-linear>
-      <v-divider v-else></v-divider>
 
       <v-card-text>
         <v-textarea v-if="multiple" ref="input"

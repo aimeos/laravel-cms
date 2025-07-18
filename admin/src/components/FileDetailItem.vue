@@ -68,7 +68,7 @@
       langs() {
         const list = [{code: null, name: 'None'}]
 
-        Object.entries(this.languages.available).forEach(pair => {
+        Object.entries(this.languages.available || {}).forEach(pair => {
           list.push({code: pair[0], name: pair[1]})
         })
 
@@ -85,7 +85,7 @@
       composeText() {
         const lang = this.desclangs[0] || this.item.lang || 'en'
         const prompt = 'Describe the content of the image in a few words in the language with the code "' + lang + '":'
-        const image = this.item.previews[Math.min(Object.keys(this.item.previews))] // use the smallest preview image
+        const image = this.item.previews[Object.keys(this.item.previews || {})[0]] // use the smallest preview image
 
         if(image) {
           this.composing = true
@@ -173,7 +173,7 @@
 
       translateText() {
         const promises = []
-        const [lang, text] = Object.entries(this.item.description).find(([lang, text]) => {
+        const [lang, text] = Object.entries(this.item.description || {}).find(([lang, text]) => {
           return text ? true : false
         })
 
@@ -280,7 +280,7 @@
           <v-label>
             {{ $gettext('Descriptions') }}
             <div v-if="!readonly" class="actions">
-              <v-btn v-if="Object.values(item.description).find(v => !!v)"
+              <v-btn v-if="Object.values(item.description || {}).find(v => !!v)"
                 :loading="translating"
                   icon="mdi-translate"
                   variant="flat"

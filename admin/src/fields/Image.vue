@@ -1,12 +1,23 @@
 <script>
   import gql from 'graphql-tag'
   import File from './File.vue'
+  import FileAiDialog from '../components/FileAiDialog.vue'
 
   export default {
     extends: File,
 
+    components: {
+      FileAiDialog
+    },
+
     setup() {
       return { ...File.setup() }
+    },
+
+    data() {
+      return {
+        vcreate: false,
+      }
     },
 
     methods: {
@@ -68,6 +79,11 @@
             variant="flat"
           ></v-btn>
           <v-btn
+            @click="vcreate = true"
+            icon="mdi-creation"
+            variant="flat"
+          ></v-btn>
+          <v-btn
             icon="mdi-upload"
             variant="flat">
             <v-file-input
@@ -84,17 +100,21 @@
     <v-col cols="12" md="6" v-if="file.path">
       {{ $gettext('Name') }}: {{ file.name }}<br/>
       {{ $gettext('Mime') }}: {{ file.mime }}<br/>
-      {{ $gettext('Editor' }}: {{ file.editor }}<br/>
-      {{ $gettext('Updated'}}: {{ (new Date(file.updated_at)).toLocaleString() }}
+      {{ $gettext('Editor') }}: {{ file.editor }}<br/>
+      {{ $gettext('Updated') }}: {{ (new Date(file.updated_at)).toLocaleString() }}
     </v-col>
   </v-row>
 
   <Teleport to="body">
-    <FileDialog v-model="vfiles" @add="handle($event)" :filter="{mime: 'image/'}" grid />
+    <FileDialog v-model="vfiles" @add="handle($event); vfiles = false" :filter="{mime: 'image/'}" grid />
   </Teleport>
 
   <Teleport to="body">
-    <FileUrlDialog v-model="vurls" @add="select($event)" mime="image/" />
+    <FileAiDialog v-model="vcreate" @add="select($event); vcreate = false" />
+  </Teleport>
+
+  <Teleport to="body">
+    <FileUrlDialog v-model="vurls" @add="select($event); vurls = false" />
   </Teleport>
 </template>
 

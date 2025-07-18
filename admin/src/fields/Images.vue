@@ -2,6 +2,7 @@
   import gql from 'graphql-tag'
   import { VueDraggable } from 'vue-draggable-plus'
   import { useAppStore, useAuthStore } from '../stores'
+  import FileAiDialog from '../components/FileAiDialog.vue'
   import FileListItems from '../components/FileListItems.vue'
   import FileUrlDialog from '../components/FileUrlDialog.vue'
   import FileDialog from '../components/FileDialog.vue'
@@ -11,6 +12,7 @@
     components: {
       FileDetail,
       FileDialog,
+      FileAiDialog,
       FileUrlDialog,
       FileListItems,
       VueDraggable
@@ -39,6 +41,7 @@
         images: [],
         index: Math.floor(Math.random() * 100000),
         selected: null,
+        vcreate: false,
         vfiles: false,
         vurls: false,
       }
@@ -222,33 +225,46 @@
     </div>
 
     <div v-if="!readonly" class="add">
-      <v-btn v-if="auth.can('file:view')"
-        icon="mdi-button-cursor"
-        variant="flat"
-        @click="vfiles = true"
-      ></v-btn>
-      <v-btn
-        @click="vurls = true"
-        icon="mdi-link-variant-plus"
-        variant="flat"
-      ></v-btn>
-      <v-btn
-        icon="mdi-upload"
-        variant="flat">
-        <v-file-input
-          v-model="selected"
-          @update:modelValue="add($event)"
-          :accept="config.accept || 'image/*'"
-          :hide-input="true"
-          prepend-icon="mdi-upload"
-          multiple
-        ></v-file-input>
-      </v-btn>
+      <div class="icon-group">
+        <v-btn v-if="auth.can('file:view')"
+          icon="mdi-button-cursor"
+          variant="flat"
+          @click="vfiles = true"
+        ></v-btn>
+        <v-btn
+          @click="vurls = true"
+          icon="mdi-link-variant-plus"
+          variant="flat"
+        ></v-btn>
+      </div>
+      <div class="icon-group">
+        <v-btn
+          @click="vcreate = true"
+          icon="mdi-creation"
+          variant="flat"
+        ></v-btn>
+        <v-btn
+          icon="mdi-upload"
+          variant="flat">
+          <v-file-input
+            v-model="selected"
+            @update:modelValue="add($event)"
+            :accept="config.accept || 'image/*'"
+            :hide-input="true"
+            prepend-icon="mdi-upload"
+            multiple
+          ></v-file-input>
+        </v-btn>
+      </div>
     </div>
   </VueDraggable>
 
   <Teleport to="body">
     <FileDialog v-model="vfiles" @add="select($event)" :filter="{mime: 'image/'}" grid />
+  </Teleport>
+
+  <Teleport to="body">
+    <FileAiDialog v-model="vcreate" @add="select($event); vcreate = false" />
   </Teleport>
 
   <Teleport to="body">
@@ -278,6 +294,8 @@
 
   .images .add {
     border: 1px dashed #808080;
+    flex-flow: column;
+    flex-wrap: wrap;
   }
 
   .v-progress-linear {

@@ -112,7 +112,7 @@ class File extends Model
         $disk = Storage::disk( config( 'cms.disk', 'public' ) );
         $dir = rtrim( 'cms/' . \Aimeos\Cms\Tenancy::value(), '/' );
 
-        $name = $this->filename( $upload );
+        $name = $this->filename( $upload->getClientOriginalName() );
 
         if( !$disk->putFileAs( $dir, $upload, $name ) ) {
             throw new \RuntimeException( sprintf( 'Unable to store file "%s" to "%s"', $upload->getClientOriginalName(), $dir . '/' . $name ) );
@@ -143,6 +143,8 @@ class File extends Model
             $resource = Http::withOptions( ['stream' => true] )->get( $resource )->getBody()->detach();
         }
 
+        $filename = $resource instanceof UploadedFile ? $resource->getClientOriginalName() : (string) $this->name;
+
         $file = $manager->read( $resource );
 
         $this->previews = [];
@@ -151,7 +153,7 @@ class File extends Model
         foreach( $sizes as $size )
         {
             $image = ( clone $file )->scaleDown( $size['width'] ?? null, $size['height'] ?? null );
-            $path = $dir . '/' . $this->filename( (string) $this->name, $ext, $size );
+            $path = $dir . '/' . $this->filename( $filename, $ext, $size );
             $ptr = $image->encodeByExtension( $ext )->toFilePointer();
 
             if( $disk->put( $path, $ptr, 'public' ) ) {
@@ -429,9 +431,9 @@ class File extends Model
      */
     protected function filename( string $filename, ?string $ext = null, array $size = [] ) : string
     {
-        $regex = '/[[:cntrl:]]|[[:blank:]]|\/|\./smu';
+        $regex = '/([[:cntrl:]]|[[:blank:]]|\/|\.)+/smu';
 
-        $ext = $ext ?: preg_replace( $regex, '', pathinfo( $filename, PATHINFO_EXTENSION ) );
+        $ext = $ext ?: preg_replace( $regex, '-', pathinfo( $filename, PATHINFO_EXTENSION ) );
         $name = preg_replace( $regex, '', pathinfo( $filename, PATHINFO_FILENAME ) );
 
         $hash = substr( md5( microtime(true) . getmypid() . rand(0, 1000) ), -4 );

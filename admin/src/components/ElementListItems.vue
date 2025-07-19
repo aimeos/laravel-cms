@@ -501,9 +501,11 @@
 
       <div class="item-content" @click="$emit('select', item)" :class="{trashed: item.deleted_at}":title="title(item)">
         <div class="item-text">
-          <v-icon v-if="item.publish_at" class="publish-at" icon="mdi-clock-outline"></v-icon>
-          <span class="item-lang" v-if="item.lang">{{ item.lang }}</span>
-          <span class="item-title">{{ item.name }}</span>
+          <div class="item-head">
+            <v-icon v-if="item.publish_at" class="publish-at" icon="mdi-clock-outline"></v-icon>
+            <span class="item-lang" v-if="item.lang">{{ item.lang }}</span>
+            <span class="item-title">{{ item.name }}</span>
+          </div>
           <div class="item-type item-subtitle">{{ item.type }}</div>
         </div>
 

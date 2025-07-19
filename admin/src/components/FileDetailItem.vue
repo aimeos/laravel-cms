@@ -18,6 +18,7 @@
         translating: false,
         composing: false,
         cropper: null,
+        tabdesc: null,
         scaleX: 1,
         scaleY: 1,
       }
@@ -84,7 +85,7 @@
     methods: {
       composeText() {
         const lang = this.item.lang || 'en'
-        const prompt = 'Describe the content of the file in a few words in the language with the ISO code "' + lang + '":'
+        const prompt = 'Summarize the content of the file in a few words for a title tag in the language with the ISO code "' + lang + '":'
 
         this.composing = true
 
@@ -236,7 +237,7 @@
       <v-row>
         <v-col v-if="item" cols="12" class="preview">
           <div v-if="item.mime?.startsWith('image/')" ref="editorContainer" class="editor-container">
-            <img ref="image" :src="url(item.path, true)" class="element" />
+            <img ref="image" :src="url(item.path, true)" class="element" crossorigin="anonymous" />
 
             <div v-if="!readonly" class="floating-toolbar">
               <div class="toolbar-group">
@@ -254,15 +255,16 @@
             </div>
           </div>
           <video v-else-if="item.mime?.startsWith('video/')"
-            preload="metadata"
-            crossorigin="anonymous"
             :src="url(item.path)"
+            crossorigin="anonymous"
+            preload="metadata"
             class="element"
             controls
           ></video>
           <audio v-else-if="item.mime?.startsWith('audio/')"
-            preload="metadata"
             :src="url(item.path)"
+            crossorigin="anonymous"
+            preload="metadata"
             class="element"
             controls
           ></audio>
@@ -282,7 +284,7 @@
                   icon="mdi-translate"
                   variant="flat"
                   @click="translateText()" />
-              <v-btn v-if="item.mime?.startsWith('image/')"
+              <v-btn
                 :loading="composing"
                 icon="mdi-creation"
                 variant="flat"
@@ -290,17 +292,25 @@
               />
             </div>
           </v-label>
-          <v-textarea v-for="lang in desclangs" ref="description"
-            :readonly="readonly"
-            :modelValue="item.description?.[lang] || ''"
-            @update:modelValue="item.description[lang] = $event; $emit('update:item', item)"
-            :label="$gettext('Description (%{lang})', {lang: lang})"
-            variant="underlined"
-            counter="500"
-            rows="2"
-            auto-grow
-            clearable
-          ></v-textarea>
+
+          <v-tabs v-model="tabdesc">
+            <v-tab v-for="lang in desclangs" :value="lang">{{ lang }}</v-tab>
+          </v-tabs>
+          <v-window v-model="tabdesc">
+            <v-window-item v-for="lang in desclangs" :value="lang">
+              <v-textarea ref="description"
+                :readonly="readonly"
+                :modelValue="item.description?.[lang] || ''"
+                @update:modelValue="item.description[lang] = $event; $emit('update:item', item)"
+                :label="$gettext('Description (%{lang})', {lang: lang})"
+                variant="underlined"
+                counter="500"
+                rows="2"
+                auto-grow
+                clearable
+              ></v-textarea>
+            </v-window-item>
+          </v-window>
         </v-col>
       </v-row>
     </v-sheet>

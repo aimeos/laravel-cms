@@ -7,6 +7,7 @@ use Prism\Prism\ValueObjects\Media\Audio;
 use Prism\Prism\ValueObjects\Media\Image;
 use Prism\Prism\ValueObjects\Media\Video;
 use Prism\Prism\ValueObjects\Media\Document;
+use Prism\Prism\ValueObjects\ProviderTool;
 use Aimeos\Cms\GraphQL\Exception;
 use Aimeos\Cms\Models\File;
 
@@ -25,7 +26,15 @@ final class Compose
 
         $files = [];
         $prism = Prism::text()->using( config( 'cms.ai.text', 'gemini' ), config( 'cms.ai.text-model', 'gemini-2.0-flash' ) )
-            ->withSystemPrompt( view( 'cms::prompts.compose' )->render() . "\n" . ($args['context'] ?? '') );
+            ->withSystemPrompt( view( 'cms::prompts.compose' )->render() . "\n" . ($args['context'] ?? '') )
+            ->withTools( [new \Aimeos\Cms\Tools\Pages()] )
+            ->withMaxSteps( 10 );
+
+        $prism->whenProvider( 'gemini',
+            fn( $request ) => $request->withProviderTools( [
+                new ProviderTool( 'google_search' )
+            ] )
+        );
 
         if( !empty( $ids = $args['files'] ?? null ) )
         {

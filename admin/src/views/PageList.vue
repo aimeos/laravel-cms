@@ -20,6 +20,7 @@
 
     data: () => ({
       filter: {
+        view: 'tree',
         trashed: 'WITHOUT',
         publish: null,
         editor: null,
@@ -88,6 +89,13 @@
   </v-main>
 
   <AsideList v-model:filter="filter" :content="[{
+      key: 'view',
+      title: $gettext('View'),
+      items: [
+        { title: $gettext('Tree'), icon: 'mdi-file-tree', value: {'view': 'tree'} },
+        { title: $gettext('List'), icon: 'mdi-format-list-bulleted-square', value: {'view': 'list'} },
+      ]
+    }, {
       key: 'publish',
       title: $gettext('Publish'),
       items: [

@@ -212,9 +212,19 @@
           return Promise.resolve([])
         }
 
+        const publish = this.filter.publish || null
+        const trashed = this.filter.trashed || 'WITHOUT'
+        const filter = {...this.filter}
+
+        delete filter.trashed
+        delete filter.publish
+        delete filter.view
+
+        filter.parent_id = parent
+
         return this.$apollo.query({
-          query: gql`query($filter: PageFilter, $limit: Int!, $page: Int!, $trashed: Trashed) {
-            pages(filter: $filter, first: $limit, page: $page, trashed: $trashed) {
+          query: gql`query($filter: PageFilter, $limit: Int!, $page: Int!, $trashed: Trashed, $publish: Publish) {
+            pages(filter: $filter, first: $limit, page: $page, trashed: $trashed, publish: $publish) {
               data {
                 ${this.fields()}
               }
@@ -225,12 +235,11 @@
             }
           }`,
           variables: {
-            filter: {
-              parent_id: parent,
-            },
+            filter: filter,
             page: page,
             limit: limit,
-            trashed: this.filter.trashed || 'WITHOUT'
+            trashed: trashed,
+            publish: publish
           }
         }).then(result => {
           if(result.errors) {
@@ -647,6 +656,7 @@
 
         delete filter.trashed
         delete filter.publish
+        delete filter.view
 
         if(this.term) {
           filter.any = this.term
@@ -820,7 +830,7 @@
           this.items = []
           this.loading = true
 
-          const promise = filter.publish ? this.search() : this.fetch()
+          const promise = filter.view === 'list' ? this.search() : this.fetch()
 
           promise.then(result => {
             this.items = result.data

@@ -73,6 +73,13 @@
 
       remove(code) {
         delete this.item.meta[code]
+        this.$emit('change', true)
+
+        this.$nextTick(() => {
+          this.validate().then(valid => {
+            this.$emit('error', !valid)
+          })
+        })
       },
 
 

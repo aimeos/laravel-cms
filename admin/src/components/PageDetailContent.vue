@@ -46,7 +46,7 @@
           sections[name] = []
         }
 
-        for(const item of this.item.content) {
+        for(const item of (this.item.content || [])) {
           const name = item.group || 'main'
 
           if(!sections[name]) {
@@ -80,7 +80,7 @@
 
         Array.isArray(this.$refs.content)
           ? this.$refs.content.forEach(ref => ref.reset())
-          : this.$refs.content.reset()
+          : this.$refs.content?.reset()
       },
 
 
@@ -98,7 +98,7 @@
 
       validate() {
         const refs = Array.isArray(this.$refs.content) ? this.$refs.content : [this.$refs.content]
-        const promises = refs.map(ref => ref.validate())
+        const promises = refs.map(ref => ref?.validate())
 
         return Promise.all(promises).then(results => {
           return results.every(result => result)
@@ -140,7 +140,7 @@
       <PageDetailContentList v-else ref="content"
         :item="item"
         :assets="assets"
-        :content="item.content"
+        :content="item.content || []"
         :elements="elements"
         @error="$emit('error', $event)"
         @update:content="item.content = $event; this.$emit('change', 'content')"

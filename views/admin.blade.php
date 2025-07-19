@@ -9,7 +9,7 @@
 			<meta http-equiv="Content-Security-Policy" content="base-uri 'self'; default-src 'self'; style-src 'unsafe-inline' 'self'; img-src 'self' data:; }}">
 		@endif
 
-    <title>Pagible CMS Admin</title>
+    <title>PagibleAI CMS Admin</title>
 
     <script type="module" crossorigin src="{{ cmsasset('vendor/cms/admin/index.js') }}"></script>
     <link rel="stylesheet" crossorigin href="{{ cmsasset('vendor/cms/admin/index.css') }}">

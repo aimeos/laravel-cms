@@ -43,8 +43,8 @@
     },
 
     data: () => ({
-      tab: 'page',
-      aside: 'meta',
+      tab: 'editor',
+      aside: '',
       asidePage: 'meta',
       changed: {},
       errors: {},
@@ -55,6 +55,7 @@
       publishAt: null,
       translating: false,
       vhistory: false,
+      savecnt: 0,
     }),
 
     computed: {
@@ -419,6 +420,8 @@
             }
 
             this.invalidate()
+            this.savecnt++
+
             return true
           }).catch(error => {
             this.messages.add(this.$gettext('Error saving page'), 'error')
@@ -657,31 +660,31 @@
   <v-main class="page-details">
     <v-form @submit.prevent>
       <v-tabs fixed-tabs v-model="tab">
-        <v-tab value="page"
-          :class="{changed: changed.page, error: errors.page}"
-          @click="aside = asidePage">
-          {{ $gettext('Page') }}
+        <v-tab value="editor"
+          @click="aside = ''">
+          {{ $gettext('Editor') }}
         </v-tab>
         <v-tab value="content"
           :class="{changed: changed.content, error: errors.content}"
           @click="aside = 'count'">
           {{ $gettext('Content') }}
         </v-tab>
-        <v-tab value="preview"
-          @click="aside = ''">
-          {{ $gettext('Preview') }}
+        <v-tab value="page"
+          :class="{changed: changed.page, error: errors.page}"
+          @click="aside = asidePage">
+          {{ $gettext('Page') }}
         </v-tab>
       </v-tabs>
 
       <v-window v-model="tab">
 
-        <v-window-item value="page">
-          <PageDetailItem ref="page"
+        <v-window-item value="editor">
+          <PageDetailPreview
+            :save="{fcn: save, count: savecnt}"
             :item="item"
             :assets="assets"
-            @update:item="Object.assign(item, $event); changed.page = true"
-            @update:aside="asidePage = $event"
-            @error="errors.page = $event"
+            :elements="elements"
+            @change="changed.content = true"
           />
         </v-window-item>
 
@@ -695,13 +698,13 @@
           />
         </v-window-item>
 
-        <v-window-item value="preview">
-          <PageDetailPreview
-            :save="save"
+        <v-window-item value="page">
+          <PageDetailItem ref="page"
             :item="item"
             :assets="assets"
-            :elements="elements"
-            @change="changed.content = true"
+            @update:item="Object.assign(item, $event); changed.page = true"
+            @update:aside="asidePage = $event"
+            @error="errors.page = $event"
           />
         </v-window-item>
 

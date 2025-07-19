@@ -79,7 +79,7 @@
 
 
 @section('main')
-    <div class="cms-content">
+    <div class="cms-content" data-section="main">
         @foreach($content['main'] ?? [] as $item)
             @if($el = cmsref($page, $item))
                 <div id="{{ cmsid(@$item->id) }}" class="{{ cmsid(@$el->type) }}">
@@ -94,7 +94,7 @@
 
 
 @section('footer')
-    <footer class="cms-content">
+    <footer class="cms-content" data-section="footer">
         @foreach($content['footer'] ?? [] as $item)
             @if($el = cmsref($page, $item))
                 <div id="{{ cmsid(@$item->id) }}" class="{{ cmsid(@$el->type) }}">

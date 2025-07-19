@@ -1,7 +1,7 @@
 <script>
   import FieldsDialog from './FieldsDialog.vue'
   import SchemaDialog from './SchemaDialog.vue'
-  import { useAppStore, useAuthStore} from '../stores'
+  import { useAppStore, useAuthStore, useMessageStore } from '../stores'
   import { uid } from '../utils'
 
   export default {
@@ -11,7 +11,7 @@
     },
 
     props: {
-      'save': {type: Function, required: true},
+      'save': {type: Object, required: true},
       'item': {type: Object, required: true},
       'elements': {type: Object, required: true},
       'assets': {type: Object, default: () => ({})}
@@ -20,9 +20,11 @@
     emits: ['change'],
 
     setup() {
+      const messages = useMessageStore()
       const auth = useAuthStore()
       const app = useAppStore()
-      return { app, auth }
+
+      return { app, auth, messages }
     },
 
     data() {
@@ -30,6 +32,7 @@
         pos: null,
         index: null,
         element: null,
+        section: 'main',
         expanded: false,
         vschemas: false,
         vpreview: false,
@@ -38,8 +41,13 @@
     },
 
     mounted() {
-      window.addEventListener('message', this.message);
-      this.$refs.iframe.contentWindow.postMessage('init')
+      window.addEventListener('message', this.message)
+
+      this.$refs.iframe?.addEventListener('load', () => {
+        this.$refs.iframe?.contentWindow?.postMessage('init', '*')
+      })
+
+      this.messages.add(this.$gettext('Double-click to edit'), 'info')
     },
 
     beforeUnmount() {
@@ -51,7 +59,7 @@
         return this.app.urlpage
           .replace(/:domain/, this.item.domain || '')
           .replace(/:path/, this.item.path || '')
-          .replace(/\/+$/, '/')
+          .replace(/\/+$/, '')
       }
     },
 
@@ -108,7 +116,8 @@
             setTimeout(() => { this.vpreview = false }, 3000)
             break
           default:
-            this.index = this.item.content.findIndex(c => c.id === msg.data) ?? null
+            this.index = msg.data.id ? this.item.content.findIndex(c => c.id === msg.data.id) : null
+            this.section = msg.section || 'main'
         }
       },
 
@@ -120,7 +129,7 @@
         this.$emit('change', 'content')
         this.index = null
 
-        this.save(true).then(() => {
+        this.save.fcn(true).then(() => {
           this.$refs.iframe.contentWindow.postMessage('reload', this.url)
         })
       },
@@ -136,9 +145,17 @@
         this.pos = null
 
         this.$emit('change', 'content')
-        this.save(true).then(() => {
+        this.save.fcn(true).then(() => {
           this.$refs.iframe.contentWindow.postMessage('reload', this.url)
         })
+      }
+    },
+
+    watch: {
+      'save.count': function() {
+        if(this.save.count > 0) {
+          this.$refs.iframe.contentWindow.postMessage('reload', this.url)
+        }
       }
     }
   }
@@ -147,10 +164,10 @@
 <template>
   <div class="page-preview" ref="preview">
     <div v-if="index !== null" class="actions">
-      <v-btn icon="mdi-pencil" variant="text" @click="edit()"></v-btn>
-      <v-btn icon="mdi-table-row-plus-before" variant="text" @click="vschemas = true; pos = 0"></v-btn>
+      <v-btn v-if="index !== -1" icon="mdi-pencil" variant="text" @click="edit()"></v-btn>
+      <v-btn v-if="index !== -1" icon="mdi-table-row-plus-before" variant="text" @click="vschemas = true; pos = 0"></v-btn>
       <v-btn icon="mdi-table-row-plus-after" variant="text" @click="vschemas = true; pos = 1"></v-btn>
-      <v-btn icon="mdi-trash-can-outline" variant="text" @click="remove()"></v-btn>
+      <v-btn v-if="index !== -1" icon="mdi-trash-can-outline" variant="text" @click="remove()"></v-btn>
     </div>
     <div v-if="vpreview" class="preview-mode">
       {{ $gettext('Preview mode') }}
@@ -209,7 +226,8 @@
     left: 50%;
     z-index: 999;
     transform: translate(-50%, -50%);
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, 1fr);
+    grid-auto-flow: column;
     display: grid;
     gap: 10px;
   }

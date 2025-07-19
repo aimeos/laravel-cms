@@ -3,27 +3,32 @@
  */
 
 if (window.self !== window.top) {
+    let trustedOrigin
+
+    // Handle messages from parent window
+    window.addEventListener('message', msg => {
+        if(trustedOrigin && trustedOrigin !== msg.origin) return
+
+        switch(msg.data) {
+            case 'init': trustedOrigin = msg.origin; break
+            case 'reload': location.reload(); break
+        }
+    });
+
+
     document.addEventListener('DOMContentLoaded', () => {
-        let trustedOrigin
-
-        // Handle messages from parent window
-        window.addEventListener('message', msg => {
-            if(trustedOrigin && trustedOrigin !== msg.origin) return
-
-            switch(msg.data) {
-                case 'init': trustedOrigin = msg.origin; break
-                case 'reload': location.reload(); break
-            }
-        });
-
 
         // Show actions menu
         document.querySelectorAll('.cms-content').forEach(el => {
+            const section = el.dataset.section || 'main'
+
+            if(!el.children.length) {
+                el.classList.add('placeholder')
+            }
+
             el.addEventListener('dblclick', ev => {
-                const node = ev.target?.closest('[id]');
-                if(node?.id) {
-                    window.parent.postMessage(node.id, trustedOrigin || '*');
-                }
+                const id = ev.target?.closest('[id]')?.id || -1;
+                window.parent.postMessage({id: id, section: section}, trustedOrigin || '*');
             });
         });
 

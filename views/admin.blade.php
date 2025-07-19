@@ -18,11 +18,11 @@
     <div id="app"
       data-urlgraphql="{{ route('graphql') }}"
       data-urladmin="{{ route('cms.admin', [], false) }}"
-      data-urlproxy="{{ route('cms.admin.proxy', ['url' => ':url']) }}"
+      data-urlproxy="{{ route('cms.proxy', ['url' => ':url']) }}"
       data-urlpage="{{ route('cms.page', ['path' => ':path']) }}"
       data-urlfile="{{ \Illuminate\Support\Facades\Storage::disk( config( 'cms.disk', 'public' ) )->url( '' ) }}"
-      data-config="{{ json_encode( config( 'cms.config', \stdClass ) ) }}"
-      data-schemas="{{ json_encode( config( 'cms.schemas', \stdClass ) ) }}"
+      data-config="{{ json_encode( config( 'cms.config', new \stdClass() ) ) }}"
+      data-schemas="{{ json_encode( config( 'cms.schemas', new \stdClass() ) ) }}"
     ></div>
   </body>
 </html>

@@ -171,6 +171,8 @@
         </div>
       </v-layout>
     </transition-group>
+
+    <v-snackbar-queue v-model="messages.queue"></v-snackbar-queue>
   </v-app>
 </template>
 

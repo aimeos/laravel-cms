@@ -16,10 +16,10 @@
     }),
 
     setup() {
-      const message = useMessageStore()
+      const messages = useMessageStore()
       const auth = useAuthStore()
 
-      return { auth, message }
+      return { auth, messages }
     },
 
     created() {
@@ -63,7 +63,7 @@
         })?.path
 
         if(!url) {
-          this.message.add(this.$gettext('Access denied'), 'error')
+          this.messages.add(this.$gettext('Access denied'), 'error')
         }
 
         return url || '/'
@@ -103,8 +103,6 @@
       </v-card-actions>
     </v-card>
   </v-form>
-
-  <v-snackbar-queue v-model="message.queue"></v-snackbar-queue>
 </template>
 
 <style>

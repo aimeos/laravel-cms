@@ -41,19 +41,19 @@ msgstr "Ingen"
 #: src/components/ElementDetailItem.vue:77
 #: src/components/ElementDetailRefs.vue:96
 #: src/components/ElementListItems.vue:465
-#: src/components/FileDetailItem.vue:216
+#: src/components/FileDetailItem.vue:219
 #: src/components/FileDetailRefs.vue:101
 #: src/components/FileDetailRefs.vue:123
 #: src/components/FileListItems.vue:497
 #: src/fields/Audio.vue:59
-#: src/fields/File.vue:244
-#: src/fields/Image.vue:85
+#: src/fields/File.vue:243
+#: src/fields/Image.vue:101
 #: src/fields/Video.vue:61
 msgid "Name"
 msgstr "Navn"
 
 #: src/components/ElementDetailItem.vue:91
-#: src/components/FileDetailItem.vue:230
+#: src/components/FileDetailItem.vue:233
 #: src/components/FileListItems.vue:503
 #: src/components/PageDetailItemProps.vue:163
 msgid "Language"
@@ -70,7 +70,7 @@ msgid "no"
 msgstr "nej"
 
 #: src/components/ElementDetailRefs.vue:89
-#: src/components/Navigation.vue:23
+#: src/components/Navigation.vue:36
 #: src/components/SchemaDialog.vue:35
 #: src/views/ElementList.vue:69
 msgid "Shared elements"
@@ -100,7 +100,7 @@ msgstr "Type"
 #: src/components/FileDetailRefs.vue:145
 #: src/views/ElementList.vue:98
 #: src/views/FileList.vue:95
-#: src/views/PageList.vue:95
+#: src/views/PageList.vue:103
 msgid "Published"
 msgstr "Udgivet"
 
@@ -116,30 +116,30 @@ msgstr "Udgivet"
 #: src/components/FileListItems.vue:207
 #: src/components/FileListItems.vue:249
 #: src/components/FileListItems.vue:286
-#: src/components/PageDetailContentList.vue:171
+#: src/components/PageDetailContentList.vue:218
 #: src/components/PageListItems.vue:67
 #: src/components/PageListItems.vue:101
-#: src/components/PageListItems.vue:163
-#: src/components/PageListItems.vue:206
-#: src/components/PageListItems.vue:274
-#: src/components/PageListItems.vue:337
-#: src/components/PageListItems.vue:402
-#: src/components/PageListItems.vue:456
-#: src/components/PageListItems.vue:552
-#: src/components/PageListItems.vue:593
-#: src/components/PageListItems.vue:635
-#: src/components/PageListItems.vue:696
+#: src/components/PageListItems.vue:168
+#: src/components/PageListItems.vue:211
+#: src/components/PageListItems.vue:288
+#: src/components/PageListItems.vue:351
+#: src/components/PageListItems.vue:416
+#: src/components/PageListItems.vue:470
+#: src/components/PageListItems.vue:566
+#: src/components/PageListItems.vue:607
+#: src/components/PageListItems.vue:649
+#: src/components/PageListItems.vue:711
 #: src/fields/File.vue:55
-#: src/fields/Images.vue:58
+#: src/fields/Images.vue:61
 #: src/views/ElementDetail.vue:107
 #: src/views/ElementDetail.vue:156
 #: src/views/ElementDetail.vue:211
 #: src/views/FileDetail.vue:45
 #: src/views/FileDetail.vue:94
 #: src/views/FileDetail.vue:149
-#: src/views/PageDetail.vue:288
-#: src/views/PageDetail.vue:340
-#: src/views/PageDetail.vue:532
+#: src/views/PageDetail.vue:289
+#: src/views/PageDetail.vue:341
+#: src/views/PageDetail.vue:535
 msgid "Permission denied"
 msgstr "Tilladelse nægtet"
 
@@ -169,8 +169,8 @@ msgstr "Fejl ved hentning af delte elementer"
 
 #: src/components/ElementListItems.vue:417
 #: src/components/FileListItems.vue:446
-#: src/components/PageDetailContentList.vue:371
-#: src/components/PageListItems.vue:851
+#: src/components/PageDetailContentList.vue:418
+#: src/components/PageListItems.vue:866
 msgid "Actions"
 msgstr "Handlinger"
 
@@ -178,17 +178,17 @@ msgstr "Handlinger"
 #: src/components/ElementListItems.vue:488
 #: src/components/FileListItems.vue:450
 #: src/components/FileListItems.vue:523
-#: src/components/PageListItems.vue:855
-#: src/components/PageListItems.vue:911
+#: src/components/PageListItems.vue:870
+#: src/components/PageListItems.vue:932
 #: src/views/ElementDetail.vue:295
 #: src/views/ElementDetail.vue:310
 #: src/views/ElementList.vue:95
 #: src/views/FileDetail.vue:229
 #: src/views/FileDetail.vue:244
 #: src/views/FileList.vue:92
-#: src/views/PageDetail.vue:629
-#: src/views/PageDetail.vue:644
-#: src/views/PageList.vue:92
+#: src/views/PageDetail.vue:632
+#: src/views/PageDetail.vue:647
+#: src/views/PageList.vue:100
 msgid "Publish"
 msgstr "Udgiv"
 
@@ -200,8 +200,8 @@ msgstr "Tilføj element"
 #: src/components/ElementListItems.vue:491
 #: src/components/FileListItems.vue:456
 #: src/components/FileListItems.vue:526
-#: src/components/PageListItems.vue:867
-#: src/components/PageListItems.vue:989
+#: src/components/PageListItems.vue:882
+#: src/components/PageListItems.vue:1010
 msgid "Trash"
 msgstr "Affald"
 
@@ -209,8 +209,8 @@ msgstr "Affald"
 #: src/components/ElementListItems.vue:494
 #: src/components/FileListItems.vue:459
 #: src/components/FileListItems.vue:529
-#: src/components/PageListItems.vue:870
-#: src/components/PageListItems.vue:992
+#: src/components/PageListItems.vue:885
+#: src/components/PageListItems.vue:1013
 msgid "Restore"
 msgstr "Gendan"
 
@@ -218,15 +218,15 @@ msgstr "Gendan"
 #: src/components/ElementListItems.vue:497
 #: src/components/FileListItems.vue:462
 #: src/components/FileListItems.vue:532
-#: src/components/PageListItems.vue:873
-#: src/components/PageListItems.vue:995
+#: src/components/PageListItems.vue:888
+#: src/components/PageListItems.vue:1016
 msgid "Purge"
 msgstr "Udrensning"
 
 #: src/components/ElementListItems.vue:444
 #: src/components/FileListItems.vue:473
-#: src/components/PageDetailContentList.vue:384
-#: src/components/PageListItems.vue:882
+#: src/components/PageDetailContentList.vue:440
+#: src/components/PageListItems.vue:897
 msgid "Search for"
 msgstr "Søg efter"
 
@@ -247,25 +247,26 @@ msgstr "Ældste"
 #: src/components/ElementListItems.vue:471
 #: src/components/FileListItems.vue:506
 #: src/fields/Audio.vue:61
-#: src/fields/File.vue:246
-#: src/fields/Image.vue:87
+#: src/fields/File.vue:245
+#: src/fields/Image.vue:103
 #: src/fields/Video.vue:63
 #: src/views/ElementList.vue:112
 #: src/views/FileList.vue:109
-#: src/views/PageList.vue:109
+#: src/views/PageDetail.vue:665
+#: src/views/PageList.vue:117
 msgid "Editor"
 msgstr "Redaktør"
 
-#: src/components/ElementListItems.vue:519
-#: src/components/FileListItems.vue:561
+#: src/components/ElementListItems.vue:521
+#: src/components/FileListItems.vue:564
 #: src/components/HistoryDialog.vue:90
-#: src/components/PageListItems.vue:1024
+#: src/components/PageListItems.vue:1048
 msgid "Loading"
 msgstr "Indlæsning"
 
-#: src/components/ElementListItems.vue:523
-#: src/components/FileListItems.vue:566
-#: src/components/PageListItems.vue:1029
+#: src/components/ElementListItems.vue:525
+#: src/components/FileListItems.vue:569
+#: src/components/PageListItems.vue:1053
 msgid "No entries found"
 msgstr "Ingen poster fundet"
 
@@ -273,41 +274,71 @@ msgstr "Ingen poster fundet"
 msgid "Content Element"
 msgstr "Indholdselement"
 
-#: src/components/FileDetailItem.vue:241
+#: src/components/FileAiDialog.vue:100
+msgid "Context in JSON format"
+msgstr "Kontekst i JSON-format"
+
+#: src/components/FileAiDialog.vue:172
+#: src/components/FileAiDialog.vue:191
+msgid "Create image"
+msgstr "Opret billede"
+
+#: src/components/FileAiDialog.vue:178
+msgid "Describe the image"
+msgstr "Beskriv billedet"
+
+#: src/components/FileAiDialog.vue:196
+msgid "Generated images"
+msgstr "Genererede billeder"
+
+#: src/components/FileAiDialog.vue:200
+#: src/components/FileAiDialog.vue:215
+msgid "Remove"
+msgstr "Fjerne"
+
+#: src/components/FileAiDialog.vue:211
+msgid "Use images of this style"
+msgstr "Brug billeder i denne stil"
+
+#: src/components/FileAiDialog.vue:225
+msgid "Select similar images"
+msgstr "Vælg lignende billeder"
+
+#: src/components/FileDetailItem.vue:244
 msgid "Rotate counter-clockwise"
 msgstr "Drej mod uret"
 
-#: src/components/FileDetailItem.vue:242
+#: src/components/FileDetailItem.vue:245
 msgid "Rotate clockwise"
 msgstr "Drej med uret"
 
-#: src/components/FileDetailItem.vue:245
+#: src/components/FileDetailItem.vue:248
 msgid "Flip horizontally"
 msgstr "Vend vandret"
 
-#: src/components/FileDetailItem.vue:246
+#: src/components/FileDetailItem.vue:249
 msgid "Flip vertically"
 msgstr "Vend lodret"
 
-#: src/components/FileDetailItem.vue:249
+#: src/components/FileDetailItem.vue:252
 msgid "Reset"
 msgstr "Nulstil"
 
-#: src/components/FileDetailItem.vue:250
+#: src/components/FileDetailItem.vue:253
 msgid "Download"
 msgstr "Download"
 
-#: src/components/FileDetailItem.vue:276
+#: src/components/FileDetailItem.vue:280
 msgid "Descriptions"
 msgstr "Beskrivelser"
 
-#: src/components/FileDetailItem.vue:295
+#: src/components/FileDetailItem.vue:305
 msgid "Description (%{lang})"
 msgstr "Beskrivelse (%{lang})"
 
 #: src/components/FileDetailRefs.vue:94
-#: src/components/Navigation.vue:19
-#: src/views/PageList.vue:67
+#: src/components/Navigation.vue:30
+#: src/views/PageList.vue:68
 msgid "Pages"
 msgstr "Sider"
 
@@ -320,7 +351,7 @@ msgid "Versions"
 msgstr "Versioner"
 
 #: src/components/FileDialog.vue:26
-#: src/components/Navigation.vue:27
+#: src/components/Navigation.vue:42
 msgid "Files"
 msgstr "Filer"
 
@@ -359,37 +390,37 @@ msgstr "Listevisning"
 
 #: src/components/FileListItems.vue:500
 #: src/fields/Audio.vue:60
-#: src/fields/File.vue:245
-#: src/fields/Image.vue:86
+#: src/fields/File.vue:244
+#: src/fields/Image.vue:102
 #: src/fields/Video.vue:62
 msgid "Mime"
 msgstr "Mime"
 
-#: src/components/FileUrlDialog.vue:135
+#: src/components/FileUrlDialog.vue:134
 msgid "At least one file is not of type \"%{mime}*\""
 msgstr "Mindst én fil er ikke af typen \"%{mime}*\""
 
-#: src/components/FileUrlDialog.vue:136
+#: src/components/FileUrlDialog.vue:135
 msgid "The file is not of type \"%{mime}*\""
 msgstr "Filen er ikke af typen \"%{mime}*\""
 
-#: src/components/FileUrlDialog.vue:152
+#: src/components/FileUrlDialog.vue:151
 msgid "Add file"
 msgstr "Tilføj fil"
 
-#: src/components/FileUrlDialog.vue:157
+#: src/components/FileUrlDialog.vue:156
 msgid "Add files by URL"
 msgstr "Tilføj filer via URL"
 
-#: src/components/FileUrlDialog.vue:176
+#: src/components/FileUrlDialog.vue:167
 msgid "Enter one URL per line"
 msgstr "Indtast en URL pr. linje"
 
-#: src/components/FileUrlDialog.vue:190
+#: src/components/FileUrlDialog.vue:181
 msgid "Enter URL"
 msgstr "Indtast URL"
 
-#: src/components/FileUrlDialog.vue:198
+#: src/components/FileUrlDialog.vue:189
 msgid "Remove file"
 msgstr "Fjern fil"
 
@@ -433,86 +464,94 @@ msgstr "sidebjælke"
 msgid "aside"
 msgstr "til side"
 
-#: src/components/PageDetailContentList.vue:178
+#: src/components/PageDetailContentList.vue:225
 msgid "Element not found"
 msgstr "Element ikke fundet"
 
-#: src/components/PageDetailContentList.vue:183
+#: src/components/PageDetailContentList.vue:230
 msgid "Element is already shared"
 msgstr "Elementet er allerede delt"
 
-#: src/components/PageDetailContentList.vue:243
+#: src/components/PageDetailContentList.vue:290
 msgid "Unable to make element shared"
 msgstr "Kan ikke gøre elementet delt"
 
-#: src/components/PageDetailContentList.vue:286
+#: src/components/PageDetailContentList.vue:333
 msgid "type"
 msgstr "type"
 
-#: src/components/PageDetailContentList.vue:287
+#: src/components/PageDetailContentList.vue:334
 msgid "state"
 msgstr "stat"
 
-#: src/components/PageDetailContentList.vue:288
+#: src/components/PageDetailContentList.vue:335
 msgid "valid"
 msgstr "gyldig"
 
-#: src/components/PageDetailContentList.vue:289
+#: src/components/PageDetailContentList.vue:336
 msgid "changed"
 msgstr "ændret"
 
-#: src/components/PageDetailContentList.vue:290
+#: src/components/PageDetailContentList.vue:337
 msgid "error"
 msgstr "fejl"
 
-#: src/components/PageDetailContentList.vue:314
+#: src/components/PageDetailContentList.vue:361
 msgid "Content element not found"
 msgstr "Indholdselement ikke fundet"
 
-#: src/components/PageDetailContentList.vue:321
+#: src/components/PageDetailContentList.vue:368
 msgid "Element is not shared"
 msgstr "Elementet er ikke delt"
 
-#: src/components/PageDetailContentList.vue:375
-#: src/components/PageDetailContentList.vue:435
+#: src/components/PageDetailContentList.vue:422
+#: src/components/PageDetailContentList.vue:473
 msgid "Delete"
 msgstr "Sletning"
 
-#: src/components/PageDetailContentList.vue:411
-#: src/components/PageListItems.vue:929
+#: src/components/PageDetailContentList.vue:425
+#: src/components/PageDetailContentList.vue:467
+#: src/components/PageListItems.vue:950
 msgid "Copy"
 msgstr "Kopi"
 
-#: src/components/PageDetailContentList.vue:414
-#: src/components/PageListItems.vue:926
+#: src/components/PageDetailContentList.vue:428
+#: src/components/PageDetailContentList.vue:470
+#: src/components/PageListItems.vue:947
 msgid "Cut"
 msgstr "Skær"
 
-#: src/components/PageDetailContentList.vue:420
+#: src/components/PageDetailContentList.vue:431
+#: src/components/PageListItems.vue:953
+#: src/components/PageListItems.vue:971
+msgid "Paste"
+msgstr "Indsæt"
+
+#: src/components/PageDetailContentList.vue:479
 msgid "Paste before"
 msgstr "Indsæt før"
 
-#: src/components/PageDetailContentList.vue:423
+#: src/components/PageDetailContentList.vue:482
 msgid "Paste after"
 msgstr "Indsæt efter"
 
-#: src/components/PageDetailContentList.vue:426
+#: src/components/PageDetailContentList.vue:485
 msgid "Insert before"
 msgstr "Indsæt før"
 
-#: src/components/PageDetailContentList.vue:429
+#: src/components/PageDetailContentList.vue:488
 msgid "Insert after"
 msgstr "Indsæt efter"
 
-#: src/components/PageDetailContentList.vue:438
+#: src/components/PageDetailContentList.vue:494
 msgid "Make shared"
 msgstr "Gør fælles"
 
-#: src/components/PageDetailContentList.vue:441
+#: src/components/PageDetailContentList.vue:497
 msgid "Merge copy"
 msgstr "Flet kopi"
 
-#: src/components/PageDetailContentList.vue:446
+#: src/components/PageDetailContentList.vue:502
 msgid "Shared element"
 msgstr "Fælles element"
 
@@ -631,7 +670,11 @@ msgstr "URL'en er ikke gyldig"
 msgid "Redirect URL"
 msgstr "Omdiriger URL"
 
-#: src/components/PageDetailPreview.vue:156
+#: src/components/PageDetailPreview.vue:50
+msgid "Double-click to edit"
+msgstr "Dobbeltklik for at redigere"
+
+#: src/components/PageDetailPreview.vue:173
 msgid "Preview mode"
 msgstr "Forhåndsvisningstilstand"
 
@@ -640,95 +683,90 @@ msgid "Error adding root page"
 msgstr "Fejl ved tilføjelse af rodside"
 
 #: src/components/PageListItems.vue:135
-#: src/components/PageListItems.vue:446
+#: src/components/PageListItems.vue:460
 msgid "Error moving page"
 msgstr "Fejl ved flytning af side"
 
-#: src/components/PageListItems.vue:198
+#: src/components/PageListItems.vue:203
 msgid "Error trashing page"
 msgstr "Fejl ved sletning af side"
 
-#: src/components/PageListItems.vue:237
+#: src/components/PageListItems.vue:251
 msgid "Error fetching pages"
 msgstr "Fejl ved hentning af sider"
 
-#: src/components/PageListItems.vue:322
+#: src/components/PageListItems.vue:336
 msgid "Error inserting page"
 msgstr "Fejl ved indsættelse af side"
 
-#: src/components/PageListItems.vue:378
+#: src/components/PageListItems.vue:392
 msgid "Error restoring page"
 msgstr "Fejl ved gendannelse af side"
 
-#: src/components/PageListItems.vue:538
+#: src/components/PageListItems.vue:552
 msgid "Error copying page"
 msgstr "Fejl ved kopiering af side"
 
-#: src/components/PageListItems.vue:542
-#: src/views/PageDetail.vue:240
+#: src/components/PageListItems.vue:556
+#: src/views/PageDetail.vue:241
 msgid "Error fetching page"
 msgstr "Fejl ved hentning af side"
 
-#: src/components/PageListItems.vue:585
-#: src/views/PageDetail.vue:322
+#: src/components/PageListItems.vue:599
+#: src/views/PageDetail.vue:323
 msgid "Error publishing page"
 msgstr "Fejl ved udgivelse af side"
 
-#: src/components/PageListItems.vue:627
+#: src/components/PageListItems.vue:641
 msgid "Error purging page"
 msgstr "Side til udrensning af fejl"
 
-#: src/components/PageListItems.vue:676
+#: src/components/PageListItems.vue:691
 msgid "Error searching pages"
 msgstr "Fejlsøgning på sider"
 
-#: src/components/PageListItems.vue:724
-#: src/views/PageDetail.vue:424
+#: src/components/PageListItems.vue:739
+#: src/views/PageDetail.vue:427
 msgid "Error saving page"
 msgstr "Fejl ved lagring af side"
 
-#: src/components/PageListItems.vue:858
-#: src/components/PageListItems.vue:917
+#: src/components/PageListItems.vue:873
+#: src/components/PageListItems.vue:938
 msgid "Enable"
 msgstr "Gør det muligt"
 
-#: src/components/PageListItems.vue:861
-#: src/components/PageListItems.vue:914
+#: src/components/PageListItems.vue:876
+#: src/components/PageListItems.vue:935
 msgid "Disable"
 msgstr "Deaktiver"
 
-#: src/components/PageListItems.vue:920
+#: src/components/PageListItems.vue:941
 msgid "Hide in menu"
 msgstr "Skjul i menuen"
 
-#: src/components/PageListItems.vue:932
-#: src/components/PageListItems.vue:950
-msgid "Paste"
-msgstr "Indsæt"
-
-#: src/components/PageListItems.vue:936
-#: src/components/PageListItems.vue:954
-#: src/components/PageListItems.vue:972
+#: src/components/PageListItems.vue:957
+#: src/components/PageListItems.vue:975
+#: src/components/PageListItems.vue:993
 msgid "Before"
 msgstr "Før"
 
-#: src/components/PageListItems.vue:941
-#: src/components/PageListItems.vue:959
-#: src/components/PageListItems.vue:977
+#: src/components/PageListItems.vue:962
+#: src/components/PageListItems.vue:980
+#: src/components/PageListItems.vue:998
 msgid "Into"
 msgstr "Ind i"
 
-#: src/components/PageListItems.vue:946
-#: src/components/PageListItems.vue:964
-#: src/components/PageListItems.vue:982
+#: src/components/PageListItems.vue:967
+#: src/components/PageListItems.vue:985
+#: src/components/PageListItems.vue:1003
 msgid "After"
 msgstr "Efter"
 
-#: src/components/PageListItems.vue:968
+#: src/components/PageListItems.vue:989
 msgid "Insert"
 msgstr "Indsæt"
 
-#: src/components/PageListItems.vue:1011
+#: src/components/PageListItems.vue:1034
 msgid "New"
 msgstr "Ny"
 
@@ -769,8 +807,8 @@ msgid "Logout"
 msgstr "Log ud"
 
 #: src/fields/Audio.vue:62
-#: src/fields/File.vue:247
-#: src/fields/Image.vue:88
+#: src/fields/File.vue:246
+#: src/fields/Image.vue:104
 #: src/fields/Video.vue:64
 msgid "Updated"
 msgstr "Opdateret"
@@ -870,7 +908,7 @@ msgstr "Element"
 
 #: src/views/ElementDetail.vue:286
 #: src/views/FileDetail.vue:220
-#: src/views/PageDetail.vue:620
+#: src/views/PageDetail.vue:623
 msgid "Save"
 msgstr "Gemme"
 
@@ -887,52 +925,52 @@ msgstr "Brugt af"
 #: src/views/FileList.vue:94
 #: src/views/FileList.vue:103
 #: src/views/FileList.vue:111
-#: src/views/PageList.vue:40
-#: src/views/PageList.vue:94
-#: src/views/PageList.vue:103
+#: src/views/PageList.vue:41
+#: src/views/PageList.vue:102
 #: src/views/PageList.vue:111
+#: src/views/PageList.vue:119
 msgid "All"
 msgstr "Alle"
 
 #: src/views/ElementList.vue:99
 #: src/views/FileList.vue:96
-#: src/views/PageList.vue:96
+#: src/views/PageList.vue:104
 msgid "Scheduled"
 msgstr "Planlagt"
 
 #: src/views/ElementList.vue:100
 #: src/views/FileList.vue:97
-#: src/views/PageList.vue:97
+#: src/views/PageList.vue:105
 msgid "Drafts"
 msgstr "Udkast"
 
 #: src/views/ElementList.vue:104
 #: src/views/FileList.vue:101
-#: src/views/PageList.vue:101
+#: src/views/PageList.vue:109
 msgid "Trashed"
 msgstr "Smadret"
 
 #: src/views/ElementList.vue:107
 #: src/views/FileList.vue:104
-#: src/views/PageList.vue:104
+#: src/views/PageList.vue:112
 msgid "Available only"
 msgstr "Kun tilgængelig"
 
 #: src/views/ElementList.vue:108
 #: src/views/FileList.vue:105
-#: src/views/PageList.vue:105
+#: src/views/PageList.vue:113
 msgid "Only trashed"
 msgstr "Kun smadret"
 
 #: src/views/ElementList.vue:115
 #: src/views/FileList.vue:112
-#: src/views/PageList.vue:112
+#: src/views/PageList.vue:120
 msgid "Edited by me"
 msgstr "Redigeret af mig"
 
 #: src/views/ElementList.vue:119
 #: src/views/FileList.vue:116
-#: src/views/PageList.vue:116
+#: src/views/PageList.vue:124
 msgid "Languages"
 msgstr "Sprog"
 
@@ -990,39 +1028,47 @@ msgstr "Adgangskode"
 msgid "Error"
 msgstr "Fejl"
 
-#: src/views/PageDetail.vue:314
+#: src/views/PageDetail.vue:315
 msgid "Page published successfully"
 msgstr "Siden er udgivet med succes"
 
-#: src/views/PageDetail.vue:317
+#: src/views/PageDetail.vue:318
 msgid "Page scheduled for publishing at %{date}"
 msgstr "Siden er planlagt til udgivelse på %{date}"
 
-#: src/views/PageDetail.vue:350
+#: src/views/PageDetail.vue:351
 msgid "There are invalid fields, please resolve the errors first"
 msgstr "Der er ugyldige felter, vær venlig at løse fejlene først"
 
-#: src/views/PageDetail.vue:418
+#: src/views/PageDetail.vue:419
 msgid "Page saved successfully"
 msgstr "Siden er gemt med succes"
 
-#: src/views/PageDetail.vue:433
+#: src/views/PageDetail.vue:436
 msgid "No page schema for \"content\" found"
 msgstr "Intet sideskema for \"indhold\" fundet"
 
-#: src/views/PageDetail.vue:569
+#: src/views/PageDetail.vue:572
 msgid "Error fetching page versions"
 msgstr "Fejl ved hentning af sideversioner"
 
-#: src/views/PageDetail.vue:594
-#: src/views/PageDetail.vue:663
+#: src/views/PageDetail.vue:597
+#: src/views/PageDetail.vue:675
 msgid "Page"
 msgstr "Side"
 
-#: src/views/PageDetail.vue:668
+#: src/views/PageDetail.vue:670
 msgid "Content"
 msgstr "Indhold"
 
-#: src/views/PageDetail.vue:672
-msgid "Preview"
-msgstr "Forhåndsvisning"
+#: src/views/PageList.vue:93
+msgid "View"
+msgstr "Udsigt"
+
+#: src/views/PageList.vue:95
+msgid "Tree"
+msgstr "Træ"
+
+#: src/views/PageList.vue:96
+msgid "List"
+msgstr "Liste"

@@ -81,7 +81,7 @@
 
 
       update(what, value) {
-        this.item[what] = value.trim()
+        this.item[what] = typeof value === 'string' ? value.trim() : value
         this.$emit('change', true)
       },
 

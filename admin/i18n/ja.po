@@ -9,6 +9,10 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "Project-Id-Version: PACKAGE VERSION\n"
 
+#: src/App.vue:110
+msgid "None"
+msgstr "なし"
+
 #: src/components/AsideMeta.vue:17
 msgid "id"
 msgstr "アイドル"
@@ -33,15 +37,10 @@ msgstr "削除"
 msgid "Meta data"
 msgstr "メタデータ"
 
-#: src/components/ElementDetailItem.vue:30
-#: src/components/PageDetailItemProps.vue:36
-msgid "None"
-msgstr "なし"
-
-#: src/components/ElementDetailItem.vue:77
+#: src/components/ElementDetailItem.vue:68
 #: src/components/ElementDetailRefs.vue:96
 #: src/components/ElementListItems.vue:465
-#: src/components/FileDetailItem.vue:219
+#: src/components/FileDetailItem.vue:208
 #: src/components/FileDetailRefs.vue:101
 #: src/components/FileDetailRefs.vue:123
 #: src/components/FileListItems.vue:497
@@ -52,10 +51,10 @@ msgstr "なし"
 msgid "Name"
 msgstr "名称"
 
-#: src/components/ElementDetailItem.vue:91
-#: src/components/FileDetailItem.vue:233
+#: src/components/ElementDetailItem.vue:80
+#: src/components/FileDetailItem.vue:220
 #: src/components/FileListItems.vue:503
-#: src/components/PageDetailItemProps.vue:163
+#: src/components/PageDetailItemProps.vue:150
 msgid "Language"
 msgstr "言語"
 
@@ -72,7 +71,7 @@ msgstr "いいえ"
 #: src/components/ElementDetailRefs.vue:89
 #: src/components/Navigation.vue:36
 #: src/components/SchemaDialog.vue:35
-#: src/views/ElementList.vue:69
+#: src/views/ElementList.vue:76
 msgid "Shared elements"
 msgstr "共有要素"
 
@@ -98,9 +97,9 @@ msgstr "タイプ"
 
 #: src/components/ElementDetailRefs.vue:118
 #: src/components/FileDetailRefs.vue:145
-#: src/views/ElementList.vue:98
-#: src/views/FileList.vue:95
-#: src/views/PageList.vue:103
+#: src/views/ElementList.vue:105
+#: src/views/FileList.vue:102
+#: src/views/PageList.vue:110
 msgid "Published"
 msgstr "出版"
 
@@ -169,7 +168,7 @@ msgstr "共有要素の取得エラー"
 
 #: src/components/ElementListItems.vue:417
 #: src/components/FileListItems.vue:446
-#: src/components/PageDetailContentList.vue:418
+#: src/components/PageDetailContentList.vue:411
 #: src/components/PageListItems.vue:866
 msgid "Actions"
 msgstr "行動"
@@ -182,13 +181,13 @@ msgstr "行動"
 #: src/components/PageListItems.vue:932
 #: src/views/ElementDetail.vue:295
 #: src/views/ElementDetail.vue:310
-#: src/views/ElementList.vue:95
+#: src/views/ElementList.vue:102
 #: src/views/FileDetail.vue:229
 #: src/views/FileDetail.vue:244
-#: src/views/FileList.vue:92
+#: src/views/FileList.vue:99
 #: src/views/PageDetail.vue:632
 #: src/views/PageDetail.vue:647
-#: src/views/PageList.vue:100
+#: src/views/PageList.vue:107
 msgid "Publish"
 msgstr "出版"
 
@@ -225,7 +224,7 @@ msgstr "パージ"
 
 #: src/components/ElementListItems.vue:444
 #: src/components/FileListItems.vue:473
-#: src/components/PageDetailContentList.vue:440
+#: src/components/PageDetailContentList.vue:433
 #: src/components/PageListItems.vue:897
 msgid "Search for"
 msgstr "検索"
@@ -250,10 +249,10 @@ msgstr "最高齢"
 #: src/fields/File.vue:245
 #: src/fields/Image.vue:103
 #: src/fields/Video.vue:63
-#: src/views/ElementList.vue:112
-#: src/views/FileList.vue:109
+#: src/views/ElementList.vue:119
+#: src/views/FileList.vue:116
 #: src/views/PageDetail.vue:665
-#: src/views/PageList.vue:117
+#: src/views/PageList.vue:124
 msgid "Editor"
 msgstr "エディター"
 
@@ -304,41 +303,41 @@ msgstr "このスタイルの画像を使用する"
 msgid "Select similar images"
 msgstr "類似画像を選択"
 
-#: src/components/FileDetailItem.vue:244
+#: src/components/FileDetailItem.vue:231
 msgid "Rotate counter-clockwise"
 msgstr "反時計回りに回転"
 
-#: src/components/FileDetailItem.vue:245
+#: src/components/FileDetailItem.vue:232
 msgid "Rotate clockwise"
 msgstr "時計回りに回転させる"
 
-#: src/components/FileDetailItem.vue:248
+#: src/components/FileDetailItem.vue:235
 msgid "Flip horizontally"
 msgstr "水平フリップ"
 
-#: src/components/FileDetailItem.vue:249
+#: src/components/FileDetailItem.vue:236
 msgid "Flip vertically"
 msgstr "垂直に反転"
 
-#: src/components/FileDetailItem.vue:252
+#: src/components/FileDetailItem.vue:239
 msgid "Reset"
 msgstr "リセット"
 
-#: src/components/FileDetailItem.vue:253
+#: src/components/FileDetailItem.vue:240
 msgid "Download"
 msgstr "ダウンロード"
 
-#: src/components/FileDetailItem.vue:280
+#: src/components/FileDetailItem.vue:267
 msgid "Descriptions"
 msgstr "内容"
 
-#: src/components/FileDetailItem.vue:305
+#: src/components/FileDetailItem.vue:292
 msgid "Description (%{lang})"
 msgstr "説明 (%{lang})"
 
 #: src/components/FileDetailRefs.vue:94
 #: src/components/Navigation.vue:30
-#: src/views/PageList.vue:68
+#: src/views/PageList.vue:75
 msgid "Pages"
 msgstr "ページ"
 
@@ -444,26 +443,6 @@ msgstr "復帰"
 msgid "Use version"
 msgstr "使用バージョン"
 
-#: src/components/PageDetailContent.vue:62
-msgid "main"
-msgstr "メイン"
-
-#: src/components/PageDetailContent.vue:63
-msgid "header"
-msgstr "ヘッダー"
-
-#: src/components/PageDetailContent.vue:64
-msgid "footer"
-msgstr "フッター"
-
-#: src/components/PageDetailContent.vue:65
-msgid "sidebar"
-msgstr "サイドバー"
-
-#: src/components/PageDetailContent.vue:66
-msgid "aside"
-msgstr "脇"
-
 #: src/components/PageDetailContentList.vue:225
 msgid "Element not found"
 msgstr "要素が見つかりません"
@@ -476,82 +455,62 @@ msgstr "エレメントはすでに共有されている"
 msgid "Unable to make element shared"
 msgstr "要素を共有にできない"
 
-#: src/components/PageDetailContentList.vue:333
-msgid "type"
-msgstr "タイプ"
-
-#: src/components/PageDetailContentList.vue:334
-msgid "state"
-msgstr "状態"
-
-#: src/components/PageDetailContentList.vue:335
-msgid "valid"
-msgstr "妥当"
-
-#: src/components/PageDetailContentList.vue:336
-msgid "changed"
-msgstr "変更済み"
-
-#: src/components/PageDetailContentList.vue:337
-msgid "error"
-msgstr "エラー"
-
-#: src/components/PageDetailContentList.vue:361
+#: src/components/PageDetailContentList.vue:354
 msgid "Content element not found"
 msgstr "コンテンツ要素が見つかりません"
 
-#: src/components/PageDetailContentList.vue:368
+#: src/components/PageDetailContentList.vue:361
 msgid "Element is not shared"
 msgstr "エレメントは共有されない"
 
-#: src/components/PageDetailContentList.vue:422
-#: src/components/PageDetailContentList.vue:473
+#: src/components/PageDetailContentList.vue:415
+#: src/components/PageDetailContentList.vue:466
 msgid "Delete"
 msgstr "削除"
 
-#: src/components/PageDetailContentList.vue:425
-#: src/components/PageDetailContentList.vue:467
+#: src/components/PageDetailContentList.vue:418
+#: src/components/PageDetailContentList.vue:460
 #: src/components/PageListItems.vue:950
 msgid "Copy"
 msgstr "コピー"
 
-#: src/components/PageDetailContentList.vue:428
-#: src/components/PageDetailContentList.vue:470
+#: src/components/PageDetailContentList.vue:421
+#: src/components/PageDetailContentList.vue:463
 #: src/components/PageListItems.vue:947
 msgid "Cut"
 msgstr "カット"
 
-#: src/components/PageDetailContentList.vue:431
+#: src/components/PageDetailContentList.vue:424
 #: src/components/PageListItems.vue:953
 #: src/components/PageListItems.vue:971
 msgid "Paste"
 msgstr "ペースト"
 
-#: src/components/PageDetailContentList.vue:479
+#: src/components/PageDetailContentList.vue:472
 msgid "Paste before"
 msgstr "貼り付け前"
 
-#: src/components/PageDetailContentList.vue:482
+#: src/components/PageDetailContentList.vue:475
 msgid "Paste after"
 msgstr "後に貼り付ける"
 
-#: src/components/PageDetailContentList.vue:485
+#: src/components/PageDetailContentList.vue:478
 msgid "Insert before"
 msgstr "前に挿入"
 
-#: src/components/PageDetailContentList.vue:488
+#: src/components/PageDetailContentList.vue:481
 msgid "Insert after"
 msgstr "の後に挿入する。"
 
-#: src/components/PageDetailContentList.vue:494
+#: src/components/PageDetailContentList.vue:487
 msgid "Make shared"
 msgstr "共有する"
 
-#: src/components/PageDetailContentList.vue:497
+#: src/components/PageDetailContentList.vue:490
 msgid "Merge copy"
 msgstr "コピーのマージ"
 
-#: src/components/PageDetailContentList.vue:502
+#: src/components/PageDetailContentList.vue:495
 msgid "Shared element"
 msgstr "共有要素"
 
@@ -572,99 +531,99 @@ msgstr "コンフィグ"
 msgid "The element has already been added"
 msgstr "要素はすでに追加されています。"
 
-#: src/components/PageDetailItemProps.vue:69
+#: src/components/PageDetailItemProps.vue:58
 msgid "The path is already in use by another page"
 msgstr "そのパスはすでに別のページで使用されています。"
 
-#: src/components/PageDetailItemProps.vue:141
+#: src/components/PageDetailItemProps.vue:130
 msgid "Disabled"
 msgstr "無効"
 
-#: src/components/PageDetailItemProps.vue:142
+#: src/components/PageDetailItemProps.vue:131
 msgid "Enabled"
 msgstr "有効"
 
-#: src/components/PageDetailItemProps.vue:143
+#: src/components/PageDetailItemProps.vue:132
 msgid "Hidden in navigation"
 msgstr "ナビゲーションに隠れている"
 
-#: src/components/PageDetailItemProps.vue:151
+#: src/components/PageDetailItemProps.vue:140
 msgid "Status"
 msgstr "ステータス"
 
-#: src/components/PageDetailItemProps.vue:172
+#: src/components/PageDetailItemProps.vue:159
 #: src/fields/Table.vue:54
 #: src/views/Login.vue:84
 #: src/views/Login.vue:90
 msgid "Field is required"
 msgstr "フィールドは必須"
 
-#: src/components/PageDetailItemProps.vue:179
+#: src/components/PageDetailItemProps.vue:166
 msgid "Page name"
 msgstr "ページ名"
 
-#: src/components/PageDetailItemProps.vue:188
+#: src/components/PageDetailItemProps.vue:175
 msgid "Page title"
 msgstr "ページタイトル"
 
-#: src/components/PageDetailItemProps.vue:196
+#: src/components/PageDetailItemProps.vue:183
 msgid "Path must not start with a slash (/)"
 msgstr "パスはスラッシュ (/) で始まってはならない。"
 
-#: src/components/PageDetailItemProps.vue:205
+#: src/components/PageDetailItemProps.vue:192
 msgid "URL path"
 msgstr "URLパス"
 
-#: src/components/PageDetailItemProps.vue:211
+#: src/components/PageDetailItemProps.vue:198
 msgid "Domain name is invalid"
 msgstr "ドメイン名が無効"
 
-#: src/components/PageDetailItemProps.vue:217
+#: src/components/PageDetailItemProps.vue:204
 msgid "Domain"
 msgstr "ドメイン"
 
-#: src/components/PageDetailItemProps.vue:232
+#: src/components/PageDetailItemProps.vue:219
 msgid "Theme"
 msgstr "テーマ"
 
-#: src/components/PageDetailItemProps.vue:240
+#: src/components/PageDetailItemProps.vue:227
 msgid "Page type"
 msgstr "ページタイプ"
 
-#: src/components/PageDetailItemProps.vue:247
+#: src/components/PageDetailItemProps.vue:234
 msgid "Page tag"
 msgstr "ページタグ"
 
-#: src/components/PageDetailItemProps.vue:255
+#: src/components/PageDetailItemProps.vue:242
 msgid "No cache"
 msgstr "キャッシュなし"
 
-#: src/components/PageDetailItemProps.vue:256
-#: src/components/PageDetailItemProps.vue:257
-#: src/components/PageDetailItemProps.vue:258
-#: src/components/PageDetailItemProps.vue:259
+#: src/components/PageDetailItemProps.vue:243
+#: src/components/PageDetailItemProps.vue:244
+#: src/components/PageDetailItemProps.vue:245
+#: src/components/PageDetailItemProps.vue:246
 msgid "%{num} minute"
 msgid_plural "%{num} minutes"
 msgstr[0] "%{num} 微細"
 
-#: src/components/PageDetailItemProps.vue:260
-#: src/components/PageDetailItemProps.vue:261
-#: src/components/PageDetailItemProps.vue:262
-#: src/components/PageDetailItemProps.vue:263
-#: src/components/PageDetailItemProps.vue:264
+#: src/components/PageDetailItemProps.vue:247
+#: src/components/PageDetailItemProps.vue:248
+#: src/components/PageDetailItemProps.vue:249
+#: src/components/PageDetailItemProps.vue:250
+#: src/components/PageDetailItemProps.vue:251
 msgid "%{num} hour"
 msgid_plural "%{num} hours"
 msgstr[0] "%{num} 時"
 
-#: src/components/PageDetailItemProps.vue:270
+#: src/components/PageDetailItemProps.vue:257
 msgid "Cache time"
 msgstr "キャッシュタイム"
 
-#: src/components/PageDetailItemProps.vue:281
+#: src/components/PageDetailItemProps.vue:268
 msgid "URL is not valid"
 msgstr "URL が無効です。"
 
-#: src/components/PageDetailItemProps.vue:287
+#: src/components/PageDetailItemProps.vue:274
 msgid "Redirect URL"
 msgstr "リダイレクトURL"
 
@@ -776,31 +735,15 @@ msgstr "コンテンツ要素"
 msgid "uncategorized"
 msgstr "未分類"
 
-#: src/components/SchemaItems.vue:37
-msgid "basic"
-msgstr "ベーシック"
-
-#: src/components/SchemaItems.vue:38
-msgid "content"
-msgstr "内容"
-
-#: src/components/SchemaItems.vue:39
-msgid "media"
-msgstr "メディア"
-
-#: src/components/SchemaItems.vue:40
-msgid "forms"
-msgstr "フォーム"
-
-#: src/components/User.vue:23
+#: src/components/User.vue:24
 msgid "Failed to load user"
 msgstr "ユーザーのロードに失敗しました"
 
-#: src/components/User.vue:33
+#: src/components/User.vue:34
 msgid "Logout failed"
 msgstr "ログアウトに失敗"
 
-#: src/components/User.vue:71
+#: src/components/User.vue:72
 msgid "Logout"
 msgstr "ログアウト"
 
@@ -871,6 +814,124 @@ msgstr "有効なURLではない"
 msgid "You do not have permission to access %{path}"
 msgstr "アクセスする権限がありません。%{path}"
 
+#: src/strings.js:5
+msgid "basic"
+msgstr "ベーシック"
+
+#: src/strings.js:6
+msgid "content"
+msgstr "内容"
+
+#: src/strings.js:7
+msgid "media"
+msgstr "メディア"
+
+#: src/strings.js:8
+msgid "forms"
+msgstr "フォーム"
+
+#: src/strings.js:11
+msgid "type"
+msgstr "タイプ"
+
+#: src/strings.js:12
+msgid "state"
+msgstr "状態"
+
+#: src/strings.js:13
+msgid "valid"
+msgstr "妥当"
+
+#: src/strings.js:14
+msgid "changed"
+msgstr "変更済み"
+
+#: src/strings.js:15
+msgid "error"
+msgstr "エラー"
+
+#: src/strings.js:18
+#: src/strings.js:35
+msgid "main"
+msgstr "メイン"
+
+#: src/strings.js:19
+#: src/strings.js:30
+msgid "header"
+msgstr "ヘッダー"
+
+#: src/strings.js:20
+msgid "footer"
+msgstr "フッター"
+
+#: src/strings.js:21
+msgid "sidebar"
+msgstr "サイドバー"
+
+#: src/strings.js:22
+msgid "aside"
+msgstr "脇"
+
+#: src/strings.js:25
+msgid "Button text"
+msgstr "ボタンテキスト"
+
+#: src/strings.js:26
+msgid "cards"
+msgstr "カード"
+
+#: src/strings.js:27
+msgid "description"
+msgstr "記述"
+
+#: src/strings.js:28
+msgid "file"
+msgstr "ファイル"
+
+#: src/strings.js:29
+msgid "files"
+msgstr "ファイル"
+
+#: src/strings.js:31
+msgid "keywords"
+msgstr "キーワード"
+
+#: src/strings.js:32
+msgid "lang"
+msgstr "ラング"
+
+#: src/strings.js:33
+msgid "level"
+msgstr "レベル"
+
+#: src/strings.js:34
+msgid "limit"
+msgstr "制限"
+
+#: src/strings.js:36
+msgid "parent-page"
+msgstr "親ページ"
+
+#: src/strings.js:37
+msgid "position"
+msgstr "位置"
+
+#: src/strings.js:38
+msgid "text"
+msgstr "テキスト"
+
+#: src/strings.js:39
+msgid "table"
+msgstr "テーブル"
+
+#: src/strings.js:40
+msgid "title"
+msgstr "タイトル"
+
+#: src/strings.js:41
+msgid "url"
+msgstr "url"
+
 #: src/views/ElementDetail.vue:99
 msgid "Error fetching element"
 msgstr "要素の取得エラー"
@@ -916,59 +977,59 @@ msgid "Used by"
 msgstr "中古"
 
 #: src/views/ElementList.vue:41
-#: src/views/ElementList.vue:97
-#: src/views/ElementList.vue:106
-#: src/views/ElementList.vue:114
+#: src/views/ElementList.vue:104
+#: src/views/ElementList.vue:113
+#: src/views/ElementList.vue:121
 #: src/views/FileList.vue:40
-#: src/views/FileList.vue:94
-#: src/views/FileList.vue:103
-#: src/views/FileList.vue:111
+#: src/views/FileList.vue:101
+#: src/views/FileList.vue:110
+#: src/views/FileList.vue:118
 #: src/views/PageList.vue:41
-#: src/views/PageList.vue:102
-#: src/views/PageList.vue:111
-#: src/views/PageList.vue:119
+#: src/views/PageList.vue:109
+#: src/views/PageList.vue:118
+#: src/views/PageList.vue:126
 msgid "All"
 msgstr "すべて"
 
-#: src/views/ElementList.vue:99
-#: src/views/FileList.vue:96
-#: src/views/PageList.vue:104
+#: src/views/ElementList.vue:106
+#: src/views/FileList.vue:103
+#: src/views/PageList.vue:111
 msgid "Scheduled"
 msgstr "予定"
-
-#: src/views/ElementList.vue:100
-#: src/views/FileList.vue:97
-#: src/views/PageList.vue:105
-msgid "Drafts"
-msgstr "ドラフト"
-
-#: src/views/ElementList.vue:104
-#: src/views/FileList.vue:101
-#: src/views/PageList.vue:109
-msgid "Trashed"
-msgstr "ゴミ箱"
 
 #: src/views/ElementList.vue:107
 #: src/views/FileList.vue:104
 #: src/views/PageList.vue:112
+msgid "Drafts"
+msgstr "ドラフト"
+
+#: src/views/ElementList.vue:111
+#: src/views/FileList.vue:108
+#: src/views/PageList.vue:116
+msgid "Trashed"
+msgstr "ゴミ箱"
+
+#: src/views/ElementList.vue:114
+#: src/views/FileList.vue:111
+#: src/views/PageList.vue:119
 msgid "Available only"
 msgstr "のみ利用可能"
-
-#: src/views/ElementList.vue:108
-#: src/views/FileList.vue:105
-#: src/views/PageList.vue:113
-msgid "Only trashed"
-msgstr "ゴミ箱のみ"
 
 #: src/views/ElementList.vue:115
 #: src/views/FileList.vue:112
 #: src/views/PageList.vue:120
+msgid "Only trashed"
+msgstr "ゴミ箱のみ"
+
+#: src/views/ElementList.vue:122
+#: src/views/FileList.vue:119
+#: src/views/PageList.vue:127
 msgid "Edited by me"
 msgstr "編集：私"
 
-#: src/views/ElementList.vue:119
-#: src/views/FileList.vue:116
-#: src/views/PageList.vue:124
+#: src/views/ElementList.vue:126
+#: src/views/FileList.vue:123
+#: src/views/PageList.vue:131
 msgid "Languages"
 msgstr "言語"
 
@@ -1059,14 +1120,14 @@ msgstr "ページ"
 msgid "Content"
 msgstr "内容"
 
-#: src/views/PageList.vue:93
+#: src/views/PageList.vue:100
 msgid "View"
 msgstr "表示"
 
-#: src/views/PageList.vue:95
+#: src/views/PageList.vue:102
 msgid "Tree"
 msgstr "ツリー"
 
-#: src/views/PageList.vue:96
+#: src/views/PageList.vue:103
 msgid "List"
 msgstr "リスト"

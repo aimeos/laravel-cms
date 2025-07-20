@@ -58,7 +58,7 @@
 			"@php vendor/bin/testbench package:discover --ansi"
 		],
 		"translate": [
-			"for POFILE in `ls admin/i18n/*.po`; do vendor/bin/potrans deepl --ignore='%\\{[a-z]+\\}' --only --pot=admin/i18n/messages.pot $POFILE; done"
+			"mv admin/i18n/no.po admin/i18n/nb.po; for POFILE in `ls admin/i18n/*.po`; do vendor/bin/potrans deepl --ignore='%\\{[a-z]+\\}' --only --pot=admin/i18n/messages.pot $POFILE; done; mv admin/i18n/nb.po admin/i18n/no.po"
 		]
 	},
 	"config": {

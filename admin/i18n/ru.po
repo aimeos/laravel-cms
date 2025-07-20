@@ -9,6 +9,10 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "Project-Id-Version: PACKAGE VERSION\n"
 
+#: src/App.vue:110
+msgid "None"
+msgstr "Нет"
+
 #: src/components/AsideMeta.vue:17
 msgid "id"
 msgstr "id"
@@ -33,15 +37,10 @@ msgstr "удалено"
 msgid "Meta data"
 msgstr "Метаданные"
 
-#: src/components/ElementDetailItem.vue:30
-#: src/components/PageDetailItemProps.vue:36
-msgid "None"
-msgstr "Нет"
-
-#: src/components/ElementDetailItem.vue:77
+#: src/components/ElementDetailItem.vue:68
 #: src/components/ElementDetailRefs.vue:96
 #: src/components/ElementListItems.vue:465
-#: src/components/FileDetailItem.vue:219
+#: src/components/FileDetailItem.vue:208
 #: src/components/FileDetailRefs.vue:101
 #: src/components/FileDetailRefs.vue:123
 #: src/components/FileListItems.vue:497
@@ -52,10 +51,10 @@ msgstr "Нет"
 msgid "Name"
 msgstr "Имя"
 
-#: src/components/ElementDetailItem.vue:91
-#: src/components/FileDetailItem.vue:233
+#: src/components/ElementDetailItem.vue:80
+#: src/components/FileDetailItem.vue:220
 #: src/components/FileListItems.vue:503
-#: src/components/PageDetailItemProps.vue:163
+#: src/components/PageDetailItemProps.vue:150
 msgid "Language"
 msgstr "Язык"
 
@@ -72,7 +71,7 @@ msgstr "нет"
 #: src/components/ElementDetailRefs.vue:89
 #: src/components/Navigation.vue:36
 #: src/components/SchemaDialog.vue:35
-#: src/views/ElementList.vue:69
+#: src/views/ElementList.vue:76
 msgid "Shared elements"
 msgstr "Общие элементы"
 
@@ -98,9 +97,9 @@ msgstr "Тип"
 
 #: src/components/ElementDetailRefs.vue:118
 #: src/components/FileDetailRefs.vue:145
-#: src/views/ElementList.vue:98
-#: src/views/FileList.vue:95
-#: src/views/PageList.vue:103
+#: src/views/ElementList.vue:105
+#: src/views/FileList.vue:102
+#: src/views/PageList.vue:110
 msgid "Published"
 msgstr "Опубликовано"
 
@@ -169,7 +168,7 @@ msgstr "Ошибка при получении общих элементов"
 
 #: src/components/ElementListItems.vue:417
 #: src/components/FileListItems.vue:446
-#: src/components/PageDetailContentList.vue:418
+#: src/components/PageDetailContentList.vue:411
 #: src/components/PageListItems.vue:866
 msgid "Actions"
 msgstr "Действия"
@@ -182,13 +181,13 @@ msgstr "Действия"
 #: src/components/PageListItems.vue:932
 #: src/views/ElementDetail.vue:295
 #: src/views/ElementDetail.vue:310
-#: src/views/ElementList.vue:95
+#: src/views/ElementList.vue:102
 #: src/views/FileDetail.vue:229
 #: src/views/FileDetail.vue:244
-#: src/views/FileList.vue:92
+#: src/views/FileList.vue:99
 #: src/views/PageDetail.vue:632
 #: src/views/PageDetail.vue:647
-#: src/views/PageList.vue:100
+#: src/views/PageList.vue:107
 msgid "Publish"
 msgstr "Опубликовать"
 
@@ -225,7 +224,7 @@ msgstr "Очистка"
 
 #: src/components/ElementListItems.vue:444
 #: src/components/FileListItems.vue:473
-#: src/components/PageDetailContentList.vue:440
+#: src/components/PageDetailContentList.vue:433
 #: src/components/PageListItems.vue:897
 msgid "Search for"
 msgstr "Поиск"
@@ -250,10 +249,10 @@ msgstr "Самый старый"
 #: src/fields/File.vue:245
 #: src/fields/Image.vue:103
 #: src/fields/Video.vue:63
-#: src/views/ElementList.vue:112
-#: src/views/FileList.vue:109
+#: src/views/ElementList.vue:119
+#: src/views/FileList.vue:116
 #: src/views/PageDetail.vue:665
-#: src/views/PageList.vue:117
+#: src/views/PageList.vue:124
 msgid "Editor"
 msgstr "Редактор"
 
@@ -304,41 +303,41 @@ msgstr "Используйте изображения в этом стиле"
 msgid "Select similar images"
 msgstr "Выберите похожие изображения"
 
-#: src/components/FileDetailItem.vue:244
+#: src/components/FileDetailItem.vue:231
 msgid "Rotate counter-clockwise"
 msgstr "Поверните против часовой стрелки"
 
-#: src/components/FileDetailItem.vue:245
+#: src/components/FileDetailItem.vue:232
 msgid "Rotate clockwise"
 msgstr "Поверните по часовой стрелке"
 
-#: src/components/FileDetailItem.vue:248
+#: src/components/FileDetailItem.vue:235
 msgid "Flip horizontally"
 msgstr "Переверните горизонтально"
 
-#: src/components/FileDetailItem.vue:249
+#: src/components/FileDetailItem.vue:236
 msgid "Flip vertically"
 msgstr "Переверните вертикально"
 
-#: src/components/FileDetailItem.vue:252
+#: src/components/FileDetailItem.vue:239
 msgid "Reset"
 msgstr "Сброс"
 
-#: src/components/FileDetailItem.vue:253
+#: src/components/FileDetailItem.vue:240
 msgid "Download"
 msgstr "Скачать"
 
-#: src/components/FileDetailItem.vue:280
+#: src/components/FileDetailItem.vue:267
 msgid "Descriptions"
 msgstr "Описания"
 
-#: src/components/FileDetailItem.vue:305
+#: src/components/FileDetailItem.vue:292
 msgid "Description (%{lang})"
 msgstr "Описание (%{lang})"
 
 #: src/components/FileDetailRefs.vue:94
 #: src/components/Navigation.vue:30
-#: src/views/PageList.vue:68
+#: src/views/PageList.vue:75
 msgid "Pages"
 msgstr "Страницы"
 
@@ -444,26 +443,6 @@ msgstr "Реверс"
 msgid "Use version"
 msgstr "Используйте версию"
 
-#: src/components/PageDetailContent.vue:62
-msgid "main"
-msgstr "главная"
-
-#: src/components/PageDetailContent.vue:63
-msgid "header"
-msgstr "заголовок"
-
-#: src/components/PageDetailContent.vue:64
-msgid "footer"
-msgstr "нижний колонтитул"
-
-#: src/components/PageDetailContent.vue:65
-msgid "sidebar"
-msgstr "боковая панель"
-
-#: src/components/PageDetailContent.vue:66
-msgid "aside"
-msgstr "в сторону"
-
 #: src/components/PageDetailContentList.vue:225
 msgid "Element not found"
 msgstr "Элемент не найден"
@@ -476,82 +455,62 @@ msgstr "Элемент уже разделен"
 msgid "Unable to make element shared"
 msgstr "Невозможно сделать элемент общим"
 
-#: src/components/PageDetailContentList.vue:333
-msgid "type"
-msgstr "тип"
-
-#: src/components/PageDetailContentList.vue:334
-msgid "state"
-msgstr "государство"
-
-#: src/components/PageDetailContentList.vue:335
-msgid "valid"
-msgstr "действительный"
-
-#: src/components/PageDetailContentList.vue:336
-msgid "changed"
-msgstr "изменено"
-
-#: src/components/PageDetailContentList.vue:337
-msgid "error"
-msgstr "ошибка"
-
-#: src/components/PageDetailContentList.vue:361
+#: src/components/PageDetailContentList.vue:354
 msgid "Content element not found"
 msgstr "Элемент содержимого не найден"
 
-#: src/components/PageDetailContentList.vue:368
+#: src/components/PageDetailContentList.vue:361
 msgid "Element is not shared"
 msgstr "Элемент не разделяется"
 
-#: src/components/PageDetailContentList.vue:422
-#: src/components/PageDetailContentList.vue:473
+#: src/components/PageDetailContentList.vue:415
+#: src/components/PageDetailContentList.vue:466
 msgid "Delete"
 msgstr "Удалить"
 
-#: src/components/PageDetailContentList.vue:425
-#: src/components/PageDetailContentList.vue:467
+#: src/components/PageDetailContentList.vue:418
+#: src/components/PageDetailContentList.vue:460
 #: src/components/PageListItems.vue:950
 msgid "Copy"
 msgstr "Копировать"
 
-#: src/components/PageDetailContentList.vue:428
-#: src/components/PageDetailContentList.vue:470
+#: src/components/PageDetailContentList.vue:421
+#: src/components/PageDetailContentList.vue:463
 #: src/components/PageListItems.vue:947
 msgid "Cut"
 msgstr "Разрез"
 
-#: src/components/PageDetailContentList.vue:431
+#: src/components/PageDetailContentList.vue:424
 #: src/components/PageListItems.vue:953
 #: src/components/PageListItems.vue:971
 msgid "Paste"
 msgstr "Паста"
 
-#: src/components/PageDetailContentList.vue:479
+#: src/components/PageDetailContentList.vue:472
 msgid "Paste before"
 msgstr "Паста перед"
 
-#: src/components/PageDetailContentList.vue:482
+#: src/components/PageDetailContentList.vue:475
 msgid "Paste after"
 msgstr "Вставить после"
 
-#: src/components/PageDetailContentList.vue:485
+#: src/components/PageDetailContentList.vue:478
 msgid "Insert before"
 msgstr "Вставить перед"
 
-#: src/components/PageDetailContentList.vue:488
+#: src/components/PageDetailContentList.vue:481
 msgid "Insert after"
 msgstr "Вставить после"
 
-#: src/components/PageDetailContentList.vue:494
+#: src/components/PageDetailContentList.vue:487
 msgid "Make shared"
 msgstr "Сделайте общий"
 
-#: src/components/PageDetailContentList.vue:497
+#: src/components/PageDetailContentList.vue:490
 msgid "Merge copy"
 msgstr "Копия слияния"
 
-#: src/components/PageDetailContentList.vue:502
+#: src/components/PageDetailContentList.vue:495
 msgid "Shared element"
 msgstr "Общий элемент"
 
@@ -572,103 +531,103 @@ msgstr "Конфигурация"
 msgid "The element has already been added"
 msgstr "Элемент уже добавлен"
 
-#: src/components/PageDetailItemProps.vue:69
+#: src/components/PageDetailItemProps.vue:58
 msgid "The path is already in use by another page"
 msgstr "Путь уже используется другой страницей"
 
-#: src/components/PageDetailItemProps.vue:141
+#: src/components/PageDetailItemProps.vue:130
 msgid "Disabled"
 msgstr "Инвалид"
 
-#: src/components/PageDetailItemProps.vue:142
+#: src/components/PageDetailItemProps.vue:131
 msgid "Enabled"
 msgstr "Включено"
 
-#: src/components/PageDetailItemProps.vue:143
+#: src/components/PageDetailItemProps.vue:132
 msgid "Hidden in navigation"
 msgstr "Скрыто в навигации"
 
-#: src/components/PageDetailItemProps.vue:151
+#: src/components/PageDetailItemProps.vue:140
 msgid "Status"
 msgstr "Статус"
 
-#: src/components/PageDetailItemProps.vue:172
+#: src/components/PageDetailItemProps.vue:159
 #: src/fields/Table.vue:54
 #: src/views/Login.vue:84
 #: src/views/Login.vue:90
 msgid "Field is required"
 msgstr "Поле обязательно для заполнения"
 
-#: src/components/PageDetailItemProps.vue:179
+#: src/components/PageDetailItemProps.vue:166
 msgid "Page name"
 msgstr "Название страницы"
 
-#: src/components/PageDetailItemProps.vue:188
+#: src/components/PageDetailItemProps.vue:175
 msgid "Page title"
 msgstr "Название страницы"
 
-#: src/components/PageDetailItemProps.vue:196
+#: src/components/PageDetailItemProps.vue:183
 msgid "Path must not start with a slash (/)"
 msgstr "Путь не должен начинаться со слэша (/)"
 
-#: src/components/PageDetailItemProps.vue:205
+#: src/components/PageDetailItemProps.vue:192
 msgid "URL path"
 msgstr "URL-путь"
 
-#: src/components/PageDetailItemProps.vue:211
+#: src/components/PageDetailItemProps.vue:198
 msgid "Domain name is invalid"
 msgstr "Доменное имя недействительно"
 
-#: src/components/PageDetailItemProps.vue:217
+#: src/components/PageDetailItemProps.vue:204
 msgid "Domain"
 msgstr "Домен"
 
-#: src/components/PageDetailItemProps.vue:232
+#: src/components/PageDetailItemProps.vue:219
 msgid "Theme"
 msgstr "Тема"
 
-#: src/components/PageDetailItemProps.vue:240
+#: src/components/PageDetailItemProps.vue:227
 msgid "Page type"
 msgstr "Тип страницы"
 
-#: src/components/PageDetailItemProps.vue:247
+#: src/components/PageDetailItemProps.vue:234
 msgid "Page tag"
 msgstr "Тег страницы"
 
-#: src/components/PageDetailItemProps.vue:255
+#: src/components/PageDetailItemProps.vue:242
 msgid "No cache"
 msgstr "Нет кэша"
 
-#: src/components/PageDetailItemProps.vue:256
-#: src/components/PageDetailItemProps.vue:257
-#: src/components/PageDetailItemProps.vue:258
-#: src/components/PageDetailItemProps.vue:259
+#: src/components/PageDetailItemProps.vue:243
+#: src/components/PageDetailItemProps.vue:244
+#: src/components/PageDetailItemProps.vue:245
+#: src/components/PageDetailItemProps.vue:246
 msgid "%{num} minute"
 msgid_plural "%{num} minutes"
 msgstr[0] "%{num} минута"
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/components/PageDetailItemProps.vue:260
-#: src/components/PageDetailItemProps.vue:261
-#: src/components/PageDetailItemProps.vue:262
-#: src/components/PageDetailItemProps.vue:263
-#: src/components/PageDetailItemProps.vue:264
+#: src/components/PageDetailItemProps.vue:247
+#: src/components/PageDetailItemProps.vue:248
+#: src/components/PageDetailItemProps.vue:249
+#: src/components/PageDetailItemProps.vue:250
+#: src/components/PageDetailItemProps.vue:251
 msgid "%{num} hour"
 msgid_plural "%{num} hours"
 msgstr[0] "%{num} час"
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/components/PageDetailItemProps.vue:270
+#: src/components/PageDetailItemProps.vue:257
 msgid "Cache time"
 msgstr "Время кэширования"
 
-#: src/components/PageDetailItemProps.vue:281
+#: src/components/PageDetailItemProps.vue:268
 msgid "URL is not valid"
 msgstr "URL-адрес недействителен"
 
-#: src/components/PageDetailItemProps.vue:287
+#: src/components/PageDetailItemProps.vue:274
 msgid "Redirect URL"
 msgstr "URL-адрес перенаправления"
 
@@ -780,31 +739,15 @@ msgstr "Элементы содержания"
 msgid "uncategorized"
 msgstr "без категории"
 
-#: src/components/SchemaItems.vue:37
-msgid "basic"
-msgstr "основной"
-
-#: src/components/SchemaItems.vue:38
-msgid "content"
-msgstr "содержание"
-
-#: src/components/SchemaItems.vue:39
-msgid "media"
-msgstr "СМИ"
-
-#: src/components/SchemaItems.vue:40
-msgid "forms"
-msgstr "формы"
-
-#: src/components/User.vue:23
+#: src/components/User.vue:24
 msgid "Failed to load user"
 msgstr "Не удалось загрузить пользователя"
 
-#: src/components/User.vue:33
+#: src/components/User.vue:34
 msgid "Logout failed"
 msgstr "Выход из системы не удался"
 
-#: src/components/User.vue:71
+#: src/components/User.vue:72
 msgid "Logout"
 msgstr "Выход из системы"
 
@@ -875,6 +818,124 @@ msgstr "Недействительный URL"
 msgid "You do not have permission to access %{path}"
 msgstr "У вас нет разрешения на доступ %{path}"
 
+#: src/strings.js:5
+msgid "basic"
+msgstr "основной"
+
+#: src/strings.js:6
+msgid "content"
+msgstr "содержание"
+
+#: src/strings.js:7
+msgid "media"
+msgstr "СМИ"
+
+#: src/strings.js:8
+msgid "forms"
+msgstr "формы"
+
+#: src/strings.js:11
+msgid "type"
+msgstr "тип"
+
+#: src/strings.js:12
+msgid "state"
+msgstr "государство"
+
+#: src/strings.js:13
+msgid "valid"
+msgstr "действительный"
+
+#: src/strings.js:14
+msgid "changed"
+msgstr "изменено"
+
+#: src/strings.js:15
+msgid "error"
+msgstr "ошибка"
+
+#: src/strings.js:18
+#: src/strings.js:35
+msgid "main"
+msgstr "главная"
+
+#: src/strings.js:19
+#: src/strings.js:30
+msgid "header"
+msgstr "заголовок"
+
+#: src/strings.js:20
+msgid "footer"
+msgstr "нижний колонтитул"
+
+#: src/strings.js:21
+msgid "sidebar"
+msgstr "боковая панель"
+
+#: src/strings.js:22
+msgid "aside"
+msgstr "в сторону"
+
+#: src/strings.js:25
+msgid "Button text"
+msgstr "Текст кнопки"
+
+#: src/strings.js:26
+msgid "cards"
+msgstr "карты"
+
+#: src/strings.js:27
+msgid "description"
+msgstr "описание"
+
+#: src/strings.js:28
+msgid "file"
+msgstr "файл"
+
+#: src/strings.js:29
+msgid "files"
+msgstr "файлы"
+
+#: src/strings.js:31
+msgid "keywords"
+msgstr "ключевые слова"
+
+#: src/strings.js:32
+msgid "lang"
+msgstr "lang"
+
+#: src/strings.js:33
+msgid "level"
+msgstr "уровень"
+
+#: src/strings.js:34
+msgid "limit"
+msgstr "ограничение"
+
+#: src/strings.js:36
+msgid "parent-page"
+msgstr "родительская страница"
+
+#: src/strings.js:37
+msgid "position"
+msgstr "позиция"
+
+#: src/strings.js:38
+msgid "text"
+msgstr "текст"
+
+#: src/strings.js:39
+msgid "table"
+msgstr "таблица"
+
+#: src/strings.js:40
+msgid "title"
+msgstr "название"
+
+#: src/strings.js:41
+msgid "url"
+msgstr "url"
+
 #: src/views/ElementDetail.vue:99
 msgid "Error fetching element"
 msgstr "Ошибка при получении элемента"
@@ -920,59 +981,59 @@ msgid "Used by"
 msgstr "Используется"
 
 #: src/views/ElementList.vue:41
-#: src/views/ElementList.vue:97
-#: src/views/ElementList.vue:106
-#: src/views/ElementList.vue:114
+#: src/views/ElementList.vue:104
+#: src/views/ElementList.vue:113
+#: src/views/ElementList.vue:121
 #: src/views/FileList.vue:40
-#: src/views/FileList.vue:94
-#: src/views/FileList.vue:103
-#: src/views/FileList.vue:111
+#: src/views/FileList.vue:101
+#: src/views/FileList.vue:110
+#: src/views/FileList.vue:118
 #: src/views/PageList.vue:41
-#: src/views/PageList.vue:102
-#: src/views/PageList.vue:111
-#: src/views/PageList.vue:119
+#: src/views/PageList.vue:109
+#: src/views/PageList.vue:118
+#: src/views/PageList.vue:126
 msgid "All"
 msgstr "Все"
 
-#: src/views/ElementList.vue:99
-#: src/views/FileList.vue:96
-#: src/views/PageList.vue:104
+#: src/views/ElementList.vue:106
+#: src/views/FileList.vue:103
+#: src/views/PageList.vue:111
 msgid "Scheduled"
 msgstr "Запланировано"
-
-#: src/views/ElementList.vue:100
-#: src/views/FileList.vue:97
-#: src/views/PageList.vue:105
-msgid "Drafts"
-msgstr "Черновики"
-
-#: src/views/ElementList.vue:104
-#: src/views/FileList.vue:101
-#: src/views/PageList.vue:109
-msgid "Trashed"
-msgstr "Trashed"
 
 #: src/views/ElementList.vue:107
 #: src/views/FileList.vue:104
 #: src/views/PageList.vue:112
+msgid "Drafts"
+msgstr "Черновики"
+
+#: src/views/ElementList.vue:111
+#: src/views/FileList.vue:108
+#: src/views/PageList.vue:116
+msgid "Trashed"
+msgstr "Trashed"
+
+#: src/views/ElementList.vue:114
+#: src/views/FileList.vue:111
+#: src/views/PageList.vue:119
 msgid "Available only"
 msgstr "Только в наличии"
-
-#: src/views/ElementList.vue:108
-#: src/views/FileList.vue:105
-#: src/views/PageList.vue:113
-msgid "Only trashed"
-msgstr "Только мусор"
 
 #: src/views/ElementList.vue:115
 #: src/views/FileList.vue:112
 #: src/views/PageList.vue:120
+msgid "Only trashed"
+msgstr "Только мусор"
+
+#: src/views/ElementList.vue:122
+#: src/views/FileList.vue:119
+#: src/views/PageList.vue:127
 msgid "Edited by me"
 msgstr "Отредактировано мной"
 
-#: src/views/ElementList.vue:119
-#: src/views/FileList.vue:116
-#: src/views/PageList.vue:124
+#: src/views/ElementList.vue:126
+#: src/views/FileList.vue:123
+#: src/views/PageList.vue:131
 msgid "Languages"
 msgstr "Языки"
 
@@ -1063,14 +1124,14 @@ msgstr "Страница"
 msgid "Content"
 msgstr "Содержание"
 
-#: src/views/PageList.vue:93
+#: src/views/PageList.vue:100
 msgid "View"
 msgstr "Посмотреть"
 
-#: src/views/PageList.vue:95
+#: src/views/PageList.vue:102
 msgid "Tree"
 msgstr "Дерево"
 
-#: src/views/PageList.vue:96
+#: src/views/PageList.vue:103
 msgid "List"
 msgstr "Список"

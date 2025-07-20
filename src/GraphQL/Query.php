@@ -327,7 +327,7 @@ final class Query
                     $builder->whereIn( 'id', $filter['id'] );
                 }
 
-                if( array_key_exists( 'lang', $filter ) ) {
+                if( isset( $filter['lang'] ) ) {
                     $builder->where( 'lang', (string) $filter['lang'] );
                 }
 
@@ -401,7 +401,7 @@ final class Query
                         $builder->whereIn( 'versionable_id', $filter['id'] );
                     }
 
-                    if( array_key_exists( 'lang', $filter ) ) {
+                    if( isset( $filter['lang'] ) ) {
                         $builder->where( 'lang', (string) $filter['lang'] );
                     }
 

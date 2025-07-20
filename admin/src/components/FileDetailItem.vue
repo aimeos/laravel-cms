@@ -84,8 +84,8 @@
 
     methods: {
       composeText() {
-        const lang = this.item.lang || 'en'
-        const prompt = 'Summarize the content of the file in a few words for a title tag in the language with the ISO code "' + lang + '":'
+        const lang = this.desclangs.shift() || this.item.lang || 'en'
+        const prompt = `Summarize the content of the file in a few words in plain text format for a title tag in the language with the ISO code "${lang}":`
 
         this.composing = true
 

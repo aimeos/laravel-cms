@@ -67,7 +67,7 @@
 
 
       composeText(prompt, context = [], files = []) {
-        prompt = prompt ? prompt.trim() : (Array.isArray(context) && context.length ? 'Generate text based on context' : null)
+        prompt = String(prompt).trim()
 
         if(!prompt) {
           this.messages.add('Prompt is required for generating text', 'error')
@@ -78,7 +78,7 @@
           context = [context]
         }
 
-        context.push('only return the requested data without any additional information')
+        context.push('Only return the requested data without any additional information')
 
         return this.$apollo.mutate({
           mutation: gql`mutation($prompt: String!, $context: String, $files: [String!]) {
@@ -86,7 +86,7 @@
           }`,
           variables: {
             prompt: prompt,
-            context: context.filter(v => !!v).join(', '),
+            context: context.filter(v => !!v).join("\n"),
             files: files.filter(v => !!v)
           }
         }).then(result => {

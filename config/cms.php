@@ -135,17 +135,7 @@ return [
     |
     */
     'config' => [
-        'languages' => [
-            'en' => 'English (en)',
-            'ar' => 'اللغة العربية (ar)',
-            'zh' => '中文 (zh)',
-            'fr' => 'Français (fr)',
-            'de' => 'Deutsch (de)',
-            'es' => 'Español (es)',
-            'pt' => 'Portugués (pt)',
-            'pt-BR' => 'Português (Brasil)',
-            'ru' => 'Русский (ru)',
-        ],
+        'locales' => ['en', 'ar', 'zh', 'fr', 'de', 'es', 'pt', 'pt-BR', 'ru'],
         'themes' => [
             'cms' => [
                 'types' => [

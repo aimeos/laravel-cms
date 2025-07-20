@@ -17,7 +17,8 @@
         closeView: this.close,
         compose: this.composeText,
         translate: this.translateText,
-        txlanguages: this.txlangs,
+        txlocales: this.txlangs,
+        locales: this.langs,
       }
     },
 
@@ -102,6 +103,21 @@
       },
 
 
+      langs(none = false) {
+        const list = []
+
+        if(none) {
+          list.push({value: null, title: this.$gettext('None')})
+        }
+
+        this.languages.available.forEach(code => {
+          list.push({value: code, title: this.languages.translate(code) + ' (' + code.toUpperCase() + ')'})
+        })
+
+        return list
+      },
+
+
       translateText(texts, to, from = null, context = null) {
         if(!Array.isArray(texts)) {
           texts = [texts].filter(v => !!v)
@@ -146,9 +162,9 @@
           'ro', 'ru', 'sk', 'sl', 'sv', 'th', 'tr', 'uk', 'vi', 'zh', 'zh-Hans', 'zh-Hant'
         ]
 
-        Object.entries(this.languages.available).forEach(pair => {
-          if(supported.includes(pair[0]) && pair[0] !== current) {
-            list.push({code: pair[0], name: pair[1]})
+        this.languages.available.forEach(code => {
+          if(supported.includes(code) && code !== current) {
+            list.push({code: code, name: this.languages.translate(code) + ' (' + code.toUpperCase() + ')'})
           }
         })
 

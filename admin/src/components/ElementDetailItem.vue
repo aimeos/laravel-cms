@@ -15,6 +15,8 @@
 
     emits: ['update:item', 'error'],
 
+    inject: ['locales'],
+
     setup() {
       const languages = useLanguageStore()
       const schemas = useSchemaStore()
@@ -26,17 +28,6 @@
     },
 
     computed: {
-      langs() {
-        const list = [{code: null, name: this.$gettext('None')}]
-
-        Object.entries(this.languages.available).forEach(pair => {
-          list.push({code: pair[0], name: pair[1]})
-        })
-
-        return list
-      },
-
-
       readonly() {
         return !this.auth.can('element:save')
       }
@@ -81,13 +72,11 @@
         </v-col>
         <v-col cols="12" md="6">
           <v-select ref="lang"
-            :items="langs"
+            :items="locales(true)"
             :readonly="readonly"
             :modelValue="item.lang"
             @update:modelValue="update('lang', $event)"
             variant="underlined"
-            item-title="name"
-            item-value="code"
             :label="$gettext('Language')"
           ></v-select>
         </v-col>

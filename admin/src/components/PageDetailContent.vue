@@ -57,13 +57,6 @@
         }
 
         return sections
-
-        // for translation only
-        this.$gettext('main')
-        this.$gettext('header')
-        this.$gettext('footer')
-        this.$gettext('sidebar')
-        this.$gettext('aside')
       }
     },
 

@@ -1,7 +1,7 @@
 <script>
   import router from '../routes'
-  import { useAuthStore, useMessageStore } from '../stores'
   import { useGettext } from "vue3-gettext"
+  import { useAuthStore, useLanguageStore, useMessageStore } from '../stores'
 
   export default {
     data: () => ({
@@ -9,11 +9,12 @@
     }),
 
     setup() {
+      const languages = useLanguageStore()
       const messages = useMessageStore()
       const auth = useAuthStore()
       const i18n = useGettext()
 
-      return { auth, i18n, messages }
+      return { auth, i18n, languages, messages }
     },
 
     created() {
@@ -52,8 +53,8 @@
         <v-btn icon="mdi-web" v-bind="props" class="icon"></v-btn>
     </template>
     <v-list>
-        <v-list-item v-for="(name, code) in i18n.available" :key="code">
-          <v-btn variant="text" @click="change(code)">{{ name }}</v-btn>
+        <v-list-item v-for="(_, code) in i18n.available" :key="code">
+          <v-btn variant="text" @click="change(code)">{{ languages.translate(code) }} ({{ code }})</v-btn>
         </v-list-item>
     </v-list>
   </v-menu>

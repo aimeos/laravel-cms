@@ -19,7 +19,7 @@
       PageDetailPreview
     },
 
-    inject: ['closeView', 'compose', 'translate', 'txlanguages'],
+    inject: ['closeView', 'compose', 'translate', 'txlocales'],
 
     props: {
       'item': {type: Object, required: true}
@@ -604,7 +604,7 @@
           <v-btn :loading="translating" icon="mdi-translate" elevation="0" v-bind="props" />
         </template>
         <v-list>
-          <v-list-item v-for="lang in txlanguages(item.lang)" :key="lang.code">
+          <v-list-item v-for="lang in txlocales(item.lang)" :key="lang.code">
             <v-btn variant="text" @click="translatePage(lang.code)" prepend-icon="mdi-arrow-right-thin">{{ lang.name }}</v-btn>
           </v-list-item>
         </v-list>

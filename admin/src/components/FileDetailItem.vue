@@ -11,7 +11,7 @@
 
     emits: ['update:item', 'update:file', 'error'],
 
-    inject: ['compose', 'translate', 'txlanguages'],
+    inject: ['compose', 'locales', 'translate', 'txlocales'],
 
     data() {
       return {
@@ -63,17 +63,6 @@
         return Object.keys(this.languages.available || {}).concat(Object.keys(this.item.description || {})).filter((v, idx, self) => {
           return self.indexOf(v) === idx
         })
-      },
-
-
-      langs() {
-        const list = [{code: null, name: 'None'}]
-
-        Object.entries(this.languages.available || {}).forEach(pair => {
-          list.push({code: pair[0], name: pair[1]})
-        })
-
-        return list
       },
 
 
@@ -177,7 +166,7 @@
 
         this.translating = true
 
-        this.txlanguages(lang).map(lang => lang.code).forEach(lang => {
+        this.txlocales(lang).map(lang => lang.code).forEach(lang => {
           promises.push(this.translate(text, lang).then(result => {
             if(result[0]) {
               this.item.description[lang] = result[0]
@@ -223,13 +212,11 @@
         </v-col>
         <v-col cols="12" md="6">
           <v-select ref="lang"
-            :items="langs"
+            :items="locales(true)"
             :readonly="readonly"
             :modelValue="item.lang"
             @update:modelValue="update('lang', $event)"
             variant="underlined"
-            item-title="name"
-            item-value="code"
             :label="$gettext('Language')"
           ></v-select>
         </v-col>

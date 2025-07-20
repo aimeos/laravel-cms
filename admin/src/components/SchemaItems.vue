@@ -32,12 +32,6 @@
         }
 
         return map
-
-        // for translation
-        this.$gettext('basic')
-        this.$gettext('content')
-        this.$gettext('media')
-        this.$gettext('forms')
       }
     },
 

@@ -328,13 +328,6 @@
         })
 
         return this.side.store = {type: types, state: state}
-
-        // for translation only
-        this.$gettext('type')
-        this.$gettext('state')
-        this.$gettext('valid')
-        this.$gettext('changed')
-        this.$gettext('error')
       },
 
 

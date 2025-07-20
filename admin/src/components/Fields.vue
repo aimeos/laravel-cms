@@ -13,7 +13,7 @@
 
     emits: ['change', 'error', 'update:files'],
 
-    inject: ['compose', 'translate', 'txlanguages'],
+    inject: ['compose', 'translate', 'txlocales'],
 
     data() {
       return {
@@ -123,8 +123,8 @@
             <v-btn :loading="translating[code] || false" icon="mdi-translate" variant="flat" v-bind="props" />
           </template>
           <v-list>
-            <v-list-item v-for="lang in txlanguages()" :key="lang.code">
-              <v-btn variant="text" @click="translateText(code, lang.code)">🠖 {{ lang.name }} ({{lang.code}})</v-btn>
+            <v-list-item v-for="lang in txlocales()" :key="lang.code">
+              <v-btn variant="text" @click="translateText(code, lang.code)" prepend-icon="mdi-arrow-right-thin">{{ lang.name }}</v-btn>
             </v-list-item>
           </v-list>
         </v-menu>

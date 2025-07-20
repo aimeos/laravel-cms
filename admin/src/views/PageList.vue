@@ -5,7 +5,7 @@
   import AsideList from '../components/AsideList.vue'
   import Navigation from '../components/Navigation.vue'
   import PageListItems from '../components/PageListItems.vue'
-  import { useAuthStore, useDrawerStore, useLanguageStore } from '../stores'
+  import { useAuthStore, useDrawerStore } from '../stores'
 
   export default {
     components: {
@@ -16,7 +16,7 @@
       User
     },
 
-    inject: ['openView'],
+    inject: ['locales', 'openView'],
 
     data: () => ({
       filter: {
@@ -29,19 +29,26 @@
     }),
 
     setup() {
-      const languages = useLanguageStore()
       const drawer = useDrawerStore()
       const auth = useAuthStore()
 
-      return { auth, drawer, languages }
+      return { auth, drawer }
     },
 
     methods: {
       languages() {
-        const list = [{ title: this.$gettext('All'), icon: 'mdi-playlist-check', value: {lang: null} }]
+        const list = [{
+          title: this.$gettext('All'),
+          icon: 'mdi-playlist-check',
+          value: {lang: null}
+        }]
 
-        for(const key in this.languages.available) {
-          list.push({ title: this.languages.available[key], icon: 'mdi-translate', value: {lang: key} })
+        for(const entry of this.locales()) {
+          list.push({
+            title: entry.title,
+            icon: 'mdi-translate',
+            value: {lang: entry.value} }
+          )
         }
 
         return list

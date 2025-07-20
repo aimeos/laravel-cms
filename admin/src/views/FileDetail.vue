@@ -207,7 +207,7 @@
     </v-app-bar-title>
 
     <template v-slot:append>
-      <v-btn icon="mdi-history"
+      <v-btn icon="mdi-history" class="no-rtl"
         :class="{hidden: item.published && !changed && !item.latest}"
         @click="vhistory = true"
         elevation="0"

@@ -25,12 +25,8 @@ body {
   --cms-primary-dark: 16, 64, 112;
 }
 
-.v-locale--is-rtl .mdi-arrow-right-thin,
-.v-locale--is-rtl .mdi-keyboard-backspace,
-.v-locale--is-rtl .mdi-chevron-left,
-.v-locale--is-rtl .mdi-chevron-right,
-.v-locale--is-rtl .mdi-menu-right {
-  transform: rotate(180deg) !important;
+.v-locale--is-rtl .v-btn:not(.no-rtl) .mdi.v-icon {
+  transform: scaleX(-1) !important;
 }
 
 .v-snackbar__content {

@@ -228,16 +228,16 @@
 
             <div v-if="!readonly" class="floating-toolbar">
               <div class="toolbar-group">
-                <v-btn icon="mdi-rotate-left" @click="rotate(-90)" :title="$gettext('Rotate counter-clockwise')" />
-                <v-btn icon="mdi-rotate-right" @click="rotate(90)" :title="$gettext('Rotate clockwise')" />
+                <v-btn icon="mdi-rotate-left" class="no-rtl" @click="rotate(-90)" :title="$gettext('Rotate counter-clockwise')" />
+                <v-btn icon="mdi-rotate-right" class="no-rtl" @click="rotate(90)" :title="$gettext('Rotate clockwise')" />
               </div>
               <div class="toolbar-group">
-                <v-btn icon="mdi-flip-horizontal" @click="flipX" :title="$gettext('Flip horizontally')" />
-                <v-btn icon="mdi-flip-vertical" @click="flipY" :title="$gettext('Flip vertically')" />
+                <v-btn icon="mdi-flip-horizontal" class="no-rtl" @click="flipX" :title="$gettext('Flip horizontally')" />
+                <v-btn icon="mdi-flip-vertical" class="no-rtl" @click="flipY" :title="$gettext('Flip vertically')" />
               </div>
               <div class="toolbar-group">
-                <v-btn icon="mdi-history" @click="reset()" :title="$gettext('Reset')" />
-                <v-btn icon="mdi-download" @click="download()" :title="$gettext('Download')" />
+                <v-btn icon="mdi-history" class="no-rtl" @click="reset()" :title="$gettext('Reset')" />
+                <v-btn icon="mdi-download" class="no-rtl" @click="download()" :title="$gettext('Download')" />
               </div>
             </div>
           </div>

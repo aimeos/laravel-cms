@@ -4,6 +4,7 @@ namespace Aimeos\Cms\Controllers;
 
 use Illuminate\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Pagination\Paginator;
@@ -56,6 +57,7 @@ class PageController extends Controller
             return str_starts_with( $to, 'http' ) ? redirect()->away( $to ) : redirect( $to );
         }
 
+        App::setLocale( $page->lang );
         Paginator::useBootstrap(); // Use Bootstrap CSS classes for pagination links
 
         $content = collect( $page->content ?? [] )->groupBy( 'group' );
@@ -122,12 +124,13 @@ class PageController extends Controller
             ? Page::where( 'id', $version->versionable_id )->firstOrFail()
             : Page::where( 'domain', $domain )->where( 'path', $path )->firstOrFail();
 
-        $page->cache = 0; // don't cache sub-parts in preview requests
-
         if( $to = $version?->data?->to ?? $page->to ) {
             return str_starts_with( $to, 'http' ) ? redirect()->away( $to ) : redirect( $to );
         }
 
+        $page->cache = 0; // don't cache sub-parts in preview requests
+
+        App::setLocale( $version?->data?->lang ?? $page->lang );
         Paginator::useBootstrap();
 
         $theme = cms( $page, 'theme' ) ?: 'cms';

@@ -104,6 +104,14 @@
     text-decoration: line-through;
   }
 
+  :deep(.v-list-item__content) {
+    display: flex;
+  }
+
+  .v-list-item .value {
+    margin-inline-start: 8px;
+  }
+
   .v-list-item .value::before {
     content: ' (';
   }

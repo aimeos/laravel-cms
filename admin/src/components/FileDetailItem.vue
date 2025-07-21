@@ -60,7 +60,7 @@
 
     computed: {
       desclangs() {
-        return Object.keys(this.languages.available || {}).concat(Object.keys(this.item.description || {})).filter((v, idx, self) => {
+        return this.languages.available.concat(Object.keys(this.item.description || {})).filter((v, idx, self) => {
           return self.indexOf(v) === idx
         })
       },
@@ -281,15 +281,15 @@
           </v-label>
 
           <v-tabs v-model="tabdesc">
-            <v-tab v-for="lang in desclangs" :value="lang">{{ lang }}</v-tab>
+            <v-tab v-for="entry in locales()" :value="entry.value">{{ entry.title }}</v-tab>
           </v-tabs>
           <v-window v-model="tabdesc">
-            <v-window-item v-for="lang in desclangs" :value="lang">
+            <v-window-item v-for="entry in locales()" :value="entry.value">
               <v-textarea ref="description"
                 :readonly="readonly"
-                :modelValue="item.description?.[lang] || ''"
-                @update:modelValue="item.description[lang] = $event; $emit('update:item', item)"
-                :label="$gettext('Description (%{lang})', {lang: lang})"
+                :modelValue="item.description?.[entry.value] || ''"
+                @update:modelValue="item.description[entry.value] = $event; $emit('update:item', item)"
+                :label="$gettext('Description (%{lang})', {lang: entry.value})"
                 variant="underlined"
                 counter="500"
                 rows="2"

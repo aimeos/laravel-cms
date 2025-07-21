@@ -25,6 +25,10 @@ body {
   --cms-primary-dark: 16, 64, 112;
 }
 
+.ltr, .ltr .v-field {
+  direction: ltr !important;
+}
+
 .v-locale--is-rtl .v-btn:not(.no-rtl) .mdi.v-icon {
   transform: scaleX(-1) !important;
 }
@@ -62,6 +66,7 @@ body {
 .v-tab.error:before {
   content: "•";
   font-size: 200%;
+  margin-inline-end: 4px;
 }
 
 .v-tab.changed:before {

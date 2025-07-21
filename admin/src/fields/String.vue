@@ -4,6 +4,7 @@
    * - `max`: int, maximum number of characters allowed in the input field
    * - `min`: int, minimum number of characters required in the input field
    * - `placeholder`: string, placeholder text for the input field
+   * - `class`: string, CSS class to apply to the input field
    */
    export default {
     props: {
@@ -45,6 +46,7 @@
 <template>
   <v-text-field ref="field"
     :readonly="readonly"
+    :class="config.class"
     :counter="config.max"
     :clearable="!readonly"
     :placeholder="config.placeholder || ''"

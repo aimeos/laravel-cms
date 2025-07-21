@@ -546,6 +546,10 @@
 </template>
 
 <style scoped>
+  .layoout .v-list-item {
+    text-transform: uppercase;
+  }
+
   .items .v-list-item {
     border-bottom: 1px solid rgba(var(--v-border-color), 0.38);
     padding: 4px 0;

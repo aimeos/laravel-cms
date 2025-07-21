@@ -48,6 +48,7 @@
     density="comfortable"
     hide-details="auto"
     variant="outlined"
+    class="ltr"
     clearable
   ></v-textarea>
 </template>

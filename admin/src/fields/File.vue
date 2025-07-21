@@ -239,11 +239,11 @@
         </div>
       </div>
     </v-col>
-    <v-col cols="12" md="6" v-if="file.path">
-      {{ $gettext('Name') }}: {{ file.name }}<br/>
-      {{ $gettext('Mime') }}: {{ file.mime }}<br/>
-      {{ $gettext('Editor') }}: {{ file.editor }}<br/>
-      {{ $gettext('Updated') }}: {{ (new Date(file.updated_at)).toLocaleString() }}
+    <v-col cols="12" md="6" v-if="file.path" class="meta">
+      <span class="name">{{ $gettext('name') }}</span>: {{ file.name }}<br/>
+      <span class="name">{{ $gettext('mime') }}</span>: {{ file.mime }}<br/>
+      <span class="name">{{ $gettext('editor') }}</span>: {{ file.editor }}<br/>
+      <span class="name">{{ $gettext('updated') }}</span>: {{ (new Date(file.updated_at)).toLocaleString() }}
     </v-col>
   </v-row>
 
@@ -280,5 +280,10 @@
   .files .file .v-progress-linear {
     position: absolute;
     z-index: 1;
+  }
+
+  .meta .name {
+    text-transform: uppercase;
+    font-weight: bold;
   }
 </style>

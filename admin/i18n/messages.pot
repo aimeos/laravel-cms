@@ -11,6 +11,15 @@ msgid "id"
 msgstr ""
 
 #: src/components/AsideMeta.vue:18
+#: src/components/ElementListItems.vue:471
+#: src/components/FileListItems.vue:506
+#: src/fields/Audio.vue:61
+#: src/fields/File.vue:245
+#: src/fields/Image.vue:103
+#: src/fields/Video.vue:63
+#: src/views/ElementList.vue:119
+#: src/views/FileList.vue:116
+#: src/views/PageList.vue:124
 msgid "editor"
 msgstr ""
 
@@ -19,6 +28,10 @@ msgid "created"
 msgstr ""
 
 #: src/components/AsideMeta.vue:26
+#: src/fields/Audio.vue:62
+#: src/fields/File.vue:246
+#: src/fields/Image.vue:104
+#: src/fields/Video.vue:64
 msgid "updated"
 msgstr ""
 
@@ -32,21 +45,14 @@ msgstr ""
 
 #: src/components/ElementDetailItem.vue:68
 #: src/components/ElementDetailRefs.vue:96
-#: src/components/ElementListItems.vue:465
 #: src/components/FileDetailItem.vue:208
 #: src/components/FileDetailRefs.vue:101
 #: src/components/FileDetailRefs.vue:123
-#: src/components/FileListItems.vue:497
-#: src/fields/Audio.vue:59
-#: src/fields/File.vue:243
-#: src/fields/Image.vue:101
-#: src/fields/Video.vue:61
 msgid "Name"
 msgstr ""
 
 #: src/components/ElementDetailItem.vue:80
 #: src/components/FileDetailItem.vue:220
-#: src/components/FileListItems.vue:503
 #: src/components/PageDetailItemProps.vue:150
 msgid "Language"
 msgstr ""
@@ -82,7 +88,6 @@ msgid "URL"
 msgstr ""
 
 #: src/components/ElementDetailRefs.vue:117
-#: src/components/ElementListItems.vue:468
 #: src/components/FileDetailRefs.vue:122
 #: src/components/FileDetailRefs.vue:144
 msgid "Type"
@@ -174,13 +179,10 @@ msgstr ""
 #: src/components/PageListItems.vue:932
 #: src/views/ElementDetail.vue:295
 #: src/views/ElementDetail.vue:310
-#: src/views/ElementList.vue:102
 #: src/views/FileDetail.vue:229
 #: src/views/FileDetail.vue:244
-#: src/views/FileList.vue:99
 #: src/views/PageDetail.vue:632
 #: src/views/PageDetail.vue:647
-#: src/views/PageList.vue:107
 msgid "Publish"
 msgstr ""
 
@@ -226,27 +228,27 @@ msgstr ""
 #: src/components/ElementListItems.vue:459
 #: src/components/FileListItems.vue:486
 #: src/components/FileListItems.vue:491
-msgid "Latest"
+msgid "latest"
 msgstr ""
 
 #: src/components/ElementListItems.vue:454
 #: src/components/ElementListItems.vue:462
 #: src/components/FileListItems.vue:486
 #: src/components/FileListItems.vue:494
-msgid "Oldest"
+msgid "oldest"
 msgstr ""
 
-#: src/components/ElementListItems.vue:471
-#: src/components/FileListItems.vue:506
-#: src/fields/Audio.vue:61
-#: src/fields/File.vue:245
-#: src/fields/Image.vue:103
-#: src/fields/Video.vue:63
-#: src/views/ElementList.vue:119
-#: src/views/FileList.vue:116
-#: src/views/PageDetail.vue:665
-#: src/views/PageList.vue:124
-msgid "Editor"
+#: src/components/ElementListItems.vue:465
+#: src/components/FileListItems.vue:497
+#: src/fields/Audio.vue:59
+#: src/fields/File.vue:243
+#: src/fields/Image.vue:101
+#: src/fields/Video.vue:61
+msgid "name"
+msgstr ""
+
+#: src/components/ElementListItems.vue:468
+msgid "type"
 msgstr ""
 
 #: src/components/ElementListItems.vue:521
@@ -385,7 +387,11 @@ msgstr ""
 #: src/fields/File.vue:244
 #: src/fields/Image.vue:102
 #: src/fields/Video.vue:62
-msgid "Mime"
+msgid "mime"
+msgstr ""
+
+#: src/components/FileListItems.vue:503
+msgid "language"
 msgstr ""
 
 #: src/components/FileUrlDialog.vue:134
@@ -742,13 +748,6 @@ msgstr ""
 msgid "Logout"
 msgstr ""
 
-#: src/fields/Audio.vue:62
-#: src/fields/File.vue:246
-#: src/fields/Image.vue:104
-#: src/fields/Video.vue:64
-msgid "Updated"
-msgstr ""
-
 #: src/fields/Autocomplete.vue:140
 #: src/fields/Color.vue:34
 #: src/fields/Date.vue:48
@@ -775,13 +774,13 @@ msgstr ""
 msgid "Minimum is %{num} entries"
 msgstr ""
 
-#: src/fields/Plaintext.vue:48
-#: src/fields/String.vue:52
+#: src/fields/Plaintext.vue:49
+#: src/fields/String.vue:54
 msgid "Minimum length is %{num} characters"
 msgstr ""
 
-#: src/fields/Plaintext.vue:49
-#: src/fields/String.vue:53
+#: src/fields/Plaintext.vue:50
+#: src/fields/String.vue:55
 msgid "Maximum length is %{num} characters"
 msgstr ""
 
@@ -810,120 +809,262 @@ msgid "You do not have permission to access %{path}"
 msgstr ""
 
 #: src/strings.js:5
-msgid "basic"
-msgstr ""
-
-#: src/strings.js:6
-msgid "content"
-msgstr ""
-
-#: src/strings.js:7
-msgid "media"
-msgstr ""
-
-#: src/strings.js:8
-msgid "forms"
-msgstr ""
-
-#: src/strings.js:11
+msgctxt "as"
 msgid "type"
 msgstr ""
 
-#: src/strings.js:12
+#: src/strings.js:6
+msgctxt "as"
 msgid "state"
 msgstr ""
 
-#: src/strings.js:13
+#: src/strings.js:7
+msgctxt "as"
 msgid "valid"
 msgstr ""
 
-#: src/strings.js:14
+#: src/strings.js:8
+msgctxt "as"
 msgid "changed"
 msgstr ""
 
-#: src/strings.js:15
+#: src/strings.js:9
+msgctxt "as"
 msgid "error"
 msgstr ""
 
-#: src/strings.js:18
-#: src/strings.js:35
+#: src/strings.js:12
+msgctxt "cs"
 msgid "main"
 msgstr ""
 
-#: src/strings.js:19
-#: src/strings.js:30
+#: src/strings.js:13
+msgctxt "cs"
 msgid "header"
 msgstr ""
 
-#: src/strings.js:20
+#: src/strings.js:14
+msgctxt "cs"
 msgid "footer"
 msgstr ""
 
-#: src/strings.js:21
+#: src/strings.js:15
+msgctxt "cs"
 msgid "sidebar"
 msgstr ""
 
-#: src/strings.js:22
+#: src/strings.js:16
+msgctxt "cs"
 msgid "aside"
 msgstr ""
 
+#: src/strings.js:19
+msgctxt "sg"
+msgid "basic"
+msgstr ""
+
+#: src/strings.js:20
+msgctxt "sg"
+msgid "content"
+msgstr ""
+
+#: src/strings.js:21
+msgctxt "sg"
+msgid "media"
+msgstr ""
+
+#: src/strings.js:22
+msgctxt "sg"
+msgid "forms"
+msgstr ""
+
 #: src/strings.js:25
-msgid "Button text"
+msgctxt "st"
+msgid "reference"
 msgstr ""
 
 #: src/strings.js:26
-msgid "cards"
+msgctxt "st"
+msgid "heading"
 msgstr ""
 
 #: src/strings.js:27
-msgid "description"
-msgstr ""
-
-#: src/strings.js:28
-msgid "file"
-msgstr ""
-
-#: src/strings.js:29
-msgid "files"
-msgstr ""
-
-#: src/strings.js:31
-msgid "keywords"
-msgstr ""
-
-#: src/strings.js:32
-msgid "lang"
-msgstr ""
-
-#: src/strings.js:33
-msgid "level"
-msgstr ""
-
-#: src/strings.js:34
-msgid "limit"
-msgstr ""
-
-#: src/strings.js:36
-msgid "parent-page"
-msgstr ""
-
-#: src/strings.js:37
-msgid "position"
-msgstr ""
-
-#: src/strings.js:38
+msgctxt "st"
 msgid "text"
 msgstr ""
 
-#: src/strings.js:39
+#: src/strings.js:28
+msgctxt "st"
+msgid "image-text"
+msgstr ""
+
+#: src/strings.js:29
+msgctxt "st"
+msgid "slideshow"
+msgstr ""
+
+#: src/strings.js:30
+msgctxt "st"
+msgid "code"
+msgstr ""
+
+#: src/strings.js:31
+msgctxt "st"
 msgid "table"
 msgstr ""
 
+#: src/strings.js:32
+msgctxt "st"
+msgid "html"
+msgstr ""
+
+#: src/strings.js:33
+msgctxt "st"
+msgid "image"
+msgstr ""
+
+#: src/strings.js:34
+msgctxt "st"
+msgid "video"
+msgstr ""
+
+#: src/strings.js:35
+msgctxt "st"
+msgid "audio"
+msgstr ""
+
+#: src/strings.js:36
+msgctxt "st"
+msgid "file"
+msgstr ""
+
+#: src/strings.js:37
+msgctxt "st"
+msgid "hero"
+msgstr ""
+
+#: src/strings.js:38
+msgctxt "st"
+msgid "cards"
+msgstr ""
+
+#: src/strings.js:39
+msgctxt "st"
+msgid "blog"
+msgstr ""
+
 #: src/strings.js:40
-msgid "title"
+msgctxt "st"
+msgid "article"
 msgstr ""
 
 #: src/strings.js:41
+msgctxt "st"
+msgid "contact"
+msgstr ""
+
+#: src/strings.js:42
+msgctxt "st"
+msgid "meta"
+msgstr ""
+
+#: src/strings.js:43
+msgctxt "st"
+msgid "social"
+msgstr ""
+
+#: src/strings.js:44
+msgctxt "st"
+msgid "canonical"
+msgstr ""
+
+#: src/strings.js:45
+msgctxt "st"
+msgid "theme"
+msgstr ""
+
+#: src/strings.js:48
+msgctxt "fn"
+msgid "button"
+msgstr ""
+
+#: src/strings.js:49
+msgctxt "fn"
+msgid "cards"
+msgstr ""
+
+#: src/strings.js:50
+msgctxt "fn"
+msgid "description"
+msgstr ""
+
+#: src/strings.js:51
+msgctxt "fn"
+msgid "file"
+msgstr ""
+
+#: src/strings.js:52
+msgctxt "fn"
+msgid "files"
+msgstr ""
+
+#: src/strings.js:53
+msgctxt "fn"
+msgid "header"
+msgstr ""
+
+#: src/strings.js:54
+msgctxt "fn"
+msgid "keywords"
+msgstr ""
+
+#: src/strings.js:55
+msgctxt "fn"
+msgid "lang"
+msgstr ""
+
+#: src/strings.js:56
+msgctxt "fn"
+msgid "level"
+msgstr ""
+
+#: src/strings.js:57
+msgctxt "fn"
+msgid "limit"
+msgstr ""
+
+#: src/strings.js:58
+msgctxt "fn"
+msgid "main"
+msgstr ""
+
+#: src/strings.js:59
+msgctxt "fn"
+msgid "parent-page"
+msgstr ""
+
+#: src/strings.js:60
+msgctxt "fn"
+msgid "position"
+msgstr ""
+
+#: src/strings.js:61
+msgctxt "fn"
+msgid "text"
+msgstr ""
+
+#: src/strings.js:62
+msgctxt "fn"
+msgid "table"
+msgstr ""
+
+#: src/strings.js:63
+msgctxt "fn"
+msgid "title"
+msgstr ""
+
+#: src/strings.js:64
+msgctxt "fn"
 msgid "url"
 msgstr ""
 
@@ -986,6 +1127,12 @@ msgstr ""
 msgid "All"
 msgstr ""
 
+#: src/views/ElementList.vue:102
+#: src/views/FileList.vue:99
+#: src/views/PageList.vue:107
+msgid "publish"
+msgstr ""
+
 #: src/views/ElementList.vue:106
 #: src/views/FileList.vue:103
 #: src/views/PageList.vue:111
@@ -1001,7 +1148,7 @@ msgstr ""
 #: src/views/ElementList.vue:111
 #: src/views/FileList.vue:108
 #: src/views/PageList.vue:116
-msgid "Trashed"
+msgid "trashed"
 msgstr ""
 
 #: src/views/ElementList.vue:114
@@ -1025,7 +1172,7 @@ msgstr ""
 #: src/views/ElementList.vue:126
 #: src/views/FileList.vue:123
 #: src/views/PageList.vue:131
-msgid "Languages"
+msgid "languages"
 msgstr ""
 
 #: src/views/FileDetail.vue:71
@@ -1111,12 +1258,16 @@ msgstr ""
 msgid "Page"
 msgstr ""
 
+#: src/views/PageDetail.vue:665
+msgid "Editor"
+msgstr ""
+
 #: src/views/PageDetail.vue:670
 msgid "Content"
 msgstr ""
 
 #: src/views/PageList.vue:100
-msgid "View"
+msgid "view"
 msgstr ""
 
 #: src/views/PageList.vue:102

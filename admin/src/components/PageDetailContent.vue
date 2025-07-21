@@ -112,7 +112,7 @@
               error: errors[section]
             }"
             :value="section"
-          >{{ $gettext(section) }}</v-tab>
+          >{{ $pgettext('cs', section) }}</v-tab>
         </v-tabs>
 
         <v-window v-model="tab">

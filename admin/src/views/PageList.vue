@@ -97,14 +97,14 @@
 
   <AsideList v-model:filter="filter" :content="[{
       key: 'view',
-      title: $gettext('View'),
+      title: $gettext('view'),
       items: [
         { title: $gettext('Tree'), icon: 'mdi-file-tree', value: {'view': 'tree'} },
         { title: $gettext('List'), icon: 'mdi-format-list-bulleted-square', value: {'view': 'list'} },
       ]
     }, {
       key: 'publish',
-      title: $gettext('Publish'),
+      title: $gettext('publish'),
       items: [
         { title: $gettext('All'), icon: 'mdi-playlist-check', value: {'publish': null} },
         { title: $gettext('Published'), icon: 'mdi-publish', value: {'publish': 'PUBLISHED'} },
@@ -113,7 +113,7 @@
       ]
     }, {
       key: 'trashed',
-      title: $gettext('Trashed'),
+      title: $gettext('trashed'),
       items: [
         { title: $gettext('All'), icon: 'mdi-playlist-check', value: {'trashed': 'WITH'} },
         { title: $gettext('Available only'), icon: 'mdi-delete-off', value: {'trashed': 'WITHOUT'} },
@@ -121,14 +121,14 @@
       ]
     }, {
       key: 'editor',
-      title: $gettext('Editor'),
+      title: $gettext('editor'),
       items: [
         { title: $gettext('All'), icon: 'mdi-playlist-check', value: {'editor': null} },
         { title: $gettext('Edited by me'), icon: 'mdi-account', value: {'editor': this.auth.me?.email} },
       ]
     }, {
       key: 'lang',
-      title: $gettext('Languages'),
+      title: $gettext('languages'),
       items: languages()
     }]"
   />

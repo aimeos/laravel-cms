@@ -451,24 +451,24 @@
       <v-menu>
         <template #activator="{ props }">
           <v-btn append-icon="mdi-menu-down" prepend-icon="mdi-sort" variant="text" location="bottom right" v-bind="props">
-            {{ sort?.column === 'ID' ? (sort?.order === 'DESC' ? $gettext('Latest') : $gettext('Oldest') ) : (sort?.column || '') }}
+            {{ sort?.column === 'ID' ? (sort?.order === 'DESC' ? $gettext('latest') : $gettext('oldest') ) : (sort?.column || '') }}
           </v-btn>
         </template>
         <v-list>
           <v-list-item>
-            <v-btn variant="text" @click="sort = {column: 'ID', order: 'DESC'}">{{ $gettext('Latest') }}</v-btn>
+            <v-btn variant="text" @click="sort = {column: 'ID', order: 'DESC'}">{{ $gettext('latest') }}</v-btn>
           </v-list-item>
           <v-list-item>
-            <v-btn variant="text" @click="sort = {column: 'ID', order: 'ASC'}">{{ $gettext('Oldest') }}</v-btn>
+            <v-btn variant="text" @click="sort = {column: 'ID', order: 'ASC'}">{{ $gettext('oldest') }}</v-btn>
           </v-list-item>
           <v-list-item>
-            <v-btn variant="text" @click="sort = {column: 'NAME', order: 'ASC'}">{{ $gettext('Name') }}</v-btn>
+            <v-btn variant="text" @click="sort = {column: 'NAME', order: 'ASC'}">{{ $gettext('name') }}</v-btn>
           </v-list-item>
           <v-list-item>
-            <v-btn variant="text" @click="sort = {column: 'TYPE', order: 'ASC'}">{{ $gettext('Type') }}</v-btn>
+            <v-btn variant="text" @click="sort = {column: 'TYPE', order: 'ASC'}">{{ $gettext('type') }}</v-btn>
           </v-list-item>
           <v-list-item>
-            <v-btn variant="text" @click="sort = {column: 'EDITOR', order: 'ASC'}">{{ $gettext('Editor') }}</v-btn>
+            <v-btn variant="text" @click="sort = {column: 'EDITOR', order: 'ASC'}">{{ $gettext('editor') }}</v-btn>
           </v-list-item>
         </v-list>
       </v-menu>

@@ -1,12 +1,12 @@
 msgid ""
 msgstr ""
-"Content-Transfer-Encoding: 8bit\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Language: id\n"
-"Language-Team: none\n"
-"Last-Translator: Automatically generated\n"
-"MIME-Version: 1.0\n"
 "Project-Id-Version: PACKAGE VERSION\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: id\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 
 #: src/App.vue:110
 msgid "None"
@@ -16,7 +16,11 @@ msgstr "Tidak ada"
 msgid "id"
 msgstr "id"
 
-#: src/components/AsideMeta.vue:18
+#: src/components/AsideMeta.vue:18 src/components/ElementListItems.vue:471
+#: src/components/FileListItems.vue:506 src/fields/Audio.vue:61
+#: src/fields/File.vue:245 src/fields/Image.vue:103 src/fields/Video.vue:63
+#: src/views/ElementList.vue:119 src/views/FileList.vue:116
+#: src/views/PageList.vue:124
 msgid "editor"
 msgstr "editor"
 
@@ -24,7 +28,8 @@ msgstr "editor"
 msgid "created"
 msgstr "dibuat"
 
-#: src/components/AsideMeta.vue:26
+#: src/components/AsideMeta.vue:26 src/fields/Audio.vue:62
+#: src/fields/File.vue:246 src/fields/Image.vue:104 src/fields/Video.vue:64
 msgid "updated"
 msgstr "diperbarui"
 
@@ -38,46 +43,33 @@ msgstr "Meta data"
 
 #: src/components/ElementDetailItem.vue:68
 #: src/components/ElementDetailRefs.vue:96
-#: src/components/ElementListItems.vue:465
-#: src/components/FileDetailItem.vue:208
-#: src/components/FileDetailRefs.vue:101
+#: src/components/FileDetailItem.vue:208 src/components/FileDetailRefs.vue:101
 #: src/components/FileDetailRefs.vue:123
-#: src/components/FileListItems.vue:497
-#: src/fields/Audio.vue:59
-#: src/fields/File.vue:243
-#: src/fields/Image.vue:101
-#: src/fields/Video.vue:61
 msgid "Name"
 msgstr "Nama"
 
 #: src/components/ElementDetailItem.vue:80
 #: src/components/FileDetailItem.vue:220
-#: src/components/FileListItems.vue:503
 #: src/components/PageDetailItemProps.vue:150
 msgid "Language"
 msgstr "Bahasa"
 
-#: src/components/ElementDetailRefs.vue:65
-#: src/components/FileDetailRefs.vue:69
+#: src/components/ElementDetailRefs.vue:65 src/components/FileDetailRefs.vue:69
 msgid "yes"
 msgstr "Ya."
 
-#: src/components/ElementDetailRefs.vue:68
-#: src/components/FileDetailRefs.vue:73
+#: src/components/ElementDetailRefs.vue:68 src/components/FileDetailRefs.vue:73
 msgid "no"
 msgstr "tidak"
 
-#: src/components/ElementDetailRefs.vue:89
-#: src/components/Navigation.vue:36
-#: src/components/SchemaDialog.vue:35
-#: src/views/ElementList.vue:76
+#: src/components/ElementDetailRefs.vue:89 src/components/Navigation.vue:36
+#: src/components/SchemaDialog.vue:35 src/views/ElementList.vue:76
 msgid "Shared elements"
 msgstr "Elemen bersama"
 
 #: src/components/ElementDetailRefs.vue:94
 #: src/components/ElementDetailRefs.vue:116
-#: src/components/FileDetailRefs.vue:99
-#: src/components/FileDetailRefs.vue:121
+#: src/components/FileDetailRefs.vue:99 src/components/FileDetailRefs.vue:121
 #: src/components/FileDetailRefs.vue:143
 msgid "ID"
 msgstr "ID"
@@ -88,17 +80,13 @@ msgid "URL"
 msgstr "URL"
 
 #: src/components/ElementDetailRefs.vue:117
-#: src/components/ElementListItems.vue:468
-#: src/components/FileDetailRefs.vue:122
-#: src/components/FileDetailRefs.vue:144
+#: src/components/FileDetailRefs.vue:122 src/components/FileDetailRefs.vue:144
 msgid "Type"
 msgstr "Jenis"
 
 #: src/components/ElementDetailRefs.vue:118
-#: src/components/FileDetailRefs.vue:145
-#: src/views/ElementList.vue:105
-#: src/views/FileList.vue:102
-#: src/views/PageList.vue:110
+#: src/components/FileDetailRefs.vue:145 src/views/ElementList.vue:105
+#: src/views/FileList.vue:102 src/views/PageList.vue:110
 msgid "Published"
 msgstr "Diterbitkan"
 
@@ -107,36 +95,22 @@ msgstr "Diterbitkan"
 #: src/components/ElementListItems.vue:157
 #: src/components/ElementListItems.vue:198
 #: src/components/ElementListItems.vue:240
-#: src/components/ElementListItems.vue:277
-#: src/components/FileListItems.vue:61
-#: src/components/FileListItems.vue:122
-#: src/components/FileListItems.vue:166
-#: src/components/FileListItems.vue:207
-#: src/components/FileListItems.vue:249
+#: src/components/ElementListItems.vue:277 src/components/FileListItems.vue:61
+#: src/components/FileListItems.vue:122 src/components/FileListItems.vue:166
+#: src/components/FileListItems.vue:207 src/components/FileListItems.vue:249
 #: src/components/FileListItems.vue:286
 #: src/components/PageDetailContentList.vue:218
-#: src/components/PageListItems.vue:67
-#: src/components/PageListItems.vue:101
-#: src/components/PageListItems.vue:168
-#: src/components/PageListItems.vue:211
-#: src/components/PageListItems.vue:288
-#: src/components/PageListItems.vue:351
-#: src/components/PageListItems.vue:416
-#: src/components/PageListItems.vue:470
-#: src/components/PageListItems.vue:566
-#: src/components/PageListItems.vue:607
-#: src/components/PageListItems.vue:649
-#: src/components/PageListItems.vue:711
-#: src/fields/File.vue:55
-#: src/fields/Images.vue:61
-#: src/views/ElementDetail.vue:107
-#: src/views/ElementDetail.vue:156
-#: src/views/ElementDetail.vue:211
-#: src/views/FileDetail.vue:45
-#: src/views/FileDetail.vue:94
-#: src/views/FileDetail.vue:149
-#: src/views/PageDetail.vue:289
-#: src/views/PageDetail.vue:341
+#: src/components/PageListItems.vue:67 src/components/PageListItems.vue:101
+#: src/components/PageListItems.vue:168 src/components/PageListItems.vue:211
+#: src/components/PageListItems.vue:288 src/components/PageListItems.vue:351
+#: src/components/PageListItems.vue:416 src/components/PageListItems.vue:470
+#: src/components/PageListItems.vue:566 src/components/PageListItems.vue:607
+#: src/components/PageListItems.vue:649 src/components/PageListItems.vue:711
+#: src/fields/File.vue:55 src/fields/Images.vue:61
+#: src/views/ElementDetail.vue:107 src/views/ElementDetail.vue:156
+#: src/views/ElementDetail.vue:211 src/views/FileDetail.vue:45
+#: src/views/FileDetail.vue:94 src/views/FileDetail.vue:149
+#: src/views/PageDetail.vue:289 src/views/PageDetail.vue:341
 #: src/views/PageDetail.vue:535
 msgid "Permission denied"
 msgstr "Izin ditolak"
@@ -165,28 +139,19 @@ msgstr "Kesalahan membersihkan elemen bersama"
 msgid "Error fetching shared elements"
 msgstr "Kesalahan mengambil elemen bersama"
 
-#: src/components/ElementListItems.vue:417
-#: src/components/FileListItems.vue:446
+#: src/components/ElementListItems.vue:417 src/components/FileListItems.vue:446
 #: src/components/PageDetailContentList.vue:411
 #: src/components/PageListItems.vue:866
 msgid "Actions"
 msgstr "Tindakan"
 
 #: src/components/ElementListItems.vue:421
-#: src/components/ElementListItems.vue:488
-#: src/components/FileListItems.vue:450
-#: src/components/FileListItems.vue:523
-#: src/components/PageListItems.vue:870
-#: src/components/PageListItems.vue:932
-#: src/views/ElementDetail.vue:295
-#: src/views/ElementDetail.vue:310
-#: src/views/ElementList.vue:102
-#: src/views/FileDetail.vue:229
-#: src/views/FileDetail.vue:244
-#: src/views/FileList.vue:99
-#: src/views/PageDetail.vue:632
+#: src/components/ElementListItems.vue:488 src/components/FileListItems.vue:450
+#: src/components/FileListItems.vue:523 src/components/PageListItems.vue:870
+#: src/components/PageListItems.vue:932 src/views/ElementDetail.vue:295
+#: src/views/ElementDetail.vue:310 src/views/FileDetail.vue:229
+#: src/views/FileDetail.vue:244 src/views/PageDetail.vue:632
 #: src/views/PageDetail.vue:647
-#: src/views/PageList.vue:107
 msgid "Publish"
 msgstr "Menerbitkan"
 
@@ -195,75 +160,60 @@ msgid "Add element"
 msgstr "Tambahkan elemen"
 
 #: src/components/ElementListItems.vue:427
-#: src/components/ElementListItems.vue:491
-#: src/components/FileListItems.vue:456
-#: src/components/FileListItems.vue:526
-#: src/components/PageListItems.vue:882
+#: src/components/ElementListItems.vue:491 src/components/FileListItems.vue:456
+#: src/components/FileListItems.vue:526 src/components/PageListItems.vue:882
 #: src/components/PageListItems.vue:1010
 msgid "Trash"
 msgstr "Sampah"
 
 #: src/components/ElementListItems.vue:430
-#: src/components/ElementListItems.vue:494
-#: src/components/FileListItems.vue:459
-#: src/components/FileListItems.vue:529
-#: src/components/PageListItems.vue:885
+#: src/components/ElementListItems.vue:494 src/components/FileListItems.vue:459
+#: src/components/FileListItems.vue:529 src/components/PageListItems.vue:885
 #: src/components/PageListItems.vue:1013
 msgid "Restore"
 msgstr "Mengembalikan"
 
 #: src/components/ElementListItems.vue:433
-#: src/components/ElementListItems.vue:497
-#: src/components/FileListItems.vue:462
-#: src/components/FileListItems.vue:532
-#: src/components/PageListItems.vue:888
+#: src/components/ElementListItems.vue:497 src/components/FileListItems.vue:462
+#: src/components/FileListItems.vue:532 src/components/PageListItems.vue:888
 #: src/components/PageListItems.vue:1016
 msgid "Purge"
 msgstr "Pembersihan"
 
-#: src/components/ElementListItems.vue:444
-#: src/components/FileListItems.vue:473
+#: src/components/ElementListItems.vue:444 src/components/FileListItems.vue:473
 #: src/components/PageDetailContentList.vue:433
 #: src/components/PageListItems.vue:897
 msgid "Search for"
 msgstr "Cari"
 
 #: src/components/ElementListItems.vue:454
-#: src/components/ElementListItems.vue:459
-#: src/components/FileListItems.vue:486
+#: src/components/ElementListItems.vue:459 src/components/FileListItems.vue:486
 #: src/components/FileListItems.vue:491
-msgid "Latest"
-msgstr "Terbaru"
+msgid "latest"
+msgstr "terbaru"
 
 #: src/components/ElementListItems.vue:454
-#: src/components/ElementListItems.vue:462
-#: src/components/FileListItems.vue:486
+#: src/components/ElementListItems.vue:462 src/components/FileListItems.vue:486
 #: src/components/FileListItems.vue:494
-msgid "Oldest"
-msgstr "Tertua"
+msgid "oldest"
+msgstr "tertua"
 
-#: src/components/ElementListItems.vue:471
-#: src/components/FileListItems.vue:506
-#: src/fields/Audio.vue:61
-#: src/fields/File.vue:245
-#: src/fields/Image.vue:103
-#: src/fields/Video.vue:63
-#: src/views/ElementList.vue:119
-#: src/views/FileList.vue:116
-#: src/views/PageDetail.vue:665
-#: src/views/PageList.vue:124
-msgid "Editor"
-msgstr "Editor"
+#: src/components/ElementListItems.vue:465 src/components/FileListItems.vue:497
+#: src/fields/Audio.vue:59 src/fields/File.vue:243 src/fields/Image.vue:101
+#: src/fields/Video.vue:61
+msgid "name"
+msgstr "nama"
 
-#: src/components/ElementListItems.vue:521
-#: src/components/FileListItems.vue:564
-#: src/components/HistoryDialog.vue:90
-#: src/components/PageListItems.vue:1048
+#: src/components/ElementListItems.vue:468
+msgid "type"
+msgstr "Jenis"
+
+#: src/components/ElementListItems.vue:521 src/components/FileListItems.vue:564
+#: src/components/HistoryDialog.vue:90 src/components/PageListItems.vue:1048
 msgid "Loading"
 msgstr "Memuat"
 
-#: src/components/ElementListItems.vue:525
-#: src/components/FileListItems.vue:569
+#: src/components/ElementListItems.vue:525 src/components/FileListItems.vue:569
 #: src/components/PageListItems.vue:1053
 msgid "No entries found"
 msgstr "Tidak ada entri yang ditemukan"
@@ -276,8 +226,7 @@ msgstr "Elemen Konten"
 msgid "Context in JSON format"
 msgstr "Konteks dalam format JSON"
 
-#: src/components/FileAiDialog.vue:172
-#: src/components/FileAiDialog.vue:191
+#: src/components/FileAiDialog.vue:172 src/components/FileAiDialog.vue:191
 msgid "Create image"
 msgstr "Membuat gambar"
 
@@ -289,8 +238,7 @@ msgstr "Jelaskan gambar"
 msgid "Generated images"
 msgstr "Gambar yang dihasilkan"
 
-#: src/components/FileAiDialog.vue:200
-#: src/components/FileAiDialog.vue:215
+#: src/components/FileAiDialog.vue:200 src/components/FileAiDialog.vue:215
 msgid "Remove"
 msgstr "Menghapus"
 
@@ -334,8 +282,7 @@ msgstr "Deskripsi"
 msgid "Description (%{lang})"
 msgstr "Deskripsi (%{lang})"
 
-#: src/components/FileDetailRefs.vue:94
-#: src/components/Navigation.vue:30
+#: src/components/FileDetailRefs.vue:94 src/components/Navigation.vue:30
 #: src/views/PageList.vue:75
 msgid "Pages"
 msgstr "Halaman"
@@ -348,8 +295,7 @@ msgstr "Elemen"
 msgid "Versions"
 msgstr "Versi"
 
-#: src/components/FileDialog.vue:26
-#: src/components/Navigation.vue:42
+#: src/components/FileDialog.vue:26 src/components/Navigation.vue:42
 msgid "Files"
 msgstr "File"
 
@@ -361,8 +307,7 @@ msgstr "Kesalahan membuang file"
 msgid "Error restoring file"
 msgstr "Kesalahan memulihkan file"
 
-#: src/components/FileListItems.vue:241
-#: src/views/FileDetail.vue:79
+#: src/components/FileListItems.vue:241 src/views/FileDetail.vue:79
 msgid "Error publishing file"
 msgstr "Kesalahan penerbitan file"
 
@@ -386,13 +331,14 @@ msgstr "Tampilan kisi"
 msgid "List view"
 msgstr "Tampilan daftar"
 
-#: src/components/FileListItems.vue:500
-#: src/fields/Audio.vue:60
-#: src/fields/File.vue:244
-#: src/fields/Image.vue:102
-#: src/fields/Video.vue:62
-msgid "Mime"
-msgstr "Pantomim"
+#: src/components/FileListItems.vue:500 src/fields/Audio.vue:60
+#: src/fields/File.vue:244 src/fields/Image.vue:102 src/fields/Video.vue:62
+msgid "mime"
+msgstr "pantomim"
+
+#: src/components/FileListItems.vue:503
+msgid "language"
+msgstr "bahasa"
 
 #: src/components/FileUrlDialog.vue:134
 msgid "At least one file is not of type \"%{mime}*\""
@@ -480,8 +426,7 @@ msgid "Cut"
 msgstr "Potong"
 
 #: src/components/PageDetailContentList.vue:424
-#: src/components/PageListItems.vue:953
-#: src/components/PageListItems.vue:971
+#: src/components/PageListItems.vue:953 src/components/PageListItems.vue:971
 msgid "Paste"
 msgstr "Tempel"
 
@@ -550,10 +495,8 @@ msgstr "Tersembunyi dalam navigasi"
 msgid "Status"
 msgstr "Status"
 
-#: src/components/PageDetailItemProps.vue:159
-#: src/fields/Table.vue:54
-#: src/views/Login.vue:84
-#: src/views/Login.vue:90
+#: src/components/PageDetailItemProps.vue:159 src/fields/Table.vue:54
+#: src/views/Login.vue:84 src/views/Login.vue:90
 msgid "Field is required"
 msgstr "Bidang harus diisi"
 
@@ -640,8 +583,7 @@ msgstr "Mode pratinjau"
 msgid "Error adding root page"
 msgstr "Kesalahan menambahkan halaman root"
 
-#: src/components/PageListItems.vue:135
-#: src/components/PageListItems.vue:460
+#: src/components/PageListItems.vue:135 src/components/PageListItems.vue:460
 msgid "Error moving page"
 msgstr "Kesalahan memindahkan halaman"
 
@@ -665,13 +607,11 @@ msgstr "Halaman pemulihan kesalahan"
 msgid "Error copying page"
 msgstr "Halaman penyalinan yang salah"
 
-#: src/components/PageListItems.vue:556
-#: src/views/PageDetail.vue:241
+#: src/components/PageListItems.vue:556 src/views/PageDetail.vue:241
 msgid "Error fetching page"
 msgstr "Halaman pengambilan kesalahan"
 
-#: src/components/PageListItems.vue:599
-#: src/views/PageDetail.vue:323
+#: src/components/PageListItems.vue:599 src/views/PageDetail.vue:323
 msgid "Error publishing page"
 msgstr "Halaman penerbitan yang salah"
 
@@ -683,18 +623,15 @@ msgstr "Halaman pembersihan kesalahan"
 msgid "Error searching pages"
 msgstr "Halaman pencarian kesalahan"
 
-#: src/components/PageListItems.vue:739
-#: src/views/PageDetail.vue:427
+#: src/components/PageListItems.vue:739 src/views/PageDetail.vue:427
 msgid "Error saving page"
 msgstr "Halaman penyimpanan kesalahan"
 
-#: src/components/PageListItems.vue:873
-#: src/components/PageListItems.vue:938
+#: src/components/PageListItems.vue:873 src/components/PageListItems.vue:938
 msgid "Enable"
 msgstr "Aktifkan"
 
-#: src/components/PageListItems.vue:876
-#: src/components/PageListItems.vue:935
+#: src/components/PageListItems.vue:876 src/components/PageListItems.vue:935
 msgid "Disable"
 msgstr "Nonaktifkan"
 
@@ -702,20 +639,17 @@ msgstr "Nonaktifkan"
 msgid "Hide in menu"
 msgstr "Sembunyikan di menu"
 
-#: src/components/PageListItems.vue:957
-#: src/components/PageListItems.vue:975
+#: src/components/PageListItems.vue:957 src/components/PageListItems.vue:975
 #: src/components/PageListItems.vue:993
 msgid "Before"
 msgstr "Sebelum"
 
-#: src/components/PageListItems.vue:962
-#: src/components/PageListItems.vue:980
+#: src/components/PageListItems.vue:962 src/components/PageListItems.vue:980
 #: src/components/PageListItems.vue:998
 msgid "Into"
 msgstr "Ke dalam"
 
-#: src/components/PageListItems.vue:967
-#: src/components/PageListItems.vue:985
+#: src/components/PageListItems.vue:967 src/components/PageListItems.vue:985
 #: src/components/PageListItems.vue:1003
 msgid "After"
 msgstr "Setelah"
@@ -748,20 +682,9 @@ msgstr "Logout gagal"
 msgid "Logout"
 msgstr "Keluar"
 
-#: src/fields/Audio.vue:62
-#: src/fields/File.vue:246
-#: src/fields/Image.vue:104
-#: src/fields/Video.vue:64
-msgid "Updated"
-msgstr "Diperbarui"
-
-#: src/fields/Autocomplete.vue:140
-#: src/fields/Color.vue:34
-#: src/fields/Date.vue:48
-#: src/fields/Html.vue:42
-#: src/fields/Number.vue:50
-#: src/fields/Select.vue:42
-#: src/fields/Url.vue:62
+#: src/fields/Autocomplete.vue:140 src/fields/Color.vue:34
+#: src/fields/Date.vue:48 src/fields/Html.vue:42 src/fields/Number.vue:50
+#: src/fields/Select.vue:42 src/fields/Url.vue:62
 msgid "Value is required"
 msgstr "Nilai diperlukan"
 
@@ -781,13 +704,11 @@ msgstr "Maksimum adalah entri %{num} "
 msgid "Minimum is %{num} entries"
 msgstr "Minimum adalah %{num} entri"
 
-#: src/fields/Plaintext.vue:48
-#: src/fields/String.vue:52
+#: src/fields/Plaintext.vue:49 src/fields/String.vue:54
 msgid "Minimum length is %{num} characters"
 msgstr "Panjang minimum adalah %{num} karakter"
 
-#: src/fields/Plaintext.vue:49
-#: src/fields/String.vue:53
+#: src/fields/Plaintext.vue:50 src/fields/String.vue:55
 msgid "Maximum length is %{num} characters"
 msgstr "Panjang maksimum adalah %{num} karakter"
 
@@ -816,120 +737,262 @@ msgid "You do not have permission to access %{path}"
 msgstr "Anda tidak memiliki izin untuk mengakses %{path}"
 
 #: src/strings.js:5
-msgid "basic"
-msgstr "dasar"
-
-#: src/strings.js:6
-msgid "content"
-msgstr "konten"
-
-#: src/strings.js:7
-msgid "media"
-msgstr "media"
-
-#: src/strings.js:8
-msgid "forms"
-msgstr "formulir"
-
-#: src/strings.js:11
+msgctxt "as"
 msgid "type"
 msgstr "Jenis"
 
-#: src/strings.js:12
+#: src/strings.js:6
+msgctxt "as"
 msgid "state"
 msgstr "negara bagian"
 
-#: src/strings.js:13
+#: src/strings.js:7
+msgctxt "as"
 msgid "valid"
 msgstr "valid"
 
-#: src/strings.js:14
+#: src/strings.js:8
+msgctxt "as"
 msgid "changed"
 msgstr "berubah"
 
-#: src/strings.js:15
+#: src/strings.js:9
+msgctxt "as"
 msgid "error"
 msgstr "kesalahan"
 
-#: src/strings.js:18
-#: src/strings.js:35
+#: src/strings.js:12
+msgctxt "cs"
 msgid "main"
 msgstr "utama"
 
-#: src/strings.js:19
-#: src/strings.js:30
+#: src/strings.js:13
+msgctxt "cs"
 msgid "header"
 msgstr "header"
 
-#: src/strings.js:20
+#: src/strings.js:14
+msgctxt "cs"
 msgid "footer"
 msgstr "footer"
 
-#: src/strings.js:21
+#: src/strings.js:15
+msgctxt "cs"
 msgid "sidebar"
 msgstr "sidebar"
 
-#: src/strings.js:22
+#: src/strings.js:16
+msgctxt "cs"
 msgid "aside"
 msgstr "samping"
 
+#: src/strings.js:19
+msgctxt "sg"
+msgid "basic"
+msgstr "dasar"
+
+#: src/strings.js:20
+msgctxt "sg"
+msgid "content"
+msgstr "konten"
+
+#: src/strings.js:21
+msgctxt "sg"
+msgid "media"
+msgstr "media"
+
+#: src/strings.js:22
+msgctxt "sg"
+msgid "forms"
+msgstr "formulir"
+
 #: src/strings.js:25
-msgid "Button text"
-msgstr "Teks tombol"
+msgctxt "st"
+msgid "reference"
+msgstr "referensi"
 
 #: src/strings.js:26
-msgid "cards"
-msgstr "kartu"
+msgctxt "st"
+msgid "heading"
+msgstr "judul"
 
 #: src/strings.js:27
-msgid "description"
-msgstr "Deskripsi"
-
-#: src/strings.js:28
-msgid "file"
-msgstr "file"
-
-#: src/strings.js:29
-msgid "files"
-msgstr "file"
-
-#: src/strings.js:31
-msgid "keywords"
-msgstr "kata kunci"
-
-#: src/strings.js:32
-msgid "lang"
-msgstr "lang"
-
-#: src/strings.js:33
-msgid "level"
-msgstr "tingkat"
-
-#: src/strings.js:34
-msgid "limit"
-msgstr "batas"
-
-#: src/strings.js:36
-msgid "parent-page"
-msgstr "halaman induk"
-
-#: src/strings.js:37
-msgid "position"
-msgstr "posisi"
-
-#: src/strings.js:38
+msgctxt "st"
 msgid "text"
 msgstr "teks"
 
-#: src/strings.js:39
+#: src/strings.js:28
+msgctxt "st"
+msgid "image-text"
+msgstr "gambar-teks"
+
+#: src/strings.js:29
+msgctxt "st"
+msgid "slideshow"
+msgstr "tayangan slide"
+
+#: src/strings.js:30
+msgctxt "st"
+msgid "code"
+msgstr "kode"
+
+#: src/strings.js:31
+msgctxt "st"
 msgid "table"
 msgstr "tabel"
 
+#: src/strings.js:32
+msgctxt "st"
+msgid "html"
+msgstr "html"
+
+#: src/strings.js:33
+msgctxt "st"
+msgid "image"
+msgstr "gambar"
+
+#: src/strings.js:34
+msgctxt "st"
+msgid "video"
+msgstr "video"
+
+#: src/strings.js:35
+msgctxt "st"
+msgid "audio"
+msgstr "audio"
+
+#: src/strings.js:36
+msgctxt "st"
+msgid "file"
+msgstr "file"
+
+#: src/strings.js:37
+msgctxt "st"
+msgid "hero"
+msgstr "pahlawan"
+
+#: src/strings.js:38
+msgctxt "st"
+msgid "cards"
+msgstr "kartu"
+
+#: src/strings.js:39
+msgctxt "st"
+msgid "blog"
+msgstr "blog"
+
 #: src/strings.js:40
+msgctxt "st"
+msgid "article"
+msgstr "artikel"
+
+#: src/strings.js:41
+msgctxt "st"
+msgid "contact"
+msgstr "kontak"
+
+#: src/strings.js:42
+msgctxt "st"
+msgid "meta"
+msgstr "meta"
+
+#: src/strings.js:43
+msgctxt "st"
+msgid "social"
+msgstr "sosial"
+
+#: src/strings.js:44
+msgctxt "st"
+msgid "canonical"
+msgstr "kanonik"
+
+#: src/strings.js:45
+msgctxt "st"
+msgid "theme"
+msgstr "tema"
+
+#: src/strings.js:48
+msgctxt "fn"
+msgid "button"
+msgstr "tombol"
+
+#: src/strings.js:49
+msgctxt "fn"
+msgid "cards"
+msgstr "kartu"
+
+#: src/strings.js:50
+msgctxt "fn"
+msgid "description"
+msgstr "Deskripsi"
+
+#: src/strings.js:51
+msgctxt "fn"
+msgid "file"
+msgstr "file"
+
+#: src/strings.js:52
+msgctxt "fn"
+msgid "files"
+msgstr "file"
+
+#: src/strings.js:53
+msgctxt "fn"
+msgid "header"
+msgstr "header"
+
+#: src/strings.js:54
+msgctxt "fn"
+msgid "keywords"
+msgstr "kata kunci"
+
+#: src/strings.js:55
+msgctxt "fn"
+msgid "lang"
+msgstr "lang"
+
+#: src/strings.js:56
+msgctxt "fn"
+msgid "level"
+msgstr "tingkat"
+
+#: src/strings.js:57
+msgctxt "fn"
+msgid "limit"
+msgstr "batas"
+
+#: src/strings.js:58
+msgctxt "fn"
+msgid "main"
+msgstr "utama"
+
+#: src/strings.js:59
+msgctxt "fn"
+msgid "parent-page"
+msgstr "halaman induk"
+
+#: src/strings.js:60
+msgctxt "fn"
+msgid "position"
+msgstr "posisi"
+
+#: src/strings.js:61
+msgctxt "fn"
+msgid "text"
+msgstr "teks"
+
+#: src/strings.js:62
+msgctxt "fn"
+msgid "table"
+msgstr "tabel"
+
+#: src/strings.js:63
+msgctxt "fn"
 msgid "title"
 msgstr "judul"
 
-#: src/strings.js:41
+#: src/strings.js:64
+msgctxt "fn"
 msgid "url"
 msgstr "url"
 
@@ -961,78 +1024,67 @@ msgstr "Elemen penyimpanan kesalahan"
 msgid "Error fetching element versions"
 msgstr "Versi elemen yang mengambil kesalahan"
 
-#: src/views/ElementDetail.vue:271
-#: src/views/ElementDetail.vue:326
+#: src/views/ElementDetail.vue:271 src/views/ElementDetail.vue:326
 msgid "Element"
 msgstr "Elemen"
 
-#: src/views/ElementDetail.vue:286
-#: src/views/FileDetail.vue:220
+#: src/views/ElementDetail.vue:286 src/views/FileDetail.vue:220
 #: src/views/PageDetail.vue:623
 msgid "Save"
 msgstr "Simpan"
 
-#: src/views/ElementDetail.vue:327
-#: src/views/FileDetail.vue:261
+#: src/views/ElementDetail.vue:327 src/views/FileDetail.vue:261
 msgid "Used by"
 msgstr "Digunakan oleh"
 
-#: src/views/ElementList.vue:41
-#: src/views/ElementList.vue:104
-#: src/views/ElementList.vue:113
-#: src/views/ElementList.vue:121
-#: src/views/FileList.vue:40
-#: src/views/FileList.vue:101
-#: src/views/FileList.vue:110
-#: src/views/FileList.vue:118
-#: src/views/PageList.vue:41
-#: src/views/PageList.vue:109
-#: src/views/PageList.vue:118
-#: src/views/PageList.vue:126
+#: src/views/ElementList.vue:41 src/views/ElementList.vue:104
+#: src/views/ElementList.vue:113 src/views/ElementList.vue:121
+#: src/views/FileList.vue:40 src/views/FileList.vue:101
+#: src/views/FileList.vue:110 src/views/FileList.vue:118
+#: src/views/PageList.vue:41 src/views/PageList.vue:109
+#: src/views/PageList.vue:118 src/views/PageList.vue:126
 msgid "All"
 msgstr "Semua"
 
-#: src/views/ElementList.vue:106
-#: src/views/FileList.vue:103
+#: src/views/ElementList.vue:102 src/views/FileList.vue:99
+#: src/views/PageList.vue:107
+msgid "publish"
+msgstr "menerbitkan"
+
+#: src/views/ElementList.vue:106 src/views/FileList.vue:103
 #: src/views/PageList.vue:111
 msgid "Scheduled"
 msgstr "Terjadwal"
 
-#: src/views/ElementList.vue:107
-#: src/views/FileList.vue:104
+#: src/views/ElementList.vue:107 src/views/FileList.vue:104
 #: src/views/PageList.vue:112
 msgid "Drafts"
 msgstr "Draft"
 
-#: src/views/ElementList.vue:111
-#: src/views/FileList.vue:108
+#: src/views/ElementList.vue:111 src/views/FileList.vue:108
 #: src/views/PageList.vue:116
-msgid "Trashed"
-msgstr "Dibuang."
+msgid "trashed"
+msgstr "dibuang"
 
-#: src/views/ElementList.vue:114
-#: src/views/FileList.vue:111
+#: src/views/ElementList.vue:114 src/views/FileList.vue:111
 #: src/views/PageList.vue:119
 msgid "Available only"
 msgstr "Hanya tersedia"
 
-#: src/views/ElementList.vue:115
-#: src/views/FileList.vue:112
+#: src/views/ElementList.vue:115 src/views/FileList.vue:112
 #: src/views/PageList.vue:120
 msgid "Only trashed"
 msgstr "Hanya dibuang"
 
-#: src/views/ElementList.vue:122
-#: src/views/FileList.vue:119
+#: src/views/ElementList.vue:122 src/views/FileList.vue:119
 #: src/views/PageList.vue:127
 msgid "Edited by me"
 msgstr "Diedit oleh saya"
 
-#: src/views/ElementList.vue:126
-#: src/views/FileList.vue:123
+#: src/views/ElementList.vue:126 src/views/FileList.vue:123
 #: src/views/PageList.vue:131
-msgid "Languages"
-msgstr "Bahasa"
+msgid "languages"
+msgstr "bahasa"
 
 #: src/views/FileDetail.vue:71
 msgid "File published successfully"
@@ -1054,8 +1106,7 @@ msgstr "Kesalahan menyimpan file"
 msgid "Error fetching file versions"
 msgstr "Kesalahan mengambil versi file"
 
-#: src/views/FileDetail.vue:205
-#: src/views/FileDetail.vue:260
+#: src/views/FileDetail.vue:205 src/views/FileDetail.vue:260
 msgid "File"
 msgstr "Mengajukan"
 
@@ -1067,8 +1118,7 @@ msgstr "Bukan editor CMS"
 msgid "Access denied"
 msgstr "Akses ditolak"
 
-#: src/views/Login.vue:79
-#: src/views/Login.vue:101
+#: src/views/Login.vue:79 src/views/Login.vue:101
 msgid "Login"
 msgstr "Masuk"
 
@@ -1112,18 +1162,21 @@ msgstr "Tidak ditemukan skema halaman untuk \"konten\""
 msgid "Error fetching page versions"
 msgstr "Kesalahan mengambil versi halaman"
 
-#: src/views/PageDetail.vue:597
-#: src/views/PageDetail.vue:675
+#: src/views/PageDetail.vue:597 src/views/PageDetail.vue:675
 msgid "Page"
 msgstr "Halaman"
+
+#: src/views/PageDetail.vue:665
+msgid "Editor"
+msgstr "Editor"
 
 #: src/views/PageDetail.vue:670
 msgid "Content"
 msgstr "Konten"
 
 #: src/views/PageList.vue:100
-msgid "View"
-msgstr "Melihat"
+msgid "view"
+msgstr "melihat"
 
 #: src/views/PageList.vue:102
 msgid "Tree"

@@ -336,7 +336,7 @@
           .map(v => v && typeof v !== 'object' && typeof v !== 'boolean' ? v : null)
           .filter(v => !!v)
           .join(' - '))
-          .substring(0, 50) || el.type || ''
+          .substring(0, 50) || this.$pgettext('st', el.type) || ''
       },
 
 
@@ -495,7 +495,7 @@
             <v-icon v-if="el.type === 'reference'" class="icon-shared" icon="mdi-link" :title="$gettext('Shared element')"></v-icon>
 
             <div class="element-title">{{ el.type === 'reference' ? elements[el.refid]?.name : title(el) }}</div>
-            <div class="element-type">{{ $gettext(el.type) }}</div>
+            <div class="element-type">{{ $pgettext('st', el.type) }}</div>
           </v-expansion-panel-title>
           <v-expansion-panel-text>
 

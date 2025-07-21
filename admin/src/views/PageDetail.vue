@@ -412,7 +412,7 @@
             }
 
             this.item.published = false
-            this.$refs.history.reset()
+            this.$refs.history?.reset()
             this.reset()
 
             if(!quiet) {

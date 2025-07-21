@@ -1,13 +1,14 @@
 msgid ""
 msgstr ""
-"Content-Transfer-Encoding: 8bit\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Language: sl\n"
-"Language-Team: none\n"
-"Last-Translator: Automatically generated\n"
-"MIME-Version: 1.0\n"
-"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3);\n"
 "Project-Id-Version: PACKAGE VERSION\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: sl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || "
+"n%100==4 ? 2 : 3);\n"
 
 #: src/App.vue:110
 msgid "None"
@@ -17,7 +18,11 @@ msgstr "Ni"
 msgid "id"
 msgstr "id"
 
-#: src/components/AsideMeta.vue:18
+#: src/components/AsideMeta.vue:18 src/components/ElementListItems.vue:471
+#: src/components/FileListItems.vue:506 src/fields/Audio.vue:61
+#: src/fields/File.vue:245 src/fields/Image.vue:103 src/fields/Video.vue:63
+#: src/views/ElementList.vue:119 src/views/FileList.vue:116
+#: src/views/PageList.vue:124
 msgid "editor"
 msgstr "urednik"
 
@@ -25,7 +30,8 @@ msgstr "urednik"
 msgid "created"
 msgstr "ustvaril"
 
-#: src/components/AsideMeta.vue:26
+#: src/components/AsideMeta.vue:26 src/fields/Audio.vue:62
+#: src/fields/File.vue:246 src/fields/Image.vue:104 src/fields/Video.vue:64
 msgid "updated"
 msgstr "posodobljeno"
 
@@ -39,46 +45,33 @@ msgstr "Meta podatki"
 
 #: src/components/ElementDetailItem.vue:68
 #: src/components/ElementDetailRefs.vue:96
-#: src/components/ElementListItems.vue:465
-#: src/components/FileDetailItem.vue:208
-#: src/components/FileDetailRefs.vue:101
+#: src/components/FileDetailItem.vue:208 src/components/FileDetailRefs.vue:101
 #: src/components/FileDetailRefs.vue:123
-#: src/components/FileListItems.vue:497
-#: src/fields/Audio.vue:59
-#: src/fields/File.vue:243
-#: src/fields/Image.vue:101
-#: src/fields/Video.vue:61
 msgid "Name"
 msgstr "Ime"
 
 #: src/components/ElementDetailItem.vue:80
 #: src/components/FileDetailItem.vue:220
-#: src/components/FileListItems.vue:503
 #: src/components/PageDetailItemProps.vue:150
 msgid "Language"
 msgstr "Jezik"
 
-#: src/components/ElementDetailRefs.vue:65
-#: src/components/FileDetailRefs.vue:69
+#: src/components/ElementDetailRefs.vue:65 src/components/FileDetailRefs.vue:69
 msgid "yes"
 msgstr "da"
 
-#: src/components/ElementDetailRefs.vue:68
-#: src/components/FileDetailRefs.vue:73
+#: src/components/ElementDetailRefs.vue:68 src/components/FileDetailRefs.vue:73
 msgid "no"
 msgstr "ne"
 
-#: src/components/ElementDetailRefs.vue:89
-#: src/components/Navigation.vue:36
-#: src/components/SchemaDialog.vue:35
-#: src/views/ElementList.vue:76
+#: src/components/ElementDetailRefs.vue:89 src/components/Navigation.vue:36
+#: src/components/SchemaDialog.vue:35 src/views/ElementList.vue:76
 msgid "Shared elements"
 msgstr "Skupni elementi"
 
 #: src/components/ElementDetailRefs.vue:94
 #: src/components/ElementDetailRefs.vue:116
-#: src/components/FileDetailRefs.vue:99
-#: src/components/FileDetailRefs.vue:121
+#: src/components/FileDetailRefs.vue:99 src/components/FileDetailRefs.vue:121
 #: src/components/FileDetailRefs.vue:143
 msgid "ID"
 msgstr "ID"
@@ -89,17 +82,13 @@ msgid "URL"
 msgstr "URL"
 
 #: src/components/ElementDetailRefs.vue:117
-#: src/components/ElementListItems.vue:468
-#: src/components/FileDetailRefs.vue:122
-#: src/components/FileDetailRefs.vue:144
+#: src/components/FileDetailRefs.vue:122 src/components/FileDetailRefs.vue:144
 msgid "Type"
 msgstr "Tip"
 
 #: src/components/ElementDetailRefs.vue:118
-#: src/components/FileDetailRefs.vue:145
-#: src/views/ElementList.vue:105
-#: src/views/FileList.vue:102
-#: src/views/PageList.vue:110
+#: src/components/FileDetailRefs.vue:145 src/views/ElementList.vue:105
+#: src/views/FileList.vue:102 src/views/PageList.vue:110
 msgid "Published"
 msgstr "Objavljeno"
 
@@ -108,36 +97,22 @@ msgstr "Objavljeno"
 #: src/components/ElementListItems.vue:157
 #: src/components/ElementListItems.vue:198
 #: src/components/ElementListItems.vue:240
-#: src/components/ElementListItems.vue:277
-#: src/components/FileListItems.vue:61
-#: src/components/FileListItems.vue:122
-#: src/components/FileListItems.vue:166
-#: src/components/FileListItems.vue:207
-#: src/components/FileListItems.vue:249
+#: src/components/ElementListItems.vue:277 src/components/FileListItems.vue:61
+#: src/components/FileListItems.vue:122 src/components/FileListItems.vue:166
+#: src/components/FileListItems.vue:207 src/components/FileListItems.vue:249
 #: src/components/FileListItems.vue:286
 #: src/components/PageDetailContentList.vue:218
-#: src/components/PageListItems.vue:67
-#: src/components/PageListItems.vue:101
-#: src/components/PageListItems.vue:168
-#: src/components/PageListItems.vue:211
-#: src/components/PageListItems.vue:288
-#: src/components/PageListItems.vue:351
-#: src/components/PageListItems.vue:416
-#: src/components/PageListItems.vue:470
-#: src/components/PageListItems.vue:566
-#: src/components/PageListItems.vue:607
-#: src/components/PageListItems.vue:649
-#: src/components/PageListItems.vue:711
-#: src/fields/File.vue:55
-#: src/fields/Images.vue:61
-#: src/views/ElementDetail.vue:107
-#: src/views/ElementDetail.vue:156
-#: src/views/ElementDetail.vue:211
-#: src/views/FileDetail.vue:45
-#: src/views/FileDetail.vue:94
-#: src/views/FileDetail.vue:149
-#: src/views/PageDetail.vue:289
-#: src/views/PageDetail.vue:341
+#: src/components/PageListItems.vue:67 src/components/PageListItems.vue:101
+#: src/components/PageListItems.vue:168 src/components/PageListItems.vue:211
+#: src/components/PageListItems.vue:288 src/components/PageListItems.vue:351
+#: src/components/PageListItems.vue:416 src/components/PageListItems.vue:470
+#: src/components/PageListItems.vue:566 src/components/PageListItems.vue:607
+#: src/components/PageListItems.vue:649 src/components/PageListItems.vue:711
+#: src/fields/File.vue:55 src/fields/Images.vue:61
+#: src/views/ElementDetail.vue:107 src/views/ElementDetail.vue:156
+#: src/views/ElementDetail.vue:211 src/views/FileDetail.vue:45
+#: src/views/FileDetail.vue:94 src/views/FileDetail.vue:149
+#: src/views/PageDetail.vue:289 src/views/PageDetail.vue:341
 #: src/views/PageDetail.vue:535
 msgid "Permission denied"
 msgstr "Dovoljenje zavrnjeno"
@@ -166,28 +141,19 @@ msgstr "Napaka pri čiščenju skupnega elementa"
 msgid "Error fetching shared elements"
 msgstr "Napaka pri pridobivanju skupnih elementov"
 
-#: src/components/ElementListItems.vue:417
-#: src/components/FileListItems.vue:446
+#: src/components/ElementListItems.vue:417 src/components/FileListItems.vue:446
 #: src/components/PageDetailContentList.vue:411
 #: src/components/PageListItems.vue:866
 msgid "Actions"
 msgstr "Ukrepi"
 
 #: src/components/ElementListItems.vue:421
-#: src/components/ElementListItems.vue:488
-#: src/components/FileListItems.vue:450
-#: src/components/FileListItems.vue:523
-#: src/components/PageListItems.vue:870
-#: src/components/PageListItems.vue:932
-#: src/views/ElementDetail.vue:295
-#: src/views/ElementDetail.vue:310
-#: src/views/ElementList.vue:102
-#: src/views/FileDetail.vue:229
-#: src/views/FileDetail.vue:244
-#: src/views/FileList.vue:99
-#: src/views/PageDetail.vue:632
+#: src/components/ElementListItems.vue:488 src/components/FileListItems.vue:450
+#: src/components/FileListItems.vue:523 src/components/PageListItems.vue:870
+#: src/components/PageListItems.vue:932 src/views/ElementDetail.vue:295
+#: src/views/ElementDetail.vue:310 src/views/FileDetail.vue:229
+#: src/views/FileDetail.vue:244 src/views/PageDetail.vue:632
 #: src/views/PageDetail.vue:647
-#: src/views/PageList.vue:107
 msgid "Publish"
 msgstr "Objavite"
 
@@ -196,75 +162,60 @@ msgid "Add element"
 msgstr "Dodajanje elementa"
 
 #: src/components/ElementListItems.vue:427
-#: src/components/ElementListItems.vue:491
-#: src/components/FileListItems.vue:456
-#: src/components/FileListItems.vue:526
-#: src/components/PageListItems.vue:882
+#: src/components/ElementListItems.vue:491 src/components/FileListItems.vue:456
+#: src/components/FileListItems.vue:526 src/components/PageListItems.vue:882
 #: src/components/PageListItems.vue:1010
 msgid "Trash"
 msgstr "Odpadki"
 
 #: src/components/ElementListItems.vue:430
-#: src/components/ElementListItems.vue:494
-#: src/components/FileListItems.vue:459
-#: src/components/FileListItems.vue:529
-#: src/components/PageListItems.vue:885
+#: src/components/ElementListItems.vue:494 src/components/FileListItems.vue:459
+#: src/components/FileListItems.vue:529 src/components/PageListItems.vue:885
 #: src/components/PageListItems.vue:1013
 msgid "Restore"
 msgstr "Obnovitev"
 
 #: src/components/ElementListItems.vue:433
-#: src/components/ElementListItems.vue:497
-#: src/components/FileListItems.vue:462
-#: src/components/FileListItems.vue:532
-#: src/components/PageListItems.vue:888
+#: src/components/ElementListItems.vue:497 src/components/FileListItems.vue:462
+#: src/components/FileListItems.vue:532 src/components/PageListItems.vue:888
 #: src/components/PageListItems.vue:1016
 msgid "Purge"
 msgstr "Očistite"
 
-#: src/components/ElementListItems.vue:444
-#: src/components/FileListItems.vue:473
+#: src/components/ElementListItems.vue:444 src/components/FileListItems.vue:473
 #: src/components/PageDetailContentList.vue:433
 #: src/components/PageListItems.vue:897
 msgid "Search for"
 msgstr "Iskanje"
 
 #: src/components/ElementListItems.vue:454
-#: src/components/ElementListItems.vue:459
-#: src/components/FileListItems.vue:486
+#: src/components/ElementListItems.vue:459 src/components/FileListItems.vue:486
 #: src/components/FileListItems.vue:491
-msgid "Latest"
-msgstr "Najnovejše"
+msgid "latest"
+msgstr "najnovejši"
 
 #: src/components/ElementListItems.vue:454
-#: src/components/ElementListItems.vue:462
-#: src/components/FileListItems.vue:486
+#: src/components/ElementListItems.vue:462 src/components/FileListItems.vue:486
 #: src/components/FileListItems.vue:494
-msgid "Oldest"
-msgstr "Najstarejši"
+msgid "oldest"
+msgstr "najstarejši"
 
-#: src/components/ElementListItems.vue:471
-#: src/components/FileListItems.vue:506
-#: src/fields/Audio.vue:61
-#: src/fields/File.vue:245
-#: src/fields/Image.vue:103
-#: src/fields/Video.vue:63
-#: src/views/ElementList.vue:119
-#: src/views/FileList.vue:116
-#: src/views/PageDetail.vue:665
-#: src/views/PageList.vue:124
-msgid "Editor"
-msgstr "Urednik"
+#: src/components/ElementListItems.vue:465 src/components/FileListItems.vue:497
+#: src/fields/Audio.vue:59 src/fields/File.vue:243 src/fields/Image.vue:101
+#: src/fields/Video.vue:61
+msgid "name"
+msgstr "ime"
 
-#: src/components/ElementListItems.vue:521
-#: src/components/FileListItems.vue:564
-#: src/components/HistoryDialog.vue:90
-#: src/components/PageListItems.vue:1048
+#: src/components/ElementListItems.vue:468
+msgid "type"
+msgstr "vrsta"
+
+#: src/components/ElementListItems.vue:521 src/components/FileListItems.vue:564
+#: src/components/HistoryDialog.vue:90 src/components/PageListItems.vue:1048
 msgid "Loading"
 msgstr "Nalaganje"
 
-#: src/components/ElementListItems.vue:525
-#: src/components/FileListItems.vue:569
+#: src/components/ElementListItems.vue:525 src/components/FileListItems.vue:569
 #: src/components/PageListItems.vue:1053
 msgid "No entries found"
 msgstr "Ni bilo najdenih vnosov"
@@ -277,8 +228,7 @@ msgstr "Element vsebine"
 msgid "Context in JSON format"
 msgstr "Kontekst v obliki JSON"
 
-#: src/components/FileAiDialog.vue:172
-#: src/components/FileAiDialog.vue:191
+#: src/components/FileAiDialog.vue:172 src/components/FileAiDialog.vue:191
 msgid "Create image"
 msgstr "Ustvarjanje slike"
 
@@ -290,8 +240,7 @@ msgstr "Opišite sliko"
 msgid "Generated images"
 msgstr "Ustvarjene slike"
 
-#: src/components/FileAiDialog.vue:200
-#: src/components/FileAiDialog.vue:215
+#: src/components/FileAiDialog.vue:200 src/components/FileAiDialog.vue:215
 msgid "Remove"
 msgstr "Odstranite"
 
@@ -335,8 +284,7 @@ msgstr "Opisi"
 msgid "Description (%{lang})"
 msgstr "Opis (%{lang})"
 
-#: src/components/FileDetailRefs.vue:94
-#: src/components/Navigation.vue:30
+#: src/components/FileDetailRefs.vue:94 src/components/Navigation.vue:30
 #: src/views/PageList.vue:75
 msgid "Pages"
 msgstr "Strani"
@@ -349,8 +297,7 @@ msgstr "Elementi"
 msgid "Versions"
 msgstr "Različice"
 
-#: src/components/FileDialog.vue:26
-#: src/components/Navigation.vue:42
+#: src/components/FileDialog.vue:26 src/components/Navigation.vue:42
 msgid "Files"
 msgstr "Datoteke"
 
@@ -362,8 +309,7 @@ msgstr "Napaka pri pometanju datoteke v smeti"
 msgid "Error restoring file"
 msgstr "Napaka pri obnavljanju datoteke"
 
-#: src/components/FileListItems.vue:241
-#: src/views/FileDetail.vue:79
+#: src/components/FileListItems.vue:241 src/views/FileDetail.vue:79
 msgid "Error publishing file"
 msgstr "Napaka objave datoteke"
 
@@ -387,13 +333,14 @@ msgstr "Mrežni pogled"
 msgid "List view"
 msgstr "Pogled seznama"
 
-#: src/components/FileListItems.vue:500
-#: src/fields/Audio.vue:60
-#: src/fields/File.vue:244
-#: src/fields/Image.vue:102
-#: src/fields/Video.vue:62
-msgid "Mime"
-msgstr "Mime"
+#: src/components/FileListItems.vue:500 src/fields/Audio.vue:60
+#: src/fields/File.vue:244 src/fields/Image.vue:102 src/fields/Video.vue:62
+msgid "mime"
+msgstr "mime"
+
+#: src/components/FileListItems.vue:503
+msgid "language"
+msgstr "jezik"
 
 #: src/components/FileUrlDialog.vue:134
 msgid "At least one file is not of type \"%{mime}*\""
@@ -481,8 +428,7 @@ msgid "Cut"
 msgstr "Izreži"
 
 #: src/components/PageDetailContentList.vue:424
-#: src/components/PageListItems.vue:953
-#: src/components/PageListItems.vue:971
+#: src/components/PageListItems.vue:953 src/components/PageListItems.vue:971
 msgid "Paste"
 msgstr "Paste"
 
@@ -551,10 +497,8 @@ msgstr "Skrito v navigaciji"
 msgid "Status"
 msgstr "Status"
 
-#: src/components/PageDetailItemProps.vue:159
-#: src/fields/Table.vue:54
-#: src/views/Login.vue:84
-#: src/views/Login.vue:90
+#: src/components/PageDetailItemProps.vue:159 src/fields/Table.vue:54
+#: src/views/Login.vue:84 src/views/Login.vue:90
 msgid "Field is required"
 msgstr "Polje je obvezno"
 
@@ -645,8 +589,7 @@ msgstr "Način predogleda"
 msgid "Error adding root page"
 msgstr "Napaka pri dodajanju korenske strani"
 
-#: src/components/PageListItems.vue:135
-#: src/components/PageListItems.vue:460
+#: src/components/PageListItems.vue:135 src/components/PageListItems.vue:460
 msgid "Error moving page"
 msgstr "Napaka premikanje strani"
 
@@ -670,13 +613,11 @@ msgstr "Obnovitev strani z napako"
 msgid "Error copying page"
 msgstr "Napaka pri kopiranju strani"
 
-#: src/components/PageListItems.vue:556
-#: src/views/PageDetail.vue:241
+#: src/components/PageListItems.vue:556 src/views/PageDetail.vue:241
 msgid "Error fetching page"
 msgstr "Napaka pri pridobivanju strani"
 
-#: src/components/PageListItems.vue:599
-#: src/views/PageDetail.vue:323
+#: src/components/PageListItems.vue:599 src/views/PageDetail.vue:323
 msgid "Error publishing page"
 msgstr "Napaka objave strani"
 
@@ -688,18 +629,15 @@ msgstr "Stran za čiščenje napak"
 msgid "Error searching pages"
 msgstr "Iskanje strani z napako"
 
-#: src/components/PageListItems.vue:739
-#: src/views/PageDetail.vue:427
+#: src/components/PageListItems.vue:739 src/views/PageDetail.vue:427
 msgid "Error saving page"
 msgstr "Napaka pri shranjevanju strani"
 
-#: src/components/PageListItems.vue:873
-#: src/components/PageListItems.vue:938
+#: src/components/PageListItems.vue:873 src/components/PageListItems.vue:938
 msgid "Enable"
 msgstr "Omogočite"
 
-#: src/components/PageListItems.vue:876
-#: src/components/PageListItems.vue:935
+#: src/components/PageListItems.vue:876 src/components/PageListItems.vue:935
 msgid "Disable"
 msgstr "Onemogočite"
 
@@ -707,20 +645,17 @@ msgstr "Onemogočite"
 msgid "Hide in menu"
 msgstr "Skrij v meniju"
 
-#: src/components/PageListItems.vue:957
-#: src/components/PageListItems.vue:975
+#: src/components/PageListItems.vue:957 src/components/PageListItems.vue:975
 #: src/components/PageListItems.vue:993
 msgid "Before"
 msgstr "Pred"
 
-#: src/components/PageListItems.vue:962
-#: src/components/PageListItems.vue:980
+#: src/components/PageListItems.vue:962 src/components/PageListItems.vue:980
 #: src/components/PageListItems.vue:998
 msgid "Into"
 msgstr "Na spletni strani"
 
-#: src/components/PageListItems.vue:967
-#: src/components/PageListItems.vue:985
+#: src/components/PageListItems.vue:967 src/components/PageListItems.vue:985
 #: src/components/PageListItems.vue:1003
 msgid "After"
 msgstr "Po spletni strani"
@@ -753,20 +688,9 @@ msgstr "Odjava ni uspela"
 msgid "Logout"
 msgstr "Odjava"
 
-#: src/fields/Audio.vue:62
-#: src/fields/File.vue:246
-#: src/fields/Image.vue:104
-#: src/fields/Video.vue:64
-msgid "Updated"
-msgstr "Posodobljeno"
-
-#: src/fields/Autocomplete.vue:140
-#: src/fields/Color.vue:34
-#: src/fields/Date.vue:48
-#: src/fields/Html.vue:42
-#: src/fields/Number.vue:50
-#: src/fields/Select.vue:42
-#: src/fields/Url.vue:62
+#: src/fields/Autocomplete.vue:140 src/fields/Color.vue:34
+#: src/fields/Date.vue:48 src/fields/Html.vue:42 src/fields/Number.vue:50
+#: src/fields/Select.vue:42 src/fields/Url.vue:62
 msgid "Value is required"
 msgstr "Zahtevana vrednost"
 
@@ -786,13 +710,11 @@ msgstr "Največ je %{num} vnosov."
 msgid "Minimum is %{num} entries"
 msgstr "Najmanjše število vnosov je %{num}."
 
-#: src/fields/Plaintext.vue:48
-#: src/fields/String.vue:52
+#: src/fields/Plaintext.vue:49 src/fields/String.vue:54
 msgid "Minimum length is %{num} characters"
 msgstr "Najmanjša dolžina je %{num} znakov."
 
-#: src/fields/Plaintext.vue:49
-#: src/fields/String.vue:53
+#: src/fields/Plaintext.vue:50 src/fields/String.vue:55
 msgid "Maximum length is %{num} characters"
 msgstr "Največja dolžina je %{num} znakov."
 
@@ -821,120 +743,262 @@ msgid "You do not have permission to access %{path}"
 msgstr "Nimate dovoljenja za dostop do %{path}"
 
 #: src/strings.js:5
-msgid "basic"
-msgstr "osnovni"
-
-#: src/strings.js:6
-msgid "content"
-msgstr "vsebina"
-
-#: src/strings.js:7
-msgid "media"
-msgstr "mediji"
-
-#: src/strings.js:8
-msgid "forms"
-msgstr "obrazci"
-
-#: src/strings.js:11
+msgctxt "as"
 msgid "type"
 msgstr "vrsta"
 
-#: src/strings.js:12
+#: src/strings.js:6
+msgctxt "as"
 msgid "state"
 msgstr "država"
 
-#: src/strings.js:13
+#: src/strings.js:7
+msgctxt "as"
 msgid "valid"
 msgstr "veljavno"
 
-#: src/strings.js:14
+#: src/strings.js:8
+msgctxt "as"
 msgid "changed"
 msgstr "spremenjeno"
 
-#: src/strings.js:15
+#: src/strings.js:9
+msgctxt "as"
 msgid "error"
 msgstr "napaka"
 
-#: src/strings.js:18
-#: src/strings.js:35
+#: src/strings.js:12
+msgctxt "cs"
 msgid "main"
 msgstr "glavna stran"
 
-#: src/strings.js:19
-#: src/strings.js:30
+#: src/strings.js:13
+msgctxt "cs"
 msgid "header"
 msgstr "naslov"
 
-#: src/strings.js:20
+#: src/strings.js:14
+msgctxt "cs"
 msgid "footer"
 msgstr "noga"
 
-#: src/strings.js:21
+#: src/strings.js:15
+msgctxt "cs"
 msgid "sidebar"
 msgstr "stranska vrstica"
 
-#: src/strings.js:22
+#: src/strings.js:16
+msgctxt "cs"
 msgid "aside"
 msgstr "stran"
 
+#: src/strings.js:19
+msgctxt "sg"
+msgid "basic"
+msgstr "osnovni"
+
+#: src/strings.js:20
+msgctxt "sg"
+msgid "content"
+msgstr "vsebina"
+
+#: src/strings.js:21
+msgctxt "sg"
+msgid "media"
+msgstr "mediji"
+
+#: src/strings.js:22
+msgctxt "sg"
+msgid "forms"
+msgstr "obrazci"
+
 #: src/strings.js:25
-msgid "Button text"
-msgstr "Besedilo gumba"
+msgctxt "st"
+msgid "reference"
+msgstr "referenca"
 
 #: src/strings.js:26
-msgid "cards"
-msgstr "kartice"
+msgctxt "st"
+msgid "heading"
+msgstr "naslov"
 
 #: src/strings.js:27
-msgid "description"
-msgstr "opis"
-
-#: src/strings.js:28
-msgid "file"
-msgstr "datoteka"
-
-#: src/strings.js:29
-msgid "files"
-msgstr "datoteke"
-
-#: src/strings.js:31
-msgid "keywords"
-msgstr "ključne besede"
-
-#: src/strings.js:32
-msgid "lang"
-msgstr "lang"
-
-#: src/strings.js:33
-msgid "level"
-msgstr "raven"
-
-#: src/strings.js:34
-msgid "limit"
-msgstr "omejitev"
-
-#: src/strings.js:36
-msgid "parent-page"
-msgstr "nadrejena stran"
-
-#: src/strings.js:37
-msgid "position"
-msgstr "položaj"
-
-#: src/strings.js:38
+msgctxt "st"
 msgid "text"
 msgstr "besedilo"
 
-#: src/strings.js:39
+#: src/strings.js:28
+msgctxt "st"
+msgid "image-text"
+msgstr "slika-tekst"
+
+#: src/strings.js:29
+msgctxt "st"
+msgid "slideshow"
+msgstr "diaprojekcija"
+
+#: src/strings.js:30
+msgctxt "st"
+msgid "code"
+msgstr "koda"
+
+#: src/strings.js:31
+msgctxt "st"
 msgid "table"
 msgstr "tabela"
 
+#: src/strings.js:32
+msgctxt "st"
+msgid "html"
+msgstr "html"
+
+#: src/strings.js:33
+msgctxt "st"
+msgid "image"
+msgstr "slika"
+
+#: src/strings.js:34
+msgctxt "st"
+msgid "video"
+msgstr "videoposnetek"
+
+#: src/strings.js:35
+msgctxt "st"
+msgid "audio"
+msgstr "avdio"
+
+#: src/strings.js:36
+msgctxt "st"
+msgid "file"
+msgstr "datoteka"
+
+#: src/strings.js:37
+msgctxt "st"
+msgid "hero"
+msgstr "junak"
+
+#: src/strings.js:38
+msgctxt "st"
+msgid "cards"
+msgstr "kartice"
+
+#: src/strings.js:39
+msgctxt "st"
+msgid "blog"
+msgstr "blog"
+
 #: src/strings.js:40
+msgctxt "st"
+msgid "article"
+msgstr "članek"
+
+#: src/strings.js:41
+msgctxt "st"
+msgid "contact"
+msgstr "kontaktirajte"
+
+#: src/strings.js:42
+msgctxt "st"
+msgid "meta"
+msgstr "meta"
+
+#: src/strings.js:43
+msgctxt "st"
+msgid "social"
+msgstr "socialna"
+
+#: src/strings.js:44
+msgctxt "st"
+msgid "canonical"
+msgstr "kanonični"
+
+#: src/strings.js:45
+msgctxt "st"
+msgid "theme"
+msgstr "tema"
+
+#: src/strings.js:48
+msgctxt "fn"
+msgid "button"
+msgstr "gumb"
+
+#: src/strings.js:49
+msgctxt "fn"
+msgid "cards"
+msgstr "kartice"
+
+#: src/strings.js:50
+msgctxt "fn"
+msgid "description"
+msgstr "opis"
+
+#: src/strings.js:51
+msgctxt "fn"
+msgid "file"
+msgstr "datoteka"
+
+#: src/strings.js:52
+msgctxt "fn"
+msgid "files"
+msgstr "datoteke"
+
+#: src/strings.js:53
+msgctxt "fn"
+msgid "header"
+msgstr "naslov"
+
+#: src/strings.js:54
+msgctxt "fn"
+msgid "keywords"
+msgstr "ključne besede"
+
+#: src/strings.js:55
+msgctxt "fn"
+msgid "lang"
+msgstr "lang"
+
+#: src/strings.js:56
+msgctxt "fn"
+msgid "level"
+msgstr "raven"
+
+#: src/strings.js:57
+msgctxt "fn"
+msgid "limit"
+msgstr "omejitev"
+
+#: src/strings.js:58
+msgctxt "fn"
+msgid "main"
+msgstr "glavna stran"
+
+#: src/strings.js:59
+msgctxt "fn"
+msgid "parent-page"
+msgstr "nadrejena stran"
+
+#: src/strings.js:60
+msgctxt "fn"
+msgid "position"
+msgstr "položaj"
+
+#: src/strings.js:61
+msgctxt "fn"
+msgid "text"
+msgstr "besedilo"
+
+#: src/strings.js:62
+msgctxt "fn"
+msgid "table"
+msgstr "tabela"
+
+#: src/strings.js:63
+msgctxt "fn"
 msgid "title"
 msgstr "naslov"
 
-#: src/strings.js:41
+#: src/strings.js:64
+msgctxt "fn"
 msgid "url"
 msgstr "url"
 
@@ -966,78 +1030,67 @@ msgstr "Napaka pri shranjevanju elementa"
 msgid "Error fetching element versions"
 msgstr "Napaka pri pridobivanju različic elementov"
 
-#: src/views/ElementDetail.vue:271
-#: src/views/ElementDetail.vue:326
+#: src/views/ElementDetail.vue:271 src/views/ElementDetail.vue:326
 msgid "Element"
 msgstr "Element"
 
-#: src/views/ElementDetail.vue:286
-#: src/views/FileDetail.vue:220
+#: src/views/ElementDetail.vue:286 src/views/FileDetail.vue:220
 #: src/views/PageDetail.vue:623
 msgid "Save"
 msgstr "Shrani"
 
-#: src/views/ElementDetail.vue:327
-#: src/views/FileDetail.vue:261
+#: src/views/ElementDetail.vue:327 src/views/FileDetail.vue:261
 msgid "Used by"
 msgstr "Uporablja"
 
-#: src/views/ElementList.vue:41
-#: src/views/ElementList.vue:104
-#: src/views/ElementList.vue:113
-#: src/views/ElementList.vue:121
-#: src/views/FileList.vue:40
-#: src/views/FileList.vue:101
-#: src/views/FileList.vue:110
-#: src/views/FileList.vue:118
-#: src/views/PageList.vue:41
-#: src/views/PageList.vue:109
-#: src/views/PageList.vue:118
-#: src/views/PageList.vue:126
+#: src/views/ElementList.vue:41 src/views/ElementList.vue:104
+#: src/views/ElementList.vue:113 src/views/ElementList.vue:121
+#: src/views/FileList.vue:40 src/views/FileList.vue:101
+#: src/views/FileList.vue:110 src/views/FileList.vue:118
+#: src/views/PageList.vue:41 src/views/PageList.vue:109
+#: src/views/PageList.vue:118 src/views/PageList.vue:126
 msgid "All"
 msgstr "Vse"
 
-#: src/views/ElementList.vue:106
-#: src/views/FileList.vue:103
+#: src/views/ElementList.vue:102 src/views/FileList.vue:99
+#: src/views/PageList.vue:107
+msgid "publish"
+msgstr "objavite"
+
+#: src/views/ElementList.vue:106 src/views/FileList.vue:103
 #: src/views/PageList.vue:111
 msgid "Scheduled"
 msgstr "Načrtovani"
 
-#: src/views/ElementList.vue:107
-#: src/views/FileList.vue:104
+#: src/views/ElementList.vue:107 src/views/FileList.vue:104
 #: src/views/PageList.vue:112
 msgid "Drafts"
 msgstr "Osnutki"
 
-#: src/views/ElementList.vue:111
-#: src/views/FileList.vue:108
+#: src/views/ElementList.vue:111 src/views/FileList.vue:108
 #: src/views/PageList.vue:116
-msgid "Trashed"
-msgstr "Zavržena stran"
+msgid "trashed"
+msgstr "v smetišču"
 
-#: src/views/ElementList.vue:114
-#: src/views/FileList.vue:111
+#: src/views/ElementList.vue:114 src/views/FileList.vue:111
 #: src/views/PageList.vue:119
 msgid "Available only"
 msgstr "Na voljo samo"
 
-#: src/views/ElementList.vue:115
-#: src/views/FileList.vue:112
+#: src/views/ElementList.vue:115 src/views/FileList.vue:112
 #: src/views/PageList.vue:120
 msgid "Only trashed"
 msgstr "Samo v smetišču"
 
-#: src/views/ElementList.vue:122
-#: src/views/FileList.vue:119
+#: src/views/ElementList.vue:122 src/views/FileList.vue:119
 #: src/views/PageList.vue:127
 msgid "Edited by me"
 msgstr "Uredil sem ga jaz"
 
-#: src/views/ElementList.vue:126
-#: src/views/FileList.vue:123
+#: src/views/ElementList.vue:126 src/views/FileList.vue:123
 #: src/views/PageList.vue:131
-msgid "Languages"
-msgstr "Jeziki"
+msgid "languages"
+msgstr "jeziki"
 
 #: src/views/FileDetail.vue:71
 msgid "File published successfully"
@@ -1059,8 +1112,7 @@ msgstr "Napaka pri shranjevanju datoteke"
 msgid "Error fetching file versions"
 msgstr "Napaka pri pridobivanju različic datotek"
 
-#: src/views/FileDetail.vue:205
-#: src/views/FileDetail.vue:260
+#: src/views/FileDetail.vue:205 src/views/FileDetail.vue:260
 msgid "File"
 msgstr "Datoteka"
 
@@ -1072,8 +1124,7 @@ msgstr "Ni urednik sistema CMS"
 msgid "Access denied"
 msgstr "Dostop zavrnjen"
 
-#: src/views/Login.vue:79
-#: src/views/Login.vue:101
+#: src/views/Login.vue:79 src/views/Login.vue:101
 msgid "Login"
 msgstr "Prijava"
 
@@ -1117,18 +1168,21 @@ msgstr "Ni najdena shema strani za \"content\""
 msgid "Error fetching page versions"
 msgstr "Napaka pri pridobivanju različic strani"
 
-#: src/views/PageDetail.vue:597
-#: src/views/PageDetail.vue:675
+#: src/views/PageDetail.vue:597 src/views/PageDetail.vue:675
 msgid "Page"
 msgstr "Stran"
+
+#: src/views/PageDetail.vue:665
+msgid "Editor"
+msgstr "Urednik"
 
 #: src/views/PageDetail.vue:670
 msgid "Content"
 msgstr "Vsebina"
 
 #: src/views/PageList.vue:100
-msgid "View"
-msgstr "Oglejte si"
+msgid "view"
+msgstr "ogled"
 
 #: src/views/PageList.vue:102
 msgid "Tree"

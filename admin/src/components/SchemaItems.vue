@@ -45,7 +45,7 @@
 
 <template>
   <v-tabs v-model="tab">
-    <v-tab v-for="(group, name) in groups" :key="name" :value="name">{{ $gettext(name) }}</v-tab>
+    <v-tab v-for="(group, name) in groups" :key="name" :value="name">{{ $pgettext('sg', name) }}</v-tab>
   </v-tabs>
 
   <v-tabs-window v-model="tab">
@@ -56,7 +56,7 @@
           <template v-slot:prepend>
             <span class="icon" v-html="item.icon"></span>
           </template>
-          {{ item.type }}
+          {{ $pgettext('st', item.label || item.type) }}
         </v-btn>
       </v-card>
 

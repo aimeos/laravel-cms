@@ -1,13 +1,13 @@
 msgid ""
 msgstr ""
-"Content-Transfer-Encoding: 8bit\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Language: he\n"
-"Language-Team: none\n"
-"Last-Translator: Automatically generated\n"
-"MIME-Version: 1.0\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Project-Id-Version: PACKAGE VERSION\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: he\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/App.vue:110
 msgid "None"
@@ -17,7 +17,11 @@ msgstr "אין"
 msgid "id"
 msgstr "זהות"
 
-#: src/components/AsideMeta.vue:18
+#: src/components/AsideMeta.vue:18 src/components/ElementListItems.vue:471
+#: src/components/FileListItems.vue:506 src/fields/Audio.vue:61
+#: src/fields/File.vue:245 src/fields/Image.vue:103 src/fields/Video.vue:63
+#: src/views/ElementList.vue:119 src/views/FileList.vue:116
+#: src/views/PageList.vue:124
 msgid "editor"
 msgstr "עורך"
 
@@ -25,7 +29,8 @@ msgstr "עורך"
 msgid "created"
 msgstr "נוצר"
 
-#: src/components/AsideMeta.vue:26
+#: src/components/AsideMeta.vue:26 src/fields/Audio.vue:62
+#: src/fields/File.vue:246 src/fields/Image.vue:104 src/fields/Video.vue:64
 msgid "updated"
 msgstr "עודכן"
 
@@ -39,46 +44,33 @@ msgstr "מטא-נתונים"
 
 #: src/components/ElementDetailItem.vue:68
 #: src/components/ElementDetailRefs.vue:96
-#: src/components/ElementListItems.vue:465
-#: src/components/FileDetailItem.vue:208
-#: src/components/FileDetailRefs.vue:101
+#: src/components/FileDetailItem.vue:208 src/components/FileDetailRefs.vue:101
 #: src/components/FileDetailRefs.vue:123
-#: src/components/FileListItems.vue:497
-#: src/fields/Audio.vue:59
-#: src/fields/File.vue:243
-#: src/fields/Image.vue:101
-#: src/fields/Video.vue:61
 msgid "Name"
 msgstr "שם"
 
 #: src/components/ElementDetailItem.vue:80
 #: src/components/FileDetailItem.vue:220
-#: src/components/FileListItems.vue:503
 #: src/components/PageDetailItemProps.vue:150
 msgid "Language"
 msgstr "שפה"
 
-#: src/components/ElementDetailRefs.vue:65
-#: src/components/FileDetailRefs.vue:69
+#: src/components/ElementDetailRefs.vue:65 src/components/FileDetailRefs.vue:69
 msgid "yes"
 msgstr "כן"
 
-#: src/components/ElementDetailRefs.vue:68
-#: src/components/FileDetailRefs.vue:73
+#: src/components/ElementDetailRefs.vue:68 src/components/FileDetailRefs.vue:73
 msgid "no"
 msgstr "לא"
 
-#: src/components/ElementDetailRefs.vue:89
-#: src/components/Navigation.vue:36
-#: src/components/SchemaDialog.vue:35
-#: src/views/ElementList.vue:76
+#: src/components/ElementDetailRefs.vue:89 src/components/Navigation.vue:36
+#: src/components/SchemaDialog.vue:35 src/views/ElementList.vue:76
 msgid "Shared elements"
 msgstr "אלמנטים משותפים"
 
 #: src/components/ElementDetailRefs.vue:94
 #: src/components/ElementDetailRefs.vue:116
-#: src/components/FileDetailRefs.vue:99
-#: src/components/FileDetailRefs.vue:121
+#: src/components/FileDetailRefs.vue:99 src/components/FileDetailRefs.vue:121
 #: src/components/FileDetailRefs.vue:143
 msgid "ID"
 msgstr "תעודת זהות"
@@ -89,17 +81,13 @@ msgid "URL"
 msgstr "כתובת URL"
 
 #: src/components/ElementDetailRefs.vue:117
-#: src/components/ElementListItems.vue:468
-#: src/components/FileDetailRefs.vue:122
-#: src/components/FileDetailRefs.vue:144
+#: src/components/FileDetailRefs.vue:122 src/components/FileDetailRefs.vue:144
 msgid "Type"
 msgstr "סוג"
 
 #: src/components/ElementDetailRefs.vue:118
-#: src/components/FileDetailRefs.vue:145
-#: src/views/ElementList.vue:105
-#: src/views/FileList.vue:102
-#: src/views/PageList.vue:110
+#: src/components/FileDetailRefs.vue:145 src/views/ElementList.vue:105
+#: src/views/FileList.vue:102 src/views/PageList.vue:110
 msgid "Published"
 msgstr "פורסם"
 
@@ -108,36 +96,22 @@ msgstr "פורסם"
 #: src/components/ElementListItems.vue:157
 #: src/components/ElementListItems.vue:198
 #: src/components/ElementListItems.vue:240
-#: src/components/ElementListItems.vue:277
-#: src/components/FileListItems.vue:61
-#: src/components/FileListItems.vue:122
-#: src/components/FileListItems.vue:166
-#: src/components/FileListItems.vue:207
-#: src/components/FileListItems.vue:249
+#: src/components/ElementListItems.vue:277 src/components/FileListItems.vue:61
+#: src/components/FileListItems.vue:122 src/components/FileListItems.vue:166
+#: src/components/FileListItems.vue:207 src/components/FileListItems.vue:249
 #: src/components/FileListItems.vue:286
 #: src/components/PageDetailContentList.vue:218
-#: src/components/PageListItems.vue:67
-#: src/components/PageListItems.vue:101
-#: src/components/PageListItems.vue:168
-#: src/components/PageListItems.vue:211
-#: src/components/PageListItems.vue:288
-#: src/components/PageListItems.vue:351
-#: src/components/PageListItems.vue:416
-#: src/components/PageListItems.vue:470
-#: src/components/PageListItems.vue:566
-#: src/components/PageListItems.vue:607
-#: src/components/PageListItems.vue:649
-#: src/components/PageListItems.vue:711
-#: src/fields/File.vue:55
-#: src/fields/Images.vue:61
-#: src/views/ElementDetail.vue:107
-#: src/views/ElementDetail.vue:156
-#: src/views/ElementDetail.vue:211
-#: src/views/FileDetail.vue:45
-#: src/views/FileDetail.vue:94
-#: src/views/FileDetail.vue:149
-#: src/views/PageDetail.vue:289
-#: src/views/PageDetail.vue:341
+#: src/components/PageListItems.vue:67 src/components/PageListItems.vue:101
+#: src/components/PageListItems.vue:168 src/components/PageListItems.vue:211
+#: src/components/PageListItems.vue:288 src/components/PageListItems.vue:351
+#: src/components/PageListItems.vue:416 src/components/PageListItems.vue:470
+#: src/components/PageListItems.vue:566 src/components/PageListItems.vue:607
+#: src/components/PageListItems.vue:649 src/components/PageListItems.vue:711
+#: src/fields/File.vue:55 src/fields/Images.vue:61
+#: src/views/ElementDetail.vue:107 src/views/ElementDetail.vue:156
+#: src/views/ElementDetail.vue:211 src/views/FileDetail.vue:45
+#: src/views/FileDetail.vue:94 src/views/FileDetail.vue:149
+#: src/views/PageDetail.vue:289 src/views/PageDetail.vue:341
 #: src/views/PageDetail.vue:535
 msgid "Permission denied"
 msgstr "הגישה נדחתה"
@@ -166,28 +140,19 @@ msgstr "שגיאה בניקוי אלמנט משותף"
 msgid "Error fetching shared elements"
 msgstr "שגיאה באחזור אלמנטים משותפים"
 
-#: src/components/ElementListItems.vue:417
-#: src/components/FileListItems.vue:446
+#: src/components/ElementListItems.vue:417 src/components/FileListItems.vue:446
 #: src/components/PageDetailContentList.vue:411
 #: src/components/PageListItems.vue:866
 msgid "Actions"
 msgstr "פעולות"
 
 #: src/components/ElementListItems.vue:421
-#: src/components/ElementListItems.vue:488
-#: src/components/FileListItems.vue:450
-#: src/components/FileListItems.vue:523
-#: src/components/PageListItems.vue:870
-#: src/components/PageListItems.vue:932
-#: src/views/ElementDetail.vue:295
-#: src/views/ElementDetail.vue:310
-#: src/views/ElementList.vue:102
-#: src/views/FileDetail.vue:229
-#: src/views/FileDetail.vue:244
-#: src/views/FileList.vue:99
-#: src/views/PageDetail.vue:632
+#: src/components/ElementListItems.vue:488 src/components/FileListItems.vue:450
+#: src/components/FileListItems.vue:523 src/components/PageListItems.vue:870
+#: src/components/PageListItems.vue:932 src/views/ElementDetail.vue:295
+#: src/views/ElementDetail.vue:310 src/views/FileDetail.vue:229
+#: src/views/FileDetail.vue:244 src/views/PageDetail.vue:632
 #: src/views/PageDetail.vue:647
-#: src/views/PageList.vue:107
 msgid "Publish"
 msgstr "פרסם"
 
@@ -196,75 +161,60 @@ msgid "Add element"
 msgstr "הוסף אלמנט"
 
 #: src/components/ElementListItems.vue:427
-#: src/components/ElementListItems.vue:491
-#: src/components/FileListItems.vue:456
-#: src/components/FileListItems.vue:526
-#: src/components/PageListItems.vue:882
+#: src/components/ElementListItems.vue:491 src/components/FileListItems.vue:456
+#: src/components/FileListItems.vue:526 src/components/PageListItems.vue:882
 #: src/components/PageListItems.vue:1010
 msgid "Trash"
 msgstr "אשפה"
 
 #: src/components/ElementListItems.vue:430
-#: src/components/ElementListItems.vue:494
-#: src/components/FileListItems.vue:459
-#: src/components/FileListItems.vue:529
-#: src/components/PageListItems.vue:885
+#: src/components/ElementListItems.vue:494 src/components/FileListItems.vue:459
+#: src/components/FileListItems.vue:529 src/components/PageListItems.vue:885
 #: src/components/PageListItems.vue:1013
 msgid "Restore"
 msgstr "שחזור"
 
 #: src/components/ElementListItems.vue:433
-#: src/components/ElementListItems.vue:497
-#: src/components/FileListItems.vue:462
-#: src/components/FileListItems.vue:532
-#: src/components/PageListItems.vue:888
+#: src/components/ElementListItems.vue:497 src/components/FileListItems.vue:462
+#: src/components/FileListItems.vue:532 src/components/PageListItems.vue:888
 #: src/components/PageListItems.vue:1016
 msgid "Purge"
 msgstr "טיהור"
 
-#: src/components/ElementListItems.vue:444
-#: src/components/FileListItems.vue:473
+#: src/components/ElementListItems.vue:444 src/components/FileListItems.vue:473
 #: src/components/PageDetailContentList.vue:433
 #: src/components/PageListItems.vue:897
 msgid "Search for"
 msgstr "חפש"
 
 #: src/components/ElementListItems.vue:454
-#: src/components/ElementListItems.vue:459
-#: src/components/FileListItems.vue:486
+#: src/components/ElementListItems.vue:459 src/components/FileListItems.vue:486
 #: src/components/FileListItems.vue:491
-msgid "Latest"
+msgid "latest"
 msgstr "אחרון"
 
 #: src/components/ElementListItems.vue:454
-#: src/components/ElementListItems.vue:462
-#: src/components/FileListItems.vue:486
+#: src/components/ElementListItems.vue:462 src/components/FileListItems.vue:486
 #: src/components/FileListItems.vue:494
-msgid "Oldest"
+msgid "oldest"
 msgstr "הכי ישן"
 
-#: src/components/ElementListItems.vue:471
-#: src/components/FileListItems.vue:506
-#: src/fields/Audio.vue:61
-#: src/fields/File.vue:245
-#: src/fields/Image.vue:103
-#: src/fields/Video.vue:63
-#: src/views/ElementList.vue:119
-#: src/views/FileList.vue:116
-#: src/views/PageDetail.vue:665
-#: src/views/PageList.vue:124
-msgid "Editor"
-msgstr "עורך"
+#: src/components/ElementListItems.vue:465 src/components/FileListItems.vue:497
+#: src/fields/Audio.vue:59 src/fields/File.vue:243 src/fields/Image.vue:101
+#: src/fields/Video.vue:61
+msgid "name"
+msgstr "שם"
 
-#: src/components/ElementListItems.vue:521
-#: src/components/FileListItems.vue:564
-#: src/components/HistoryDialog.vue:90
-#: src/components/PageListItems.vue:1048
+#: src/components/ElementListItems.vue:468
+msgid "type"
+msgstr "סוג"
+
+#: src/components/ElementListItems.vue:521 src/components/FileListItems.vue:564
+#: src/components/HistoryDialog.vue:90 src/components/PageListItems.vue:1048
 msgid "Loading"
 msgstr "טעינה"
 
-#: src/components/ElementListItems.vue:525
-#: src/components/FileListItems.vue:569
+#: src/components/ElementListItems.vue:525 src/components/FileListItems.vue:569
 #: src/components/PageListItems.vue:1053
 msgid "No entries found"
 msgstr "לא נמצאו רשומות"
@@ -277,8 +227,7 @@ msgstr "אלמנט תוכן"
 msgid "Context in JSON format"
 msgstr "הקשר בפורמט JSON"
 
-#: src/components/FileAiDialog.vue:172
-#: src/components/FileAiDialog.vue:191
+#: src/components/FileAiDialog.vue:172 src/components/FileAiDialog.vue:191
 msgid "Create image"
 msgstr "צור תמונה"
 
@@ -290,8 +239,7 @@ msgstr "תאר את התמונה"
 msgid "Generated images"
 msgstr "תמונות שנוצרו"
 
-#: src/components/FileAiDialog.vue:200
-#: src/components/FileAiDialog.vue:215
+#: src/components/FileAiDialog.vue:200 src/components/FileAiDialog.vue:215
 msgid "Remove"
 msgstr "הסר"
 
@@ -335,8 +283,7 @@ msgstr "תיאורים"
 msgid "Description (%{lang})"
 msgstr "תיאור (%{lang})"
 
-#: src/components/FileDetailRefs.vue:94
-#: src/components/Navigation.vue:30
+#: src/components/FileDetailRefs.vue:94 src/components/Navigation.vue:30
 #: src/views/PageList.vue:75
 msgid "Pages"
 msgstr "דפים"
@@ -349,8 +296,7 @@ msgstr "אלמנטים"
 msgid "Versions"
 msgstr "גרסאות"
 
-#: src/components/FileDialog.vue:26
-#: src/components/Navigation.vue:42
+#: src/components/FileDialog.vue:26 src/components/Navigation.vue:42
 msgid "Files"
 msgstr "קבצים"
 
@@ -362,8 +308,7 @@ msgstr "שגיאה בשמירת הקובץ"
 msgid "Error restoring file"
 msgstr "שגיאה בשחזור הקובץ"
 
-#: src/components/FileListItems.vue:241
-#: src/views/FileDetail.vue:79
+#: src/components/FileListItems.vue:241 src/views/FileDetail.vue:79
 msgid "Error publishing file"
 msgstr "שגיאה בפרסום הקובץ"
 
@@ -387,13 +332,14 @@ msgstr "תצוגת רשת"
 msgid "List view"
 msgstr "תצוגת רשימה"
 
-#: src/components/FileListItems.vue:500
-#: src/fields/Audio.vue:60
-#: src/fields/File.vue:244
-#: src/fields/Image.vue:102
-#: src/fields/Video.vue:62
-msgid "Mime"
+#: src/components/FileListItems.vue:500 src/fields/Audio.vue:60
+#: src/fields/File.vue:244 src/fields/Image.vue:102 src/fields/Video.vue:62
+msgid "mime"
 msgstr "פנטומימה"
+
+#: src/components/FileListItems.vue:503
+msgid "language"
+msgstr "שפה"
 
 #: src/components/FileUrlDialog.vue:134
 msgid "At least one file is not of type \"%{mime}*\""
@@ -481,8 +427,7 @@ msgid "Cut"
 msgstr "חתוך"
 
 #: src/components/PageDetailContentList.vue:424
-#: src/components/PageListItems.vue:953
-#: src/components/PageListItems.vue:971
+#: src/components/PageListItems.vue:953 src/components/PageListItems.vue:971
 msgid "Paste"
 msgstr "הדבק"
 
@@ -551,10 +496,8 @@ msgstr "מוסתר בניווט"
 msgid "Status"
 msgstr "סטטוס"
 
-#: src/components/PageDetailItemProps.vue:159
-#: src/fields/Table.vue:54
-#: src/views/Login.vue:84
-#: src/views/Login.vue:90
+#: src/components/PageDetailItemProps.vue:159 src/fields/Table.vue:54
+#: src/views/Login.vue:84 src/views/Login.vue:90
 msgid "Field is required"
 msgstr "שדה חובה"
 
@@ -641,8 +584,7 @@ msgstr "מצב תצוגה מקדימה"
 msgid "Error adding root page"
 msgstr "שגיאה בהוספת דף שורש"
 
-#: src/components/PageListItems.vue:135
-#: src/components/PageListItems.vue:460
+#: src/components/PageListItems.vue:135 src/components/PageListItems.vue:460
 msgid "Error moving page"
 msgstr "שגיאה בהעברת הדף"
 
@@ -666,13 +608,11 @@ msgstr "שגיאה בשחזור הדף"
 msgid "Error copying page"
 msgstr "שגיאה בהעתקת הדף"
 
-#: src/components/PageListItems.vue:556
-#: src/views/PageDetail.vue:241
+#: src/components/PageListItems.vue:556 src/views/PageDetail.vue:241
 msgid "Error fetching page"
 msgstr "שגיאה בהעברת הדף"
 
-#: src/components/PageListItems.vue:599
-#: src/views/PageDetail.vue:323
+#: src/components/PageListItems.vue:599 src/views/PageDetail.vue:323
 msgid "Error publishing page"
 msgstr "שגיאה בפרסום הדף"
 
@@ -684,18 +624,15 @@ msgstr "שגיאה בניקוי הדף"
 msgid "Error searching pages"
 msgstr "שגיאה בחיפוש דפים"
 
-#: src/components/PageListItems.vue:739
-#: src/views/PageDetail.vue:427
+#: src/components/PageListItems.vue:739 src/views/PageDetail.vue:427
 msgid "Error saving page"
 msgstr "שגיאה בשמירת הדף"
 
-#: src/components/PageListItems.vue:873
-#: src/components/PageListItems.vue:938
+#: src/components/PageListItems.vue:873 src/components/PageListItems.vue:938
 msgid "Enable"
 msgstr "אפשר"
 
-#: src/components/PageListItems.vue:876
-#: src/components/PageListItems.vue:935
+#: src/components/PageListItems.vue:876 src/components/PageListItems.vue:935
 msgid "Disable"
 msgstr "השבת"
 
@@ -703,20 +640,17 @@ msgstr "השבת"
 msgid "Hide in menu"
 msgstr "הסתר בתפריט"
 
-#: src/components/PageListItems.vue:957
-#: src/components/PageListItems.vue:975
+#: src/components/PageListItems.vue:957 src/components/PageListItems.vue:975
 #: src/components/PageListItems.vue:993
 msgid "Before"
 msgstr "לפני"
 
-#: src/components/PageListItems.vue:962
-#: src/components/PageListItems.vue:980
+#: src/components/PageListItems.vue:962 src/components/PageListItems.vue:980
 #: src/components/PageListItems.vue:998
 msgid "Into"
 msgstr "לתוך"
 
-#: src/components/PageListItems.vue:967
-#: src/components/PageListItems.vue:985
+#: src/components/PageListItems.vue:967 src/components/PageListItems.vue:985
 #: src/components/PageListItems.vue:1003
 msgid "After"
 msgstr "אחרי"
@@ -749,20 +683,9 @@ msgstr "ההתנתקות נכשלה"
 msgid "Logout"
 msgstr "התנתק"
 
-#: src/fields/Audio.vue:62
-#: src/fields/File.vue:246
-#: src/fields/Image.vue:104
-#: src/fields/Video.vue:64
-msgid "Updated"
-msgstr "עודכן"
-
-#: src/fields/Autocomplete.vue:140
-#: src/fields/Color.vue:34
-#: src/fields/Date.vue:48
-#: src/fields/Html.vue:42
-#: src/fields/Number.vue:50
-#: src/fields/Select.vue:42
-#: src/fields/Url.vue:62
+#: src/fields/Autocomplete.vue:140 src/fields/Color.vue:34
+#: src/fields/Date.vue:48 src/fields/Html.vue:42 src/fields/Number.vue:50
+#: src/fields/Select.vue:42 src/fields/Url.vue:62
 msgid "Value is required"
 msgstr "נדרש ערך"
 
@@ -782,13 +705,11 @@ msgstr "המקסימום הוא %{num} רשומות"
 msgid "Minimum is %{num} entries"
 msgstr "מינימום הוא %{num} רשומות"
 
-#: src/fields/Plaintext.vue:48
-#: src/fields/String.vue:52
+#: src/fields/Plaintext.vue:49 src/fields/String.vue:54
 msgid "Minimum length is %{num} characters"
 msgstr "האורך המינימלי הוא %{num} תווים"
 
-#: src/fields/Plaintext.vue:49
-#: src/fields/String.vue:53
+#: src/fields/Plaintext.vue:50 src/fields/String.vue:55
 msgid "Maximum length is %{num} characters"
 msgstr "האורך המרבי הוא %{num} תווים"
 
@@ -817,120 +738,262 @@ msgid "You do not have permission to access %{path}"
 msgstr "אין לך הרשאה לגשת %{path}"
 
 #: src/strings.js:5
-msgid "basic"
-msgstr "בסיסי"
-
-#: src/strings.js:6
-msgid "content"
-msgstr "תוכן"
-
-#: src/strings.js:7
-msgid "media"
-msgstr "מדיה"
-
-#: src/strings.js:8
-msgid "forms"
-msgstr "טפסים"
-
-#: src/strings.js:11
+msgctxt "as"
 msgid "type"
 msgstr "סוג"
 
-#: src/strings.js:12
+#: src/strings.js:6
+msgctxt "as"
 msgid "state"
 msgstr "מדינה"
 
-#: src/strings.js:13
+#: src/strings.js:7
+msgctxt "as"
 msgid "valid"
 msgstr "תקף"
 
-#: src/strings.js:14
+#: src/strings.js:8
+msgctxt "as"
 msgid "changed"
 msgstr "שונה"
 
-#: src/strings.js:15
+#: src/strings.js:9
+msgctxt "as"
 msgid "error"
 msgstr "שגיאה"
 
-#: src/strings.js:18
-#: src/strings.js:35
+#: src/strings.js:12
+msgctxt "cs"
 msgid "main"
 msgstr "ראשי"
 
-#: src/strings.js:19
-#: src/strings.js:30
+#: src/strings.js:13
+msgctxt "cs"
 msgid "header"
 msgstr "כותרת"
 
-#: src/strings.js:20
+#: src/strings.js:14
+msgctxt "cs"
 msgid "footer"
 msgstr "כותרת תחתונה"
 
-#: src/strings.js:21
+#: src/strings.js:15
+msgctxt "cs"
 msgid "sidebar"
 msgstr "סרגל צד"
 
-#: src/strings.js:22
+#: src/strings.js:16
+msgctxt "cs"
 msgid "aside"
 msgstr "בצד"
 
+#: src/strings.js:19
+msgctxt "sg"
+msgid "basic"
+msgstr "בסיסי"
+
+#: src/strings.js:20
+msgctxt "sg"
+msgid "content"
+msgstr "תוכן"
+
+#: src/strings.js:21
+msgctxt "sg"
+msgid "media"
+msgstr "מדיה"
+
+#: src/strings.js:22
+msgctxt "sg"
+msgid "forms"
+msgstr "טפסים"
+
 #: src/strings.js:25
-msgid "Button text"
-msgstr "טקסט הכפתור"
+msgctxt "st"
+msgid "reference"
+msgstr "הפניה"
 
 #: src/strings.js:26
-msgid "cards"
-msgstr "כרטיסים"
+msgctxt "st"
+msgid "heading"
+msgstr "כותרת"
 
 #: src/strings.js:27
-msgid "description"
-msgstr "תיאור"
-
-#: src/strings.js:28
-msgid "file"
-msgstr "קובץ"
-
-#: src/strings.js:29
-msgid "files"
-msgstr "קבצים"
-
-#: src/strings.js:31
-msgid "keywords"
-msgstr "מילות מפתח"
-
-#: src/strings.js:32
-msgid "lang"
-msgstr "lang"
-
-#: src/strings.js:33
-msgid "level"
-msgstr "רמה"
-
-#: src/strings.js:34
-msgid "limit"
-msgstr "גבול"
-
-#: src/strings.js:36
-msgid "parent-page"
-msgstr "דף אב"
-
-#: src/strings.js:37
-msgid "position"
-msgstr "מיקום"
-
-#: src/strings.js:38
+msgctxt "st"
 msgid "text"
 msgstr "טקסט"
 
-#: src/strings.js:39
+#: src/strings.js:28
+msgctxt "st"
+msgid "image-text"
+msgstr "טקסט תמונה"
+
+#: src/strings.js:29
+msgctxt "st"
+msgid "slideshow"
+msgstr "מצגת"
+
+#: src/strings.js:30
+msgctxt "st"
+msgid "code"
+msgstr "קוד"
+
+#: src/strings.js:31
+msgctxt "st"
 msgid "table"
 msgstr "שולחן"
 
+#: src/strings.js:32
+msgctxt "st"
+msgid "html"
+msgstr "html"
+
+#: src/strings.js:33
+msgctxt "st"
+msgid "image"
+msgstr "תמונה"
+
+#: src/strings.js:34
+msgctxt "st"
+msgid "video"
+msgstr "וידאו"
+
+#: src/strings.js:35
+msgctxt "st"
+msgid "audio"
+msgstr "אודיו"
+
+#: src/strings.js:36
+msgctxt "st"
+msgid "file"
+msgstr "קובץ"
+
+#: src/strings.js:37
+msgctxt "st"
+msgid "hero"
+msgstr "גיבור"
+
+#: src/strings.js:38
+msgctxt "st"
+msgid "cards"
+msgstr "כרטיסים"
+
+#: src/strings.js:39
+msgctxt "st"
+msgid "blog"
+msgstr "בלוג"
+
 #: src/strings.js:40
+msgctxt "st"
+msgid "article"
+msgstr "מאמר"
+
+#: src/strings.js:41
+msgctxt "st"
+msgid "contact"
+msgstr "צור קשר"
+
+#: src/strings.js:42
+msgctxt "st"
+msgid "meta"
+msgstr "מטא"
+
+#: src/strings.js:43
+msgctxt "st"
+msgid "social"
+msgstr "חברתי"
+
+#: src/strings.js:44
+msgctxt "st"
+msgid "canonical"
+msgstr "קנוני"
+
+#: src/strings.js:45
+msgctxt "st"
+msgid "theme"
+msgstr "נושא"
+
+#: src/strings.js:48
+msgctxt "fn"
+msgid "button"
+msgstr "כפתור"
+
+#: src/strings.js:49
+msgctxt "fn"
+msgid "cards"
+msgstr "כרטיסים"
+
+#: src/strings.js:50
+msgctxt "fn"
+msgid "description"
+msgstr "תיאור"
+
+#: src/strings.js:51
+msgctxt "fn"
+msgid "file"
+msgstr "קובץ"
+
+#: src/strings.js:52
+msgctxt "fn"
+msgid "files"
+msgstr "קבצים"
+
+#: src/strings.js:53
+msgctxt "fn"
+msgid "header"
+msgstr "כותרת"
+
+#: src/strings.js:54
+msgctxt "fn"
+msgid "keywords"
+msgstr "מילות מפתח"
+
+#: src/strings.js:55
+msgctxt "fn"
+msgid "lang"
+msgstr "lang"
+
+#: src/strings.js:56
+msgctxt "fn"
+msgid "level"
+msgstr "רמה"
+
+#: src/strings.js:57
+msgctxt "fn"
+msgid "limit"
+msgstr "גבול"
+
+#: src/strings.js:58
+msgctxt "fn"
+msgid "main"
+msgstr "ראשי"
+
+#: src/strings.js:59
+msgctxt "fn"
+msgid "parent-page"
+msgstr "דף-אב"
+
+#: src/strings.js:60
+msgctxt "fn"
+msgid "position"
+msgstr "מיקום"
+
+#: src/strings.js:61
+msgctxt "fn"
+msgid "text"
+msgstr "טקסט"
+
+#: src/strings.js:62
+msgctxt "fn"
+msgid "table"
+msgstr "שולחן"
+
+#: src/strings.js:63
+msgctxt "fn"
 msgid "title"
 msgstr "כותרת"
 
-#: src/strings.js:41
+#: src/strings.js:64
+msgctxt "fn"
 msgid "url"
 msgstr "כתובת אתר"
 
@@ -962,77 +1025,66 @@ msgstr "שגיאה בשמירת אלמנט"
 msgid "Error fetching element versions"
 msgstr "שגיאה בהורדת גרסאות האלמנטים"
 
-#: src/views/ElementDetail.vue:271
-#: src/views/ElementDetail.vue:326
+#: src/views/ElementDetail.vue:271 src/views/ElementDetail.vue:326
 msgid "Element"
 msgstr "אלמנט"
 
-#: src/views/ElementDetail.vue:286
-#: src/views/FileDetail.vue:220
+#: src/views/ElementDetail.vue:286 src/views/FileDetail.vue:220
 #: src/views/PageDetail.vue:623
 msgid "Save"
 msgstr "שמור"
 
-#: src/views/ElementDetail.vue:327
-#: src/views/FileDetail.vue:261
+#: src/views/ElementDetail.vue:327 src/views/FileDetail.vue:261
 msgid "Used by"
 msgstr "משמש על ידי"
 
-#: src/views/ElementList.vue:41
-#: src/views/ElementList.vue:104
-#: src/views/ElementList.vue:113
-#: src/views/ElementList.vue:121
-#: src/views/FileList.vue:40
-#: src/views/FileList.vue:101
-#: src/views/FileList.vue:110
-#: src/views/FileList.vue:118
-#: src/views/PageList.vue:41
-#: src/views/PageList.vue:109
-#: src/views/PageList.vue:118
-#: src/views/PageList.vue:126
+#: src/views/ElementList.vue:41 src/views/ElementList.vue:104
+#: src/views/ElementList.vue:113 src/views/ElementList.vue:121
+#: src/views/FileList.vue:40 src/views/FileList.vue:101
+#: src/views/FileList.vue:110 src/views/FileList.vue:118
+#: src/views/PageList.vue:41 src/views/PageList.vue:109
+#: src/views/PageList.vue:118 src/views/PageList.vue:126
 msgid "All"
 msgstr "כל"
 
-#: src/views/ElementList.vue:106
-#: src/views/FileList.vue:103
+#: src/views/ElementList.vue:102 src/views/FileList.vue:99
+#: src/views/PageList.vue:107
+msgid "publish"
+msgstr "לפרסם"
+
+#: src/views/ElementList.vue:106 src/views/FileList.vue:103
 #: src/views/PageList.vue:111
 msgid "Scheduled"
 msgstr "מתוכנן"
 
-#: src/views/ElementList.vue:107
-#: src/views/FileList.vue:104
+#: src/views/ElementList.vue:107 src/views/FileList.vue:104
 #: src/views/PageList.vue:112
 msgid "Drafts"
 msgstr "טיוטות"
 
-#: src/views/ElementList.vue:111
-#: src/views/FileList.vue:108
+#: src/views/ElementList.vue:111 src/views/FileList.vue:108
 #: src/views/PageList.vue:116
-msgid "Trashed"
-msgstr "נזרק לפח"
+msgid "trashed"
+msgstr "הושלך לפח"
 
-#: src/views/ElementList.vue:114
-#: src/views/FileList.vue:111
+#: src/views/ElementList.vue:114 src/views/FileList.vue:111
 #: src/views/PageList.vue:119
 msgid "Available only"
 msgstr "זמין רק"
 
-#: src/views/ElementList.vue:115
-#: src/views/FileList.vue:112
+#: src/views/ElementList.vue:115 src/views/FileList.vue:112
 #: src/views/PageList.vue:120
 msgid "Only trashed"
 msgstr "רק זבל"
 
-#: src/views/ElementList.vue:122
-#: src/views/FileList.vue:119
+#: src/views/ElementList.vue:122 src/views/FileList.vue:119
 #: src/views/PageList.vue:127
 msgid "Edited by me"
 msgstr "ערוך על ידי"
 
-#: src/views/ElementList.vue:126
-#: src/views/FileList.vue:123
+#: src/views/ElementList.vue:126 src/views/FileList.vue:123
 #: src/views/PageList.vue:131
-msgid "Languages"
+msgid "languages"
 msgstr "שפות"
 
 #: src/views/FileDetail.vue:71
@@ -1055,8 +1107,7 @@ msgstr "שגיאה בשמירת הקובץ"
 msgid "Error fetching file versions"
 msgstr "שגיאה בהורדת גרסאות הקובץ"
 
-#: src/views/FileDetail.vue:205
-#: src/views/FileDetail.vue:260
+#: src/views/FileDetail.vue:205 src/views/FileDetail.vue:260
 msgid "File"
 msgstr "קובץ"
 
@@ -1068,8 +1119,7 @@ msgstr "לא עורך CMS"
 msgid "Access denied"
 msgstr "גישה נדחתה"
 
-#: src/views/Login.vue:79
-#: src/views/Login.vue:101
+#: src/views/Login.vue:79 src/views/Login.vue:101
 msgid "Login"
 msgstr "התחבר"
 
@@ -1113,17 +1163,20 @@ msgstr "לא נמצא סכימת דף עבור \"תוכן\""
 msgid "Error fetching page versions"
 msgstr "שגיאה בהעברת גרסאות הדף"
 
-#: src/views/PageDetail.vue:597
-#: src/views/PageDetail.vue:675
+#: src/views/PageDetail.vue:597 src/views/PageDetail.vue:675
 msgid "Page"
 msgstr "עמוד"
+
+#: src/views/PageDetail.vue:665
+msgid "Editor"
+msgstr "עורך"
 
 #: src/views/PageDetail.vue:670
 msgid "Content"
 msgstr "תוכן"
 
 #: src/views/PageList.vue:100
-msgid "View"
+msgid "view"
 msgstr "הצג"
 
 #: src/views/PageList.vue:102

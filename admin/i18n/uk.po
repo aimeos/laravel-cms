@@ -1,13 +1,14 @@
 msgid ""
 msgstr ""
-"Content-Transfer-Encoding: 8bit\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Language: uk\n"
-"Language-Team: none\n"
-"Last-Translator: Automatically generated\n"
-"MIME-Version: 1.0\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "Project-Id-Version: PACKAGE VERSION\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: uk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: src/App.vue:110
 msgid "None"
@@ -17,7 +18,11 @@ msgstr "Ні."
 msgid "id"
 msgstr "ідентифікатор"
 
-#: src/components/AsideMeta.vue:18
+#: src/components/AsideMeta.vue:18 src/components/ElementListItems.vue:471
+#: src/components/FileListItems.vue:506 src/fields/Audio.vue:61
+#: src/fields/File.vue:245 src/fields/Image.vue:103 src/fields/Video.vue:63
+#: src/views/ElementList.vue:119 src/views/FileList.vue:116
+#: src/views/PageList.vue:124
 msgid "editor"
 msgstr "редактор"
 
@@ -25,7 +30,8 @@ msgstr "редактор"
 msgid "created"
 msgstr "створено"
 
-#: src/components/AsideMeta.vue:26
+#: src/components/AsideMeta.vue:26 src/fields/Audio.vue:62
+#: src/fields/File.vue:246 src/fields/Image.vue:104 src/fields/Video.vue:64
 msgid "updated"
 msgstr "оновлено"
 
@@ -39,46 +45,33 @@ msgstr "Метадані"
 
 #: src/components/ElementDetailItem.vue:68
 #: src/components/ElementDetailRefs.vue:96
-#: src/components/ElementListItems.vue:465
-#: src/components/FileDetailItem.vue:208
-#: src/components/FileDetailRefs.vue:101
+#: src/components/FileDetailItem.vue:208 src/components/FileDetailRefs.vue:101
 #: src/components/FileDetailRefs.vue:123
-#: src/components/FileListItems.vue:497
-#: src/fields/Audio.vue:59
-#: src/fields/File.vue:243
-#: src/fields/Image.vue:101
-#: src/fields/Video.vue:61
 msgid "Name"
 msgstr "Ім'я"
 
 #: src/components/ElementDetailItem.vue:80
 #: src/components/FileDetailItem.vue:220
-#: src/components/FileListItems.vue:503
 #: src/components/PageDetailItemProps.vue:150
 msgid "Language"
 msgstr "Мова"
 
-#: src/components/ElementDetailRefs.vue:65
-#: src/components/FileDetailRefs.vue:69
+#: src/components/ElementDetailRefs.vue:65 src/components/FileDetailRefs.vue:69
 msgid "yes"
 msgstr "Так."
 
-#: src/components/ElementDetailRefs.vue:68
-#: src/components/FileDetailRefs.vue:73
+#: src/components/ElementDetailRefs.vue:68 src/components/FileDetailRefs.vue:73
 msgid "no"
 msgstr "Ні."
 
-#: src/components/ElementDetailRefs.vue:89
-#: src/components/Navigation.vue:36
-#: src/components/SchemaDialog.vue:35
-#: src/views/ElementList.vue:76
+#: src/components/ElementDetailRefs.vue:89 src/components/Navigation.vue:36
+#: src/components/SchemaDialog.vue:35 src/views/ElementList.vue:76
 msgid "Shared elements"
 msgstr "Спільні елементи"
 
 #: src/components/ElementDetailRefs.vue:94
 #: src/components/ElementDetailRefs.vue:116
-#: src/components/FileDetailRefs.vue:99
-#: src/components/FileDetailRefs.vue:121
+#: src/components/FileDetailRefs.vue:99 src/components/FileDetailRefs.vue:121
 #: src/components/FileDetailRefs.vue:143
 msgid "ID"
 msgstr "ІДЕНТИФІКАТОР"
@@ -89,17 +82,13 @@ msgid "URL"
 msgstr "URL"
 
 #: src/components/ElementDetailRefs.vue:117
-#: src/components/ElementListItems.vue:468
-#: src/components/FileDetailRefs.vue:122
-#: src/components/FileDetailRefs.vue:144
+#: src/components/FileDetailRefs.vue:122 src/components/FileDetailRefs.vue:144
 msgid "Type"
 msgstr "Тип"
 
 #: src/components/ElementDetailRefs.vue:118
-#: src/components/FileDetailRefs.vue:145
-#: src/views/ElementList.vue:105
-#: src/views/FileList.vue:102
-#: src/views/PageList.vue:110
+#: src/components/FileDetailRefs.vue:145 src/views/ElementList.vue:105
+#: src/views/FileList.vue:102 src/views/PageList.vue:110
 msgid "Published"
 msgstr "Опубліковано"
 
@@ -108,36 +97,22 @@ msgstr "Опубліковано"
 #: src/components/ElementListItems.vue:157
 #: src/components/ElementListItems.vue:198
 #: src/components/ElementListItems.vue:240
-#: src/components/ElementListItems.vue:277
-#: src/components/FileListItems.vue:61
-#: src/components/FileListItems.vue:122
-#: src/components/FileListItems.vue:166
-#: src/components/FileListItems.vue:207
-#: src/components/FileListItems.vue:249
+#: src/components/ElementListItems.vue:277 src/components/FileListItems.vue:61
+#: src/components/FileListItems.vue:122 src/components/FileListItems.vue:166
+#: src/components/FileListItems.vue:207 src/components/FileListItems.vue:249
 #: src/components/FileListItems.vue:286
 #: src/components/PageDetailContentList.vue:218
-#: src/components/PageListItems.vue:67
-#: src/components/PageListItems.vue:101
-#: src/components/PageListItems.vue:168
-#: src/components/PageListItems.vue:211
-#: src/components/PageListItems.vue:288
-#: src/components/PageListItems.vue:351
-#: src/components/PageListItems.vue:416
-#: src/components/PageListItems.vue:470
-#: src/components/PageListItems.vue:566
-#: src/components/PageListItems.vue:607
-#: src/components/PageListItems.vue:649
-#: src/components/PageListItems.vue:711
-#: src/fields/File.vue:55
-#: src/fields/Images.vue:61
-#: src/views/ElementDetail.vue:107
-#: src/views/ElementDetail.vue:156
-#: src/views/ElementDetail.vue:211
-#: src/views/FileDetail.vue:45
-#: src/views/FileDetail.vue:94
-#: src/views/FileDetail.vue:149
-#: src/views/PageDetail.vue:289
-#: src/views/PageDetail.vue:341
+#: src/components/PageListItems.vue:67 src/components/PageListItems.vue:101
+#: src/components/PageListItems.vue:168 src/components/PageListItems.vue:211
+#: src/components/PageListItems.vue:288 src/components/PageListItems.vue:351
+#: src/components/PageListItems.vue:416 src/components/PageListItems.vue:470
+#: src/components/PageListItems.vue:566 src/components/PageListItems.vue:607
+#: src/components/PageListItems.vue:649 src/components/PageListItems.vue:711
+#: src/fields/File.vue:55 src/fields/Images.vue:61
+#: src/views/ElementDetail.vue:107 src/views/ElementDetail.vue:156
+#: src/views/ElementDetail.vue:211 src/views/FileDetail.vue:45
+#: src/views/FileDetail.vue:94 src/views/FileDetail.vue:149
+#: src/views/PageDetail.vue:289 src/views/PageDetail.vue:341
 #: src/views/PageDetail.vue:535
 msgid "Permission denied"
 msgstr "У дозволі відмовлено"
@@ -166,28 +141,19 @@ msgstr "Помилка очищення спільного елемента"
 msgid "Error fetching shared elements"
 msgstr "Помилка при отриманні спільних елементів"
 
-#: src/components/ElementListItems.vue:417
-#: src/components/FileListItems.vue:446
+#: src/components/ElementListItems.vue:417 src/components/FileListItems.vue:446
 #: src/components/PageDetailContentList.vue:411
 #: src/components/PageListItems.vue:866
 msgid "Actions"
 msgstr "Дії"
 
 #: src/components/ElementListItems.vue:421
-#: src/components/ElementListItems.vue:488
-#: src/components/FileListItems.vue:450
-#: src/components/FileListItems.vue:523
-#: src/components/PageListItems.vue:870
-#: src/components/PageListItems.vue:932
-#: src/views/ElementDetail.vue:295
-#: src/views/ElementDetail.vue:310
-#: src/views/ElementList.vue:102
-#: src/views/FileDetail.vue:229
-#: src/views/FileDetail.vue:244
-#: src/views/FileList.vue:99
-#: src/views/PageDetail.vue:632
+#: src/components/ElementListItems.vue:488 src/components/FileListItems.vue:450
+#: src/components/FileListItems.vue:523 src/components/PageListItems.vue:870
+#: src/components/PageListItems.vue:932 src/views/ElementDetail.vue:295
+#: src/views/ElementDetail.vue:310 src/views/FileDetail.vue:229
+#: src/views/FileDetail.vue:244 src/views/PageDetail.vue:632
 #: src/views/PageDetail.vue:647
-#: src/views/PageList.vue:107
 msgid "Publish"
 msgstr "Опублікувати"
 
@@ -196,75 +162,60 @@ msgid "Add element"
 msgstr "Додати елемент"
 
 #: src/components/ElementListItems.vue:427
-#: src/components/ElementListItems.vue:491
-#: src/components/FileListItems.vue:456
-#: src/components/FileListItems.vue:526
-#: src/components/PageListItems.vue:882
+#: src/components/ElementListItems.vue:491 src/components/FileListItems.vue:456
+#: src/components/FileListItems.vue:526 src/components/PageListItems.vue:882
 #: src/components/PageListItems.vue:1010
 msgid "Trash"
 msgstr "Сміття."
 
 #: src/components/ElementListItems.vue:430
-#: src/components/ElementListItems.vue:494
-#: src/components/FileListItems.vue:459
-#: src/components/FileListItems.vue:529
-#: src/components/PageListItems.vue:885
+#: src/components/ElementListItems.vue:494 src/components/FileListItems.vue:459
+#: src/components/FileListItems.vue:529 src/components/PageListItems.vue:885
 #: src/components/PageListItems.vue:1013
 msgid "Restore"
 msgstr "Відновити"
 
 #: src/components/ElementListItems.vue:433
-#: src/components/ElementListItems.vue:497
-#: src/components/FileListItems.vue:462
-#: src/components/FileListItems.vue:532
-#: src/components/PageListItems.vue:888
+#: src/components/ElementListItems.vue:497 src/components/FileListItems.vue:462
+#: src/components/FileListItems.vue:532 src/components/PageListItems.vue:888
 #: src/components/PageListItems.vue:1016
 msgid "Purge"
 msgstr "Чистка."
 
-#: src/components/ElementListItems.vue:444
-#: src/components/FileListItems.vue:473
+#: src/components/ElementListItems.vue:444 src/components/FileListItems.vue:473
 #: src/components/PageDetailContentList.vue:433
 #: src/components/PageListItems.vue:897
 msgid "Search for"
 msgstr "Шукайте"
 
 #: src/components/ElementListItems.vue:454
-#: src/components/ElementListItems.vue:459
-#: src/components/FileListItems.vue:486
+#: src/components/ElementListItems.vue:459 src/components/FileListItems.vue:486
 #: src/components/FileListItems.vue:491
-msgid "Latest"
-msgstr "Остання"
+msgid "latest"
+msgstr "останній"
 
 #: src/components/ElementListItems.vue:454
-#: src/components/ElementListItems.vue:462
-#: src/components/FileListItems.vue:486
+#: src/components/ElementListItems.vue:462 src/components/FileListItems.vue:486
 #: src/components/FileListItems.vue:494
-msgid "Oldest"
-msgstr "Найстарший"
+msgid "oldest"
+msgstr "найстаріший"
 
-#: src/components/ElementListItems.vue:471
-#: src/components/FileListItems.vue:506
-#: src/fields/Audio.vue:61
-#: src/fields/File.vue:245
-#: src/fields/Image.vue:103
-#: src/fields/Video.vue:63
-#: src/views/ElementList.vue:119
-#: src/views/FileList.vue:116
-#: src/views/PageDetail.vue:665
-#: src/views/PageList.vue:124
-msgid "Editor"
-msgstr "Редактор"
+#: src/components/ElementListItems.vue:465 src/components/FileListItems.vue:497
+#: src/fields/Audio.vue:59 src/fields/File.vue:243 src/fields/Image.vue:101
+#: src/fields/Video.vue:61
+msgid "name"
+msgstr "ім'я"
 
-#: src/components/ElementListItems.vue:521
-#: src/components/FileListItems.vue:564
-#: src/components/HistoryDialog.vue:90
-#: src/components/PageListItems.vue:1048
+#: src/components/ElementListItems.vue:468
+msgid "type"
+msgstr "тип"
+
+#: src/components/ElementListItems.vue:521 src/components/FileListItems.vue:564
+#: src/components/HistoryDialog.vue:90 src/components/PageListItems.vue:1048
 msgid "Loading"
 msgstr "Завантаження"
 
-#: src/components/ElementListItems.vue:525
-#: src/components/FileListItems.vue:569
+#: src/components/ElementListItems.vue:525 src/components/FileListItems.vue:569
 #: src/components/PageListItems.vue:1053
 msgid "No entries found"
 msgstr "Не знайдено жодного запису"
@@ -277,8 +228,7 @@ msgstr "Елемент вмісту"
 msgid "Context in JSON format"
 msgstr "Контекст у форматі JSON"
 
-#: src/components/FileAiDialog.vue:172
-#: src/components/FileAiDialog.vue:191
+#: src/components/FileAiDialog.vue:172 src/components/FileAiDialog.vue:191
 msgid "Create image"
 msgstr "Створити зображення"
 
@@ -290,8 +240,7 @@ msgstr "Опишіть зображення"
 msgid "Generated images"
 msgstr "Згенеровані зображення"
 
-#: src/components/FileAiDialog.vue:200
-#: src/components/FileAiDialog.vue:215
+#: src/components/FileAiDialog.vue:200 src/components/FileAiDialog.vue:215
 msgid "Remove"
 msgstr "Видалити"
 
@@ -335,8 +284,7 @@ msgstr "Описи"
 msgid "Description (%{lang})"
 msgstr "Опис (%{lang})"
 
-#: src/components/FileDetailRefs.vue:94
-#: src/components/Navigation.vue:30
+#: src/components/FileDetailRefs.vue:94 src/components/Navigation.vue:30
 #: src/views/PageList.vue:75
 msgid "Pages"
 msgstr "Сторінки"
@@ -349,8 +297,7 @@ msgstr "Елементи"
 msgid "Versions"
 msgstr "Версії"
 
-#: src/components/FileDialog.vue:26
-#: src/components/Navigation.vue:42
+#: src/components/FileDialog.vue:26 src/components/Navigation.vue:42
 msgid "Files"
 msgstr "Файли"
 
@@ -362,8 +309,7 @@ msgstr "Файл для видалення помилок"
 msgid "Error restoring file"
 msgstr "Помилка при відновленні файлу"
 
-#: src/components/FileListItems.vue:241
-#: src/views/FileDetail.vue:79
+#: src/components/FileListItems.vue:241 src/views/FileDetail.vue:79
 msgid "Error publishing file"
 msgstr "Помилка публікації файлу"
 
@@ -387,13 +333,14 @@ msgstr "Вигляд у вигляді сітки"
 msgid "List view"
 msgstr "Перегляд списку"
 
-#: src/components/FileListItems.vue:500
-#: src/fields/Audio.vue:60
-#: src/fields/File.vue:244
-#: src/fields/Image.vue:102
-#: src/fields/Video.vue:62
-msgid "Mime"
-msgstr "Пантоміма"
+#: src/components/FileListItems.vue:500 src/fields/Audio.vue:60
+#: src/fields/File.vue:244 src/fields/Image.vue:102 src/fields/Video.vue:62
+msgid "mime"
+msgstr "пантоміма"
+
+#: src/components/FileListItems.vue:503
+msgid "language"
+msgstr "мова"
 
 #: src/components/FileUrlDialog.vue:134
 msgid "At least one file is not of type \"%{mime}*\""
@@ -481,8 +428,7 @@ msgid "Cut"
 msgstr "Знято."
 
 #: src/components/PageDetailContentList.vue:424
-#: src/components/PageListItems.vue:953
-#: src/components/PageListItems.vue:971
+#: src/components/PageListItems.vue:953 src/components/PageListItems.vue:971
 msgid "Paste"
 msgstr "Вставити"
 
@@ -551,10 +497,8 @@ msgstr "Приховано в навігації"
 msgid "Status"
 msgstr "Статус"
 
-#: src/components/PageDetailItemProps.vue:159
-#: src/fields/Table.vue:54
-#: src/views/Login.vue:84
-#: src/views/Login.vue:90
+#: src/components/PageDetailItemProps.vue:159 src/fields/Table.vue:54
+#: src/views/Login.vue:84 src/views/Login.vue:90
 msgid "Field is required"
 msgstr "Поле обов'язкове для заповнення"
 
@@ -643,8 +587,7 @@ msgstr "Режим попереднього перегляду"
 msgid "Error adding root page"
 msgstr "Помилка додавання кореневої сторінки"
 
-#: src/components/PageListItems.vue:135
-#: src/components/PageListItems.vue:460
+#: src/components/PageListItems.vue:135 src/components/PageListItems.vue:460
 msgid "Error moving page"
 msgstr "Помилка переміщення сторінки"
 
@@ -668,13 +611,11 @@ msgstr "Відновлення сторінки з помилкою"
 msgid "Error copying page"
 msgstr "Помилка копіювання сторінки"
 
-#: src/components/PageListItems.vue:556
-#: src/views/PageDetail.vue:241
+#: src/components/PageListItems.vue:556 src/views/PageDetail.vue:241
 msgid "Error fetching page"
 msgstr "Помилка при завантаженні сторінки"
 
-#: src/components/PageListItems.vue:599
-#: src/views/PageDetail.vue:323
+#: src/components/PageListItems.vue:599 src/views/PageDetail.vue:323
 msgid "Error publishing page"
 msgstr "Помилка публікації сторінки"
 
@@ -686,18 +627,15 @@ msgstr "Сторінка очищення від помилок"
 msgid "Error searching pages"
 msgstr "Помилка пошуку сторінок"
 
-#: src/components/PageListItems.vue:739
-#: src/views/PageDetail.vue:427
+#: src/components/PageListItems.vue:739 src/views/PageDetail.vue:427
 msgid "Error saving page"
 msgstr "Сторінка збереження помилок"
 
-#: src/components/PageListItems.vue:873
-#: src/components/PageListItems.vue:938
+#: src/components/PageListItems.vue:873 src/components/PageListItems.vue:938
 msgid "Enable"
 msgstr "Увімкнути"
 
-#: src/components/PageListItems.vue:876
-#: src/components/PageListItems.vue:935
+#: src/components/PageListItems.vue:876 src/components/PageListItems.vue:935
 msgid "Disable"
 msgstr "Вимкнути"
 
@@ -705,20 +643,17 @@ msgstr "Вимкнути"
 msgid "Hide in menu"
 msgstr "Приховати в меню"
 
-#: src/components/PageListItems.vue:957
-#: src/components/PageListItems.vue:975
+#: src/components/PageListItems.vue:957 src/components/PageListItems.vue:975
 #: src/components/PageListItems.vue:993
 msgid "Before"
 msgstr "До того, як"
 
-#: src/components/PageListItems.vue:962
-#: src/components/PageListItems.vue:980
+#: src/components/PageListItems.vue:962 src/components/PageListItems.vue:980
 #: src/components/PageListItems.vue:998
 msgid "Into"
 msgstr "На"
 
-#: src/components/PageListItems.vue:967
-#: src/components/PageListItems.vue:985
+#: src/components/PageListItems.vue:967 src/components/PageListItems.vue:985
 #: src/components/PageListItems.vue:1003
 msgid "After"
 msgstr "Після того, як"
@@ -751,20 +686,9 @@ msgstr "Не вдалося вийти з системи"
 msgid "Logout"
 msgstr "Вийти з системи"
 
-#: src/fields/Audio.vue:62
-#: src/fields/File.vue:246
-#: src/fields/Image.vue:104
-#: src/fields/Video.vue:64
-msgid "Updated"
-msgstr "Оновлено"
-
-#: src/fields/Autocomplete.vue:140
-#: src/fields/Color.vue:34
-#: src/fields/Date.vue:48
-#: src/fields/Html.vue:42
-#: src/fields/Number.vue:50
-#: src/fields/Select.vue:42
-#: src/fields/Url.vue:62
+#: src/fields/Autocomplete.vue:140 src/fields/Color.vue:34
+#: src/fields/Date.vue:48 src/fields/Html.vue:42 src/fields/Number.vue:50
+#: src/fields/Select.vue:42 src/fields/Url.vue:62
 msgid "Value is required"
 msgstr "Значення обов'язкове"
 
@@ -784,13 +708,11 @@ msgstr "Максимум - %{num} заявок"
 msgid "Minimum is %{num} entries"
 msgstr "Мінімум - %{num} заявок"
 
-#: src/fields/Plaintext.vue:48
-#: src/fields/String.vue:52
+#: src/fields/Plaintext.vue:49 src/fields/String.vue:54
 msgid "Minimum length is %{num} characters"
 msgstr "Мінімальна довжина - %{num} символів"
 
-#: src/fields/Plaintext.vue:49
-#: src/fields/String.vue:53
+#: src/fields/Plaintext.vue:50 src/fields/String.vue:55
 msgid "Maximum length is %{num} characters"
 msgstr "Максимальна довжина - %{num} символів"
 
@@ -819,120 +741,262 @@ msgid "You do not have permission to access %{path}"
 msgstr "Ви не маєте дозволу на доступ %{path}"
 
 #: src/strings.js:5
-msgid "basic"
-msgstr "основний"
-
-#: src/strings.js:6
-msgid "content"
-msgstr "зміст"
-
-#: src/strings.js:7
-msgid "media"
-msgstr "засоби масової інформації"
-
-#: src/strings.js:8
-msgid "forms"
-msgstr "форми"
-
-#: src/strings.js:11
+msgctxt "as"
 msgid "type"
 msgstr "тип"
 
-#: src/strings.js:12
+#: src/strings.js:6
+msgctxt "as"
 msgid "state"
 msgstr "стан"
 
-#: src/strings.js:13
+#: src/strings.js:7
+msgctxt "as"
 msgid "valid"
 msgstr "дійсний"
 
-#: src/strings.js:14
+#: src/strings.js:8
+msgctxt "as"
 msgid "changed"
 msgstr "змінено"
 
-#: src/strings.js:15
+#: src/strings.js:9
+msgctxt "as"
 msgid "error"
 msgstr "помилка"
 
-#: src/strings.js:18
-#: src/strings.js:35
+#: src/strings.js:12
+msgctxt "cs"
 msgid "main"
 msgstr "головний"
 
-#: src/strings.js:19
-#: src/strings.js:30
+#: src/strings.js:13
+msgctxt "cs"
 msgid "header"
 msgstr "заголовок"
 
-#: src/strings.js:20
+#: src/strings.js:14
+msgctxt "cs"
 msgid "footer"
 msgstr "нижній колонтитул"
 
-#: src/strings.js:21
+#: src/strings.js:15
+msgctxt "cs"
 msgid "sidebar"
 msgstr "бічна панель"
 
-#: src/strings.js:22
+#: src/strings.js:16
+msgctxt "cs"
 msgid "aside"
 msgstr "вбік"
 
+#: src/strings.js:19
+msgctxt "sg"
+msgid "basic"
+msgstr "основний"
+
+#: src/strings.js:20
+msgctxt "sg"
+msgid "content"
+msgstr "зміст"
+
+#: src/strings.js:21
+msgctxt "sg"
+msgid "media"
+msgstr "засоби масової інформації"
+
+#: src/strings.js:22
+msgctxt "sg"
+msgid "forms"
+msgstr "форми"
+
 #: src/strings.js:25
-msgid "Button text"
-msgstr "Текст кнопки"
+msgctxt "st"
+msgid "reference"
+msgstr "посилання"
 
 #: src/strings.js:26
-msgid "cards"
-msgstr "картки"
+msgctxt "st"
+msgid "heading"
+msgstr "заголовок"
 
 #: src/strings.js:27
-msgid "description"
-msgstr "опис"
-
-#: src/strings.js:28
-msgid "file"
-msgstr "файл"
-
-#: src/strings.js:29
-msgid "files"
-msgstr "файли"
-
-#: src/strings.js:31
-msgid "keywords"
-msgstr "ключові слова"
-
-#: src/strings.js:32
-msgid "lang"
-msgstr "lang"
-
-#: src/strings.js:33
-msgid "level"
-msgstr "рівень"
-
-#: src/strings.js:34
-msgid "limit"
-msgstr "ліміт"
-
-#: src/strings.js:36
-msgid "parent-page"
-msgstr "батьківська сторінка"
-
-#: src/strings.js:37
-msgid "position"
-msgstr "позиція"
-
-#: src/strings.js:38
+msgctxt "st"
 msgid "text"
 msgstr "текст"
 
-#: src/strings.js:39
+#: src/strings.js:28
+msgctxt "st"
+msgid "image-text"
+msgstr "зображення-текст"
+
+#: src/strings.js:29
+msgctxt "st"
+msgid "slideshow"
+msgstr "слайд-шоу"
+
+#: src/strings.js:30
+msgctxt "st"
+msgid "code"
+msgstr "код"
+
+#: src/strings.js:31
+msgctxt "st"
 msgid "table"
 msgstr "таблиця"
 
+#: src/strings.js:32
+msgctxt "st"
+msgid "html"
+msgstr "html"
+
+#: src/strings.js:33
+msgctxt "st"
+msgid "image"
+msgstr "зображення"
+
+#: src/strings.js:34
+msgctxt "st"
+msgid "video"
+msgstr "відео"
+
+#: src/strings.js:35
+msgctxt "st"
+msgid "audio"
+msgstr "аудіо"
+
+#: src/strings.js:36
+msgctxt "st"
+msgid "file"
+msgstr "файл"
+
+#: src/strings.js:37
+msgctxt "st"
+msgid "hero"
+msgstr "герой"
+
+#: src/strings.js:38
+msgctxt "st"
+msgid "cards"
+msgstr "картки"
+
+#: src/strings.js:39
+msgctxt "st"
+msgid "blog"
+msgstr "блог"
+
 #: src/strings.js:40
+msgctxt "st"
+msgid "article"
+msgstr "стаття"
+
+#: src/strings.js:41
+msgctxt "st"
+msgid "contact"
+msgstr "контакт"
+
+#: src/strings.js:42
+msgctxt "st"
+msgid "meta"
+msgstr "мета"
+
+#: src/strings.js:43
+msgctxt "st"
+msgid "social"
+msgstr "соціальний"
+
+#: src/strings.js:44
+msgctxt "st"
+msgid "canonical"
+msgstr "канонічний"
+
+#: src/strings.js:45
+msgctxt "st"
+msgid "theme"
+msgstr "тема"
+
+#: src/strings.js:48
+msgctxt "fn"
+msgid "button"
+msgstr "кнопка"
+
+#: src/strings.js:49
+msgctxt "fn"
+msgid "cards"
+msgstr "картки"
+
+#: src/strings.js:50
+msgctxt "fn"
+msgid "description"
+msgstr "опис"
+
+#: src/strings.js:51
+msgctxt "fn"
+msgid "file"
+msgstr "файл"
+
+#: src/strings.js:52
+msgctxt "fn"
+msgid "files"
+msgstr "файли"
+
+#: src/strings.js:53
+msgctxt "fn"
+msgid "header"
+msgstr "заголовок"
+
+#: src/strings.js:54
+msgctxt "fn"
+msgid "keywords"
+msgstr "ключові слова"
+
+#: src/strings.js:55
+msgctxt "fn"
+msgid "lang"
+msgstr "lang"
+
+#: src/strings.js:56
+msgctxt "fn"
+msgid "level"
+msgstr "рівень"
+
+#: src/strings.js:57
+msgctxt "fn"
+msgid "limit"
+msgstr "ліміт"
+
+#: src/strings.js:58
+msgctxt "fn"
+msgid "main"
+msgstr "головний"
+
+#: src/strings.js:59
+msgctxt "fn"
+msgid "parent-page"
+msgstr "батьківська сторінка"
+
+#: src/strings.js:60
+msgctxt "fn"
+msgid "position"
+msgstr "позиція"
+
+#: src/strings.js:61
+msgctxt "fn"
+msgid "text"
+msgstr "текст"
+
+#: src/strings.js:62
+msgctxt "fn"
+msgid "table"
+msgstr "таблиця"
+
+#: src/strings.js:63
+msgctxt "fn"
 msgid "title"
 msgstr "назва"
 
-#: src/strings.js:41
+#: src/strings.js:64
+msgctxt "fn"
 msgid "url"
 msgstr "url"
 
@@ -964,78 +1028,67 @@ msgstr "Елемент збереження помилок"
 msgid "Error fetching element versions"
 msgstr "Помилка при отриманні версій елементів"
 
-#: src/views/ElementDetail.vue:271
-#: src/views/ElementDetail.vue:326
+#: src/views/ElementDetail.vue:271 src/views/ElementDetail.vue:326
 msgid "Element"
 msgstr "Елемент"
 
-#: src/views/ElementDetail.vue:286
-#: src/views/FileDetail.vue:220
+#: src/views/ElementDetail.vue:286 src/views/FileDetail.vue:220
 #: src/views/PageDetail.vue:623
 msgid "Save"
 msgstr "Зберегти"
 
-#: src/views/ElementDetail.vue:327
-#: src/views/FileDetail.vue:261
+#: src/views/ElementDetail.vue:327 src/views/FileDetail.vue:261
 msgid "Used by"
 msgstr "Використовується"
 
-#: src/views/ElementList.vue:41
-#: src/views/ElementList.vue:104
-#: src/views/ElementList.vue:113
-#: src/views/ElementList.vue:121
-#: src/views/FileList.vue:40
-#: src/views/FileList.vue:101
-#: src/views/FileList.vue:110
-#: src/views/FileList.vue:118
-#: src/views/PageList.vue:41
-#: src/views/PageList.vue:109
-#: src/views/PageList.vue:118
-#: src/views/PageList.vue:126
+#: src/views/ElementList.vue:41 src/views/ElementList.vue:104
+#: src/views/ElementList.vue:113 src/views/ElementList.vue:121
+#: src/views/FileList.vue:40 src/views/FileList.vue:101
+#: src/views/FileList.vue:110 src/views/FileList.vue:118
+#: src/views/PageList.vue:41 src/views/PageList.vue:109
+#: src/views/PageList.vue:118 src/views/PageList.vue:126
 msgid "All"
 msgstr "Усе."
 
-#: src/views/ElementList.vue:106
-#: src/views/FileList.vue:103
+#: src/views/ElementList.vue:102 src/views/FileList.vue:99
+#: src/views/PageList.vue:107
+msgid "publish"
+msgstr "публікувати"
+
+#: src/views/ElementList.vue:106 src/views/FileList.vue:103
 #: src/views/PageList.vue:111
 msgid "Scheduled"
 msgstr "Заплановано"
 
-#: src/views/ElementList.vue:107
-#: src/views/FileList.vue:104
+#: src/views/ElementList.vue:107 src/views/FileList.vue:104
 #: src/views/PageList.vue:112
 msgid "Drafts"
 msgstr "Чернетки"
 
-#: src/views/ElementList.vue:111
-#: src/views/FileList.vue:108
+#: src/views/ElementList.vue:111 src/views/FileList.vue:108
 #: src/views/PageList.vue:116
-msgid "Trashed"
-msgstr "Розгромлено."
+msgid "trashed"
+msgstr "розгромлений."
 
-#: src/views/ElementList.vue:114
-#: src/views/FileList.vue:111
+#: src/views/ElementList.vue:114 src/views/FileList.vue:111
 #: src/views/PageList.vue:119
 msgid "Available only"
 msgstr "Доступно тільки"
 
-#: src/views/ElementList.vue:115
-#: src/views/FileList.vue:112
+#: src/views/ElementList.vue:115 src/views/FileList.vue:112
 #: src/views/PageList.vue:120
 msgid "Only trashed"
 msgstr "Тільки розбиті."
 
-#: src/views/ElementList.vue:122
-#: src/views/FileList.vue:119
+#: src/views/ElementList.vue:122 src/views/FileList.vue:119
 #: src/views/PageList.vue:127
 msgid "Edited by me"
 msgstr "Відредаговано мною"
 
-#: src/views/ElementList.vue:126
-#: src/views/FileList.vue:123
+#: src/views/ElementList.vue:126 src/views/FileList.vue:123
 #: src/views/PageList.vue:131
-msgid "Languages"
-msgstr "Мови"
+msgid "languages"
+msgstr "мови"
 
 #: src/views/FileDetail.vue:71
 msgid "File published successfully"
@@ -1057,8 +1110,7 @@ msgstr "Помилка збереження файлу"
 msgid "Error fetching file versions"
 msgstr "Помилка отримання версій файлів"
 
-#: src/views/FileDetail.vue:205
-#: src/views/FileDetail.vue:260
+#: src/views/FileDetail.vue:205 src/views/FileDetail.vue:260
 msgid "File"
 msgstr "Файл"
 
@@ -1070,8 +1122,7 @@ msgstr "Не редактор CMS"
 msgid "Access denied"
 msgstr "У доступі відмовлено"
 
-#: src/views/Login.vue:79
-#: src/views/Login.vue:101
+#: src/views/Login.vue:79 src/views/Login.vue:101
 msgid "Login"
 msgstr "Логін"
 
@@ -1115,18 +1166,21 @@ msgstr "Схему сторінки для \"content\" не знайдено"
 msgid "Error fetching page versions"
 msgstr "Помилка при отриманні версій сторінок"
 
-#: src/views/PageDetail.vue:597
-#: src/views/PageDetail.vue:675
+#: src/views/PageDetail.vue:597 src/views/PageDetail.vue:675
 msgid "Page"
 msgstr "Сторінка"
+
+#: src/views/PageDetail.vue:665
+msgid "Editor"
+msgstr "Редактор"
 
 #: src/views/PageDetail.vue:670
 msgid "Content"
 msgstr "Зміст"
 
 #: src/views/PageList.vue:100
-msgid "View"
-msgstr "Вигляд"
+msgid "view"
+msgstr "вид"
 
 #: src/views/PageList.vue:102
 msgid "Tree"

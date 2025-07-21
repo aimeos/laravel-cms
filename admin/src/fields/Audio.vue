@@ -56,10 +56,10 @@
       </div>
     </v-col>
     <v-col cols="12" md="6" v-if="file.path">
-      {{ $gettext('Name') }}: {{ file.name }}<br/>
-      {{ $gettext('Mime') }}: {{ file.mime }}<br/>
-      {{ $gettext('Editor') }}: {{ file.editor }}<br/>
-      {{ $gettext('Updated') }}: {{ (new Date(file.updated_at)).toLocaleString() }}
+      {{ $gettext('name') }}: {{ file.name }}<br/>
+      {{ $gettext('mime') }}: {{ file.mime }}<br/>
+      {{ $gettext('editor') }}: {{ file.editor }}<br/>
+      {{ $gettext('updated') }}: {{ (new Date(file.updated_at)).toLocaleString() }}
     </v-col>
   </v-row>
 

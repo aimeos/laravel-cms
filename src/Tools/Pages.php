@@ -10,20 +10,21 @@ class Pages extends Tool
 {
     public function __construct()
     {
-        $this->as( 'pages' )
-            ->for( 'Search for pages in the page tree' )
-            ->withStringParameter( 'any', 'Single search term, use one topic at a time.')
+        $this->as( 'search-pages' )
+            ->for( 'Searches the page tree for pages matching a keyword or phrase. Returns up to 10 matching pages as JSON array of page entries.' )
+            ->withStringParameter( 'term', 'Search keyword, e.g., "blog", "product", or "FAQ". One word or phrase only.')
             ->using( $this );
     }
 
 
-    public function __invoke( string $any ): string
+    public function __invoke( string $term ): string
     {
-        $items = Page::whereAny( ['config', 'content', 'meta', 'name', 'title'], 'like', '%' . $any . '%' )
+        $result = Page::whereAny( ['config', 'content', 'meta', 'name', 'title'], 'like', '%' . $term . '%' )
             ->orderBy( 'id', 'desc' )
             ->take( 10 )
-            ->get();
+            ->get()
+            ->map( fn( $item ) => $item->toArray() + ['url' => route('cms.page', ['path' => $item->path])] );
 
-        return view( 'prompts.pages', ['results' => $items] )->render();
+        return response()->json( $result );
     }
 }

@@ -80,6 +80,7 @@
                 path
                 previews
                 description
+                transcription
                 editor
                 created_at
                 updated_at
@@ -100,6 +101,7 @@
             const data = response.data?.addFile || {}
             data.previews = JSON.parse(data.previews) || {}
             data.description = JSON.parse(data.description) || {}
+            data.transcription = JSON.parse(data.transcription) || {}
             data.published = true
 
             this.items.unshift(data)
@@ -312,6 +314,7 @@
                   path
                   previews
                   description
+                  transcription
                   editor
                   created_at
                   updated_at
@@ -352,6 +355,7 @@
               ...entry,
               previews: JSON.parse(entry.previews || '{}'),
               description: JSON.parse(entry.description || '{}'),
+              transcription: JSON.parse(entry.transcription || '{}'),
             }
 
             return Object.assign(item, {

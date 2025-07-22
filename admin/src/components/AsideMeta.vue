@@ -13,9 +13,18 @@
 
     computed: {
       values() {
-        const map = {
-          [this.$gettext('id')]: this.item.id,
-          [this.$gettext('editor')]: this.item.editor
+        const map = {}
+
+        if(this.item.id) {
+          map[this.$gettext('id')] = this.item.id
+        }
+
+        if(this.item.mime) {
+          map[this.$gettext('mime')] = this.item.mime
+        }
+
+        if(this.item.editor) {
+          map[this.$gettext('editor')] = this.item.editor
         }
 
         if(this.item.created_at) {

@@ -108,6 +108,7 @@
           variables: {
             id: this.item.id,
             input: {
+              transcription: JSON.stringify(this.item.transcription || {}),
               description: JSON.stringify(this.item.description || {}),
               name: this.item.name,
               lang: this.item.lang,

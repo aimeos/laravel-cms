@@ -187,8 +187,14 @@
             throw result
           }
 
+          if(!this.item.transcription) {
+            this.item.transcription = {}
+          }
+
           const lang = this.desclangs.shift() || this.item.lang || 'en'
           this.item.transcription[lang] = result.data?.transcribe || ''
+
+          this.$emit('update:item', this.item)
         }).catch(error => {
           this.messages.add(this.$gettext('Error transcribing file'), 'error')
           this.$log(`FileDetailItem::transcribe(): Error transcribing from media URL`, error)
@@ -198,9 +204,14 @@
       },
 
 
-      translateText() {
+      translateText(map) {
+        if(!map || typeof map !== 'object') {
+          this.$log(`FileDetailItem::translateText(): Invalid map object`, map)
+          return
+        }
+
         const promises = []
-        const [lang, text] = Object.entries(this.item.description || {}).find(([lang, text]) => {
+        const [lang, text] = Object.entries(map || {}).find(([lang, text]) => {
           return text ? true : false
         })
 
@@ -209,7 +220,7 @@
         this.txlocales(lang).map(lang => lang.code).forEach(lang => {
           promises.push(this.translate(text, lang).then(result => {
             if(result[0]) {
-              this.item.description[lang] = result[0]
+              map[lang] = result[0]
             }
           }).catch(error => {
             this.$log(`FileDetailItem::translateText(): Error translating text`, error)
@@ -310,7 +321,7 @@
                 :loading="translating"
                   icon="mdi-translate"
                   variant="flat"
-                  @click="translateText()" />
+                  @click="translateText(item.description)" />
               <v-btn
                 :loading="composing"
                 icon="mdi-creation"
@@ -349,7 +360,7 @@
                 :loading="translating"
                   icon="mdi-translate"
                   variant="flat"
-                  @click="translateText()" />
+                  @click="translateText(item.transcription)" />
               <v-btn
                 :loading="transcribing"
                 icon="mdi-creation"
@@ -370,7 +381,6 @@
                 @update:modelValue="item.transcription[entry.value] = $event; $emit('update:item', item)"
                 :label="$gettext('Transcription (%{lang})', {lang: entry.value})"
                 variant="underlined"
-                counter="500"
                 rows="20"
                 auto-grow
                 clearable
@@ -448,6 +458,11 @@
     font-weight: bold;
     margin-bottom: 4px;
     margin-top: 40px;
+  }
+
+  .description .v-textarea,
+  .transcription .v-textarea {
+    margin-top: 16px;
   }
 
   @media (max-width: 480px) {

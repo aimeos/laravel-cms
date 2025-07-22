@@ -222,7 +222,7 @@ final class Query
                 }
 
                 if( array_key_exists( 'any', $filter ) ) {
-                    $builder->whereAny( ['description', 'name'], 'like', '%' . $filter['any'] . '%' );
+                    $builder->whereAny( ['description', 'name', 'transcription'], 'like', '%' . $filter['any'] . '%' );
                 }
 
                 $builder->orWhereHas('versions', function( $builder ) use ( $filter ) {
@@ -245,10 +245,6 @@ final class Query
 
                     if( array_key_exists( 'name', $filter ) ) {
                         $builder->where( 'data->name', 'like', $filter['name'] . '%' );
-                    }
-
-                    if( array_key_exists( 'description', $filter ) ) {
-                        $builder->where( 'data->description', 'like', '%' . $filter['description'] . '%' );
                     }
 
                     if( array_key_exists( 'any', $filter ) ) {

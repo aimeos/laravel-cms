@@ -208,6 +208,19 @@ class File extends Model
 
 
     /**
+     * Enforce JSON columns to return object.
+     *
+     * @param string $key Attribute name
+     * @return mixed Attribute value
+     */
+    public function getAttribute( $key )
+    {
+        $value = parent::getAttribute( $key );
+        return is_null( $value ) && in_array( $key, ['description', 'previews', 'transcription'] ) ? new \stdClass() : $value;
+    }
+
+
+    /**
      * Get the connection name for the model.
      *
      * @return string The name of the database connection to use for the model
@@ -491,6 +504,19 @@ class File extends Model
     {
         return Attribute::make(
             set: fn( $value ) => (string) $value,
+        );
+    }
+
+
+    /**
+     * Interact with the "transcription" property.
+     *
+     * @return Attribute Eloquent attribute for the "transcription" property
+     */
+    protected function transcription(): Attribute
+    {
+        return Attribute::make(
+            set: fn( $value ) => json_encode( $value ?? new \stdClass() )
         );
     }
 }

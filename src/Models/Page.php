@@ -78,7 +78,7 @@ class Page extends Model
         'cache' => 'integer',
         'meta' => 'object',
         'config' => 'object',
-        'content' => 'object',
+        'content' => 'object', // for object access in templates
     ];
 
     /**
@@ -130,6 +130,19 @@ class Page extends Model
     public function files() : BelongsToMany
     {
         return $this->belongsToMany( File::class, 'cms_page_file' );
+    }
+
+
+    /**
+     * Enforce JSON columns to return object.
+     *
+     * @param string $key Attribute name
+     * @return mixed Attribute value
+     */
+    public function getAttribute( $key )
+    {
+        $value = parent::getAttribute( $key );
+        return is_null( $value ) && in_array( $key, ['meta', 'config', 'content'] ) ? new \stdClass() : $value;
     }
 
 
@@ -367,6 +380,32 @@ class Page extends Model
 
 
     /**
+     * Interact with the "config" property.
+     *
+     * @return Attribute Eloquent attribute for the "config" property
+     */
+    protected function config(): Attribute
+    {
+        return Attribute::make(
+            set: fn($value) => json_encode( $value ?? new \stdClass() ),
+        );
+    }
+
+
+    /**
+     * Interact with the "content" property.
+     *
+     * @return Attribute Eloquent attribute for the "content" property
+     */
+    protected function content(): Attribute
+    {
+        return Attribute::make(
+            set: fn($value) => json_encode( $value ?? [] ),
+        );
+    }
+
+
+    /**
      * Interact with the "domain" property.
      *
      * @return Attribute Eloquent attribute for the "domain" property
@@ -388,6 +427,19 @@ class Page extends Model
     {
         return Attribute::make(
             set: fn($value) => (string) $value,
+        );
+    }
+
+
+    /**
+     * Interact with the "meta" property.
+     *
+     * @return Attribute Eloquent attribute for the "meta" property
+     */
+    protected function meta(): Attribute
+    {
+        return Attribute::make(
+            set: fn($value) => json_encode( $value ?? new \stdClass() ),
         );
     }
 

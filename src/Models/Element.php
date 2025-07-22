@@ -112,6 +112,19 @@ class Element extends Model
 
 
     /**
+     * Enforce JSON columns to return object.
+     *
+     * @param string $key Attribute name
+     * @return mixed Attribute value
+     */
+    public function getAttribute( $key )
+    {
+        $value = parent::getAttribute( $key );
+        return is_null( $value ) && $key === 'data' ? new \stdClass() : $value;
+    }
+
+
+    /**
      * Get the connection name for the model.
      *
      * @return string Name of the database connection to use
@@ -233,6 +246,19 @@ class Element extends Model
     public function versions() : MorphMany
     {
         return $this->morphMany( Version::class, 'versionable' );
+    }
+
+
+    /**
+     * Interact with the "data" property.
+     *
+     * @return Attribute Eloquent attribute for the "data" property
+     */
+    protected function data(): Attribute
+    {
+        return Attribute::make(
+            set: fn( $value ) => json_encode( $value ?? new \stdClass() )
+        );
     }
 
 

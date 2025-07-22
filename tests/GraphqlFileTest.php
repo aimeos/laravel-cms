@@ -255,7 +255,7 @@ class GraphqlFileTest extends TestAbstract
             'data' => [
                 'addFile' => [
                     'id' => $file->id,
-                    'mime' => 'application/pdf',
+                    'mime' => 'application/x-empty',
                     'lang' => 'en-GB',
                     'name' => 'Test file name',
                     'path' => $file->path,

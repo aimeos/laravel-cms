@@ -2,11 +2,11 @@
 
 namespace Aimeos\Cms\GraphQL\Mutations;
 
+use Aimeos\Cms\Utils;
 use Aimeos\Cms\Models\File;
 use Aimeos\Cms\GraphQL\Exception;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
 
 
 final class AddFile
@@ -51,13 +51,12 @@ final class AddFile
             throw new Exception( 'Invalid file upload' );
         }
 
-        $file->mime = $upload->getClientMimeType();
+        $file->addFile( $upload );
+        $file->mime = Utils::mimetype( $file->path );
         $file->name = $file->name ?: pathinfo( $upload->getClientOriginalName(), PATHINFO_BASENAME );
 
         try
         {
-            $file->addFile( $upload );
-
             if( isset( $args['preview'] ) || str_starts_with( $upload->getClientMimeType(), 'image/' ) ) {
                 $file->addPreviews( $args['preview'] ?? $upload );
             }
@@ -81,15 +80,15 @@ final class AddFile
      */
     protected function addUrl( File $file, array $args ) : File
     {
-        $url = $args['input']['path'] ?? null;
+        $url = $args['input']['path'] ?? '';
 
-        if( ( $info = $this->getUrlInfo( $url ) ) === null ) {
+        if( !str_starts_with( 'http', $url ) ) {
             throw new Exception( 'Invalid URL' );
         }
 
         $file->path = $url;
-        $file->name = $file->name ?: $info['name'];
-        $file->mime = $info['mime'] ?? 'application/octet-stream';
+        $file->mime = Utils::mimetype( $url );
+        $file->name = $file->name ?: substr( $url, 0, 255 );
 
         try
         {
@@ -104,38 +103,5 @@ final class AddFile
         }
 
         return $file;
-    }
-
-
-    /**
-     * Validates if the given URL and returns the MIME type.
-     *
-     * @param  string $url URL to check
-     * @return array|null Array with mime type and file name or NULL if the URL is invalid or not accessible
-     */
-    protected function getUrlInfo( string $url ) : ?array
-    {
-        if( !filter_var( $url, FILTER_VALIDATE_URL ) ) {
-            return null;
-        }
-
-        $response = Http::head( $url );
-
-        if( !$response->successful() || $response->status() >= 300 ) {
-            return null;
-        }
-
-        $str = $response->header( 'Content-Disposition' );
-        $matches = [];
-        $name = null;
-
-        if( $str && preg_match( '/filename="?([^"]+)"?/', $str, $matches ) ) {
-            $name = $matches[1];
-        }
-
-        return [
-            'mime' => $response->header( 'Content-Type' ),
-            'name' => $name,
-        ];
     }
 }

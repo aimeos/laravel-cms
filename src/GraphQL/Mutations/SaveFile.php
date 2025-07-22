@@ -2,9 +2,10 @@
 
 namespace Aimeos\Cms\GraphQL\Mutations;
 
+use Aimeos\Cms\Utils;
+use Aimeos\Cms\Models\File;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
-use Aimeos\Cms\Models\File;
 
 
 final class SaveFile
@@ -28,6 +29,8 @@ final class SaveFile
         if( $upload instanceof UploadedFile && $upload->isValid() ) {
             $file->addFile( $upload );
         }
+
+        $file->mime = Utils::mimetype( $file->path );
 
         try
         {

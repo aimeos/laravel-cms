@@ -71,6 +71,7 @@ class GraphqlFileTest extends TestAbstract
                 path
                 previews
                 description
+                transcription
                 editor
                 created_at
                 updated_at
@@ -123,6 +124,7 @@ class GraphqlFileTest extends TestAbstract
                     path
                     previews
                     description
+                    transcription
                     editor
                     created_at
                     updated_at
@@ -218,6 +220,7 @@ class GraphqlFileTest extends TestAbstract
             'query' => '
                 mutation($file: Upload!, $preview: Upload) {
                     addFile(file: $file, input: {
+                        transcription: "{\"en\": \"Test file transcription\"}"
                         description: "{\"en\": \"Test file description\"}"
                         name: "Test file name"
                         lang: "en-GB"
@@ -229,6 +232,7 @@ class GraphqlFileTest extends TestAbstract
                         path
                         previews
                         description
+                        transcription
                         editor
                         created_at
                         updated_at
@@ -261,6 +265,7 @@ class GraphqlFileTest extends TestAbstract
                     'path' => $file->path,
                     'previews' => json_encode( $file->previews ),
                     'description' => json_encode( $file->description ),
+                    'transcription' => json_encode( $file->transcription ),
                     'editor' => 'Test editor',
                     'created_at' => (string) $file->created_at,
                     'updated_at' => (string) $file->updated_at,
@@ -281,6 +286,7 @@ class GraphqlFileTest extends TestAbstract
             'query' => '
                 mutation($preview: Upload) {
                     saveFile(id: "' . $file->id . '", input: {
+                        transcription: "{\"en\": \"Test file transcription\"}"
                         description: "{\"en\": \"Test file description\"}"
                         name: "test file"
                         lang: "en-GB"
@@ -292,6 +298,7 @@ class GraphqlFileTest extends TestAbstract
                         path
                         previews
                         description
+                        transcription
                         editor
                         latest {
                             data
@@ -322,6 +329,7 @@ class GraphqlFileTest extends TestAbstract
                     'path' => $file->path,
                     'previews' => json_encode( $file->previews ),
                     'description' => json_encode( $file->description ),
+                    'transcription' => json_encode( $file->transcription ),
                     'editor' => 'seeder',
                     'latest' => [
                         'data' => '{"lang":"en-GB","name":"test file","mime":"image\\/jpeg","path":"https:\\/\\/picsum.photos\\/id\\/0\\/1500\\/1000","previews":' . $previews . ',"description":{"en":"Test file description"}}',

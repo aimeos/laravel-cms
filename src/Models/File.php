@@ -49,6 +49,7 @@ class File extends Model
         'path' => '',
         'previews' => '{}',
         'description' => '{}',
+        'transcription' => '{}',
         'editor' => '',
     ];
 
@@ -61,6 +62,7 @@ class File extends Model
         'name' => 'string',
         'previews' => 'object',
         'description' => 'object',
+        'transcription' => 'object',
     ];
 
     /**
@@ -69,6 +71,7 @@ class File extends Model
      * @var array
      */
     protected $fillable = [
+        'transcription',
         'description',
         'name',
         'lang',
@@ -84,7 +87,8 @@ class File extends Model
         'mime',
         'path',
         'previews',
-        'description'
+        'description',
+        'transcription',
     ];
 
     /**

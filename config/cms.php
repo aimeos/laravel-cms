@@ -17,6 +17,8 @@ return [
         'text-model' => env( 'CMS_AI_TEXT_MODEL', 'gemini-2.0-flash' ),
         'image' => env( 'CMS_AI_IMAGE', 'openai' ),
         'image-model' => env( 'CMS_AI_IMAGE_MODEL', 'dall-e-3' ),
+        'audio' => env( 'CMS_AI_AUDIO', 'openai' ),
+        'audio-model' => env( 'CMS_AI_AUDIO_MODEL', 'whisper-1' ),
     ],
 
     /*

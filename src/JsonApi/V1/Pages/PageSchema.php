@@ -127,10 +127,15 @@ class PageSchema extends Schema
                             ->map( fn( $id ) => $model->files[$id] ?? null )
                             ->filter()
                             ->pluck( null, 'id' )
-                            ->each( fn ( $file ) => $file->description = $file->description?->{$lang}
-                                ?? $file->description?->{substr( $lang, 0, 2 )}
-                                ?? null
-                            );
+                            ->each( function( $file ) use ( $lang ) {
+                                $file->description = $file->description?->{$lang}
+                                    ?? $file->description?->{substr( $lang, 0, 2 )}
+                                    ?? null;
+
+                                $file->transcription = $file->transcription?->{$lang}
+                                    ?? $file->transcription?->{substr( $lang, 0, 2 )}
+                                    ?? null;
+                            } );
                     }
 
                     if( $item->type === 'reference' && $element = @$model->elements[@$item->refid] ) {
@@ -139,10 +144,16 @@ class PageSchema extends Schema
                         $lang = $model->lang;
 
                         if( !$element->files->isEmpty() ) {
-                            $item->files = $element->files->each( fn ( $file ) => $file->description = $file->description?->{$lang}
-                                ?? $file->description?->{substr( $lang, 0, 2 )}
-                                ?? null
-                            );
+                            $item->files = $element->files->each( function( $file ) use ( $lang ) {
+                                $file->description = $file->description?->{$lang}
+                                    ?? $file->description?->{substr( $lang, 0, 2 )}
+                                    ?? null;
+
+                                $file->transcription = $file->transcription?->{$lang}
+                                    ?? $file->transcription?->{substr( $lang, 0, 2 )}
+                                    ?? null;
+                            } );
+
                         }
                     }
 

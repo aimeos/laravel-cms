@@ -23,6 +23,7 @@
     "gettext:compile": "vue-gettext-compile"
   },
   "dependencies": {
+    "@breezystack/lamejs": "^1.2.7",
     "@ckeditor/ckeditor5-vue": "^7.3.0",
     "@he-tree/vue": "^2.9",
     "@vue/apollo-option": "^4.2",

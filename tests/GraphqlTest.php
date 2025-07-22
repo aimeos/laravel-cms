@@ -4,6 +4,7 @@ namespace Tests;
 
 use Aimeos\Cms\Models\File;
 use Database\Seeders\CmsSeeder;
+use Illuminate\Http\UploadedFile;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequests;
 use Nuwave\Lighthouse\Testing\RefreshesSchemaCache;
 use Prism\Prism\Testing\ImageResponseFake;
@@ -55,7 +56,7 @@ class GraphqlTest extends TestAbstract
 
         $file = File::firstOrFail();
         $expected = 'Generated content based on the prompt.';
-        Prism::fake([TextResponseFake::make()->withText( $expected )]);
+        Prism::fake( [TextResponseFake::make()->withText( $expected )] );
 
         $response = $this->actingAs( $this->user )->graphQL( "
             mutation {
@@ -74,7 +75,7 @@ class GraphqlTest extends TestAbstract
         $this->seed( CmsSeeder::class );
 
         $file = File::firstOrFail();
-        Prism::fake([ImageResponseFake::make()]);
+        Prism::fake( [ImageResponseFake::make()] );
 
         $response = $this->actingAs( $this->user )->graphQL( "
             mutation {
@@ -94,6 +95,31 @@ This is a test context.
 Generate content',
                     'https://example.com/fake-image.png'
                 ]
+            ]
+        ] );
+    }
+
+
+    public function testTranscribe()
+    {
+        Prism::fake( [new \Prism\Prism\Audio\TextResponse( 'Fake transcription' )] );
+
+        $response = $this->actingAs( $this->user )->multipartGraphQL( [
+            'query' => '
+                mutation($file: Upload!) {
+                    transcribe(file: $file)
+                }
+            ',
+            'variables' => [
+                'file' => null,
+            ],
+        ], [
+            '0' => ['variables.file'],
+        ], [
+            '0' => UploadedFile::fake()->create('test.mp3', 500, 'audio/mpeg'),
+        ] )->assertJson( [
+            'data' => [
+                'transcribe' => 'Fake transcription'
             ]
         ] );
     }

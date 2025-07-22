@@ -1,7 +1,9 @@
 <script>
+  import gql from 'graphql-tag'
   import Cropper from 'cropperjs'
   import 'cropperjs/dist/cropper.css'
-  import { useAppStore, useAuthStore, useLanguageStore, useSideStore } from '../stores'
+  import { url2audio } from '../utils'
+  import { useAppStore, useAuthStore, useLanguageStore, useMessageStore, useSideStore } from '../stores'
 
 
   export default {
@@ -15,10 +17,12 @@
 
     data() {
       return {
+        transcribing: false,
         translating: false,
         composing: false,
-        cropper: null,
+        tabtrans: null,
         tabdesc: null,
+        cropper: null,
         scaleX: 1,
         scaleY: 1,
       }
@@ -26,11 +30,12 @@
 
     setup() {
       const languages = useLanguageStore()
+      const messages = useMessageStore()
       const side = useSideStore()
       const auth = useAuthStore()
       const app = useAppStore()
 
-      return { app, auth, languages, side }
+      return { app, auth, languages, messages, side }
     },
 
     mounted() {
@@ -158,6 +163,41 @@
       },
 
 
+      transcribe() {
+        if(!this.item.mime?.startsWith('audio/') && !this.item.mime?.startsWith('video/')) {
+          return this.messages.add(this.$gettext('Transcription is only available for audio and video files'), 'error')
+        }
+
+        this.transcribing = true
+
+        url2audio(this.url(this.item.path, true)).then(blob => {
+          return this.$apollo.mutate({
+            mutation: gql`mutation($file: Upload!) {
+              transcribe(file: $file)
+            }`,
+            variables: {
+              file: new File([blob], 'audio.mp3', { type: 'audio/mpeg' })
+            },
+            context: {
+              hasUpload: true,
+            }
+          })
+        }).then(result => {
+          if(result.errors) {
+            throw result
+          }
+
+          const lang = this.desclangs.shift() || this.item.lang || 'en'
+          this.item.transcription[lang] = result.data?.transcribe || ''
+        }).catch(error => {
+          this.messages.add(this.$gettext('Error transcribing file'), 'error')
+          this.$log(`FileDetailItem::transcribe(): Error transcribing from media URL`, error)
+        }).finally(() => {
+          this.transcribing = false
+        })
+      },
+
+
       translateText() {
         const promises = []
         const [lang, text] = Object.entries(this.item.description || {}).find(([lang, text]) => {
@@ -262,7 +302,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="12" class="desc">
+        <v-col cols="12" class="description">
           <v-label>
             {{ $gettext('Descriptions') }}
             <div v-if="!readonly" class="actions">
@@ -293,6 +333,45 @@
                 variant="underlined"
                 counter="500"
                 rows="2"
+                auto-grow
+                clearable
+              ></v-textarea>
+            </v-window-item>
+          </v-window>
+        </v-col>
+      </v-row>
+      <v-row v-if="item.mime?.startsWith('audio/') || item.mime?.startsWith('video/')">
+        <v-col cols="12" class="transcription">
+          <v-label>
+            {{ $gettext('Transcriptions') }}
+            <div v-if="!readonly" class="actions">
+              <v-btn v-if="Object.values(item.transcription || {}).find(v => !!v)"
+                :loading="translating"
+                  icon="mdi-translate"
+                  variant="flat"
+                  @click="translateText()" />
+              <v-btn
+                :loading="transcribing"
+                icon="mdi-creation"
+                variant="flat"
+                @click="transcribe()"
+              />
+            </div>
+          </v-label>
+
+          <v-tabs v-model="tabtrans">
+            <v-tab v-for="entry in locales()" :value="entry.value">{{ entry.title }}</v-tab>
+          </v-tabs>
+          <v-window v-model="tabtrans">
+            <v-window-item v-for="entry in locales()" :value="entry.value">
+              <v-textarea ref="transcription"
+                :readonly="readonly"
+                :modelValue="item.transcription?.[entry.value] || ''"
+                @update:modelValue="item.transcription[entry.value] = $event; $emit('update:item', item)"
+                :label="$gettext('Transcription (%{lang})', {lang: entry.value})"
+                variant="underlined"
+                counter="500"
+                rows="20"
                 auto-grow
                 clearable
               ></v-textarea>
@@ -360,7 +439,8 @@
     gap: 8px;
   }
 
-  .desc .v-label {
+  .description .v-label,
+  .transcription .v-label {
     display: flex;
     align-items: center;
     justify-content: space-between;

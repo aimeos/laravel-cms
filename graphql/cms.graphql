@@ -74,6 +74,9 @@ extend type Mutation {
   "Generate images from prompts and passed file IDs"
   imagine(prompt: String!, context: String, files: [String!]): [String!]
 
+  "Transcribe uploaded audio file"
+  transcribe(file: Upload!): String
+
   "Translate texts"
   translate(texts: [String!]!, to: String!, from: String, context: String): [String!]!
 
@@ -455,6 +458,9 @@ type File {
   "Description of the file in different languages with ISO language code as key"
   description: JSON
 
+  "Transcribtion of the file content in different languages with ISO language code as key"
+  transcription: JSON
+
   "Relative path to the stored file"
   path: String!
 
@@ -518,6 +524,9 @@ input FileInput {
 
   "Description of the file in different languages with ISO language code as key"
   description: JSON
+
+  "Transcribtion of the file content in different languages with ISO language code as key"
+  transcription: JSON
 
   "URL or relative path within the storage of the file"
   path: String

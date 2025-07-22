@@ -46,11 +46,13 @@ final class Imagine
                     };
                 }
 
+                $disk = config( 'cms.disk', 'public' );
+
                 return match( explode( '/', $file->mime )[0] ) {
-                    'image' => Image::fromStoragePath( $file->path, 'public' ),
-                    'audio' => Audio::fromStoragePath( $file->path, 'public' ),
-                    'video' => Video::fromStoragePath( $file->path, 'public' ),
-                    default => Document::fromStoragePath( $file->path, 'public' ),
+                    'image' => Image::fromStoragePath( $file->path, $disk ),
+                    'audio' => Audio::fromStoragePath( $file->path, $disk ),
+                    'video' => Video::fromStoragePath( $file->path, $disk ),
+                    default => Document::fromStoragePath( $file->path, $disk ),
                 };
             } )->values()->toArray();
         }

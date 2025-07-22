@@ -198,6 +198,11 @@ img {
     border-radius: 8px;
 }
 
+.caption:not(:empty) {
+    max-width: 30rem;
+    margin: 1rem auto;
+}
+
 .image .main > img,
 .image .main > source {
     width: 100%;

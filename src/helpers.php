@@ -7,17 +7,17 @@
 
 if( !function_exists( 'cms' ) )
 {
-    function cms( \Aimeos\Cms\Models\Page $page, string $prop, $default = null )
+    function cms( object $item, string $prop, $default = null )
     {
         if( \Aimeos\Cms\Permission::can( 'page:view', auth()->user() ) ) {
-            return $page->latest?->data?->{$prop}
-                ?? $page->latest?->aux?->{$prop}
-                ?? $page->latest?->{$prop}
-                ?? $page->{$prop}
+            return $item->latest?->data?->{$prop}
+                ?? $item->latest?->aux?->{$prop}
+                ?? $item->latest?->{$prop}
+                ?? $item->{$prop}
                 ?? $default;
         }
 
-        return $page->{$prop} ?? $default;
+        return $item->{$prop} ?? $default;
     }
 }
 

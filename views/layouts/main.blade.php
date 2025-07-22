@@ -8,6 +8,7 @@
             base-uri 'self';
             default-src 'self';
             img-src 'self' data:;
+            media-src 'self' data: blob:;
             style-src 'self' https://hcaptcha.com https://*.hcaptcha.com;
             script-src 'self' https://hcaptcha.com https://*.hcaptcha.com;
             frame-src 'self' https://hcaptcha.com https://*.hcaptcha.com;

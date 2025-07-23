@@ -28,8 +28,10 @@ final class Translate
 
         $url = rtrim( config( 'services.deepl.url', 'https://api-free.deepl.com/v2/translate' ), '/' );
         $payload = [
-            'tag_handling' => 'html',
+            'ignore_tags' => ['x'],
+            'tag_handling' => 'xml',
             'preserve_formatting' => true,
+            'model_type' => 'prefer_quality_optimized',
             'target_lang' => strtoupper( $args['to'] ),
             'source_lang' => strtoupper( $args['from'] ?? '' ),
             'context' => $args['context'] ?? '',

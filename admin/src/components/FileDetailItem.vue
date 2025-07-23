@@ -227,8 +227,41 @@
           }))
         })
 
-        Promise.all(promises).then(() => {
+        return Promise.all(promises).then(() => {
           this.translating = false
+          return map
+        })
+      },
+
+
+      translateVTT(map) {
+        if(!map || typeof map !== 'object') {
+          this.$log(`FileDetailItem::translateVTT(): Invalid map object`, map)
+          return
+        }
+
+        const regex = /^\d{2}:\d{2}:\d{2}\.\d{3} --\> \d{2}:\d{2}:\d{2}\.\d{3}(?: .*)?$/;
+        const texts = {...map}
+
+        for(const [lang, text] of Object.entries(texts)) {
+          if(text) {
+            texts[lang] = text.split('\n')
+              .map(line => (line.startsWith('WEBVTT') || regex.test(line)) ? `<x>${line}</x>` : line)
+              .filter(line => line.trim() !== '')
+              .join('');
+          }
+        }
+
+        this.translateText(texts).then(texts => {
+          for(const [lang, text] of Object.entries(texts)) {
+            if(texts[lang]) {
+              map[lang] = texts[lang].replaceAll(/\<x\>/g, '\n\n').replaceAll(/\<\/x\>/g, '\n').trim()
+            }
+          }
+
+          this.$emit('update:item', this.item)
+        }).catch(error => {
+          this.$log(`FileDetailItem::translateVTT(): Error translating VTT`, error)
         })
       },
 
@@ -360,7 +393,7 @@
                 :loading="translating"
                   icon="mdi-translate"
                   variant="flat"
-                  @click="translateText(item.transcription)" />
+                  @click="translateVTT(item.transcription)" />
               <v-btn
                 :loading="transcribing"
                 icon="mdi-creation"

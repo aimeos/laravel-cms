@@ -20,6 +20,7 @@
         transcribing: false,
         translating: false,
         composing: false,
+        covering: false,
         tabtrans: null,
         tabdesc: null,
         cropper: null,
@@ -77,6 +78,69 @@
     },
 
     methods: {
+      addCover() {
+        if(this.readonly) {
+          return this.messages.add(this.$gettext('Permission denied'), 'error')
+        }
+
+        const self = this
+        const video = this.$refs.video
+
+        if(!video) {
+          return this.messages.add('No video element found', 'error')
+        }
+
+        const filename = this.item.path.replace(/\.[A-Za-z0-9]+$/, '.png').split('/').pop()
+        const canvas = document.createElement('canvas')
+        const context = canvas.getContext('2d')
+
+        canvas.width = video.videoWidth
+        canvas.height = video.videoHeight
+        context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight)
+
+        canvas.toBlob(function(blob) {
+          const file = new File([blob], filename, {type: 'image/png'})
+
+          self.covering = true
+
+          self.$apollo.mutate({
+            mutation: gql`mutation($id: ID!, $preview: Upload) {
+              saveFile(id: $id, input: {}, preview: $preview) {
+                id
+                latest {
+                  data
+                  created_at
+                }
+              }
+            }`,
+            variables: {
+              id: self.item.id,
+              preview: file
+            },
+            context: {
+              hasUpload: true
+            }
+          }).then(response => {
+            if(response.errors) {
+              throw response.errors
+            }
+
+            const latest = response.data?.saveFile?.latest
+
+            if(latest) {
+              self.item.previews = JSON.parse(latest.data || '{}')?.previews || {}
+              self.item.updated_at = latest.created_at
+            }
+          }).catch(error => {
+            self.messages.add('Error saving video cover', 'error')
+            this.$log(`FileDetailItem::addCover(): Error saving video cover`, error)
+          }).finally(() => {
+            self.covering = false
+          })
+        }, 'image/png', 1)
+      },
+
+
       composeText() {
         const lang = this.desclangs.shift() || this.item.lang || 'en'
         const prompt = `Summarize the content of the file in a few words in plain text format for a title tag in the language with the ISO code "${lang}":`
@@ -84,7 +148,7 @@
         this.composing = true
 
         this.compose(prompt, null, [this.item.id]).then(result => {
-          this.item.description[lang] = result
+          this.update('description', Object.assign(this.item.description || {}, {[lang]: result}))
         }).finally(() => {
           this.composing = false
         })
@@ -116,6 +180,48 @@
         this.scaleY = -this.scaleY
         this.cropper.scaleY(this.scaleY)
         this.save()
+      },
+
+
+      removeCover() {
+        if(this.readonly) {
+          return this.messages.add(this.$gettext('Permission denied'), 'error')
+        }
+
+        this.covering = true
+        this.item.previews = {}
+
+        this.$apollo.mutate({
+          mutation: gql`mutation($id: ID!, $preview: Boolean) {
+            saveFile(id: $id, input: {}, preview: $preview) {
+              id
+              latest {
+                data
+                created_at
+              }
+            }
+          }`,
+          variables: {
+            id: this.item.id,
+            preview: false
+          }
+        }).then(response => {
+          if(response.errors) {
+            throw response.errors
+          }
+
+          const latest = response.data?.saveFile?.latest
+
+          if(latest) {
+            this.item.previews = JSON.parse(latest.data || '{}')?.previews || {}
+            this.item.updated_at = latest.created_at
+          }
+        }).catch(error => {
+          this.messages.add('Error removing video cover', 'error')
+          this.$log(`FileDetailItem::removeCover(): Error removing video cover`, error)
+        }).finally(() => {
+          this.covering = false
+        })
       },
 
 
@@ -151,19 +257,21 @@
 
 
       save() {
+        if(this.readonly) {
+          return this.messages.add(this.$gettext('Permission denied'), 'error')
+        }
+
         this.cropper.getCroppedCanvas().toBlob(blob => {
           this.$emit('update:file', blob)
         })
       },
 
 
-      update(what, value) {
-        this.item[what] = value
-        this.$emit('update:item', this.item)
-      },
-
-
       transcribe() {
+        if(this.readonly) {
+          return this.messages.add(this.$gettext('Permission denied'), 'error')
+        }
+
         if(!this.item.mime?.startsWith('audio/') && !this.item.mime?.startsWith('video/')) {
           return this.messages.add(this.$gettext('Transcription is only available for audio and video files'), 'error')
         }
@@ -192,9 +300,7 @@
           }
 
           const lang = this.desclangs.shift() || this.item.lang || 'en'
-          this.item.transcription[lang] = result.data?.transcribe || ''
-
-          this.$emit('update:item', this.item)
+          this.update('transcription', Object.assign(this.item.transcription || {}, {[lang]: result.data?.transcribe || ''}))
         }).catch(error => {
           this.messages.add(this.$gettext('Error transcribing file'), 'error')
           this.$log(`FileDetailItem::transcribe(): Error transcribing from media URL`, error)
@@ -205,6 +311,10 @@
 
 
       translateText(map) {
+        if(this.readonly) {
+          return this.messages.add(this.$gettext('Permission denied'), 'error')
+        }
+
         if(!map || typeof map !== 'object') {
           this.$log(`FileDetailItem::translateText(): Invalid map object`, map)
           return
@@ -228,6 +338,7 @@
         })
 
         return Promise.all(promises).then(() => {
+          this.$emit('update:item', this.item)
           this.translating = false
           return map
         })
@@ -235,6 +346,10 @@
 
 
       translateVTT(map) {
+        if(this.readonly) {
+          return this.messages.add(this.$gettext('Permission denied'), 'error')
+        }
+
         if(!map || typeof map !== 'object') {
           this.$log(`FileDetailItem::translateVTT(): Invalid map object`, map)
           return
@@ -262,6 +377,62 @@
           this.$emit('update:item', this.item)
         }).catch(error => {
           this.$log(`FileDetailItem::translateVTT(): Error translating VTT`, error)
+        })
+      },
+
+
+      update(what, value) {
+        this.item[what] = value
+        this.$emit('update:item', this.item)
+      },
+
+
+      uploadCover(ev) {
+        if(this.readonly) {
+          return this.messages.add(this.$gettext('Permission denied'), 'error')
+        }
+
+        const file = ev.target.files[0];
+
+        if(!file) {
+          return this.messages.add(this.$gettext('No file selected'), 'error')
+        }
+
+        this.covering = true
+
+        this.$apollo.mutate({
+          mutation: gql`mutation($id: ID!, $preview: Upload) {
+            saveFile(id: $id, input: {}, preview: $preview) {
+              id
+              latest {
+                data
+                created_at
+              }
+            }
+          }`,
+          variables: {
+            id: this.item.id,
+            preview: file
+          },
+          context: {
+            hasUpload: true
+          }
+        }).then(response => {
+          if(response.errors) {
+            throw response.errors
+          }
+
+          const latest = response.data?.saveFile?.latest
+
+          if(latest) {
+            this.item.previews = JSON.parse(latest.data || '{}')?.previews || {}
+            this.item.updated_at = latest.created_at
+          }
+        }).catch(error => {
+          this.messages.add('Error uploading video cover', 'error')
+          this.$log(`FileDetailItem::removeCover(): Error uploading video cover`, error)
+        }).finally(() => {
+          this.covering = false
         })
       },
 
@@ -325,17 +496,33 @@
               </div>
             </div>
           </div>
-          <video v-else-if="item.mime?.startsWith('video/')"
-            :src="url(item.path)"
-            crossorigin="anonymous"
-            preload="metadata"
-            class="element"
-            controls
-          ></video>
+          <div v-else-if="item.mime?.startsWith('video/')" class="editor-container">
+            <video ref="video"
+              :src="url(item.path)"
+              crossorigin="anonymous"
+              class="element"
+              controls
+            ></video>
+
+            <div v-if="!readonly" class="floating-toolbar">
+              <div class="toolbar-group">
+                <img v-if="Object.values(item.previews).length" class="video-preview"
+                  :src="url(Object.values(item.previews).shift())"
+                  @click="removeCover()"
+                />
+                <div v-else class="toolbar-group">
+                  <v-btn icon="mdi-tooltip-image" :loading="covering" :title="$gettext('Use as cover')" @click="addCover()" />
+                  <v-btn icon :loading="covering" :title="$gettext('Upload cover')" @click="$refs.coverInput.click()">
+                    <v-icon>mdi-image-plus</v-icon>
+                    <input ref="coverInput" type="file" class="cover-input" @change="uploadCover($event)" />
+                  </v-btn>
+                </div>
+              </div>
+            </div>
+          </div>
           <audio v-else-if="item.mime?.startsWith('audio/')"
             :src="url(item.path)"
             crossorigin="anonymous"
-            preload="metadata"
             class="element"
             controls
           ></audio>
@@ -480,6 +667,16 @@
   .toolbar-group {
     display: flex;
     gap: 8px;
+  }
+
+  img.video-preview {
+    width: 100px;
+    cursor: pointer;
+    border-radius: 8px;
+  }
+
+  .cover-input {
+    display: none;
   }
 
   .description .v-label,

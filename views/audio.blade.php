@@ -4,10 +4,10 @@
 	@endpush
 @endonce
 
-@if($file = $files[@$data->file?->id] ?? null)
+@if($file = cms($files, @$data->file?->id))
 	<audio preload="metadata" controls
 		title="{{ @cms($file, 'description')?->{cms($page, 'lang')} }}"
-		src="{{ cmsurl(@$file->path) }}">
+		src="{{ cmsurl(cms($file, 'path')) }}">
 		<div class="transcription" lang="{{ cms($page, 'lang') }}">{{ @cms($file, 'transcription')?->{cms($page, 'lang')} }}</div>
 	</audio>
 	<div class="caption"></div>

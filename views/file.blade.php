@@ -1,4 +1,4 @@
-@if($file = $files[@$data->file?->id] ?? null)
+@if($file = cms($files, @$data->file?->id))
 	<a href="{{ cmsurl(@$file->path) }}">
 		{{ __('Download file') }}
 	</a>

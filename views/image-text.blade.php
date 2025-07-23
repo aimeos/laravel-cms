@@ -1,4 +1,4 @@
-@if($file = $files[@$data->file?->id] ?? null)
+@if($file = cms($files, @$data->file?->id))
 	@include('cms::pic', ['file' => $file, 'class' => 'image ' . (@$data->position ?? 'auto')])
 @endif
 

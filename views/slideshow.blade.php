@@ -14,7 +14,7 @@
 
 	<div class="slider-container">
 		@foreach($data->files ?? [] as $item)
-			@if($file = $files[@$item->id] ?? null)
+			@if($file = cms($files, @$item->id))
 				@include('cms::pic', ['file' => $file])
 			@else
 				<!-- no image file -->

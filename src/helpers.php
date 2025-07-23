@@ -7,8 +7,16 @@
 
 if( !function_exists( 'cms' ) )
 {
-    function cms( object $item, string $prop, $default = null )
+    function cms( ?object $item, string $prop, $default = null )
     {
+        if( is_null( $item ) ) {
+            return $default;
+        }
+
+        if( $item instanceof \Illuminate\Support\Collection ) {
+            return $item[$prop];
+        }
+
         if( \Aimeos\Cms\Permission::can( 'page:view', auth()->user() ) ) {
             return $item->latest?->data?->{$prop}
                 ?? $item->latest?->aux?->{$prop}

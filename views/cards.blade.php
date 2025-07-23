@@ -9,7 +9,7 @@
 <div class="card-list">
 	@foreach($data->cards ?? [] as $card)
 		<div class="card-item">
-			@if($file = $files[@$card->file?->id] ?? null)
+			@if($file = cms($files, @$card->file?->id))
 				@include('cms::pic', ['file' => $file, 'class' => 'image'])
 			@endif
 			<h3 class="title">{{ @$card->title }}</h3>

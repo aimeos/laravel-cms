@@ -14,11 +14,11 @@
         @foreach(@$action ?? [] as $item)
             <div class="blog-item">
                 @if($article = collect(cms($item, 'content'))->first(fn($el) => @$el->type === 'article')?->data)
-                    @if($file = cms($item, 'files')[@$article->file?->id] ?? null)
+                    @if($file = cms(cms($item, 'files'), @$article->file?->id))
                         @include('cms::pic', ['file' => $file])
                     @endif
                     <h3>{{ cms($item, 'title') }}</h3>
-                    <p>{{ @$article->lead }}</p>
+                    <p>{{ $article->lead }}</p>
                 @else
                     <h3>{{ cms($item, 'title') }}</h3>
                 @endif

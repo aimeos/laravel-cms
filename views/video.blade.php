@@ -4,15 +4,15 @@
 	@endpush
 @endonce
 
-@if($file = $files[@$data->file?->id] ?? null)
+@if($file = cms($files, @$data->file?->id))
 	<video preload="metadata" controls playsinline
 		title="{{ @cms($file, 'description')?->{cms($page, 'lang')} }}"
-		src="{{ cmsurl(@$file->path) }}"
-		@if($preview = @current($file->previews ?? []))
+		src="{{ cmsurl(cms($file, 'path')) }}"
+		@if($preview = current(array_reverse((array) cms($file, 'previews', []))))
 			poster="{{ cmsurl($preview) }}"
 		@endif
 	>
-		{{ __('Download file') }}: <a href="{{ cmsurl(@$file->path) }}">{{ cmsurl(@$file->path) }}</a>
+		{{ __('Download file') }}: <a href="{{ cmsurl(cms($file, 'path')) }}">{{ cmsurl(cms($file, 'path')) }}</a>
 		<div class="transcription" lang="{{ cms($page, 'lang') }}">{{ @cms($file, 'transcription')?->{cms($page, 'lang')} }}</div>
 	</video>
 	<div class="caption"></div>

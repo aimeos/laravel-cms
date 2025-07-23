@@ -20,8 +20,8 @@ final class SaveFile
         $orig = File::withTrashed()->findOrFail( $args['id'] );
 
         $file = clone $orig;
-        $file->fill( $args['input'] ?? [] );
-        $file->path = $args['input']['path'] ?? $orig->path;
+        $file->fill( array_merge( (array) $orig->latest?->data ?? [], (array) $args['input'] ?? [] ) );
+        $file->path = $args['input']['path'] ?? $orig->latest?->data?->path ?? $orig->path;
         $file->editor = $editor;
 
         $upload = $args['file'] ?? null;
@@ -30,7 +30,9 @@ final class SaveFile
             $file->addFile( $upload );
         }
 
-        $file->mime = Utils::mimetype( $file->path );
+        if( $file->path !== ( $orig->latest?->data?->path ?? $orig->path ) ) {
+            $file->mime = Utils::mimetype( $file->path );
+        }
 
         try
         {

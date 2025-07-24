@@ -408,7 +408,7 @@
         <v-checkbox-btn v-model="checked" @click.stop="toggle()"></v-checkbox-btn>
         <v-menu location="bottom right">
           <template v-slot:activator="{ props }">
-            <v-btn append-icon="mdi-menu-down" variant="text" v-bind="props">{{ $gettext('Actions') }}</v-btn>
+            <v-btn append-icon="mdi-menu-down" variant="text" v-bind="props" :disabled="!isChecked">{{ $gettext('Actions') }}</v-btn>
           </template>
           <v-list>
             <v-list-item v-if="isChecked">

@@ -25,6 +25,7 @@
         items: [],
         loading: true,
         checked: false,
+        isChecked: false,
         term: '',
       }
     },
@@ -49,15 +50,11 @@
 
     computed: {
       canTrash() {
-        return this.$refs.tree.statsFlat.some(stat => stat.check && !stat.data.deleted_at)
-      },
-
-      isChecked() {
-        return this.$refs.tree.statsFlat.some(stat => stat.check)
+        return this.isChecked && this.$refs.tree?.statsFlat.some(stat => stat.checked && !stat.data.deleted_at)
       },
 
       isTrashed() {
-        return this.$refs.tree.statsFlat.some(stat => stat.check && stat.data.deleted_at)
+        return this.isChecked && this.$refs.tree?.statsFlat.some(stat => stat.checked && stat.data.deleted_at)
       },
     },
 
@@ -170,7 +167,7 @@
         }
 
         const list = (stat ? [stat] : this.$refs.tree.statsFlat.filter(stat => {
-          return stat.check && stat.data?.id
+          return stat.checked && stat.data?.id
         }))
 
         if(!list.length) {
@@ -353,7 +350,7 @@
         }
 
         const stats = stat ? [stat] : this.$refs.tree.statsFlat.filter(stat => {
-          return stat.check && stat.data.id && stat.data.deleted_at
+          return stat.checked && stat.data.id && stat.data.deleted_at
         })
         const list = stats.filter(stat => {
           return stats.indexOf(stat.parent) === -1
@@ -568,7 +565,7 @@
         }
 
         const list = stat ? [stat] : this.$refs.tree.statsFlat.filter(stat => {
-          return stat.check && stat.data.id && !stat.data.published
+          return stat.checked && stat.data.id && !stat.data.published
         })
 
         if(!list.length) {
@@ -609,7 +606,7 @@
         }
 
         const list = stat ? [stat] : this.$refs.tree.statsFlat.filter(stat => {
-          return stat.check && stat.data.id
+          return stat.checked && stat.data.id
         })
 
         if(!list.length) {
@@ -713,7 +710,7 @@
         }
 
         const list = stat ? [stat] : this.$refs.tree.statsFlat.filter(stat => {
-          return stat.check && stat.data.id
+          return stat.checked && stat.data.id
         })
 
         list.forEach(stat => {
@@ -771,8 +768,8 @@
 
 
       toggle() {
-        this.$refs.tree.statsFlat.forEach(el => {
-          el.check = !el.check
+        this.$refs.tree.statsFlat.forEach(stat => {
+          stat.checked = !stat.checked
         })
       },
 
@@ -812,6 +809,15 @@
         stat.children?.forEach((stat) => {
           fcn(stat, fcn)
         })
+      },
+
+
+      updateChecked(val) {
+        if(!val) {
+          this.isChecked = this.$refs.tree?.statsFlat.some(stat => stat.checked)
+        } else {
+          this.isChecked = true
+        }
       },
 
 
@@ -863,7 +869,7 @@
       <v-checkbox-btn v-model="checked" @click.stop="toggle()"></v-checkbox-btn>
       <v-menu>
         <template #activator="{ props }">
-          <v-btn append-icon="mdi-menu-down" variant="text" v-bind="props">{{ $gettext('Actions') }}</v-btn>
+          <v-btn append-icon="mdi-menu-down" variant="text" v-bind="props" :disabled="!isChecked">{{ $gettext('Actions') }}</v-btn>
         </template>
         <v-list>
           <v-list-item v-if="isChecked && auth.can('page:publish')">
@@ -910,6 +916,7 @@
     :watermark="false"
     virtualization
     @change="change()"
+    @check:node="updateChecked($event.checked)"
   >
     <template #default="{ node, stat }">
       <svg v-if="stat.loading" class="spinner" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -921,7 +928,7 @@
         :icon="stat.open ? 'mdi-menu-down' : 'mdi-menu-right'"
       ></v-btn>
 
-      <v-checkbox-btn v-model="stat.check" :class="{draft: !node.published}"></v-checkbox-btn>
+      <v-checkbox-btn v-model="stat.checked" :class="{draft: !node.published}"></v-checkbox-btn>
 
       <v-menu v-if="node.id">
         <template #activator="{ props }">

@@ -35,8 +35,8 @@ final class SavePage
                 ]
             ]);
 
-            $version->elements()->sync( $args['elements'] ?? [] );
-            $version->files()->sync( $args['files'] ?? [] );
+            $version->elements()->attach( $args['elements'] ?? [] );
+            $version->files()->attach( $args['files'] ?? [] );
 
             $page->removeVersions();
 

@@ -26,7 +26,7 @@ final class SaveElement
                 'lang' => $args['input']['lang'] ?? null,
             ] );
 
-            $version->files()->sync( $args['files'] ?? [] );
+            $version->files()->attach( $args['files'] ?? [] );
 
             $element->removeVersions();
 

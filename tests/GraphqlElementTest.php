@@ -246,7 +246,7 @@ class GraphqlElementTest extends TestAbstract
 
         $file = File::firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 4 );
+        $this->expectsDatabaseQueryCount( 6 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 addElement(input: {
@@ -276,7 +276,9 @@ class GraphqlElementTest extends TestAbstract
                     'data' => '{"key":"value"}',
                     'editor' => 'Test editor',
                     'bypages' => [],
-                    'latest' => null
+                    'latest' => [
+                        'data' => '{"type":"test","lang":"en","data":{"key":"value"}}',
+                    ]
                 ],
             ]
         ] );
@@ -290,7 +292,7 @@ class GraphqlElementTest extends TestAbstract
         $file = File::firstOrFail();
         $element = Element::firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 7 );
+        $this->expectsDatabaseQueryCount( 6 );
         $response = $this->actingAs( $this->user )->graphQL( '
             mutation {
                 saveElement(id: "' . $element->id . '", input: {

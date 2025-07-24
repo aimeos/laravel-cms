@@ -215,7 +215,7 @@ class GraphqlFileTest extends TestAbstract
     {
         $this->seed( CmsSeeder::class );
 
-        $this->expectsDatabaseQueryCount( 2 );
+        $this->expectsDatabaseQueryCount( 3 );
         $response = $this->actingAs( $this->user )->multipartGraphQL( [
             'query' => '
                 mutation($file: Upload!, $preview: Upload) {
@@ -281,7 +281,7 @@ class GraphqlFileTest extends TestAbstract
 
         $file = File::firstOrFail();
 
-        $this->expectsDatabaseQueryCount( 6 );
+        $this->expectsDatabaseQueryCount( 8 );
         $response = $this->actingAs( $this->user )->multipartGraphQL( [
             'query' => '
                 mutation($preview: Upload) {
@@ -332,7 +332,7 @@ class GraphqlFileTest extends TestAbstract
                     'transcription' => json_encode( $file->transcription ),
                     'editor' => 'seeder',
                     'latest' => [
-                        'data' => '{"lang":"en-GB","name":"test file","mime":"image\\/jpeg","path":"https:\\/\\/picsum.photos\\/id\\/0\\/1500\\/1000","previews":' . $previews . ',"description":{"en":"Test file description"}}',
+                        'data' => '{"lang":"en-GB","name":"test file","mime":"image\\/jpeg","path":"https:\\/\\/picsum.photos\\/id\\/0\\/1500\\/1000","previews":' . $previews . ',"description":{"en":"Test file description"},"transcription":{"en":"Test file transcription"}}',
                         'editor' => 'Test editor',
                     ]
                 ],

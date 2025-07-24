@@ -29,6 +29,14 @@ final class AddElement
 
             $element->files()->attach( $args['files'] ?? [] );
 
+            $version = $element->versions()->create( [
+                'data' => array_map( fn( $v ) => is_null( $v ) ? (string) $v : $v, $args['input'] ?? [] ),
+                'lang' => $args['input']['lang'] ?? null,
+                'editor' => $editor,
+            ] );
+
+            $version->files()->attach( $args['files'] ?? [] );
+
         }, 3 );
 
         return $element;

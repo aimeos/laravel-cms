@@ -21,9 +21,11 @@ final class AddFile
             throw new Exception( 'Either input "path" or "file" argument must be provided' );
         }
 
+        $editor = Auth::user()?->name ?? request()->ip();
+
         $file = new File();
         $file->fill( $args['input'] ?? [] );
-        $file->editor = Auth::user()?->name ?? request()->ip();
+        $file->editor = $editor;
 
         if( isset( $args['file'] ) ) {
             $this->addUpload( $file, $args );
@@ -32,6 +34,21 @@ final class AddFile
         }
 
         $file->save();
+
+        $file->versions()->create( [
+            'lang' => $args['input']['lang'] ?? null,
+            'editor' => $editor,
+            'data' => [
+                'lang' => $file->lang,
+                'name' => $file->name,
+                'mime' => $file->mime,
+                'path' => $file->path,
+                'previews' => $file->previews,
+                'description' => $file->description,
+                'transcription' => $file->transcription,
+            ],
+        ] );
+
         return $file;
     }
 

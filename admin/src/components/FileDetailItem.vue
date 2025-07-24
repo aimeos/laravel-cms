@@ -8,7 +8,8 @@
 
   export default {
     props: {
-      'item': {type: Object, required: true}
+      'item': {type: Object, required: true},
+      'save': {type: Object, required: true},
     },
 
     emits: ['update:item', 'update:file', 'error'],
@@ -20,6 +21,7 @@
         transcribing: false,
         translating: false,
         composing: false,
+        cropping: false,
         covering: false,
         tabtrans: null,
         tabdesc: null,
@@ -40,22 +42,7 @@
     },
 
     mounted() {
-      if(!this.readonly && this.item.mime?.startsWith('image/')) {
-        this.cropper = new Cropper(this.$refs.image, {
-          aspectRatio: NaN,
-          background: true,
-          responsive: true,
-          dragMode: 'move',
-          movable: false,
-          autoCrop: false,
-          zoomable: true,
-          zoomOnWheel: false,
-          zoomOnTouch: false,
-          checkCrossOrigin: false,
-          checkOrientation: false,
-          viewMode: 1,
-        })
-      }
+      this.init()
     },
 
     beforeUnmount() {
@@ -69,6 +56,16 @@
         return this.languages.available.concat(Object.keys(this.item.description || {})).filter((v, idx, self) => {
           return self.indexOf(v) === idx
         })
+      },
+
+
+      ratio() {
+        if(!this.cropper) {
+          return NaN
+        }
+
+        const imageData = this.cropper.getImageData()
+        return imageData.naturalWidth / imageData.naturalHeight
       },
 
 
@@ -141,6 +138,13 @@
       },
 
 
+      aspect(ratio) {
+        this.cropper.setAspectRatio(ratio)
+        this.cropper.setDragMode('crop')
+        this.cropping = true
+      },
+
+
       composeText() {
         const lang = this.desclangs.shift() || this.item.lang || 'en'
         const prompt = `Summarize the content of the file in a few words in plain text format for a title tag in the language with the ISO code "${lang}":`
@@ -151,6 +155,15 @@
           this.update('description', Object.assign(this.item.description || {}, {[lang]: result}))
         }).finally(() => {
           this.composing = false
+        })
+      },
+
+
+      crop() {
+        this.cropping = false
+        this.cropper.setDragMode('none')
+        this.cropper.getCroppedCanvas().toBlob(blob => {
+          this.$emit('update:file', blob)
         })
       },
 
@@ -172,14 +185,39 @@
       flipX() {
         this.scaleX = -this.scaleX
         this.cropper.scaleX(this.scaleX)
-        this.save()
+        this.updateFile()
       },
 
 
       flipY() {
         this.scaleY = -this.scaleY
         this.cropper.scaleY(this.scaleY)
-        this.save()
+        this.updateFile()
+      },
+
+
+      init() {
+        if(!this.readonly && this.item.mime?.startsWith('image/')) {
+          if(this.cropper) {
+            this.cropper.destroy()
+            this.cropper = null
+          }
+
+          this.cropper = new Cropper(this.$refs.image, {
+            aspectRatio: NaN,
+            background: true,
+            responsive: true,
+            dragMode: 'none',
+            movable: false,
+            autoCrop: false,
+            zoomable: false,
+            zoomOnWheel: false,
+            zoomOnTouch: false,
+            checkCrossOrigin: false,
+            checkOrientation: false,
+            viewMode: 1,
+          })
+        }
       },
 
 
@@ -226,6 +264,7 @@
 
 
       reset() {
+        this.cropping = false
         this.$emit('update:file', null)
         this.cropper.reset()
         this.cropper.clear()
@@ -236,7 +275,7 @@
 
       rotate(deg) {
         this.cropper.rotate(deg)
-        this.save()
+        this.updateFile()
 
         this.$nextTick(() => {
           const container = this.cropper.getContainerData()
@@ -253,17 +292,6 @@
 
           this.cropper.zoomTo(Math.min(scaleX, scaleY))
         });
-      },
-
-
-      save() {
-        if(this.readonly) {
-          return this.messages.add(this.$gettext('Permission denied'), 'error')
-        }
-
-        this.cropper.getCroppedCanvas().toBlob(blob => {
-          this.$emit('update:file', blob)
-        })
       },
 
 
@@ -293,10 +321,6 @@
         }).then(result => {
           if(result.errors) {
             throw result
-          }
-
-          if(!this.item.transcription) {
-            this.item.transcription = {}
           }
 
           const lang = this.desclangs.shift() || this.item.lang || 'en'
@@ -387,6 +411,17 @@
       },
 
 
+      updateFile() {
+        if(this.readonly) {
+          return this.messages.add(this.$gettext('Permission denied'), 'error')
+        }
+
+        this.cropper.getCroppedCanvas().toBlob(blob => {
+          this.$emit('update:file', blob)
+        })
+      },
+
+
       uploadCover(ev) {
         if(this.readonly) {
           return this.messages.add(this.$gettext('Permission denied'), 'error')
@@ -446,6 +481,16 @@
         }
         return this.app.urlfile.replace(/\/+$/g, '') + '/' + path
       }
+    },
+
+    watch: {
+      'save.count': function() {
+        if(this.save.count > 0) {
+          this.$nextTick(() => {
+            this.init()
+          })
+        }
+      }
     }
   }
 </script>
@@ -482,6 +527,37 @@
             <img ref="image" :src="url(item.path, true)" class="element" crossorigin="anonymous" />
 
             <div v-if="!readonly" class="floating-toolbar">
+              <div class="toolbar-group">
+                <v-btn v-if="cropping" icon="mdi-image-check" class="no-rtl" :title="$gettext('Use cropped image')" @click="crop()" />
+                <v-menu v-else>
+                  <template #activator="{ props }">
+                    <v-btn icon="mdi-crop" class="no-rtl" v-bind="props" :title="$gettext('Crop image')" />
+                  </template>
+                  <v-list>
+                    <v-list-item>
+                      <v-btn prepend-icon="mdi-crop" class="no-rtl" variant="text" @click="aspect(ratio)">{{ $gettext('Original ratio') }}</v-btn>
+                    </v-list-item>
+                    <v-list-item>
+                      <v-btn prepend-icon="mdi-crop" class="no-rtl" variant="text" @click="aspect(NaN)">{{ $gettext('No ratio') }}</v-btn>
+                    </v-list-item>
+                    <v-list-item>
+                      <v-btn prepend-icon="mdi-crop" class="no-rtl" variant="text" @click="aspect(1)">{{ $gettext('Square') }}</v-btn>
+                    </v-list-item>
+                    <v-list-item>
+                      <v-btn prepend-icon="mdi-crop" class="no-rtl" variant="text" @click="aspect(3/2)">3:2</v-btn>
+                    </v-list-item>
+                    <v-list-item>
+                      <v-btn prepend-icon="mdi-crop" class="no-rtl" variant="text" @click="aspect(4/3)">4:3</v-btn>
+                    </v-list-item>
+                    <v-list-item>
+                      <v-btn prepend-icon="mdi-crop" class="no-rtl" variant="text" @click="aspect(5/3)">5:3</v-btn>
+                    </v-list-item>
+                    <v-list-item>
+                      <v-btn prepend-icon="mdi-crop" class="no-rtl" variant="text" @click="aspect(16/9)">16:9</v-btn>
+                    </v-list-item>
+                  </v-list>
+                </v-menu>
+              </div>
               <div class="toolbar-group">
                 <v-btn icon="mdi-rotate-left" class="no-rtl" @click="rotate(-90)" :title="$gettext('Rotate counter-clockwise')" />
                 <v-btn icon="mdi-rotate-right" class="no-rtl" @click="rotate(90)" :title="$gettext('Rotate clockwise')" />

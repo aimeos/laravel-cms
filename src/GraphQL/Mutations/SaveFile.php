@@ -18,10 +18,13 @@ final class SaveFile
     {
         $editor = Auth::user()?->name ?? request()->ip();
         $orig = File::withTrashed()->findOrFail( $args['id'] );
+        $previews = $orig->latest?->data?->previews ?? $orig->previews;
+        $path = $orig->latest?->data?->path ?? $orig->path;
 
         $file = clone $orig;
         $file->fill( array_merge( (array) $orig->latest?->data ?? [], (array) $args['input'] ?? [] ) );
-        $file->path = $args['input']['path'] ?? $orig->latest?->data?->path ?? $orig->path;
+        $file->previews = $args['input']['previews'] ?? $previews;
+        $file->path = $args['input']['path'] ?? $path;
         $file->editor = $editor;
 
         $upload = $args['file'] ?? null;
@@ -30,7 +33,7 @@ final class SaveFile
             $file->addFile( $upload );
         }
 
-        if( $file->path !== ( $orig->latest?->data?->path ?? $orig->path ) ) {
+        if( $file->path !== $path ) {
             $file->mime = Utils::mimetype( $file->path );
         }
 
@@ -43,7 +46,7 @@ final class SaveFile
                 $file->addPreviews( $preview );
             } elseif( $upload instanceof UploadedFile && $upload->isValid() && str_starts_with( $upload->getClientMimeType(), 'image/' ) ) {
                 $file->addPreviews( $upload );
-            } elseif( $file->path !== $orig->path && str_starts_with( $file->path, 'http' ) ) {
+            } elseif( $file->path !== $path && str_starts_with( $file->path, 'http' ) ) {
                 $file->addPreviews( $file->path );
             } elseif( $preview === false ) {
                 $file->previews = [];
@@ -73,6 +76,6 @@ final class SaveFile
 
         $file->removeVersions();
 
-        return $orig;
+        return $orig->load( 'latest' );
     }
 }

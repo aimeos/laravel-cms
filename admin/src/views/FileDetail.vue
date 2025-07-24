@@ -29,6 +29,7 @@
       pubmenu: false,
       vhistory: false,
       tab: 'file',
+      savecnt: 0,
     }),
 
     setup() {
@@ -103,6 +104,11 @@
           mutation: gql`mutation ($id: ID!, $input: FileInput!, $file: Upload) {
             saveFile(id: $id, input: $input, file: $file) {
               id
+              latest {
+                id
+                data
+                created_at
+              }
             }
           }`,
           variables: {
@@ -110,6 +116,8 @@
             input: {
               transcription: JSON.stringify(this.item.transcription || {}),
               description: JSON.stringify(this.item.description || {}),
+              previews: JSON.stringify(this.item.previews || {}),
+              path: this.item.path,
               name: this.item.name,
               lang: this.item.lang,
             },
@@ -123,6 +131,10 @@
             throw result.errors
           }
 
+          const latest = result.data?.saveFile?.latest
+
+          Object.assign(this.item, JSON.parse(latest?.data || '{}'))
+          this.item.updated_at = latest?.created_at
           this.item.published = false
           this.reset()
 
@@ -130,6 +142,7 @@
             this.messages.add(this.$gettext('File saved successfully'), 'success')
           }
 
+          this.savecnt++
           return true
         }).catch(error => {
           this.messages.add(this.$gettext('Error saving file'), 'error')
@@ -142,6 +155,7 @@
         Object.assign(this.item, version.data)
         this.vhistory = false
         this.changed = true
+        this.savecnt++
       },
 
 
@@ -177,11 +191,12 @@
             throw result
           }
 
+          const keys = ['previews', 'description', 'transcription']
+
           return (result.data.file.versions || []).map(v => {
-            return {
-              ...v,
-              data: JSON.parse(v.data || '{}'),
-            }
+            const item = {...v, data: JSON.parse(v.data || '{}')}
+            keys.forEach(key => item[key] ??= {})
+            return item
           }).reverse() // latest versions first
         }).catch(error => {
           this.messages.add(this.$gettext('Error fetching file versions'), 'error')
@@ -267,6 +282,7 @@
         <v-window-item value="file">
           <FileDetailItem
             :item="item"
+            :save="{count: savecnt}"
             @update:item="this.$emit('update:item', item); changed = true"
             @update:file="this.file = $event; changed = true"
             @error="error = $event"
@@ -296,6 +312,7 @@
           path: item.path,
           previews: item.previews,
           description: item.description,
+          transcription: item.transcription,
         },
       }"
       :load="() => versions(item.id)"

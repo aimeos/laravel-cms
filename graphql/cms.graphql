@@ -522,14 +522,17 @@ input FileInput {
   "Descriptive name of the stored file"
   name: String
 
+  "URL or relative path within the storage of the file"
+  path: String
+
+  "Preview images of the stored file if any"
+  previews: JSON
+
   "Description of the file in different languages with ISO language code as key"
   description: JSON
 
   "Transcribtion of the file content in different languages with ISO language code as key"
   transcription: JSON
-
-  "URL or relative path within the storage of the file"
-  path: String
 }
 
 type Version {

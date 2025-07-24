@@ -348,6 +348,7 @@
           }
 
           const files = result.data.files || {}
+          const keys = ['previews', 'description', 'transcription']
 
           this.last = files.paginatorInfo?.lastPage || 1
           this.items = [...files.data || []].map(entry => {
@@ -357,6 +358,8 @@
               description: JSON.parse(entry.description || '{}'),
               transcription: JSON.parse(entry.transcription || '{}'),
             }
+
+            keys.forEach(key => item[key] ??= {})
 
             return Object.assign(item, {
               id: entry.id,

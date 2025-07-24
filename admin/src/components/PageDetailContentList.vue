@@ -3,6 +3,8 @@
   import Fields from './Fields.vue'
   import SchemaDialog from './SchemaDialog.vue'
   import { VueDraggable } from 'vue-draggable-plus'
+  import { toMarkdown } from 'mdast-util-to-markdown'
+  import { fromMarkdown } from 'mdast-util-from-markdown'
   import { useAuthStore, useClipboardStore, useMessageStore, useSchemaStore, useSideStore } from '../stores'
   import { uid } from '../utils'
 
@@ -18,7 +20,7 @@
       'assets': {type: Object, required: true},
       'content': {type: Array, required: true},
       'elements': {type: Object, required: true},
-      'section': {type: [String, null], default: null}
+      'section': {type: String, default: 'main'}
     },
 
     emits: ['error', 'update:content'],
@@ -56,10 +58,7 @@
 
     methods: {
       add(item, idx) {
-        let entry = {
-          id: uid(),
-          group: this.section || 'main'
-        }
+        let entry = {id: uid(), group: this.section}
 
         if(item.id) {
           this.elements[item.id] = item
@@ -159,7 +158,7 @@
         }
 
         const entries = (this.clipboard.get('page-content') || []).map(el => {
-          el.group = this.section || 'main'
+          el.group = this.section
           return el
         })
 
@@ -283,7 +282,7 @@
           element.files = element.files.map(file => file.id)
 
           this.elements[element.id] = element
-          this.content[idx] = {id: uid(), group: this.section || 'main', type: 'reference', refid: element.id}
+          this.content[idx] = {id: uid(), group: this.section, type: 'reference', refid: element.id}
           this.$emit('update:content', this.content)
           this.store()
         }).catch(error => {
@@ -301,6 +300,62 @@
         return !el._hide && this.side.shown('type', el.type) && (
           error && el._error || changed && el._changed || valid && !el._error && !el._changed
         )
+      },
+
+
+      split(idx) {
+        if(!this.content[idx]) {
+          this.messages.add(this.$gettext('Not available for this content element'), 'error')
+          return
+        }
+
+        const list = []
+        const ast = fromMarkdown(this.content[idx].data?.text || '')
+
+        for(const node of ast.children) {
+          switch(node.type) {
+            case 'code': {
+              list.push({id: uid(), type: 'code', group: this.section, data: {lang: node.lang || null, text: node.value}})
+              break
+            }
+            case 'heading': {
+              const text = node.children.map(child => child.value).join('')
+              list.push({id: uid(), type: 'heading', group: this.section, data: {title: text.trim(), level: String(node.depth) }})
+              break
+            }
+            case 'table': {
+              const rows = node.children.map(row =>
+                row.children.map(cell =>
+                  cell.children.map(c => c.value || '').join('')
+                ).join(';')
+              ).join('\n')
+              list.push({id: uid(), type: 'table', group: this.section, data: {text: rows.trim()}})
+              break
+            }
+            default: {
+              // Convert unhandled node types back to raw Markdown
+              list.push({id: uid(), type: 'text', group: this.section, data: {text: toMarkdown(node)}})
+            }
+          }
+        }
+
+        // merge consecutive text nodes
+        const elements = list.reduce((acc, el) => {
+          const prev = acc[acc.length - 1]
+
+          if(el.type === 'text' && prev?.type === 'text') {
+            prev.data.text += '\n' + el.data.text // Merge with previous
+          } else {
+            acc.push({ ...el }) // clone to avoid mutation
+          }
+
+          return acc
+        }, [])
+
+        this.content.splice(idx, 1, ...elements)
+        this.$emit('error', this.content.some(el => el._error))
+        this.$emit('update:content', this.content)
+        this.store()
       },
 
 
@@ -377,7 +432,7 @@
 
       update(el) {
         el._changed = true
-        el.group = this.section || 'main'
+        el.group = this.section
 
         this.$emit('error', this.content.some(el => el._error))
         this.$emit('update:content', this.content)
@@ -486,8 +541,11 @@
                 <v-list-item v-if="!el._error && el.type !== 'reference' && auth.can('element:add')">
                   <v-btn prepend-icon="mdi-link" variant="text" @click="share(idx)">{{ $gettext('Make shared') }}</v-btn>
                 </v-list-item>
-                <v-list-item v-if="!el._error && el.type === 'reference' && auth.can('page:save')">
+                <v-list-item v-if="el.type === 'reference' && auth.can('page:save')">
                   <v-btn prepend-icon="mdi-link-off" variant="text" @click="unshare(idx)">{{ $gettext('Merge copy') }}</v-btn>
+                </v-list-item>
+                <v-list-item v-if="el.type === 'text' && auth.can('page:save')">
+                  <v-btn prepend-icon="mdi-set-split" variant="text" @click="split(idx)">{{ $gettext('Split') }}</v-btn>
                 </v-list-item>
               </v-list>
             </v-menu>

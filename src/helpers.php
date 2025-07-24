@@ -32,16 +32,16 @@ if( !function_exists( 'cms' ) )
 
 if( !function_exists( 'cmsasset' ) )
 {
-    function cmsasset( string $path ): string
+    function cmsasset( ?string $path ): string
     {
-        return asset( $path ) . '?v=' . ( file_exists( public_path( $path ) ) ? filemtime( public_path( $path ) ) : 0 );
+        return $path ? asset( $path ) . '?v=' . ( file_exists( public_path( $path ) ) ? filemtime( public_path( $path ) ) : 0 ) : '';
     }
 }
 
 
 if( !function_exists( 'cmsdata' ) )
 {
-    function cmsdata( \Aimeos\Cms\Models\Page $page, $item ): array
+    function cmsdata( \Aimeos\Cms\Models\Page $page, object $item ): array
     {
         if( $item instanceof \Aimeos\Cms\Models\Element ) {
             $item = (object) $item->toArray();
@@ -60,9 +60,9 @@ if( !function_exists( 'cmsdata' ) )
 
 if( !function_exists( 'cmsid' ) )
 {
-    function cmsid( string $name ): string
+    function cmsid( ?string $name ): string
     {
-        return preg_replace('/[^A-Za-z0-9\-\_]+/', '-', $name);
+        return $name ? preg_replace('/[^A-Za-z0-9\-\_]+/', '-', $name) : '';
     }
 }
 
@@ -71,7 +71,7 @@ if( !function_exists( 'cmsref' ) )
 {
     function cmsref( \Aimeos\Cms\Models\Page $page, object $item ): object
     {
-        if(@$item->type === 'reference' && ($refid = @$item->refid) && ($element = @cms($page,'elements')[$refid] ?? null)) {
+        if(@$item->type === 'reference' && ($refid = @$item->refid) && ($element = cms(cms($page, 'elements'), $refid))) {
             return (object) $element;
         }
 
@@ -110,8 +110,12 @@ if( !function_exists( 'cmssrcset' ) )
 
 if( !function_exists( 'cmsurl' ) )
 {
-    function cmsurl( string $path ): string
+    function cmsurl( ?string $path ): string
     {
+        if( !$path ) {
+            return '';
+        }
+
         if( \Illuminate\Support\Str::startsWith( $path, ['data:', 'http:', 'https:'] ) ) {
             return $path;
         }

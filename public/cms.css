@@ -150,14 +150,15 @@ details summary {
 
 h1, h2 {
     text-align: center;
+    margin: 0;
 }
 
-h1 {
+.cms-content > :not(.heading) h1 {
     font-size: 42px;
     margin-bottom: 48px;
 }
 
-h2 {
+.cms-content > :not(.heading) h2 {
     font-size: 36px;
     margin-bottom: 40px;
 }
@@ -176,8 +177,13 @@ img {
     display: none;
 }
 
-.type-page .text {
-    text-align: center;
+.code .container,
+.text .container {
+    max-width: 960px !important;
+}
+
+.text p:last-of-type {
+    margin-bottom: 0;
 }
 
 .file,
@@ -199,7 +205,7 @@ img {
 }
 
 .caption:not(:empty) {
-    max-width: 30rem;
+    max-width: 960px;
     margin: 1rem auto;
 }
 

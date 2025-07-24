@@ -25,4 +25,5 @@
 
 .code-box pre[class*=language-] {
     border: none;
+    margin: 0;
 }

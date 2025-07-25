@@ -26,9 +26,7 @@ final class Compose
 
         $files = [];
         $prism = Prism::text()->using( config( 'cms.ai.text', 'gemini' ), config( 'cms.ai.text-model', 'gemini-2.0-flash' ) )
-            ->withSystemPrompt( view( 'cms::prompts.compose' )->render() . "\n" . ($args['context'] ?? '') )
-            ->withTools( \Aimeos\Cms\Tools::get() )
-            ->withMaxSteps( 10 );
+            ->withSystemPrompt( view( 'cms::prompts.compose' )->render() . "\n" . ($args['context'] ?? '') );
 
         if( !empty( $ids = $args['files'] ?? null ) )
         {

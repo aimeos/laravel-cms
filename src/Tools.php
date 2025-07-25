@@ -14,6 +14,8 @@ class Tools
     {
         return [
             new Tools\Pages(),
+            new Tools\Locales(),
+            new Tools\AddPage(),
         ];
     }
 }

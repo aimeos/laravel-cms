@@ -74,6 +74,9 @@ extend type Mutation {
   "Generate images from prompts and passed file IDs"
   imagine(prompt: String!, context: String, files: [String!]): [String!]
 
+  "Manage the page tree and add new pages from prompts and passed file IDs"
+  manage(prompt: String!, context: String, files: [String!]): String
+
   "Transcribe uploaded audio file"
   transcribe(file: Upload!): String
 
@@ -173,7 +176,7 @@ type Page {
   "ISO language code, e.g. 'en', 'en-GB' or empty for default language"
   lang: String!
 
-  "URL segment of the page, unique in combination with the language"
+  "Unique URL segment of the page"
   path: String
 
   "Domain name the root page (!) is responsible for"
@@ -265,7 +268,7 @@ input PageFilter {
   "ISO language code, e.g. 'en', 'en-GB' or empty for default language"
   lang: String
 
-  "URL segment of the page, unique in combination with the language"
+  "Unique URL segment of the page"
   path: String
 
   "Domain name the root page (!) is responsible for"
@@ -318,7 +321,7 @@ input PageInput {
   "ISO language code, e.g. 'en', 'en-GB' or empty for default language"
   lang: String
 
-  "URL segment of the page, unique in combination with the language"
+  "Unique URL segment of the page"
   path: String
 
   "Domain name the page is assigned to"

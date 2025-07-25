@@ -148,24 +148,23 @@ details summary {
     line-height: inherit;
 }
 
-h1, h2 {
+h1, h2, h3 {
     text-align: center;
+}
+
+.type-page .heading h1,
+.type-page .heading h2,
+.type-page .heading h3 {
     margin: 0;
-}
-
-.cms-content > :not(.heading) h1 {
-    font-size: 42px;
-    margin-bottom: 48px;
-}
-
-.cms-content > :not(.heading) h2 {
-    font-size: 36px;
-    margin-bottom: 40px;
 }
 
 p {
     font-size: 20px;
     margin-bottom: 32px;
+}
+
+.type-page .text p:last-of-type {
+    margin-bottom: 0;
 }
 
 img {
@@ -180,10 +179,6 @@ img {
 .code .container,
 .text .container {
     max-width: 960px !important;
-}
-
-.text p:last-of-type {
-    margin-bottom: 0;
 }
 
 .file,

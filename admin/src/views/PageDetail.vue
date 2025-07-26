@@ -244,14 +244,22 @@
     },
 
     methods: {
-      clean(data) {
-        if(data) {
+      clean(data, type) {
+        if(data && type) {
           data = JSON.parse(JSON.stringify(data)) // deep copy
 
           for(const key in data) {
-            for(const k in data[key]) {
+            const el = data[key]
+
+            for(const k in el) {
               if(k.startsWith('_')) {
-                delete data[key][k]
+                delete el[k]
+              }
+            }
+
+            for(const name in el.data || {}) {
+              if(!this.schemas[type]?.[el.type]?.fields?.[name]) {
+                delete el.data[name]
               }
             }
           }
@@ -397,9 +405,9 @@
                 to: this.item.to || '',
                 type: this.item.type || '',
                 theme: this.item.theme || '',
-                meta: JSON.stringify(this.clean(meta)),
-                config: JSON.stringify(this.clean(config)),
-                content: JSON.stringify(this.clean(this.item.content))
+                meta: JSON.stringify(this.clean(meta, 'meta')),
+                config: JSON.stringify(this.clean(config, 'config')),
+                content: JSON.stringify(this.clean(this.item.content, 'content'))
               },
               elements: Object.keys(this.elements),
               files: files.filter((id, idx, self) => {
@@ -731,9 +739,9 @@
           to: item.to,
           type: item.type,
           theme: item.theme,
-          meta: clean(item.meta),
-          config: clean(item.config),
-          content: clean(item.content),
+          meta: clean(item.meta, 'meta'),
+          config: clean(item.config, 'config'),
+          content: clean(item.content, 'content'),
         },
       }"
       :load="() => versions(item.id)"

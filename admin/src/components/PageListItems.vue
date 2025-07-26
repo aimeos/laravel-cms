@@ -641,6 +641,25 @@
       },
 
 
+      reload(cache = true) {
+          this.items = []
+          this.loading = true
+
+          if(cache) {
+            const cache = this.$apollo.provider.defaultClient.cache
+            cache.evict({id: 'ROOT_QUERY', fieldName: 'pages'})
+            cache.gc()
+          }
+
+          const promise = this.filter.view === 'list' ? this.search() : this.fetch()
+
+          promise.then(result => {
+            this.items = result.data
+            this.loading = false
+          })
+      },
+
+
       search(page = 1, limit = 100) {
         if(!this.auth.can('page:view')) {
           this.messages.add(this.$gettext('Permission denied'), 'error')
@@ -848,15 +867,7 @@
 
       term: {
         handler() {
-          this.items = []
-          this.loading = true
-
-          const promise = this.term ? this.searchd() : this.fetch()
-
-          promise.then(result => {
-            this.items = result.data
-            this.loading = false
-          })
+          this.reload(false)
         }
       }
     }
@@ -907,6 +918,8 @@
         clearable
       ></v-text-field>
     </div>
+
+    <v-btn icon="mdi-refresh" variant="flat" @click="reload()"></v-btn>
   </div>
 
   <Draggable v-model="items" ref="tree"

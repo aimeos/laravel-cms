@@ -76,61 +76,61 @@ final class Query
         {
             $builder->where( function( $builder ) use ( $filter ) {
 
-                if( array_key_exists( 'id', $filter ) ) {
+                if( isset( $filter['id'] ) ) {
                     $builder->whereIn( 'id', $filter['id'] );
                 }
 
-                if( array_key_exists( 'lang', $filter ) ) {
+                if( isset( $filter['lang'] ) ) {
                     $builder->where( 'lang', $filter['lang'] );
                 }
 
-                if( array_key_exists( 'type', $filter ) ) {
+                if( isset( $filter['type'] ) ) {
                     $builder->where( 'type', (string) $filter['type'] );
                 }
 
-                if( array_key_exists( 'name', $filter ) ) {
+                if( isset( $filter['name'] ) ) {
                     $builder->where( 'name', 'like', $filter['name'] . '%' );
                 }
 
-                if( array_key_exists( 'editor', $filter ) ) {
+                if( isset( $filter['editor'] ) ) {
                     $builder->where( 'editor', 'like', $filter['editor'] . '%' );
                 }
 
-                if( array_key_exists( 'data', $filter ) ) {
+                if( isset( $filter['data'] ) ) {
                     $builder->where( 'data', 'like', '%' . $filter['data'] . '%' );
                 }
 
-                if( array_key_exists( 'any', $filter ) ) {
+                if( isset( $filter['any'] ) ) {
                     $builder->whereAny( ['name', 'data'], 'like', '%' . $filter['any'] . '%' );
                 }
 
                 $builder->orWhereHas('versions', function( $builder ) use ( $filter ) {
 
-                    if( array_key_exists( 'id', $filter ) ) {
+                    if( isset( $filter['id'] ) ) {
                         $builder->whereIn( 'versionable_id', $filter['id'] );
                     }
 
-                    if( array_key_exists( 'lang', $filter ) ) {
+                    if( isset( $filter['lang'] ) ) {
                         $builder->where( 'lang', $filter['lang'] );
                     }
 
-                    if( array_key_exists( 'editor', $filter ) ) {
+                    if( isset( $filter['editor'] ) ) {
                         $builder->where( 'editor', 'like', $filter['editor'] . '%' );
                     }
 
-                    if( array_key_exists( 'type', $filter ) ) {
+                    if( isset( $filter['type'] ) ) {
                         $builder->where( 'data->type', (string) $filter['type'] );
                     }
 
-                    if( array_key_exists( 'name', $filter ) ) {
+                    if( isset( $filter['name'] ) ) {
                         $builder->where( 'data->name', 'like', $filter['name'] . '%' );
                     }
 
-                    if( array_key_exists( 'data', $filter ) ) {
+                    if( isset( $filter['data'] ) ) {
                         $builder->where( 'data', 'like', '%' . $filter['data'] . '%' );
                     }
 
-                    if( array_key_exists( 'any', $filter ) ) {
+                    if( isset( $filter['any'] ) ) {
                         $builder->whereAny( ['name', 'data'], 'like', '%' . $filter['any'] . '%' );
                     }
                 });
@@ -201,53 +201,53 @@ final class Query
         {
             $builder->where( function( $builder ) use ( $filter ) {
 
-                if( array_key_exists( 'id', $filter ) ) {
+                if( isset( $filter['id'] ) ) {
                     $builder->whereIn( 'id', $filter['id'] );
                 }
 
-                if( array_key_exists( 'lang', $filter ) ) {
+                if( isset( $filter['lang'] ) ) {
                     $builder->where( 'lang', $filter['lang'] );
                 }
 
-                if( array_key_exists( 'mime', $filter ) ) {
+                if( isset( $filter['mime'] ) ) {
                     $builder->where( 'mime', 'like', $filter['mime'] . '%' );
                 }
 
-                if( array_key_exists( 'name', $filter ) ) {
+                if( isset( $filter['name'] ) ) {
                     $builder->where( 'name', 'like', $filter['name'] . '%' );
                 }
 
-                if( array_key_exists( 'editor', $filter ) ) {
+                if( isset( $filter['editor'] ) ) {
                     $builder->where( 'editor', 'like', $filter['editor'] . '%' );
                 }
 
-                if( array_key_exists( 'any', $filter ) ) {
+                if( isset( $filter['any'] ) ) {
                     $builder->whereAny( ['description', 'name', 'transcription'], 'like', '%' . $filter['any'] . '%' );
                 }
 
                 $builder->orWhereHas('versions', function( $builder ) use ( $filter ) {
 
-                    if( array_key_exists( 'id', $filter ) ) {
+                    if( isset( $filter['id'] ) ) {
                         $builder->whereIn( 'versionable_id', $filter['id'] );
                     }
 
-                    if( array_key_exists( 'lang', $filter ) ) {
+                    if( isset( $filter['lang'] ) ) {
                         $builder->where( 'lang', $filter['lang'] );
                     }
 
-                    if( array_key_exists( 'editor', $filter ) ) {
+                    if( isset( $filter['editor'] ) ) {
                         $builder->where( 'editor', 'like', $filter['editor'] . '%' );
                     }
 
-                    if( array_key_exists( 'mime', $filter ) ) {
+                    if( isset( $filter['mime'] ) ) {
                         $builder->where( 'data->mime', 'like', $filter['mime'] . '%' );
                     }
 
-                    if( array_key_exists( 'name', $filter ) ) {
+                    if( isset( $filter['name'] ) ) {
                         $builder->where( 'data->name', 'like', $filter['name'] . '%' );
                     }
 
-                    if( array_key_exists( 'any', $filter ) ) {
+                    if( isset( $filter['any'] ) ) {
                         $builder->whereAny( ['data'], 'like', '%' . $filter['any'] . '%' );
                     }
                 });
@@ -319,7 +319,7 @@ final class Query
                     $builder->where( 'parent_id', $filter['parent_id'] );
                 }
 
-                if( array_key_exists( 'id', $filter ) ) {
+                if( isset( $filter['id'] ) ) {
                     $builder->whereIn( 'id', $filter['id'] );
                 }
 
@@ -327,63 +327,63 @@ final class Query
                     $builder->where( 'lang', (string) $filter['lang'] );
                 }
 
-                if( array_key_exists( 'to', $filter ) ) {
+                if( isset( $filter['to'] ) ) {
                     $builder->where( 'to', (string) $filter['to'] );
                 }
 
-                if( array_key_exists( 'path', $filter ) ) {
+                if( isset( $filter['path'] ) ) {
                     $builder->where( 'path', (string) $filter['path'] );
                 }
 
-                if( array_key_exists( 'domain', $filter ) ) {
+                if( isset( $filter['domain'] ) ) {
                     $builder->where( 'domain', (string) $filter['domain'] );
                 }
 
-                if( array_key_exists( 'tag', $filter ) ) {
+                if( isset( $filter['tag'] ) ) {
                     $builder->where( 'tag', (string) $filter['tag'] );
                 }
 
-                if( array_key_exists( 'theme', $filter ) ) {
+                if( isset( $filter['theme'] ) ) {
                     $builder->where( 'theme', (string) $filter['theme'] );
                 }
 
-                if( array_key_exists( 'type', $filter ) ) {
+                if( isset( $filter['type'] ) ) {
                     $builder->where( 'type', (string) $filter['type'] );
                 }
 
-                if( array_key_exists( 'status', $filter ) ) {
+                if( isset( $filter['status'] ) ) {
                     $builder->where( 'status', (int) $filter['status'] );
                 }
 
-                if( array_key_exists( 'cache', $filter ) ) {
+                if( isset( $filter['cache'] ) ) {
                     $builder->where( 'cache', (int) $filter['cache'] );
                 }
 
-                if( array_key_exists( 'name', $filter ) ) {
+                if( isset( $filter['name'] ) ) {
                     $builder->where( 'name', 'like', $filter['name'] . '%' );
                 }
 
-                if( array_key_exists( 'title', $filter ) ) {
+                if( isset( $filter['title'] ) ) {
                     $builder->where( 'title', 'like', $filter['title'] . '%' );
                 }
 
-                if( array_key_exists( 'editor', $filter ) ) {
+                if( isset( $filter['editor'] ) ) {
                     $builder->where( 'editor', 'like', $filter['editor'] . '%' );
                 }
 
-                if( array_key_exists( 'meta', $filter ) ) {
+                if( isset( $filter['meta'] ) ) {
                     $builder->where( 'meta', 'like', '%' . $filter['meta'] . '%' );
                 }
 
-                if( array_key_exists( 'config', $filter ) ) {
+                if( isset( $filter['config'] ) ) {
                     $builder->where( 'config', 'like', '%' . $filter['config'] . '%' );
                 }
 
-                if( array_key_exists( 'content', $filter ) ) {
+                if( isset( $filter['content'] ) ) {
                     $builder->where( 'content', 'like', '%' . $filter['content'] . '%' );
                 }
 
-                if( array_key_exists( 'any', $filter ) ) {
+                if( isset( $filter['any'] ) ) {
                     $builder->whereAny( ['config', 'content', 'meta', 'name', 'title'], 'like', '%' . $filter['any'] . '%' );
                 }
 
@@ -393,7 +393,7 @@ final class Query
                         $builder->where( 'cms_pages.parent_id', $filter['parent_id'] );
                     }
 
-                    if( array_key_exists( 'id', $filter ) ) {
+                    if( isset( $filter['id'] ) ) {
                         $builder->whereIn( 'versionable_id', $filter['id'] );
                     }
 
@@ -401,63 +401,63 @@ final class Query
                         $builder->where( 'lang', (string) $filter['lang'] );
                     }
 
-                    if( array_key_exists( 'editor', $filter ) ) {
+                    if( isset( $filter['editor'] ) ) {
                         $builder->where( 'editor', 'like', $filter['editor'] . '%' );
                     }
 
-                    if( array_key_exists( 'to', $filter ) ) {
+                    if( isset( $filter['to'] ) ) {
                         $builder->where( 'data->to', (string) $filter['to'] );
                     }
 
-                    if( array_key_exists( 'path', $filter ) ) {
+                    if( isset( $filter['path'] ) ) {
                         $builder->where( 'data->path', (string) $filter['path'] );
                     }
 
-                    if( array_key_exists( 'domain', $filter ) ) {
+                    if( isset( $filter['domain'] ) ) {
                         $builder->where( 'data->domain', (string) $filter['domain'] );
                     }
 
-                    if( array_key_exists( 'tag', $filter ) ) {
+                    if( isset( $filter['tag'] ) ) {
                         $builder->where( 'data->tag', (string) $filter['tag'] );
                     }
 
-                    if( array_key_exists( 'theme', $filter ) ) {
+                    if( isset( $filter['theme'] ) ) {
                         $builder->where( 'data->theme', (string) $filter['theme'] );
                     }
 
-                    if( array_key_exists( 'type', $filter ) ) {
+                    if( isset( $filter['type'] ) ) {
                         $builder->where( 'data->type', (string) $filter['type'] );
                     }
 
-                    if( array_key_exists( 'status', $filter ) ) {
+                    if( isset( $filter['status'] ) ) {
                         $builder->where( 'data->status', (int) $filter['status'] );
                     }
 
-                    if( array_key_exists( 'cache', $filter ) ) {
+                    if( isset( $filter['cache'] ) ) {
                         $builder->where( 'data->cache', (int) $filter['cache'] );
                     }
 
-                    if( array_key_exists( 'name', $filter ) ) {
+                    if( isset( $filter['name'] ) ) {
                         $builder->where( 'data->name', 'like', $filter['name'] . '%' );
                     }
 
-                    if( array_key_exists( 'title', $filter ) ) {
+                    if( isset( $filter['title'] ) ) {
                         $builder->where( 'data->title', 'like', $filter['title'] . '%' );
                     }
 
-                    if( array_key_exists( 'meta', $filter ) ) {
+                    if( isset( $filter['meta'] ) ) {
                         $builder->where( 'aux->meta', 'like', '%' . $filter['meta'] . '%' );
                     }
 
-                    if( array_key_exists( 'config', $filter ) ) {
+                    if( isset( $filter['config'] ) ) {
                         $builder->where( 'aux->config', 'like', '%' . $filter['config'] . '%' );
                     }
 
-                    if( array_key_exists( 'content', $filter ) ) {
+                    if( isset( $filter['content'] ) ) {
                         $builder->where( 'aux->content', 'like', '%' . $filter['content'] . '%' );
                     }
 
-                    if( array_key_exists( 'any', $filter ) ) {
+                    if( isset( $filter['any'] ) ) {
                         $builder->whereAny( ['aux', 'data'], 'like', '%' . $filter['any'] . '%' );
                     }
                 } );

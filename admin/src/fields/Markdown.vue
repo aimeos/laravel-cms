@@ -52,7 +52,12 @@
     data() {
       return {
         editor: ClassicEditor,
+        visible: true,
       }
+    },
+
+    beforeUnmount() {
+      this.visible = false // avoid CKEditor DOM issues
     },
 
     computed: {
@@ -85,13 +90,15 @@
 </script>
 
 <template>
-  <ckeditor
-    :config="ckconfig"
-    :editor="editor"
-    :disabled="readonly"
-    :modelValue="modelValue"
-    @update:modelValue="update($event)"
-  ></ckeditor>
+  <div v-if="visible">
+    <ckeditor
+      :config="ckconfig"
+      :editor="editor"
+      :disabled="readonly"
+      :modelValue="modelValue"
+      @update:modelValue="update($event)"
+    ></ckeditor>
+  </div>
 </template>
 
 <style>

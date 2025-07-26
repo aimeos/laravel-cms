@@ -80,6 +80,11 @@
       },
 
 
+      toName(type) {
+        return type?.charAt(0)?.toUpperCase() + type?.slice(1)
+      },
+
+
       translateText(code, lang) {
 
         this.translating[code] = true
@@ -100,6 +105,7 @@
 
       validate() {
         const list = []
+        this.errors = {}
 
         this.$refs.field?.forEach(field => {
           list.push(field.validate())
@@ -137,7 +143,8 @@
       </div>
     </v-label>
     <component ref="field"
-      :is="field.type?.charAt(0)?.toUpperCase() + field.type?.slice(1)"
+      :is="toName(field.type)"
+      :key="field.type + '-' + code"
       :assets="assets"
       :config="field"
       :readonly="readonly"

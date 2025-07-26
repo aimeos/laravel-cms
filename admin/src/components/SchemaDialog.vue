@@ -10,6 +10,7 @@
 
     props: {
       'modelValue': {type: Boolean, required: true},
+      'elements': {type: Boolean, default: true},
     },
 
     emits: ['update:modelValue', 'add']
@@ -31,10 +32,12 @@
       <v-card-text>
         <SchemaItems type="content" @add="$emit('add', $event)" />
 
-        <v-tabs>
-          <v-tab>{{ $gettext('Shared elements') }}</v-tab>
-        </v-tabs>
-        <ElementListItems @select="$emit('add', $event)" embed />
+        <div v-if="elements">
+          <v-tabs>
+            <v-tab>{{ $gettext('Shared elements') }}</v-tab>
+          </v-tabs>
+          <ElementListItems @select="$emit('add', $event)" embed />
+        </div>
       </v-card-text>
     </v-card>
   </v-dialog>

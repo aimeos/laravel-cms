@@ -30,6 +30,7 @@
       menu: {},
       index: null,
       checked: false,
+      vchange: false,
       vschemas: false,
       currentPage: 1,
       lastPage: 1,
@@ -78,6 +79,35 @@
         this.$emit('update:content', this.content)
         this.vschemas = false
         this.store()
+      },
+
+
+      change(idx) {
+        if(!this.content[idx]) {
+          this.messages.add(this.$gettext('Content element not found'), 'error')
+          return
+        }
+
+        this.index = idx
+        this.vchange = true
+      },
+
+
+      changeTo(item, idx) {
+        if(!this.content[idx]) {
+          this.messages.add(this.$gettext('Content element not found'), 'error')
+          return
+        }
+
+        this.content[idx]._error = false
+        this.content[idx].type = item.type
+        this.vchange = false
+
+        this.validate().then(val => {
+          this.$emit('update:content', this.content)
+          this.$emit('error', !val)
+          this.store()
+        })
       },
 
 
@@ -346,7 +376,7 @@
           if(el.type === 'text' && prev?.type === 'text') {
             prev.data.text += '\n' + el.data.text // Merge with previous
           } else {
-            acc.push({ ...el }) // clone to avoid mutation
+            acc.push({...el}) // clone to avoid mutation
           }
 
           return acc
@@ -544,6 +574,9 @@
                 <v-list-item v-if="el.type === 'reference' && auth.can('page:save')">
                   <v-btn prepend-icon="mdi-link-off" variant="text" @click="unshare(idx)">{{ $gettext('Merge copy') }}</v-btn>
                 </v-list-item>
+                <v-list-item v-if="el.type !== 'reference' && auth.can('page:save')">
+                  <v-btn prepend-icon="mdi-swap-horizontal" variant="text" @click="change(idx)">{{ $gettext('Change to') }}</v-btn>
+                </v-list-item>
                 <v-list-item v-if="el.type === 'text' && auth.can('page:save')">
                   <v-btn prepend-icon="mdi-set-split" variant="text" @click="split(idx)">{{ $gettext('Split') }}</v-btn>
                 </v-list-item>
@@ -591,6 +624,10 @@
 
   <Teleport to="body">
     <SchemaDialog v-model="vschemas" @add="add($event, index)" />
+  </Teleport>
+
+  <Teleport to="body">
+    <SchemaDialog v-model="vchange" :elements="false" @add="changeTo($event, index)" />
   </Teleport>
 
 </template>

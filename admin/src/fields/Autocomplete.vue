@@ -116,10 +116,10 @@
 
       async validate() {
         await this.$nextTick()
-        const errors = await this.$refs.field.validate()
+        const errors = await this.$refs.field?.validate()
 
-        this.$emit('error', errors.length > 0)
-        return !errors.length
+        this.$emit('error', errors?.length > 0)
+        return !errors?.length
       }
     },
 

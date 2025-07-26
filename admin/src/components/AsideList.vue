@@ -32,7 +32,7 @@
 
 
       has(key) {
-        return this.filter[key] ? true : false
+        return this.filter[key] !== null ? true : false
       },
 
 

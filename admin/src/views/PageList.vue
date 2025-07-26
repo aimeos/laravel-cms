@@ -23,7 +23,9 @@
         view: 'tree',
         trashed: 'WITHOUT',
         publish: null,
+        status: null,
         editor: null,
+        cache: null,
         lang: null,
       },
     }),
@@ -118,6 +120,22 @@
         { title: $gettext('All'), icon: 'mdi-playlist-check', value: {'trashed': 'WITH'} },
         { title: $gettext('Available only'), icon: 'mdi-delete-off', value: {'trashed': 'WITHOUT'} },
         { title: $gettext('Only trashed'), icon: 'mdi-delete', value: {'trashed': 'ONLY'} }
+      ]
+    }, {
+      key: 'status',
+      title: $gettext('status'),
+      items: [
+        { title: $gettext('All'), icon: 'mdi-playlist-check', value: {'status': null} },
+        { title: $gettext('Enabled'), icon: 'mdi-eye-outline', value: {'status': 1} },
+        { title: $gettext('Hidden'), icon: 'mdi-eye-remove-outline', value: {'status': 2} },
+        { title: $gettext('Disabled'), icon: 'mdi-eye-off-outline', value: {'status': 0} }
+      ]
+    }, {
+      key: 'cache',
+      title: $gettext('cache'),
+      items: [
+        { title: $gettext('All'), icon: 'mdi-playlist-check', value: {'cache': null} },
+        { title: $gettext('No cache'), icon: 'mdi-clock-alert-outline', value: {'cache': 0} }
       ]
     }, {
       key: 'editor',

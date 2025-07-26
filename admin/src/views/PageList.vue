@@ -5,7 +5,7 @@
   import AsideList from '../components/AsideList.vue'
   import Navigation from '../components/Navigation.vue'
   import PageListItems from '../components/PageListItems.vue'
-  import { useAuthStore, useDrawerStore } from '../stores'
+  import { useAuthStore, useDrawerStore, useMessageStore } from '../stores'
 
   export default {
     components: {
@@ -19,6 +19,9 @@
     inject: ['locales', 'openView'],
 
     data: () => ({
+      chat: '',
+      sending: false,
+      sendicon: 'mdi-send',
       filter: {
         view: 'tree',
         trashed: 'WITHOUT',
@@ -31,10 +34,11 @@
     }),
 
     setup() {
+      const messages = useMessageStore()
       const drawer = useDrawerStore()
       const auth = useAuthStore()
 
-      return { auth, drawer }
+      return { auth, drawer, messages }
     },
 
     methods: {
@@ -59,6 +63,63 @@
 
       open(item) {
         this.openView(PageDetail, {item: item})
+      },
+
+
+      send() {
+        const prompt = this.chat.trim()
+
+        if(!this.chat) {
+          return
+        }
+
+        this.sending = true
+          this.sendicon = 'mdi-power-off'
+
+        this.$apollo.mutate({
+          mutation: gql`mutation($prompt: String!) {
+            manage(prompt: $prompt)
+          }`,
+          variables: {
+            prompt: prompt
+          }
+        }).then(result => {
+          if(result.errors) {
+            throw result
+          }
+
+          this.chat = result.data?.manage || ''
+          this.sendicon = 'mdi-check'
+
+          const filter = {
+            view: 'list',
+            publish: 'DRAFT',
+            trashed: 'WITHOUT',
+            editor: this.auth.me?.email,
+            cache: null,
+            lang: null,
+            status: 0,
+          }
+
+          // compare current filter to check reload is required
+          const keys1 = Object.keys(filter);
+          const keys2 = Object.keys(this.filter);
+
+          if(keys1.length === keys2.length && keys1.every(key => filter[key] === this.filter[key])) {
+            this.$refs.pagelist.reload()
+          } else {
+            this.filter = filter
+          }
+
+          setTimeout(() => {
+            this.sendicon = 'mdi-send'
+          }, 3000)
+        }).catch(error => {
+          this.messages.add('Error sending manage request', 'error')
+          this.$log(`PageList::send(): Error sending manage request`, error)
+        }).finally(() => {
+          this.sending = false
+        })
       }
     }
   }
@@ -92,7 +153,24 @@
   <v-main class="page-list">
     <v-container>
       <v-sheet class="box">
-        <PageListItems @select="open($event)" :filter="filter" />
+        <v-textarea
+          v-model="chat"
+          :loading="sending"
+          :append-icon="sendicon"
+          :placeholder="$gettext('What kind of page and content should I create?')"
+          @click:append="sending || send()"
+          variant="outlined"
+          rounded="pill"
+          hide-details
+          autofocus
+          auto-grow
+          outlined
+          rows="1"
+        ></v-textarea>
+      </v-sheet>
+
+      <v-sheet class="box">
+        <PageListItems ref="pagelist" @select="open($event)" :filter="filter" />
       </v-sheet>
     </v-container>
   </v-main>
